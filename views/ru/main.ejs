@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot-like | Главная</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div class="home-container">
+        <a class="btn" href="/create-game">Создать игру</a>
+        <a class="btn" onclick="findGame()">Найти игру</a>
+        <a class="btn" href="/my-games">Мои игры</a>
+        <a class="btn" href="/shop">Магазин</a>
+        <a class="btn" href="/settings">Настройки</a>
+    </div>
+    <div class="new-border" id="border" hidden>
+        <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>
+        <h4 style="text-align: center">Поиск доступных игр</h4>
+        <div class="border-data">
+            <input type="text" name="text" placeholder="Куда отправимся?" class="find-input" id="infoInput">
+            <br>
+            <br>
+            <button type="submit" id="butt" class="find-button">Отправиться</button>
+        </div>
+    </div>
+
+    <div class="new-barrier" id="barrier" hidden></div>
+</main>
+<script src="/javascripts/timer.js"></script>
+<script>
+    function findGame() {
+        const barrier = document.getElementById('barrier');
+        const border = document.getElementById('border');
+        const close = document.getElementById('close');
+
+        barrier.hidden = false;
+        border.hidden = false;
+        document.body.style.overflow = 'hidden';
+
+        barrier.addEventListener('click', () => {
+            barrier.hidden = true;
+            border.hidden = true;
+        })
+        close.addEventListener('click', () => {
+            barrier.hidden = true;
+            border.hidden = true;
+        })
+    }
+    document.getElementById('butt').addEventListener('click', () => {
+        const infoInput = document.getElementById('infoInput').value;
+        if (infoInput === ''){
+            console.log('test')
+        } else{
+            window.location.href = `/game/${infoInput}`;
+        }
+    })
+    sessionStorage.removeItem("redirectAfterReload");
+</script>
+</body>
+</html>

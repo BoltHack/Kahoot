@@ -1,0 +1,267 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #212121;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+.card-container {
+    display: flex;
+    width: 350px;
+    height: 440px;
+    /*background: transparent;*/
+    /*background: none;*/
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*background: rgb(231,225,231);*/
+    /*background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);*/
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.log-card {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /*position: absolute;*/
+    width: 350px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    padding: 20px;
+    background-color: #16171d;
+}
+.welcome {
+    margin-top: -10px;
+    text-align: center;
+    color: #adb5bd;
+}
+.heading {
+    font-size: 25px;
+    font-weight: 800;
+    /*color: #333533;*/
+    color: #f3d5b5;
+}
+
+.para {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.text {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: lightslategray;
+}
+
+.input-group {
+    margin-top: 1px;
+    margin-bottom: 4px;
+}
+
+
+.input {
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    width: 100%;
+    border: none;
+    padding: 8px 16px;
+    background-color: #242632;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    font-weight: 600;
+    color: #2879f3;
+}
+
+.input:hover {
+    color: #2879f3;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.password-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.checkbox-group {
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.forget-password {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2879f3;
+    text-decoration: none;
+}
+
+.forget-password:hover {
+    text-decoration: underline;
+    color: #f37e10;
+}
+
+.btn {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #2879f3;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0653c7;
+}
+
+.no-account {
+    font-size: 15px;
+    font-weight: 400;
+    color: #adb5bd;
+}
+
+.link {
+    font-weight: 800;
+    color: #2879f3;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: #f37e10;
+    text-decoration: underline;
+}
+.toggle-password {
+    position: absolute;
+    right: 30px;
+    top: 53.5%;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    color: #afb2bf;
+    mix-blend-mode: multiply;
+}
+
+.rules{
+    text-align: center;
+}
+.rules a {
+    color: #219ebc;
+    text-decoration: none;
+}
+.rules a:hover {
+    color: #8ecae6;
+}
+
+.rules span{
+    color: #adb5bd;
+}
+.remember-me{
+    color: #adb5bd;
+}
+.expired-message{
+    color: #adb5bd;
+}
+.lightTheme{
+    .log-card{
+        background-color: #ECF1FD;
+    }
+    .welcome{
+        color: #666;
+    }
+    .heading{
+        color: black;
+    }
+    .remember-me{
+        color: black;
+    }
+    .no-account{
+        color: black;
+    }
+    .rules span{
+        color: black;
+    }
+    .input{
+        background-color: #ECF1FD;
+    }
+    .expired-message{
+        color: black;
+    }
+    .remember-me{
+        color: black;
+    }
+    .rules a:hover{
+        color: #8ecae6;
+    }
+    background-color: #ECF1FD;
+}
+
+
+
+.dots-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.dot {
+    height: 7px;
+    width: 7px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: grey;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:last-child {
+    margin-right: 0;
+}
+
+.dot:nth-child(1) {
+    animation-delay: -0.3s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: -0.1s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        background-color: grey;
+        box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    }
+
+    50% {
+        transform: scale(1.2);
+        background-color: grey;
+        box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+    }
+
+    100% {
+        transform: scale(0.8);
+        background-color: grey;
+        box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <title>Ошибка</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            flex-direction: column;
+            display: grid;
+            background-color: #fff;
+            grid-template-rows: auto 1fr auto;
+            overflow-x: hidden;
+        }
+
+        .error-container{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .error-container h4{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <h2>Возникла ошибка</h2>
+    <h4><%= message %></h4>
+</div>
+</body>
+</html>

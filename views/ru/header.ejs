@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/header.css">
+    <noscript>
+        <style>
+            body{
+                overflow: hidden;
+            }
+            header{
+                display: none;
+            }
+        </style>
+        <div class="header-barrier"></div>
+        <div class="header-border">
+            <h1>JavaScript отключён!</h1>
+            <p>Для корректной работы сайта включите JavaScript в настройках вашего браузера. Вот как это сделать:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Google Chrome:</strong> Откройте настройки → Конфиденциальность и безопасность → Настройки сайта → JavaScript → Включите.</li>
+                <li><strong>Mozilla Firefox:</strong> Введите <code>about:config</code> в адресной строке → Найдите <code>javascript.enabled</code> → Установите в <code>true</code>.</li>
+                <li><strong>Safari:</strong> Откройте настройки → Безопасность → Включите опцию JavaScript.</li>
+                <li><strong>Microsoft Edge:</strong> Перейдите в параметры → Файлы cookie и разрешения сайта → JavaScript → Включите.</li>
+                <li style="text-align: center;"><a href="/">Обновите страницу</a> после того, как включите JavaScript.</li>
+            </ul>
+            <p style="margin-top: -10px;">Если после всех действий не удалось решить проблему, обратитеть в <a href="mailto:hffreelancers@gmail.com">поддержку.</a></p>
+            <br>
+        </div>
+    </noscript>
+</head>
+<body>
+<header>
+    <div class="container-logo">
+        <h2><a class="logo" href="/">Kahoot</a></h2>
+    </div>
+
+    <div>
+        <ul class="get">
+<!--            <li><a href="/auth/login" class="ha">Войти</a></li>-->
+            <li id="account"></li>
+        </ul>
+    </div>
+</header>
+<script>
+    const account = document.getElementById('account');
+    const myToken = localStorage.getItem('token');
+    const name = localStorage.getItem('name');
+    if (myToken){
+        account.innerHTML = `
+<div class="dropdown">
+    <a class="ha dropdown-title">${name}</a>
+    <div class="dropdown-content">
+        <a onclick="logout();">Выйти</a>
+    </div>
+</div>
+`
+    }
+    else{
+        account.innerHTML = `<a href="/auth/login" class="ha">Войти</a>`
+    }
+
+
+    function logout() {
+        fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json()).then((res) => {
+            const {status, error} = res;
+            if (error) {
+                return;
+            }
+
+            if (status) {
+                localStorage.removeItem('name');
+                localStorage.removeItem('return_id');
+                localStorage.removeItem('token');
+                localStorage.removeItem('session');
+                localStorage.removeItem('sessionEndTime');
+                window.location.href = "/auth/login";
+                return;
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

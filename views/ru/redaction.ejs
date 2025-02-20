@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot-like | Редактор</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/createGame.css">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div>
+        <form action="/redaction/<%= gamesInfo.id %>" method="POST" enctype="multipart/form-data">
+            <div class="container" style="left: 60%;">
+                <div class="modal">
+                    <div class="modal__header">
+                        <span class="modal__title">Редактирование комнаты: <%= gamesInfo.game_name %></span>
+                    </div>
+                    <div class="modal__body" style="border-bottom: none;">
+                        <div class="input">
+                            <label class="input__label">Название комнаты</label>
+                            <input class="input__field" type="text" name="game_name" placeholder="Введите название комнаты" value="<%= gamesInfo.game_name %>" maxlength="10" required>
+                            <p class="input__description">Название должно содержать максимум 10 символов.</p>
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <div class="input">
+                                <div class="input_container">
+                                    <p>Тип:</p>
+                                    <select name="game_access" class="type" style="width: 170px;" required>
+                                        <option value="General" <%= gamesInfo.game_access === 'General' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'General' ? 'Общий (Текущий)' : 'Общий'%></option>
+                                        <option value="Private" <%= gamesInfo.game_access === 'Private' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'Private' ? 'Приватный (Текущий)' : 'Приватный'%></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input">
+                                <div class="input_container">
+                                    <p>Язык:</p>
+                                    <select name="game_language" class="type" required>
+                                        <option value="Ru" <%= gamesInfo.game_language === 'Ru' ? 'selected' : '' %> ><%= gamesInfo.game_language === 'Ru' ? 'Русский (Текущий)' : 'Русский'%></option>
+                                        <option value="En" <%= gamesInfo.game_language === 'En' ? 'selected' : '' %> ><%= gamesInfo.game_language === 'En' ? 'English (Текущий)' : 'English'%></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Макс. онлайн:</p>
+                                <select name="max_online" class="type" style="width: 200px;" required>
+                                    <option value="2" <%= gamesInfo.game_online.max_online === 2 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 2 ? '2 человека (Текущий)' : '2 человека'%></option>
+                                    <option value="3" <%= gamesInfo.game_online.max_online === 3 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 3 ? '3 человека (Текущий)' : '3 человека'%></option>
+                                    <option value="4" <%= gamesInfo.game_online.max_online === 4 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 4 ? '4 человека (Текущий)' : '4 человека'%></option>
+                                    <option value="5" <%= gamesInfo.game_online.max_online === 5 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 5 ? '5 человек (Текущий)' : '5 человека'%></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Количество вопросов:</p>
+                                <select name="game_max_questions" class="type" required>
+                                    <option value="2" <%= gamesInfo.game_max_questions === 2 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 2 ? '2 вопроса (Текущий)' : '2 вопроса'%></option>
+                                    <option value="3" <%= gamesInfo.game_max_questions === 3 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 3 ? '3 вопроса (Текущий)' : '3 вопроса'%></option>
+                                    <option value="4" <%= gamesInfo.game_max_questions === 4 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 4 ? '4 вопроса (Текущий)' : '4 вопроса'%></option>
+                                    <option value="5" <%= gamesInfo.game_max_questions === 5 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 5 ? '5 вопросов (Текущий)' : '5 вопросов'%></option>
+                                </select>
+                                <div id="questions_container" style="color: red"></div>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Время таймера игры:</p>
+                                <input type="number" class="type" style="width: 200px;" name="game_expiresInSeconds" placeholder="Введите время (в секундах)" value="<%= gamesInfo.game_expiresInSeconds %>" max="100" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex">
+                        <div class="modal__footer">
+                            <button class="button button--primary">Обновить</button>
+                        </div>
+                        <div class="modal__footer">
+                            <a class="button button--primary" href="/my-games" style="text-decoration: none">Мои игры</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal questions-modal">
+                <div class="modal__body" id="modal0">
+                    <div class="input">
+                        <label class="input__label">Придумайте первый вопрос</label>
+                        <input class="input__field" type="text" name="question_title0" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_title : '' %>" placeholder="Введите вопрос" required>
+                    </div>
+                    <div class="input">
+                        <br>
+                        <label class="input__label" style="font-weight: 450">Варианты ответов</label>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field" type="text" name="question_title0_question_1" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 1" required>
+                            <input class="input__field" type="text" name="question_title0_question_2" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 2" required>
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field" type="text" name="question_title0_question_3" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 3" required>
+                            <input class="input__field" type="text" name="question_title0_question_4" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 4" required>
+                        </div>
+                        <div class="input_container">
+                            <p>Правильный ответ:</p>
+                            <select name="question_title0_correct_question" class="type" style="width: 100px;">
+                                <option value="question_1" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_1' ? 'selected' : '' : '' %> >
+                                <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_1' ? '1 (текущий)' : '1' : '1' %>
+                                </option>
+                                <option value="question_2" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_2' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_2' ? '2 (текущий)' : '2' : '2' %>
+                                </option>
+                                <option value="question_3" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_3' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_3' ? '3 (текущий)' : '3' : '3' %>
+
+                                </option>
+                                <option value="question_4" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_4' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_4' ? '4 (текущий)' : '4' : '4' %>
+                                </option>
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="input">
+                        <label class="input__label">Выберите картину для вопроса</label>
+                        <br>
+                        <input type="file" accept="image/*" name="question_image0">
+                    </div>
+                </div>
+
+                <div class="modal__body" id="modal1">
+                    <div class="input">
+                        <label class="input__label">Придумайте второй вопрос</label>
+                        <input class="input__field" type="text" name="question_title1" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1]. question_title: '' %>" placeholder="Введите вопрос" required>
+                    </div>
+                    <div class="input">
+                        <br>
+                        <label class="input__label" style="font-weight: 450">Варианты ответов</label>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field" type="text" name="question_title1_question_1" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 1" required>
+                            <input class="input__field" type="text" name="question_title1_question_2" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 2" required>
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field" type="text" name="question_title1_question_3" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 3" required>
+                            <input class="input__field" type="text" name="question_title1_question_4" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 4" required>
+                        </div>
+                        <div class="input_container">
+                            <p>Правильный ответ:</p>
+                            <select name="question_title1_correct_question" class="type" style="width: 100px;" required>
+                                <option value="question_1" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_1' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_1' ? '1 (текущий)' : '1' : '1' %>
+                                </option>
+                                <option value="question_2" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_2' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_2' ? '2 (текущий)' : '2' : '2' %>
+                                </option>
+                                <option value="question_3" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_3' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_3' ? '3 (текущий)' : '3' : '3' %>
+                                </option>
+                                <option value="question_4" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_4' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_4' ? '4 (текущий)' : '4' : '4' %>
+                                </option>
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="input">
+                        <label class="input__label">Выберите картину для вопроса</label>
+                        <br>
+                        <input type="file" accept="image/*" name="question_image1">
+                    </div>
+                </div>
+
+                <div class="modal__body" id="modal2" hidden>
+                    <div class="input">
+                        <label class="input__label">Придумайте третий вопрос</label>
+                        <input class="input__field" type="text" name="question_title2" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_title : '' %>" placeholder="Введите вопрос" id="modal_input2">
+                    </div>
+                    <div class="input">
+                        <br>
+                        <label class="input__label" style="font-weight: 450">Варианты ответов</label>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field question_2" type="text" name="question_title2_question_1" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 1">
+                            <input class="input__field question_2" type="text" name="question_title2_question_2" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 2">
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field question_2" type="text" name="question_title2_question_3" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 3">
+                            <input class="input__field question_2" type="text" name="question_title2_question_4" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 4">
+                        </div>
+                        <div class="input_container">
+                            <p>Правильный ответ:</p>
+                            <select name="question_title2_correct_question" class="type" style="width: 100px;">
+                                <option value="question_1" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_1' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_1' ? '1 (текущий)' : '1' : '1' %>
+                                </option>
+                                <option value="question_2" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_2' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_2' ? '2 (текущий)' : '2' : '2' %>
+                                </option>
+                                <option value="question_3" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_3' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_3' ? '3 (текущий)' : '3' : '3' %>
+                                </option>
+                                <option value="question_4" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_4' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_4' ? '4 (текущий)' : '4' : '4' %>
+                                </option>
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="input">
+                        <label class="input__label">Выберите картину для вопроса</label>
+                        <br>
+                        <input type="file" accept="image/*" name="question_image2">
+                    </div>
+                </div>
+
+                <div class="modal__body" id="modal3" hidden>
+                    <div class="input">
+                        <label class="input__label">Придумайте четвёртый вопрос</label>
+                        <input class="input__field" type="text" name="question_title3" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_title : '' %>" placeholder="Введите вопрос" id="modal_input3">
+                    </div>
+                    <div class="input">
+                        <br>
+                        <label class="input__label" style="font-weight: 450">Варианты ответов</label>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field question_3" type="text" name="question_title3_question_1" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 1">
+                            <input class="input__field question_3" type="text" name="question_title3_question_2" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 2">
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field question_3" type="text" name="question_title3_question_3" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 3">
+                            <input class="input__field question_3" type="text" name="question_title3_question_4" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 4">
+                        </div>
+                        <div class="input_container">
+                            <p>Правильный ответ:</p>
+                            <select name="question_title3_correct_question" class="type" style="width: 100px;">
+                                <option value="question_1" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_1' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_1' ? '1 (текущий)' : '1' : '1' %>
+                                </option>
+                                <option value="question_2" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_2' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_2' ? '2 (текущий)' : '2' : '2' %>
+                                </option>
+                                <option value="question_3" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_3' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_3' ? '3 (текущий)' : '3' : '3' %>
+                                </option>
+                                <option value="question_4" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_4' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_4' ? '4 (текущий)' : '4' : '4' %>
+                                </option>
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="input">
+                        <label class="input__label">Выберите картину для вопроса</label>
+                        <br>
+                        <input type="file" accept="image/*" name="question_image3">
+                    </div>
+                </div>
+
+                <div class="modal__body" id="modal4" hidden>
+                    <div class="input">
+                        <label class="input__label">Придумайте пятый вопрос</label>
+                        <input class="input__field" type="text" name="question_title4" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_title : '' %>" placeholder="Введите вопрос" id="modal_input4">
+                    </div>
+                    <div class="input">
+                        <br>
+                        <label class="input__label" style="font-weight: 450">Варианты ответов</label>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field question_4" type="text" name="question_title4_question_1" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 1">
+                            <input class="input__field question_4" type="text" name="question_title4_question_2" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 2">
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <input class="input__field question_4" type="text" name="question_title4_question_3" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 3">
+                            <input class="input__field question_4" type="text" name="question_title4_question_4" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="вопрос 4">
+                        </div>
+                        <div class="input_container">
+                            <p>Правильный ответ:</p>
+                            <select name="question_title4_correct_question" class="type" style="width: 50px;" required>
+                                <option value="question_1" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_1' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_1' ? '1 (текущий)' : '1' : '1' %>
+                                </option>
+                                <option value="question_2" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_2' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_2' ? '2 (текущий)' : '2' : '2' %>
+                                </option>
+                                <option value="question_3" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_3' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_3' ? '3 (текущий)' : '3' : '3' %>
+                                </option>
+                                <option value="question_4" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_4' ? 'selected' : '' : '' %> >
+                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_4' ? '4 (текущий)' : '4' : '4' %>
+                                </option>
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="input">
+                        <label class="input__label">Выберите картину для вопроса</label>
+                        <br>
+                        <input type="file" accept="image/*" name="question_image4">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+<script src="/javascripts/redaction.js"></script>
+<script src="/javascripts/timer.js"></script>
+</body>
+</html>

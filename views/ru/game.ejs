@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot-like | <%= gameId.game_name %></title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/game.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+</head>
+<script>
+    const game = '<%= myGame %>';
+    const id = '<%= user.id %>';
+    const name = '<%= user.name %>'
+    const gamesId = `<%= gameId._id %>`
+    const gamesExpiresInSeconds = `<%= gameId.game_expiresInSeconds %>`
+    const gameMaxQuestions = `<%= gameId.game_max_questions %>`
+</script>
+<body>
+<main>
+    <div style="display: flex; position: absolute; top: 1%; left: 1%;" id="b-c">
+        <button onclick="window.location.replace('/');" class="leave-button">Выйти</button>
+        <button type="button" class="button" onclick="window.location.reload();" id="refresh">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-arrow-repeat"
+                    viewBox="0 0 16 16"
+            >
+                <path
+                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+                ></path>
+                <path
+                        fill-rule="evenodd"
+                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+                ></path>
+            </svg>
+            Обновить
+        </button>
+    </div>
+
+    <div style="position: absolute; top: 15%; left: 2%">
+        <p id="onlineCount"></p>
+        <div id="usersCount"></div>
+    </div>
+
+    <div id="questions" hidden>
+        <% if (gameId.game_questions && gameId.game_questions.length > 0) {%>
+            <% gameId.game_questions.forEach(games => { %>
+                <div id="question-<%= games.question_number %>" data-number="<%= games.question_number %>" class="questions-container" hidden>
+                    <header>
+                        <h2><%= games.question_title %></h2>
+                    </header>
+                    <div class="all-container">
+                        <div class="img-container">
+                            <img src="data:image/png;base64,<%= games.question_image%>">
+                        </div>
+                        <br>
+                        <br>
+                        <div class="quest-container">
+                            <div style="display: flex; gap: 10px;">
+                                <button class="c-question" style="background-color: #c1121f" data-name="<%= games.question_1.name %>" data-number="<%= games.question_number %>"><%= games.question_1.title %></button>
+                                <button class="c-question" style="background-color: #0077b6" data-name="<%= games.question_2.name %>" data-number="<%= games.question_number %>"><%= games.question_2.title %></button>
+                            </div>
+                            <br>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="c-question" style="background-color: #ffc300" data-name="<%= games.question_3.name %>" data-number="<%= games.question_number %>"><%= games.question_3.title %></button>
+                                <button class="c-question" style="background-color: #008000" data-name="<%= games.question_4.name %>" data-number="<%= games.question_number %>"><%= games.question_4.title %></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+            <div id="gameTimer"></div>
+            <div id="correctAnswersCount" class="game-correct-answers-count"></div>
+            <div id="answersCount" class="answers-count"></div>
+    </div>
+    <div id="timer"></div>
+    <div class="card">
+        <div id="leaderBoard" class="wrapper"></div>
+    </div>
+    <div class="game-pin">
+        <span>
+            <p>Код игры:</p>
+            <p style="font-weight: 600"><%= gameId._id%></p>
+        </span>
+    </div>
+</main>
+<script src="/javascripts/game.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/socket.js"></script>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/alert.js"></script>
+</body>
+</html>

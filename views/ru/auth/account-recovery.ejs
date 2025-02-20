@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение аккаунта</title>
+    <link rel="stylesheet" href="/stylesheets/login-register.css">
+    <link rel="icon" type="image/png" href="/images/logo2.png">
+    <style>
+        .form-container {
+            max-width: 400px;
+            background-color: #16171d;
+            padding: 32px 24px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #212121;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.084), 0px 2px 3px rgba(0, 0, 0, 0.168);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-container button:active {
+            scale: 0.95;
+        }
+
+        .form-container .logo-container {
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: #f3d5b5;
+        }
+
+        .form-container .form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .form-container .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-container .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: inherit;
+            border: 1px solid #ccc;
+        }
+
+        .form-container .form-group input::placeholder {
+            opacity: 0.5;
+        }
+
+        .form-container .form-group input:focus {
+            outline: none;
+            border-color: #1778f2;
+        }
+
+        .form-container .form-submit-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: inherit;
+            color: #fff;
+            background-color: #212121;
+            border: none;
+            width: 100%;
+            padding: 12px 16px;
+            font-size: inherit;
+            gap: 8px;
+            margin: 12px 0;
+            cursor: pointer;
+            border-radius: 6px;
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.084), 0px 2px 3px rgba(0, 0, 0, 0.168);
+        }
+
+        .form-container .form-submit-btn:hover {
+            background-color: #313131;
+        }
+
+        .form-container .link {
+            color: #1778f2;
+            text-decoration: none;
+        }
+
+        .form-container .signup-link {
+            align-self: center;
+            font-weight: 500;
+        }
+
+        .form-container .signup-link .link {
+            font-weight: 400;
+        }
+
+        .form-container .link:hover {
+            text-decoration: underline;
+        }
+        .theme{
+            position: absolute;
+            top: 5%;
+            left: 1%;
+            transform: translate(0, -50%);
+        }
+
+        .switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 3.5em;
+            height: 2em;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            --background: #1c1c23;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--background);
+            transition: .5s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.4em;
+            width: 1.4em;
+            border-radius: 50%;
+            left: 10%;
+            bottom: 15%;
+            box-shadow: inset 8px -4px 0px 0px #fff000;
+            background: var(--background);
+            transition: .5s;
+        }
+
+        input:checked + .slider {
+            background-color: #fff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(100%);
+            box-shadow: inset 15px -4px 0px 15px #fff000;
+        }
+        .lightTheme{
+            .form-container{
+                background-color: #fff;
+            }
+            .logo-container{
+                color: black;
+            }
+            background-color: #ECF1FD;
+        }
+    </style>
+</head>
+<body>
+<div class="theme">
+    <label class="switch">
+        <input type="checkbox" id="theme">
+        <span class="slider"></span>
+    </label>
+</div>
+<div class="form-container" id="emailForm">
+    <div class="logo-container">
+        Мы отправили код подтверждения на вашу почту.
+    </div>
+
+    <form class="form" action="/auth/send-code" method="POST">
+        <div class="form-group">
+            <label for="code" class="text">Код подтвеждения</label>
+            <input class="input" type="text" id="code" name="code" placeholder="Пример: 442186" required>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="password" class="text">Новый пароль</label>
+            <input class="input" type="password" id="password" name="password" placeholder="Введите пароль" required>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="confirmPassword" class="text">Повтор пароля</label>
+            <input class="input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Введите пароль" required>
+        </div>
+
+        <button class="form-submit-btn" type="submit">Сменить пароль</button>
+    </form>
+    <p class="signup-link">
+        <a href="/auth/forget-password" class="signup-link link">Назад</a>
+    </p>
+</div>
+<script src="/javascripts/warning.js"></script>
+<script src="/javascripts/theme.js"></script>
+</body>
+</html>
