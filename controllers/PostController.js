@@ -40,6 +40,8 @@ class PostController {
 
             return res.redirect(`/redaction/${newGame._id}`);
         }catch (err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
             next(err);
         }
     }
@@ -202,6 +204,8 @@ class PostController {
 
             return res.redirect(`/redaction/${game_id}`);
         } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: err.message });
             next(err);
         }
     };
@@ -211,9 +215,10 @@ class PostController {
             const { game_id } = req.params;
             await GamesModel.findByIdAndDelete(game_id);
             return res.redirect('/my-games');
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: error.message });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
@@ -227,9 +232,10 @@ class PostController {
                 },
                 { new: true }
             )
-        }catch(error){
-            console.error(error);
-            return res.status(500).json({ error: error.message });
+        }catch(err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
@@ -247,9 +253,10 @@ class PostController {
                 },
                 { new: true }
             )
-        }catch (error){
-            console.error(error);
-            return res.status(500).json({ error: error.message });
+        }catch (err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
@@ -268,9 +275,10 @@ class PostController {
                 },
                 { new: true }
             )
-        }catch (error){
-            console.error(error);
-            return res.status(500).json({ error: error.message });
+        }catch (err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
@@ -291,9 +299,10 @@ class PostController {
                 },
                 { new: true }
             )
-        }catch (error){
-            console.error(error);
-            return res.status(500).json({ error: error.message });
+        }catch (err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
@@ -340,9 +349,10 @@ class PostController {
             );
 
             return res.status(200).json('Изменения успешно загружены' );
-        } catch (e){
-            console.log(e);
-            next(e);
+        } catch (err){
+            console.log(err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
@@ -354,13 +364,14 @@ class PostController {
             );
 
             return res.status(200).json('Изменения успешно загружены');
-        } catch (e){
-            console.log(e);
-            next(e);
+        } catch (err){
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
         }
     }
 
-    static changeLocal = async (req, res) => {
+    static changeLocal = async (req, res, next) => {
         try {
             const {locale} = req.params;
 
@@ -370,10 +381,11 @@ class PostController {
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });
+            next(err);
         }
     };
 
-    static changeLocalAuth = async (req, res) => {
+    static changeLocalAuth = async (req, res, next) => {
         try {
             const {id} = req.params;
             const {locale} = req.params;
@@ -389,21 +401,25 @@ class PostController {
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });
+            next(err);
         }
     };
 
-    static changeTheme = async (req, res) => {
+    static changeSettings = async (req, res, next) => {
         try {
-            const {theme} = req.params;
+            const {theme, notifications, soundTrack} = req.body;
 
-            res.cookie('theme', theme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            res.cookie('theme', theme ? 'dark' : 'light', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            res.json({ theme });
+            return res.redirect('/settings');
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });
+            next(err);
         }
-    };
+    }
 
 }
 

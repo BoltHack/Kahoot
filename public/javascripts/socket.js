@@ -20,6 +20,7 @@ const startCountdown = () => {
             bc.style.top = '11%';
             checkReload();
             gameTimerStart();
+            soundTrackAuto();
         } else {
             document.getElementById('timer').innerHTML = `<p class="timer">До начала игры: ${timeLeft}</p>`;
             timeLeft--;
@@ -70,7 +71,6 @@ const gameTimerStart = () => {
 
 
 socket.on('updateUserCount', (onlineCount) => {
-    console.log(onlineCount);
     document.getElementById('onlineCount').innerText = `Онлайн: ${onlineCount.online}`;
     const users = document.getElementById('usersCount');
     if (users && Array.isArray(onlineCount.users)) {
@@ -111,7 +111,6 @@ socket.on('updateUserCount', (onlineCount) => {
     });
 
     socket.on('updateAnswersCount', (answersCount) => {
-        console.log('answersCount', answersCount);
         document.getElementById('correctAnswersCount').innerHTML = `<span><p class="game_correct-answers">${answersCount[0].game_correct_answers || 0}</p> <p class="game_correct-answers-text">Правильных ответов</p></span>`;
         document.getElementById('answersCount').innerHTML = `<span><p class="game-answers">${answersCount[0].game_answers || 0}/${gameMaxQuestions}</p></span>`;
     });
