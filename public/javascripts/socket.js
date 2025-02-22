@@ -93,6 +93,7 @@ socket.on('updateUserCount', (onlineCount) => {
         <p class="pi">Ожидание игроков...</p>
         `;
         bc.style.top = '2%';
+        stopSound();
     }
     if (onlineCount.online >= 2) {
         clearInterval(countdown);

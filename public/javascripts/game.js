@@ -120,9 +120,16 @@ const music = new Howl({
 
 function soundTrackAuto(){
     if (sounds === 'on'){
-        music.play();
+        startSound();
     }
     else{
-        music.stop();
+        stopSound();
     }
+}
+
+function startSound(){
+    music.play();
+}
+function stopSound(){
+    music.stop();
 }
