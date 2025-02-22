@@ -25,6 +25,9 @@ class ViewController {
     static gameView = async (req, res, next) => {
         try {
             const {game_id} = req.params;
+
+            const soundTrack = req.cookies['soundTrack'];
+
             const user = req.user;
             const gameId = await GamesModel.findById(game_id);
 
@@ -47,7 +50,7 @@ class ViewController {
             gameId.game_users.push({userId: user.id});
             await gameId.save();
 
-            return res.render('ru/game', {user, myGame, gameId});
+            return res.render('ru/game', {user, myGame, gameId, soundTrack});
         } catch (e) {
             next(e);
         }
@@ -110,7 +113,12 @@ class ViewController {
         try {
             const user = req.user;
             const userId = await UsersModel.findById(user.id);
-            return res.render('ru/settings', {user, userId});
+
+            const theme = req.cookies['theme'];
+            const notifications = req.cookies['notifications'];
+            const soundTrack = req.cookies['soundTrack'];
+
+            return res.render('ru/settings', {user, userId, theme, notifications, soundTrack });
         } catch (e) {
             next(e);
         }

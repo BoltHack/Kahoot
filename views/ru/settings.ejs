@@ -27,79 +27,72 @@
         </div>
     </section>
 
-    <section class="section" id="settings">
-        <h2>Основные настройки</h2>
-        <div class="setting">
-            <span>Тёмная тема</span>
-            <div class="toggle-container">
-                <label class="toggle">
-                    <input type="checkbox" id="dark-mode" />
-                    <span class="slider"></span>
-                </label>
+    <form action="/changeSettings/<%= userId.id %>" method="POST">
+        <section class="section" id="settings">
+            <h2>Основные настройки</h2>
+            <div class="setting">
+                <span>Тёмная тема</span>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" name="theme" id="themeCheckbox" <%= theme === 'dark' ? 'checked' : '' %> />
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="setting">
-            <span>Уведомления</span>
-            <div class="toggle-container">
-                <label class="toggle">
-                    <input type="checkbox" id="notifications" checked />
-                    <span class="slider"></span>
-                </label>
+            <div class="setting">
+                <span>Уведомления об обновлениях</span>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" name="notifications" id="notificationsCheckbox" <%= notifications === 'on' ? 'checked' : '' %> />
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="setting">
-            <span>Автосохранение</span>
-            <div class="toggle-container">
-                <label class="toggle">
-                    <input type="checkbox" id="autosave" checked />
-                    <span class="slider"></span>
-                </label>
+            <div class="setting">
+                <span>Звуковое сопровождение</span>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" name="soundTrack" id="soundTrackCheckbox" <%= soundTrack === 'on' ? 'checked' : '' %> />
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="setting">
-            <span>Звуковые оповещения</span>
-            <div class="toggle-container">
-                <label class="toggle">
-                    <input type="checkbox" id="sound-alerts" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="section" id="extra-settings">
-        <h2>Дополнительные настройки</h2>
-        <div class="extra-settings">
-            <div class="extra-setting">
-                <h3>Настройки языка</h3>
-                <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
+        <section class="section" id="extra-settings">
+            <h2>Дополнительные настройки</h2>
+            <div class="extra-settings">
+                <div class="extra-setting">
+                    <h3>Настройки языка</h3>
+                    <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
+                </div>
+                <div class="extra-setting">
+                    <h3>Обновления</h3>
+                    <p>Автоматически проверять и устанавливать обновления.</p>
+                </div>
+                <div class="extra-setting">
+                    <h3>Конфиденциальность</h3>
+                    <p>Управляйте настройками приватности аккаунта.</p>
+                </div>
             </div>
-            <div class="extra-setting">
-                <h3>Обновления</h3>
-                <p>Автоматически проверять и устанавливать обновления.</p>
-            </div>
-            <div class="extra-setting">
-                <h3>Конфиденциальность</h3>
-                <p>Управляйте настройками приватности аккаунта.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <div style="text-align: center">
-        <button class="save-settings">Сохранить изменения</button>
-    </div>
+        <div style="text-align: center">
+            <button class="save-settings" onclick="saveSettings()">Сохранить изменения</button>
+        </div>
+    </form>
 
     <section class="section" id="change-password">
         <h2>Сменить пароль</h2>
         <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
             <label for="current-password">Текущий пароль</label>
-            <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" />
+            <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" required />
 
             <label for="new-password">Новый пароль</label>
-            <input type="password" name="password" id="pwd" placeholder="Введите новый пароль" />
+            <input type="password" name="password" id="pwd" placeholder="Введите новый пароль" required />
 
             <label for="confirm-password">Подтверждение пароля</label>
-            <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" />
+            <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" required />
 
             <p class="text" id="togglePassword1">Показать пароль</p>
             <p class="text" id="togglePassword2" hidden>Скрыть пароль</p>

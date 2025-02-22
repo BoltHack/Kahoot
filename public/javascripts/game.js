@@ -111,3 +111,18 @@ window.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 });
+
+const music = new Howl({
+    src: ['/soundtracks/lobby-classic-game.mp3'],
+    loop: true,
+    volume: 0.5
+});
+
+function soundTrackAuto(){
+    if (sounds === 'on'){
+        music.play();
+    }
+    else{
+        music.stop();
+    }
+}
