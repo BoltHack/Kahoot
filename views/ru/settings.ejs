@@ -1,1 +1,130 @@
-fdgfdgdf
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kahoot-like | Настройки</title>
+    <link rel="stylesheet" href="/stylesheets/settings.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<script>
+    const settingId = "<%= userId.id %>";
+</script>
+<header>
+    <h1>Настройки</h1>
+</header>
+<a href="/" class="home-btn">На главную</a>
+<div class="container">
+    <section class="section" id="profile">
+        <h2>Профиль</h2>
+        <div class="profile">
+            <img src="data:image/png;base64,<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
+            <div class="profile-info">
+                <h3><%= userId.name %></h3>
+                <p><%= userId.email %></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="settings">
+        <h2>Основные настройки</h2>
+        <div class="setting">
+            <span>Тёмная тема</span>
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="dark-mode" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="setting">
+            <span>Уведомления</span>
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="notifications" checked />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="setting">
+            <span>Автосохранение</span>
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="autosave" checked />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="setting">
+            <span>Звуковые оповещения</span>
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="sound-alerts" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="extra-settings">
+        <h2>Дополнительные настройки</h2>
+        <div class="extra-settings">
+            <div class="extra-setting">
+                <h3>Настройки языка</h3>
+                <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
+            </div>
+            <div class="extra-setting">
+                <h3>Обновления</h3>
+                <p>Автоматически проверять и устанавливать обновления.</p>
+            </div>
+            <div class="extra-setting">
+                <h3>Конфиденциальность</h3>
+                <p>Управляйте настройками приватности аккаунта.</p>
+            </div>
+        </div>
+    </section>
+
+    <div style="text-align: center">
+        <button class="save-settings">Сохранить изменения</button>
+    </div>
+
+    <section class="section" id="change-password">
+        <h2>Сменить пароль</h2>
+        <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
+            <label for="current-password">Текущий пароль</label>
+            <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" />
+
+            <label for="new-password">Новый пароль</label>
+            <input type="password" name="password" id="pwd" placeholder="Введите новый пароль" />
+
+            <label for="confirm-password">Подтверждение пароля</label>
+            <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" />
+
+            <p class="text" id="togglePassword1">Показать пароль</p>
+            <p class="text" id="togglePassword2" hidden>Скрыть пароль</p>
+            <div style="text-align: center">
+                <button type="submit">Сменить пароль</button>
+            </div>
+        </form>
+    </section>
+</div>
+<form action="/changeAvatar/<%= userId.id %>" method="POST" enctype="multipart/form-data">
+    <section id="editImage" hidden>
+        <label>
+            <img src="" class="profile-pic-edit" id="userImageView">
+            <input type="file" name="file" id="attachFile" style="display: none">
+        </label>
+        <div class="edit-buttons">
+            <input type="button" value="Сохранить" id="saveImageBtn">
+            <input type="button" value="Удалить" id="deleteImageBtn">
+        </div>
+    </section>
+</form>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/settings.js"></script>
+<script src="/javascripts/locale.js"></script>
+</body>
+</html>

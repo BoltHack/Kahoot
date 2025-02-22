@@ -37,54 +37,11 @@
 
     <div>
         <ul class="get">
-<!--            <li><a href="/auth/login" class="ha">Войти</a></li>-->
             <li id="account"></li>
         </ul>
     </div>
 </header>
-<script>
-    const account = document.getElementById('account');
-    const myToken = localStorage.getItem('token');
-    const name = localStorage.getItem('name');
-    if (myToken){
-        account.innerHTML = `
-<div class="dropdown">
-    <a class="ha dropdown-title">${name}</a>
-    <div class="dropdown-content">
-        <a onclick="logout();">Выйти</a>
-    </div>
-</div>
-`
-    }
-    else{
-        account.innerHTML = `<a href="/auth/login" class="ha">Войти</a>`
-    }
-
-
-    function logout() {
-        fetch('/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json()).then((res) => {
-            const {status, error} = res;
-            if (error) {
-                return;
-            }
-
-            if (status) {
-                localStorage.removeItem('name');
-                localStorage.removeItem('return_id');
-                localStorage.removeItem('token');
-                localStorage.removeItem('session');
-                localStorage.removeItem('sessionEndTime');
-                window.location.href = "/auth/login";
-                return;
-            }
-        });
-    }
-
-</script>
+<script src="/javascripts/header.js"></script>
+<script src="/javascripts/locale.js"></script>
 </body>
 </html>

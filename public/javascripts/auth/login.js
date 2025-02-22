@@ -24,15 +24,6 @@ document.addEventListener('DOMContentLoaded', function (){
     let pwd = document.getElementById('pwd');
     let loaderButton = document.getElementById('loaderButton');
 
-    loginForm.addEventListener('input', () => {
-        if (email.value !== '' && pwd.value !== ''){
-            loginButton.style.backgroundColor = '#0653c7';
-        }
-        else{
-            loginButton.style.backgroundColor = '#2879f3';
-        }
-    })
-
     const local = localStorage.getItem('local');
 
     loginButton.addEventListener('click', (ev) => {
@@ -54,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function (){
                     popup: "small-alert"
                 }
             });
-            email.style.border = '1px solid #780000';
-            pwd.style.border = '1px solid #780000';
+            email.style.border = '3px solid #780000';
+            pwd.style.border = '3px solid #780000';
             loginButton.hidden = false;
             loaderButton.hidden = true;
             return;
@@ -71,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function (){
             .then(response => response.json())
             .then(data => {
                 const ip = data.ip;
+                document.cookie = `ip=${ip}; max-age=${10 * 24 * 60 * 60}; path=/;`;
 
                 fetch(`/auth/login/${ip}`, {
                     method: 'post',
@@ -83,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function (){
                         let {error, token, user} = data;
                         if (error) {
                             console.log('error', error)
-                            // errorMenu(error)
                             Swal.fire({
                                 text: error,
                                 icon: "error",
@@ -95,17 +86,16 @@ document.addEventListener('DOMContentLoaded', function (){
                                     popup: "small-alert"
                                 }
                             });
-                            email.style.border = '1px solid #780000';
-                            pwd.style.border = '1px solid #780000';
+                            email.style.border = '3px solid #780000';
+                            pwd.style.border = '3px solid #780000';
                             loginButton.hidden = false;
                             loaderButton.hidden = true;
                             return;
                         }
 
                         if (token) {
-                            // local === 'en' ? alert('Successful login!') : alert('Успешный вход!');
                             Swal.fire({
-                                text: 'Успешный вход',
+                                text: local === 'en' ? 'Successful login!' : 'Успешный вход!',
                                 icon: "success",
                                 position: "top-end",
                                 timer: 2000,
@@ -115,12 +105,12 @@ document.addEventListener('DOMContentLoaded', function (){
                                     popup: "small-alert"
                                 }
                             });
-                            email.style.border = '1px solid #0d2818';
-                            pwd.style.border = '1px solid #0d2818';
+                            email.style.border = '3px solid #0d2818';
+                            pwd.style.border = '3px solid #0d2818';
                             loginButton.hidden = false;
                             loaderButton.hidden = true;
                             localStorage.setItem('token', token);
-                            localStorage.setItem('name', user.name);
+                            localStorage.setItem('userInfo', JSON.stringify({ 'id': user._id, 'name': user.name, 'profileImage': 'data:image/png;base64,' + user.image }));
                             const checkbox = document.getElementById('rememberMeCheckbox');
                             if (checkbox.checked){
                                 localStorage.setItem('session', 'true');

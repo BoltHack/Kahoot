@@ -1,25 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cQuestion = document.querySelectorAll('.c-question');
-    function checkQuestions() {
-        const maxQuestions = Number(gameMaxQuestions);
-        const questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
-        questions[0].hidden = false;
-        if (questions.some(question => question === null)) {
-            console.error("Некоторые элементы вопросов не найдены!");
-            return;
-        }
 
-        cQuestion.forEach(button => {
-            button.addEventListener('click', function () {
-                fetch(`/getData/${gameId}`, {
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        let {gameQuestions} = data;
+    fetch(`/getData/${gameId}`, {
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            let {gameQuestions} = data;
+
+            function checkQuestions() {
+                const maxQuestions = Number(gameMaxQuestions);
+                const questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
+                questions[0].hidden = false;
+                if (questions.some(question => question === null)) {
+                    console.error("Некоторые элементы вопросов не найдены!");
+                    return;
+                }
+
+                cQuestion.forEach(button => {
+                    button.addEventListener('click', function () {
+
                         const dataNumber = Number(this.getAttribute('data-number'));
                         const dataName = this.getAttribute('data-name');
                         const question = document.getElementById('question-'+dataNumber);
@@ -84,10 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }, 500);
                     })
-            });
+
+                });
+            }
+            checkQuestions();
+
         });
-    }
-    checkQuestions();
 })
 
 

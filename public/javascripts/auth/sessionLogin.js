@@ -26,15 +26,6 @@ document.addEventListener('DOMContentLoaded', function (){
     let email = document.getElementById('email');
     let pwd = document.getElementById('pwd');
 
-    loginForm.addEventListener('input', () => {
-        if (email.value !== '' && pwd.value !== ''){
-            loginButton.style.backgroundColor = '#0653c7';
-        }
-        else{
-            loginButton.style.backgroundColor = '#2879f3';
-        }
-    })
-
     const local = localStorage.getItem('local');
 
     loginButton.addEventListener('click', (ev) => {
@@ -42,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function (){
 
         if (!email.value || !pwd.value) {
             local === 'ru' ? errorMenu('Пожалуйста, заполните все поля') : errorMenu('Please fill in all fields');
-            email.style.border = '1px solid #780000';
-            pwd.style.border = '1px solid #780000';
+            email.style.border = '3px solid #780000';
+            pwd.style.border = '3px solid #780000';
             return;
         }
 
@@ -71,15 +62,15 @@ document.addEventListener('DOMContentLoaded', function (){
                         if (error) {
                             console.log('error', error)
                             errorMenu(error)
-                            email.style.border = '1px solid #780000';
-                            pwd.style.border = '1px solid #780000';
+                            email.style.border = '3px solid #780000';
+                            pwd.style.border = '3px solid #780000';
                             return;
                         }
 
                         if (token) {
                             local === 'en' ? successMenu('Successful login!') : successMenu('Успешный вход!');
-                            email.style.border = '1px solid #0d2818';
-                            pwd.style.border = '1px solid #0d2818';
+                            email.style.border = '3px solid #0d2818';
+                            pwd.style.border = '3px solid #0d2818';
                             localStorage.setItem('token', token);
                             localStorage.setItem('name', user.name);
                             localStorage.setItem('profileImage', 'data:image/png;base64,' + user.image);

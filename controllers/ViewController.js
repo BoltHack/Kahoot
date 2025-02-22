@@ -5,6 +5,10 @@ const {GamesModel} = require("../models/GamesModel");
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
+            const locale = req.cookies['locale'] || 'en';
+            if (!req.cookies['locale']) {
+                res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+            }
             return res.render('ru/main');
         } catch (e) {
             next(e);
@@ -104,7 +108,9 @@ class ViewController {
 
     static settingsView = async (req, res, next) => {
         try {
-            return res.render('ru/settings');
+            const user = req.user;
+            const userId = await UsersModel.findById(user.id);
+            return res.render('ru/settings', {user, userId});
         } catch (e) {
             next(e);
         }

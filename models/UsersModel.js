@@ -10,7 +10,7 @@ const dateOnly = `${day}.${month}.${year}`;
 
 const MyGamesSchema = new Schema({
     gameId: { type: String },
-})
+});
 
 const GameSchema = new Schema({
     game_id: {
@@ -25,7 +25,7 @@ const GameSchema = new Schema({
     game_correct_answers: {
         type: Number
     }
-})
+});
 
 const UsersSchema = new Schema({
     name: {

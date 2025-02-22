@@ -4,7 +4,7 @@ body{
     padding: 0;
     flex-direction: column;
     display: grid;
-    background-color: #fff;
+    background-color: #f0f2f5;
     grid-template-rows: auto 1fr auto;
     overflow-x: hidden;
 }

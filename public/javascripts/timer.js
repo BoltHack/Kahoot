@@ -43,10 +43,6 @@ else if (localStorage.getItem('token') && !accessStoredEndTime){
     console.log('test')
     getAccessTokens();
 }
-// else {
-//     console.log('test');
-//     getAccessTokens();
-// }
 
 
 async function getAccessTokens() {
@@ -69,8 +65,7 @@ async function getAccessTokens() {
                 localStorage.setItem('token', token);
             }
             accessStartTimer(ACCESS_TIMER_DURATION);
-            console.log('токен выдан')
-            // window.location.reload();
+            console.log('токен выдан');
 
         } else {
             console.error('Ошибка', response.status);
@@ -93,7 +88,7 @@ function refreshStartTimer(duration) {
     const endTime = startTime + duration;
 
     if (localStorage.getItem('token')) {
-        document.cookie = `refreshTokenEndTime=${endTime}; path=/;`;
+        document.cookie = `refreshTokenEndTime=${endTime}; max-age=${10 * 24 * 60 * 60}; path=/;`;
     }
 
     refreshUpdateTimer();
@@ -108,7 +103,7 @@ function refreshUpdateTimer() {
 
         if (remainingTime <= 0) {
             clearInterval(interval);
-            getRefreshTokens()
+            getRefreshTokens();
             document.cookie = `refreshTokenEndTime=; max-age=0; path=/;`;
         }
     }, 1000);
@@ -120,10 +115,12 @@ if (refreshStoredEndTime) {
     refreshUpdateTimer();
 }
 if (refreshStoredEndTime === typeof String){
-    refreshStartTimer(REFRESH_TIMER_DURATION);
+    console.log('refresh test')
+    getRefreshTokens();
 }
-else {
-    refreshStartTimer(REFRESH_TIMER_DURATION);
+else if (localStorage.getItem('token') && !refreshStoredEndTime) {
+    console.log('refresh test 2')
+    getRefreshTokens();
 }
 
 
@@ -142,7 +139,12 @@ async function getRefreshTokens() {
                 console.log('Токен не найден')
             }
 
-            window.location.reload();
+            if (token){
+                localStorage.setItem('token', token);
+            }
+            refreshStartTimer(REFRESH_TIMER_DURATION);
+            console.log('refresh токен выдан');
+
         } else {
             console.error('Ошибка', response.status);
         }
@@ -193,7 +195,7 @@ const sessionEndTime = localStorage.getItem('sessionEndTime');
 if (sessionEndTime) {
     sessionUpdateTimer();
 }
-if (typeof sessionEndTime === "string"){
+if (sessionEndTime === typeof String){
     sessionTimerStart(SESSION_TIMER_DURATION);
 }
 else {
