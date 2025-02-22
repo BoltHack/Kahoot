@@ -1,5 +1,7 @@
 const express = require('express');
-const {registerView, registerNewUser, loginView, loginUser, sessionExpiredView, forgetPasswordView, sendEmail, accountRecoveryView, accountRecovery, logout} = require('../controllers/AuthController')
+const {registerView, registerNewUser, loginView, loginUser, sessionExpiredView, forgetPasswordView, sendEmail,
+    accountRecoveryView, accountRecovery, logout, changePassword,
+} = require('../controllers/AuthController')
 const {validateRegister, validateLogin} =require('../middlewares/validate')
 const {checkEmail} = require("../middlewares/checkEmail");
 const {verifyToken} = require("../middlewares/authorization");
@@ -21,5 +23,7 @@ router.post('/send-code', accountRecovery);
 router.get('/sessionExpired', sessionExpiredView);
 
 router.post('/logout', authenticateJWT, logout);
+
+router.post('/changePassword/:id', authenticateJWT, changePassword);
 
 module.exports = router;

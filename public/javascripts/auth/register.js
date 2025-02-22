@@ -31,15 +31,6 @@ document.addEventListener('DOMContentLoaded', function (){
 
     const local = localStorage.getItem('local');
 
-    loginForm.addEventListener('input', () => {
-        if (name.value !== '' && email.value !== '' && pwd.value !== '' && cpwd.value !== ''){
-            registerButton.style.backgroundColor = '#0653c7';
-        }
-        else{
-            registerButton.style.backgroundColor = '#2879f3';
-        }
-    })
-
     registerButton.addEventListener('click', (evt) => {
         evt.preventDefault();
 
@@ -59,10 +50,10 @@ document.addEventListener('DOMContentLoaded', function (){
                     popup: "small-alert"
                 }
             });
-            name.style.border = '1px solid #780000';
-            email.style.border = '1px solid #780000';
-            pwd.style.border = '1px solid #780000';
-            cpwd.style.border = '1px solid #780000';
+            name.style.border = '3px solid #780000';
+            email.style.border = '3px solid #780000';
+            pwd.style.border = '3px solid #780000';
+            cpwd.style.border = '3px solid #780000';
             registerButton.hidden = false;
             loaderButton.hidden = true;
             return;
@@ -108,10 +99,10 @@ document.addEventListener('DOMContentLoaded', function (){
                                     popup: "small-alert"
                                 }
                             });
-                            name.style.border = '1px solid #780000';
-                            email.style.border = '1px solid #780000';
-                            pwd.style.border = '1px solid #780000';
-                            cpwd.style.border = '1px solid #780000';
+                            name.style.border = '3px solid #780000';
+                            email.style.border = '3px solid #780000';
+                            pwd.style.border = '3px solid #780000';
+                            cpwd.style.border = '3px solid #780000';
                             registerButton.hidden = false;
                             loaderButton.hidden = true;
                             return;

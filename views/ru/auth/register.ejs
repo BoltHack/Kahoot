@@ -3,67 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HFFreelance | Регистрация</title>
+    <title>Kahoot | Регистрация</title>
     <link rel="stylesheet" href="/stylesheets/login-register.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
-    <style>
-        .theme{
-            position: absolute;
-            top: 5%;
-            left: 1%;
-            transform: translate(0, -50%);
-        }
-
-        .switch {
-            font-size: 17px;
-            position: relative;
-            display: inline-block;
-            width: 3.5em;
-            height: 2em;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            --background: #1c1c23;
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--background);
-            transition: .5s;
-            border-radius: 30px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 1.4em;
-            width: 1.4em;
-            border-radius: 50%;
-            left: 10%;
-            bottom: 15%;
-            box-shadow: inset 8px -4px 0px 0px #fff000;
-            background: var(--background);
-            transition: .5s;
-        }
-
-        input:checked + .slider {
-            background-color: #fff;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(100%);
-            box-shadow: inset 15px -4px 0px 15px #fff000;
-        }
-    </style>
 </head>
 <body>
 <div class="theme">
@@ -73,50 +16,39 @@
     </label>
 </div>
 <form action="/auth/register" method="POST" id="loginForm">
-    <div class="card-container">
+    <div class="card">
+        <span class="card__title">Регистрация</span>
 
-        <div class="container">
-            <div class="log-card">
-                <div style="display: flex; gap: 10px; margin-left: -10px;">
-                    <a href="/" style="text-decoration: none"><h1>&#11013;</h1></a>
-                    <p class="heading">Регистрация!</p>
-                </div>
+        <p class="card__content">
+            Создайте себе аккаунт!
+        </p>
+        <div class="card__form">
+            <p class="text">Никнейм</p>
+            <input type="text" id="name" name="name" class="card__form-input" placeholder="Придуймайте никнейм" required>
+            <p class="text">Эл. адрес</p>
+            <input type="email" id="email" name="email" class="card__form-input" placeholder="Введите свой Эл. адрес" required>
+            <p class="text">Пароль</p>
+            <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Придумайте пароль" required>
+            <p class="text">Повтор пароля</p>
+            <input type="password" id="cpwd" name="confirmPassword" class="card__form-input" placeholder="Повтор пароля" required>
+            <img src="/images/invisiblePassword.png" class="toggle-password-reg" style="top: 56%;" id="togglePassword1">
+            <img src="/images/visiblePassword.png" class="toggle-password-reg" style="top: 56%;" id="togglePassword2" hidden>
 
-                <div class="input-group">
-                    <p class="text">Имя или Фамилия</p>
-                    <input class="input" type="text" name="name" id="name" placeholder="Имя или Имя и Фамилия" required>
-                    <p class="text">Эл. адрес</p>
-                    <input class="input" type="email" name="email" id="email" placeholder="Эл. адрес" required>
-                    <div class="password-container">
-                        <p class="text">Пароль</p>
-                        <input class="input" type="password" id="pwd" name="password" placeholder="Пароль" required>
-                        <p class="text">Повтор пароля</p>
-                        <input class="input" type="password" id="cpwd" name="confirmPassword" placeholder="Повтор пароля" required>
-                        <img src="/images/invisiblePassword.png" class="toggle-password" style="top: 48.6%" id="togglePassword1">
-                        <img src="/images/visiblePassword.png" class="toggle-password" style="top: 48.6%" id="togglePassword2" hidden>
-                    </div>
-                </div>
+            <div class="rules">
+                <span>Регистрируясь, вы принимаете наши <a href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank">Политику конфиденциальности.</a></span>
+            </div>
 
-                <div class="rules">
-                    <span>Регистрируясь, вы принимаете наши <a href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank">Политику конфиденциальности.</a></span>
-                </div>
-
-                <button type="submit" class="btn" id="registerButton">Создать аккаунт</button>
-                <div class="btn" style="height: 18px;" id="loaderButton" hidden>
-                    <section class="dots-container">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </section>
-                </div>
-
-                <span id="registerErr"></span>
-                <span id="correctRegister"></span>
-
-                <p class="no-account">У вас уже есть аккаунт?<a href="/auth/login" class="link"> Войти</a></p>
+            <button class="card__button" id="registerButton">Создать аккаунт</button>
+            <div class="card__button" style="padding: 10px 0; height: 21px; opacity: 1" id="loaderButton" hidden>
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
             </div>
         </div>
+        <p class="no-account">У вас уже есть аккаунт?<a href="/auth/login" class="link"> Войти</a></p>
     </div>
 </form>
 <script src="/javascripts/auth/register.js"></script>
