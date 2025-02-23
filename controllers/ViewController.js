@@ -9,7 +9,7 @@ class ViewController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            return res.render('ru/main');
+            return res.render('ru/main',);
         } catch (e) {
             next(e);
         }

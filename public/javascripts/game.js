@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     socket.emit('requestLeadersCount');
                                 }, 500);
                                 document.getElementById('questions').hidden = true;
+                                stopSound();
                                 fetch(`/user-leader/${gamesId}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' }
