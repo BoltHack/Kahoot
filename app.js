@@ -80,6 +80,7 @@ io.on('connection', async (socket) => {
     socket.on('joinGame', async (gameId, userId, userName) => {
         const game_max_online = await GamesModel.findById(gameId);
         const updateAnswers = await UsersModel.findById(userId);
+        const game_questions = await GamesModel.findById(gameId);
         if (!gameUsers[gameId]) {
             gameUsers[gameId] = [];
         }
@@ -115,6 +116,7 @@ io.on('connection', async (socket) => {
 
             socket.emit('updateUserCount', updatedGame.game_online);
             socket.emit('updateAnswersCount', updateAnswers.game);
+            socket.emit('updateGameQuestions', game_questions);
 
             socket.on('requestAnswersCount', async () => {
                 const updateAnswers = await UsersModel.findById(userId);
@@ -130,6 +132,12 @@ io.on('connection', async (socket) => {
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);
                 io.to(gameId).emit('updateUserCount', updatedGame.game_online);
+            }
+
+            if (game_questions.game_questions.length < 1){
+                socket.leave(gameId);
+                console.log('limit', gameId);
+                socket.emit('redirect', gameId);
             }
 
             if (updatedGame.game_online.online > updatedGame.game_online.max_online){

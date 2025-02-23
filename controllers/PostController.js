@@ -413,6 +413,7 @@ class PostController {
             res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
+            // res.status(200).json({message: "Элемент успешно добавлен!"});
             return res.redirect('/settings');
         } catch (err) {
             console.error('Ошибка:', err);

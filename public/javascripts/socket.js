@@ -43,6 +43,7 @@ const updateTimer = () => {
         document.getElementById('gameTimer').innerHTML = '<p class="game-timer">0</p>';
         questions.hidden = true;
         console.log('Таймер завершен');
+        stopSound();
         fetch(`/user-leader/${gamesId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
