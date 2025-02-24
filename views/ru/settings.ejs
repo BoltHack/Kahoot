@@ -65,6 +65,10 @@
                 <div class="extra-setting">
                     <h3>Настройки языка</h3>
                     <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
+                    <select name="locale" class="type" style="width: 150px;">
+                        <option value="en" <%= locale === 'en' ? 'selected' : '' %> ><%= locale === 'en' ? 'English (Selected)' : 'English'%></option>
+                        <option value="ru" <%= locale === 'ru' ? 'selected' : '' %> ><%= locale === 'ru' ? 'Русский (Выбран)' : 'Русский'%></option>
+                    </select>
                 </div>
 
                 <div class="extra-setting">
@@ -115,7 +119,6 @@
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/settings.js"></script>
-<script src="/javascripts/locale.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

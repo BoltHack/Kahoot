@@ -109,7 +109,11 @@ socket.on('updateUserCount', (onlineCount) => {
 
     socket.on('redirect', (return_id) => {
         window.location.href = '/return-menu';
-        localStorage.setItem('return_id', return_id);
+        sessionStorage.setItem('return_id', return_id);
+    });
+
+    socket.on('gameOff', () => {
+        window.location.href = '/';
     });
 
     socket.on('updateAnswersCount', (answersCount) => {
