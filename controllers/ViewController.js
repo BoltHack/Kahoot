@@ -117,8 +117,9 @@ class ViewController {
             const theme = req.cookies['theme'];
             const notifications = req.cookies['notifications'];
             const soundTrack = req.cookies['soundTrack'];
+            const locale = req.cookies['locale'];
 
-            return res.render('ru/settings', {user, userId, theme, notifications, soundTrack });
+            return res.render('ru/settings', {user, userId, theme, notifications, soundTrack, locale });
         } catch (e) {
             next(e);
         }

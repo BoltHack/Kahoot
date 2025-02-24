@@ -407,13 +407,13 @@ class PostController {
 
     static changeSettings = async (req, res, next) => {
         try {
-            const {theme, notifications, soundTrack} = req.body;
+            const {theme, notifications, soundTrack, locale} = req.body;
 
             res.cookie('theme', theme ? 'dark' : 'light', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            // res.status(200).json({message: "Элемент успешно добавлен!"});
             return res.redirect('/settings');
         } catch (err) {
             console.error('Ошибка:', err);

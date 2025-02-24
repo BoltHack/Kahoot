@@ -136,8 +136,7 @@ io.on('connection', async (socket) => {
 
             if (game_questions.game_questions.length < 1){
                 socket.leave(gameId);
-                console.log('limit', gameId);
-                socket.emit('redirect', gameId);
+                socket.emit('gameOff', gameId);
             }
 
             if (updatedGame.game_online.online > updatedGame.game_online.max_online){

@@ -112,4 +112,4 @@ document.addEventListener('DOMContentLoaded', function () {
         userImageView.src = userInfo.profileImage;
     }
     viewAvatar();
-})
+});
