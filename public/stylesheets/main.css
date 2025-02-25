@@ -44,7 +44,8 @@ body {
 
 .btn:hover {
     background-color: #00796b;
-    transform: translateY(-5px);
+    /*transform: translateY(-5px);*/
+    transform: translateX(10px);
 }
 
 .btn:active {

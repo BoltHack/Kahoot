@@ -52,9 +52,7 @@
     }
     document.getElementById('butt').addEventListener('click', () => {
         const infoInput = document.getElementById('infoInput').value;
-        if (infoInput === ''){
-            console.log('test')
-        } else{
+        if (infoInput !== ''){
             window.location.href = `/game/${infoInput}`;
         }
     })
