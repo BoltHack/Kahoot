@@ -19,6 +19,12 @@ body {
     transform: translate(-50%, -50%);
 }
 
+.card__a a {
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 35px;
+}
+
 .card__title {
     font-size: 30px;
     font-weight: 700;
@@ -26,6 +32,7 @@ body {
     display: block;
     position: relative;
     overflow: hidden;
+    margin-top: 10px;
 }
 
 .card__title::after {
