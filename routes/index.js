@@ -29,7 +29,7 @@ router.post('/redaction/:game_id', authenticateJWT, redaction);
 router.post('/game-users/:user_id', authenticateJWT, gameUsers);
 router.post('/game-correct-users/:user_id', authenticateJWT, gameCorrectUsers);
 
-router.post('/user-leader/:game_id', authenticateJWT, userLeader);
+router.post('/user-leader/:game_id/:game_time', authenticateJWT, userLeader);
 router.post('/deleteAllGames', authenticateJWT, deleteAllGames);
 router.post('/getData/:game_id', authenticateJWT, getData);
 

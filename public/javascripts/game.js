@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const dataNumber = Number(this.getAttribute('data-number'));
                         const dataName = this.getAttribute('data-name');
                         const question = document.getElementById('question-'+dataNumber);
+                        const time = document.querySelector('.game-timer');
 
                         setTimeout(function (){
                             socket.emit('requestAnswersCount');
@@ -67,12 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         setTimeout(function (){
                             if (maxQuestions === dataNumber + 1) {
+                                document.getElementById('questions').hidden = true;
                                 setInterval(function (){
                                     socket.emit('requestLeadersCount');
                                 }, 500);
-                                document.getElementById('questions').hidden = true;
                                 stopSound();
-                                fetch(`/user-leader/${gamesId}`, {
+                                const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+                                requestSent = true;
+                                fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' }
                                 })

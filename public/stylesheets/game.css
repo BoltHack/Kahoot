@@ -252,7 +252,8 @@ header{
 
 .wrapper {
     margin: 2rem auto;
-    width: 250px;
+    /*width: 250px;*/
+    width: 400px;
     font-size: small;
 }
 
