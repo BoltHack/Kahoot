@@ -32,19 +32,26 @@ const startCountdown = () => {
 let gameTimerCooldown;
 let gameTimer = Number(gamesExpiresInSeconds);
 let gameStartTime;
+let requestSent = false;
 
 const updateTimer = () => {
     const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
     const remainingTime = Math.max(gameTimer - elapsedTime, 0);
-    // console.log('gameTimer:', gameTimer);
+    const time = document.querySelector('.game-timer');
+    console.log('elapsedTime:', elapsedTime | gameTimer);
     // console.log('elapsedTime:', Math.floor((Date.now() - gameStartTime) / 1000));
 
     if (elapsedTime >= gameTimer) {
+        console.log('Таймер завершен');
         document.getElementById('gameTimer').innerHTML = '<p class="game-timer">0</p>';
         questions.hidden = true;
-        console.log('Таймер завершен');
+        setInterval(function (){
+            socket.emit('requestLeadersCount');
+        }, 500);
         stopSound();
-        fetch(`/user-leader/${gamesId}`, {
+        const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+        requestSent = true;
+        fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -55,15 +62,18 @@ const updateTimer = () => {
             .catch(error => {
                 console.log('err', error);
             })
+
     }
 
     document.getElementById('gameTimer').innerHTML = `<p class="game-timer">${remainingTime}</p>`;
 
-    if (remainingTime > 0) {
+    if (requestSent === false) {
         gameTimerCooldown = setTimeout(updateTimer, 1000);
     }
+    else {
+        console.log('таймер остановлен');
+    }
 };
-
 
 const gameTimerStart = () => {
     gameStartTime = Date.now();
@@ -135,7 +145,7 @@ socket.on('updateUserCount', (onlineCount) => {
                     div.innerHTML = `
                     <div class="color eerie-black">
                         #${index + 1} ${leader.name}
-                        <span class="hex">|  Правильных ответов: ${leader.correct_answers}</span>
+                        <span class="hex">|  Правильных ответов: ${leader.correct_answers}  |  Время: ${leader.time} сек.</span>
                     </div>
                 `;
                     fragment.appendChild(div);

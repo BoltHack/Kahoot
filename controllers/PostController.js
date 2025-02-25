@@ -284,7 +284,7 @@ class PostController {
 
     static userLeader = async (req, res, next) => {
         try {
-            const {game_id} = req.params;
+            const {game_id, game_time} = req.params;
             const user = req.user;
             const userId = await UsersModel.findById(user.id);
             console.log('answers', userId.game[0].game_answers);
@@ -294,7 +294,7 @@ class PostController {
                 { _id: game_id },
                 {
                     $push: {
-                        game_leaders: { name: user.name, correct_answers: userId.game[0].game_correct_answers }
+                        game_leaders: { name: user.name, correct_answers: userId.game[0].game_correct_answers, time: game_time }
                     },
                 },
                 { new: true }

@@ -64,6 +64,9 @@ const LeadersSchema = new Schema({
     },
     correct_answers: {
         type: Number
+    },
+    time: {
+        type: Number
     }
 })
 
