@@ -23,6 +23,8 @@ io.on('connection', async (socket) => {
     socket.on('disconnect', async () => {
         const { gameId, userId, userName } = socket;
         const game_max_online = await GamesModel.findById(gameId);
+        const userInfo = await UsersModel.findById(userId);
+        const userImage = userInfo.image;
 
         if (!gameId || !userId) {
             console.error('Ошибка: не переданы gameId или userId');
@@ -40,7 +42,8 @@ io.on('connection', async (socket) => {
                 { _id: gameId },
                 {
                     $inc: { 'game_online.online': -1 },
-                    $pull: { 'game_online.users': userName },
+                    // $pull: { 'game_online.users': userName },
+                    $pull: { 'game_online.users': { userId, userName, userImage } },
                     $set: {
                         'game_users': [],
                         'game_leaders': []
@@ -81,6 +84,8 @@ io.on('connection', async (socket) => {
         const game_max_online = await GamesModel.findById(gameId);
         const updateAnswers = await UsersModel.findById(userId);
         const game_questions = await GamesModel.findById(gameId);
+        const userInfo = await UsersModel.findById(userId);
+        const userImage = userInfo.image;
         if (!gameUsers[gameId]) {
             gameUsers[gameId] = [];
         }
@@ -109,12 +114,15 @@ io.on('connection', async (socket) => {
                 { _id: gameId },
                 {
                     $inc: { 'game_online.online': 1 },
-                    $push: { 'game_online.users': userName },
+                    // $push: { 'game_online.users': userName },
+                    $push: { 'game_online.users': { userId, userName, userImage } },
                 },
                 { new: true }
             );
 
             socket.emit('updateUserCount', updatedGame.game_online);
+            socket.emit('updateUsersOnline', updatedGame.game_online.online);
+
             socket.emit('updateAnswersCount', updateAnswers.game);
             socket.emit('updateGameQuestions', game_questions);
 
@@ -124,7 +132,6 @@ io.on('connection', async (socket) => {
             });
 
             socket.on('requestLeadersCount', async () => {
-                console.log('peredaccha')
                 const updateLeaderBoard = await GamesModel.findById(gameId);
                 socket.emit('updateLeaderBoard', updateLeaderBoard.game_leaders);
             });
@@ -155,6 +162,8 @@ io.on('connection', async (socket) => {
     });
 
     socket.on('leaveGame', async (gameId, userId, userName) => {
+        const userInfo = await UsersModel.findById(userId);
+        const userImage = userInfo.image;
         console.log(`Пользователь ${userId} покидает игру ${gameId}`);
         console.log(`Получено событие leaveGame: gameId = ${gameId}, userId = ${userId}`);
 
@@ -179,7 +188,8 @@ io.on('connection', async (socket) => {
                     { _id: gameId },
                     {
                         $set: { 'game_online.online': newOnlineCount },
-                        $pull: { 'game_online.users': userName },
+                        // $pull: { 'game_online.users': userName },
+                        $pull: { 'game_online.users': { userId, userName, userImage } }
                     },
                     { new: true }
                 );

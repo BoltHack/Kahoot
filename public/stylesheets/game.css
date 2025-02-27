@@ -354,3 +354,12 @@ header{
 .players a {
     margin-top: 15px;
 }
+
+.userImage img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    border: 1px solid black;
+    cursor: pointer;
+    margin-top: 10px;
+}

@@ -69,13 +69,14 @@ li{
     color: #ced4da;
     cursor: pointer;
     z-index: 2;
-    background-color: #303740;
+    background-color: #1C2025;
     padding: 8px;
     border-radius: 8px;
 }
-/*.ha:hover{*/
-/*    color: #a2a8d3;*/
-/*}*/
+.ha:hover{
+    /*color: #a2a8d3;*/
+    background-color: #303740;
+}
 
 
 

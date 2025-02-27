@@ -137,3 +137,11 @@ function startSound(){
 function stopSound(){
     music.stop();
 }
+
+function checkGamePermissions(){
+    if (!sessionStorage.getItem('gamePage') || sessionStorage.getItem('gamePage') === 'false'){
+        sessionStorage.setItem('gamePage', 'true');
+        window.location.reload();
+    }
+}
+checkGamePermissions();
