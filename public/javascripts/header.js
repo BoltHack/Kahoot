@@ -4,7 +4,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 if (myToken){
     account.innerHTML = `
 <div class="dropdown">
-    <a class="ha dropdown-title">${userInfo.name}</a>
+    <a class="ha dropdown-title" style="color: #ced4da; background-color: #1C2025;">${userInfo.name}</a>
     <div class="dropdown-content">
         <a onclick="logout();">Выйти</a>
     </div>
@@ -39,3 +39,12 @@ function logout() {
         }
     });
 }
+
+
+function checkGamePath(){
+    if (!window.location.pathname.startsWith('/game/') && sessionStorage.getItem('gamePage') === 'true'){
+        // sessionStorage.removeItem('gamePage');
+        sessionStorage.setItem('gamePage', 'false');
+    }
+}
+checkGamePath();
