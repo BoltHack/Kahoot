@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
 <body>
 <form action="/auth/register" method="POST" id="loginForm">
     <div class="card">
@@ -28,8 +31,8 @@
             <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Придумайте пароль" required>
             <p class="text">Повтор пароля</p>
             <input type="password" id="cpwd" name="confirmPassword" class="card__form-input" placeholder="Повтор пароля" required>
-            <img src="/images/invisiblePassword.png" class="toggle-password-reg" style="top: 56%;" id="togglePassword1">
-            <img src="/images/visiblePassword.png" class="toggle-password-reg" style="top: 56%;" id="togglePassword2" hidden>
+            <img src="/images/invisiblePassword.png" class="toggle-password-reg" style="top: 57%;" id="togglePassword1">
+            <img src="/images/visiblePassword.png" class="toggle-password-reg" style="top: 57%;" id="togglePassword2" hidden>
 
             <div class="rules">
                 <span>Регистрируясь, вы принимаете наши <a href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank">Политику конфиденциальности.</a></span>

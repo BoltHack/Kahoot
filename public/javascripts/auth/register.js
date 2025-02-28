@@ -29,8 +29,6 @@ document.addEventListener('DOMContentLoaded', function (){
     let cpwd = document.getElementById('cpwd');
     let loaderButton = document.getElementById('loaderButton');
 
-    const local = localStorage.getItem('local');
-
     registerButton.addEventListener('click', (evt) => {
         evt.preventDefault();
 
@@ -38,9 +36,8 @@ document.addEventListener('DOMContentLoaded', function (){
         loaderButton.hidden = false;
 
         if (!name.value || !email.value || !pwd.value || !cpwd.value) {
-            // local === 'ru' ? errorMenu('Пожалуйста, заполните все поля') : errorMenu('Please fill in all fields')
             Swal.fire({
-                text: local === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
+                text: localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
                 icon: "error",
                 position: "top-end",
                 timer: 2000,
@@ -107,9 +104,8 @@ document.addEventListener('DOMContentLoaded', function (){
                             loaderButton.hidden = true;
                             return;
                         }
-                        // local === 'en' ? successMenu('Successful registration!') : successMenu('Успешная регистрация!');
                         Swal.fire({
-                            text: local === 'en' ? 'Successful registration!' : 'Успешная регистрация!',
+                            text: localeType === 'en' ? 'Successful registration!' : 'Успешная регистрация!',
                             icon: "success",
                             position: "top-end",
                             timer: 2000,

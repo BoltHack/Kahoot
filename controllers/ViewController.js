@@ -9,7 +9,7 @@ class ViewController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            return res.render('ru/main',);
+            return res.render('ru/main', {locale});
         } catch (e) {
             next(e);
         }
@@ -17,7 +17,8 @@ class ViewController {
 
     static createGameView = async (req, res, next) => {
         try {
-            return res.render('ru/create-game');
+            const locale = req.cookies['locale'] || 'en';
+            return res.render('ru/create-game', {locale});
         } catch (e) {
             next(e);
         }
@@ -59,6 +60,8 @@ class ViewController {
     static redactionView = async (req, res, next) => {
         try {
             const { game_id } = req.params;
+            const locale = req.cookies['locale'] || 'en';
+
             const user = req.user;
 
             const getUserId = await UsersModel.findById(user.id);
@@ -76,7 +79,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent('Игра не найдена.')}`);
             }
 
-            return res.render('ru/redaction', { user, game_id, gamesInfo });
+            return res.render('ru/redaction', { user, game_id, gamesInfo, locale });
         } catch (e) {
             next(e);
         }
@@ -84,6 +87,8 @@ class ViewController {
 
     static myGamesView = async (req, res, next) => {
         try {
+            const locale = req.cookies['locale'] || 'en';
+
             const user = req.user;
 
             const getUserId = await UsersModel.findById(user.id);
@@ -95,7 +100,7 @@ class ViewController {
             const myGamesId = getUserId.myGames.map(games => games.gameId);
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
 
-            return res.render('ru/my-games', {getUserId, myGames});
+            return res.render('ru/my-games', {getUserId, myGames, locale});
         } catch (e) {
             next(e);
         }
@@ -103,7 +108,8 @@ class ViewController {
 
     static shopView = async (req, res, next) => {
         try {
-            return res.render('ru/shop');
+            const locale = req.cookies['locale'] || 'en';
+            return res.render('ru/shop', {locale});
         } catch (e) {
             next(e);
         }
@@ -127,7 +133,8 @@ class ViewController {
 
     static returnMenuView = async (req, res, next) => {
         try {
-            return res.render('ru/return-menu');
+            const locale = req.cookies['locale'] || 'en';
+            return res.render('ru/return-menu', {locale});
         } catch (e) {
             next(e);
         }

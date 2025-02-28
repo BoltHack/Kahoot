@@ -171,13 +171,10 @@ html.lightTheme {
     --border-radius: 8px;
     --title-content-space: 4px;
 }
-.dropdown{
-    /*width: 200px;*/
-    /*text-align: center;*/
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%, -50%);*/
+.dropdown img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 .dropdown-title{
     position: relative;
@@ -295,4 +292,17 @@ html.lightTheme {
     margin: 0;
     color: #666;
     font-size: 14px;
+}
+#language {
+    position: absolute;
+    top: 30%;
+    right: 2%;
+}
+.locale {
+    margin-top: 10px;
+}
+.locale img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }

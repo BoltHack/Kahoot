@@ -30,11 +30,11 @@ function parseMaxAge(duration) {
 class AuthController {
     static registerView = (req, res, next) => {
         try {
-
+            const locale = req.cookies['locale'];
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render('ru/auth/register');
+            return res.render('ru/auth/register', {locale});
         } catch (e) {
             next(e)
         }
@@ -66,11 +66,11 @@ class AuthController {
 
     static loginView = (req, res, next) => {
         try {
-
+            const locale = req.cookies['locale'];
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render('ru/auth/login');
+            return res.render('ru/auth/login', {locale});
         } catch (e) {
             next(e)
         }
