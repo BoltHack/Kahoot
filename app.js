@@ -42,7 +42,6 @@ io.on('connection', async (socket) => {
                 { _id: gameId },
                 {
                     $inc: { 'game_online.online': -1 },
-                    // $pull: { 'game_online.users': userName },
                     $pull: { 'game_online.users': { userId, userName, userImage } },
                     $set: {
                         'game_users': [],
@@ -114,7 +113,6 @@ io.on('connection', async (socket) => {
                 { _id: gameId },
                 {
                     $inc: { 'game_online.online': 1 },
-                    // $push: { 'game_online.users': userName },
                     $push: { 'game_online.users': { userId, userName, userImage } },
                 },
                 { new: true }
@@ -188,7 +186,6 @@ io.on('connection', async (socket) => {
                     { _id: gameId },
                     {
                         $set: { 'game_online.online': newOnlineCount },
-                        // $pull: { 'game_online.users': userName },
                         $pull: { 'game_online.users': { userId, userName, userImage } }
                     },
                     { new: true }

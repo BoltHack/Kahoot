@@ -11,7 +11,6 @@ function changeLocaleRu() {
     })
         .then(response => {
             if (response.ok) {
-                localStorage.setItem('changeLocale', 'true');
                 window.location.href = '/';
             }
             else {
@@ -39,7 +38,6 @@ function changeLocaleEn() {
     })
         .then(response => {
             if (response.ok) {
-                localStorage.setItem('changeLocale', 'true');
                 window.location.href = '/';
             }
             else {

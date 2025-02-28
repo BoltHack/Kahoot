@@ -85,22 +85,10 @@ socket.on('updateUserCount', (onlineCount) => {
     console.log('onlineCount', onlineCount);
     document.getElementById('onlineCount').innerText = `Онлайн: ${onlineCount.online}`;
 
-    // socket.on('updateUserInfo', (userInfo) => {
-    //     console.log('userInfo', userInfo);
-    //     const users = document.getElementById('usersCount');
-    //
-    //     if (Array.isArray(userInfo) && userInfo.length > 0) {
-    //         users.innerHTML = userInfo.map(user => `<p>${user.name}</p>`).join('');
-    //     } else {
-    //         users.innerHTML = '<p>Пользователей не найдено.</p>';
-    //     }
-    // });
-
     const users = document.getElementById('usersCount');
     if (users && Array.isArray(onlineCount.users)) {
         users.innerHTML = onlineCount.users
             .map(user => `
-<!--<p>${user.userName}</p>-->
 <div class="userImage">
     <img src="data:image/png;base64,${user.userImage}" title="${user.userName}">
 </div>
