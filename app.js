@@ -23,8 +23,6 @@ io.on('connection', async (socket) => {
     socket.on('disconnect', async () => {
         const { gameId, userId, userName } = socket;
         const game_max_online = await GamesModel.findById(gameId);
-        const userInfo = await UsersModel.findById(userId);
-        const userImage = userInfo.image;
 
         if (!gameId || !userId) {
             console.error('Ошибка: не переданы gameId или userId');
@@ -38,6 +36,8 @@ io.on('connection', async (socket) => {
         console.log(`Пользователь ${userId}(${userName}) покинул игру ${gameId}.`);
 
         try {
+            const userInfo = await UsersModel.findById(userId);
+            const userImage = userInfo.image;
             const game = await GamesModel.findOneAndUpdate(
                 { _id: gameId },
                 {
@@ -83,8 +83,6 @@ io.on('connection', async (socket) => {
         const game_max_online = await GamesModel.findById(gameId);
         const updateAnswers = await UsersModel.findById(userId);
         const game_questions = await GamesModel.findById(gameId);
-        const userInfo = await UsersModel.findById(userId);
-        const userImage = userInfo.image;
         if (!gameUsers[gameId]) {
             gameUsers[gameId] = [];
         }
@@ -96,6 +94,8 @@ io.on('connection', async (socket) => {
         socket.userName = userName;
 
         try {
+            const userInfo = await UsersModel.findById(userId);
+            const userImage = userInfo.image;
             const game = await GamesModel.findOne({ _id: gameId });
 
             if (!game) {
@@ -177,6 +177,8 @@ io.on('connection', async (socket) => {
         console.log(`Пользователь ${userId}(${userName}) покинул игру ${gameId}.`);
 
         try {
+            const userInfo = await UsersModel.findById(userId);
+            const userImage = userInfo.image;
             const game = await GamesModel.findOne({ _id: gameId });
 
             if (game) {
