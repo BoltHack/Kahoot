@@ -31,10 +31,10 @@
                                 <% } %>
                                     <% if (games.game_online.online === 0) {%>
                                         <a href="/redaction/<%= games.id %>" class="primary-cta">Редактировать</a>
+                                        <form action="/delete-game/<%= games.id %>" method="POST">
+                                            <button class="secondary-cta">Удалить</button>
+                                        </form>
                                     <% } %>
-                                <form action="/delete-game/<%= games.id %>" method="POST">
-                                    <button class="secondary-cta">Удалить</button>
-                                </form>
                             </div>
                         </div>
                     </div>

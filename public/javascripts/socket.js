@@ -89,8 +89,9 @@ socket.on('updateUserCount', (onlineCount) => {
     if (users && Array.isArray(onlineCount.users)) {
         users.innerHTML = onlineCount.users
             .map(user => `
-<div class="userImage">
-    <img src="data:image/png;base64,${user.userImage}" title="${user.userName}">
+<div class="userImage checkUser" data-id="${user.userId}">
+    <img src="data:image/png;base64,${user.userImage}" onmouseover="showUserName(event);">
+    <div id="userName-${user.userId}" class="tooltip" hidden><span>${user.userName}</span></div>
 </div>
 `)
             .join('');
@@ -158,7 +159,25 @@ socket.on('updateUserCount', (onlineCount) => {
             leaderB.appendChild(fragment);
         }
     });
-
 });
 
 socket.emit('joinGame', gameId, userId, userName);
+
+function showUserName(event){
+    const checkName = document.querySelectorAll('.checkUser');
+    event.currentTarget.querySelector("img");
+
+    checkName.forEach(hover => {
+        hover.addEventListener('mouseover', function () {
+            const dataId = this.getAttribute('data-id');
+            const userName = document.getElementById('userName-'+dataId);
+            userName.style.display = 'block';
+        })
+        hover.addEventListener('mouseout', function () {
+            const dataId = this.getAttribute('data-id');
+            const userName = document.getElementById('userName-'+dataId);
+            userName.style.display = 'none';
+        })
+    })
+}
+
