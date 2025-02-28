@@ -26,13 +26,11 @@ document.addEventListener('DOMContentLoaded', function (){
     let email = document.getElementById('email');
     let pwd = document.getElementById('pwd');
 
-    const local = localStorage.getItem('local');
-
     loginButton.addEventListener('click', (ev) => {
         ev.preventDefault();
 
         if (!email.value || !pwd.value) {
-            local === 'ru' ? errorMenu('Пожалуйста, заполните все поля') : errorMenu('Please fill in all fields');
+            localeType === 'ru' ? errorMenu('Пожалуйста, заполните все поля') : errorMenu('Please fill in all fields');
             email.style.border = '3px solid #780000';
             pwd.style.border = '3px solid #780000';
             return;
@@ -68,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function (){
                         }
 
                         if (token) {
-                            local === 'en' ? successMenu('Successful login!') : successMenu('Успешный вход!');
+                            localeType === 'en' ? successMenu('Successful login!') : successMenu('Успешный вход!');
                             email.style.border = '3px solid #0d2818';
                             pwd.style.border = '3px solid #0d2818';
                             localStorage.setItem('token', token);

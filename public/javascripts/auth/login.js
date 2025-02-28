@@ -24,8 +24,6 @@ document.addEventListener('DOMContentLoaded', function (){
     let pwd = document.getElementById('pwd');
     let loaderButton = document.getElementById('loaderButton');
 
-    const local = localStorage.getItem('local');
-
     loginButton.addEventListener('click', (ev) => {
         ev.preventDefault();
 
@@ -33,9 +31,8 @@ document.addEventListener('DOMContentLoaded', function (){
         loaderButton.hidden = false;
 
         if (!email.value || !pwd.value) {
-            // local === 'ru' ? errorMenu('Пожалуйста, заполните все поля') : errorMenu('Please fill in all fields');
             Swal.fire({
-                text: local === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
+                text: localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
                 icon: "error",
                 position: "top-end",
                 timer: 2000,
@@ -95,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function (){
 
                         if (token) {
                             Swal.fire({
-                                text: local === 'en' ? 'Successful login!' : 'Успешный вход!',
+                                text: localeType === 'en' ? 'Successful login!' : 'Успешный вход!',
                                 icon: "success",
                                 position: "top-end",
                                 timer: 2000,

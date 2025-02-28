@@ -37,7 +37,34 @@
             <li id="account"></li>
         </ul>
     </div>
+
+    <div id="language">
+        <% if (locale === 'en') { %>
+            <div class="dropdown" style="height: 35px;">
+                <span class="dropdown-title" style="background: none">
+                    <img src="/images/english-flag.jpg">
+                </span>
+                <div class="dropdown-content">
+                    <span class="locale">
+                        <img src="/images/russia-flag.png" onclick="changeLocaleRu();">
+                    </span>
+                </div>
+            </div>
+            <% } else { %>
+                <div class="dropdown" style="height: 35px;">
+                    <span class="dropdown-title" style="background: none">
+                        <img src="/images/russia-flag.png">
+                    </span>
+                    <div class="dropdown-content">
+                        <span class="locale">
+                            <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">
+                        </span>
+                    </div>
+                </div>
+            <% } %>
+    </div>
 </header>
 <script src="/javascripts/header.js"></script>
+<script src="/javascripts/locale.js"></script>
 </body>
 </html>
