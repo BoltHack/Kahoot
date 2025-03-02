@@ -213,6 +213,11 @@ class PostController {
     static deleteGame = async (req, res, next) => {
         try {
             const { game_id } = req.params;
+            const game = await GamesModel.findById(game_id);
+
+            if (game.game_online.online > 0){
+                return res.redirect(`/error?message=${encodeURIComponent('Вы не можете Удалить игру, в котором есть пользователи.')}`);
+            }
             await GamesModel.findByIdAndDelete(game_id);
             return res.redirect('/my-games');
         } catch (err) {

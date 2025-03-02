@@ -123,7 +123,6 @@ class AuthController {
 
             res.cookie('token', accessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });
             res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('10d') });
-            res.cookie('acceptCookies', true, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('notifications', 'on', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', 'on', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 

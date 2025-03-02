@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
 const {UsersModel} = require('../models/UsersModel')
 const {GamesModel} = require("../models/GamesModel");
@@ -6,10 +5,11 @@ class ViewController {
     static mainView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
+            const acceptCookies = req.cookies['acceptCookies'];
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            return res.render('ru/main', {locale});
+            return res.render('ru/main', {locale, acceptCookies});
         } catch (e) {
             next(e);
         }
@@ -60,6 +60,12 @@ class ViewController {
     static redactionView = async (req, res, next) => {
         try {
             const { game_id } = req.params;
+            const game = await GamesModel.findById(game_id);
+
+            if (game.game_online.online > 0){
+                return res.redirect(`/error?message=${encodeURIComponent('Вы не можете редактировать игру, в котором есть пользователи.')}`);
+            }
+
             const locale = req.cookies['locale'] || 'en';
 
             const user = req.user;
