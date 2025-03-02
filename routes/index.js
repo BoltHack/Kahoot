@@ -2,7 +2,7 @@ const express = require('express');
 const AuthRouter = require('./AuthRouter');
 
 const {
-    mainView, createGameView, gameView, redactionView, myGamesView, shopView, settingsView, returnMenuView
+    mainView, createGameView, gameView, redactionView, myGamesView, shopView, settingsView, returnMenuView, privacyPolicyView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, gameUsers, gameCorrectUsers, userLeader, getData, changeAvatar, deleteImage,
@@ -21,6 +21,7 @@ router.get('/my-games', authenticateJWT, myGamesView);
 router.get('/shop', shopView);
 router.get('/settings', authenticateJWT, settingsView);
 router.get('/return-menu', returnMenuView);
+router.get('/privacyPolicy', privacyPolicyView);
 
 router.post('/create-game', authenticateJWT, createGame);
 router.post('/delete-game/:game_id', authenticateJWT, deleteGame);
