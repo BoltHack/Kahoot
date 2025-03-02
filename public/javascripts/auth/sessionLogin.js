@@ -18,21 +18,34 @@ document.addEventListener('DOMContentLoaded', function (){
         }
     });
 
-
     let loginButton = document.getElementById('loginButton');
-
-    let loginErr = document.getElementById('loginErr');
     let loginForm = document.getElementById('loginForm');
     let email = document.getElementById('email');
     let pwd = document.getElementById('pwd');
+    let loaderButton = document.getElementById('loaderButton');
 
     loginButton.addEventListener('click', (ev) => {
         ev.preventDefault();
 
+        loginButton.hidden = true;
+        loaderButton.hidden = false;
+
         if (!email.value || !pwd.value) {
-            localeType === 'ru' ? errorMenu('Пожалуйста, заполните все поля') : errorMenu('Please fill in all fields');
+            Swal.fire({
+                text: localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
+                icon: "error",
+                position: "top-end",
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                customClass: {
+                    popup: "small-alert"
+                }
+            });
             email.style.border = '3px solid #780000';
             pwd.style.border = '3px solid #780000';
+            loginButton.hidden = false;
+            loaderButton.hidden = true;
             return;
         }
 
@@ -59,16 +72,40 @@ document.addEventListener('DOMContentLoaded', function (){
                         let {error, token, user} = data;
                         if (error) {
                             console.log('error', error)
-                            errorMenu(error)
+                            Swal.fire({
+                                text: error,
+                                icon: "error",
+                                position: "top-end",
+                                timer: 2000,
+                                showConfirmButton: false,
+                                toast: true,
+                                customClass: {
+                                    popup: "small-alert"
+                                }
+                            });
                             email.style.border = '3px solid #780000';
                             pwd.style.border = '3px solid #780000';
+                            loginButton.hidden = false;
+                            loaderButton.hidden = true;
                             return;
                         }
 
                         if (token) {
-                            localeType === 'en' ? successMenu('Successful login!') : successMenu('Успешный вход!');
+                            Swal.fire({
+                                text: localeType === 'en' ? 'Successful login!' : 'Успешный вход!',
+                                icon: "success",
+                                position: "top-end",
+                                timer: 2000,
+                                showConfirmButton: false,
+                                toast: true,
+                                customClass: {
+                                    popup: "small-alert"
+                                }
+                            });
                             email.style.border = '3px solid #0d2818';
                             pwd.style.border = '3px solid #0d2818';
+                            loginButton.hidden = false;
+                            loaderButton.hidden = true;
                             localStorage.setItem('token', token);
                             localStorage.setItem('name', user.name);
                             localStorage.setItem('profileImage', 'data:image/png;base64,' + user.image);

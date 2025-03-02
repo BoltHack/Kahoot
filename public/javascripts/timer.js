@@ -218,11 +218,8 @@ function sessionLogout() {
         if (status) {
             localStorage.removeItem('userInfo');
             localStorage.removeItem('token');
-            localStorage.removeItem('ref');
-            localStorage.removeItem('favorites');
             localStorage.removeItem('session');
             localStorage.removeItem('sessionEndTime');
-            localStorage.removeItem('menus');
             window.location.href = "/auth/sessionExpired";
             return;
         }
