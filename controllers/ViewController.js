@@ -145,6 +145,15 @@ class ViewController {
             next(e);
         }
     }
+
+    static privacyPolicyView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            return res.render('ru/privacyPolicy', {locale});
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = ViewController;

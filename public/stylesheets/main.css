@@ -108,6 +108,9 @@ footer {
 footer a {
     color: rgb(59 130 246);
 }
+footer a:hover {
+    text-decoration: underline;
+}
 footer button {
     width: 40px;
     height: 25px;
