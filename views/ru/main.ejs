@@ -9,6 +9,7 @@
 </head>
 <script>
     const localeType = '<%= locale %>';
+    const cookiesType = '<%= acceptCookies %>';
 </script>
 <body>
 <%- include('header.ejs') %>
@@ -27,39 +28,22 @@
             <input type="text" name="text" placeholder="Куда отправимся?" class="find-input" id="infoInput">
             <br>
             <br>
-            <button type="submit" id="butt" class="find-button">Отправиться</button>
+            <button type="submit" id="searchButton" class="find-button">Отправиться</button>
         </div>
     </div>
 
     <div class="new-barrier" id="barrier" hidden></div>
 </main>
+<footer id="acceptCookiesFooter">
+    <p class="description">
+        Мы используем файлы cookie, чтобы обеспечить вам максимальное удобство использования нашего веб-сайта.
+        <a href="/privacyPolicy"> Правила конфиденциальности</a>.
+        <button onclick="acceptCookiesFunc()">
+            ОК
+        </button>
+    </p>
+</footer>
 <script src="/javascripts/timer.js"></script>
-<script>
-    function findGame() {
-        const barrier = document.getElementById('barrier');
-        const border = document.getElementById('border');
-        const close = document.getElementById('close');
-
-        barrier.hidden = false;
-        border.hidden = false;
-        document.body.style.overflow = 'hidden';
-
-        barrier.addEventListener('click', () => {
-            barrier.hidden = true;
-            border.hidden = true;
-        })
-        close.addEventListener('click', () => {
-            barrier.hidden = true;
-            border.hidden = true;
-        })
-    }
-    document.getElementById('butt').addEventListener('click', () => {
-        const infoInput = document.getElementById('infoInput').value;
-        if (infoInput !== ''){
-            window.location.href = `/game/${infoInput}`;
-        }
-    })
-    sessionStorage.removeItem("redirectAfterReload");
-</script>
+<script src="/javascripts/main.js"></script>
 </body>
 </html>

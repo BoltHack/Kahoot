@@ -95,3 +95,27 @@ footer p {
         color: black;
     }
 }
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background-color: #fff;
+    opacity: 1;
+}
+footer a {
+    color: rgb(59 130 246);
+}
+footer button {
+    width: 40px;
+    height: 25px;
+    margin-left: 10px;
+    /*background-color: #2c3e50;*/
+    background-color: #16171d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
