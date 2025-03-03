@@ -38,7 +38,7 @@ class ViewController {
                 return res.status(400).send('Invalid ID');
             }
             if (!getId.includes(game_id)){
-                return res.redirect(`/error?message=${encodeURIComponent('Ты не туда пошел')}`);
+                return res.redirect(`/error?message=${encodeURIComponent('Игра не найдена.')}`);
             }
             const userId = await UsersModel.findById(user.id);
 
@@ -77,7 +77,7 @@ class ViewController {
             const myGamesId = getUserId.myGames.map(games => games.gameId.toString());
 
             if (!myGamesId.includes(game_id)) {
-                return res.redirect(`/error?message=${encodeURIComponent('Такой игры у тебя нет.')}`);
+                return res.redirect(`/error?message=${encodeURIComponent('Игра не найдена.')}`);
             }
 
             const gamesInfo = await GamesModel.findById(game_id);
@@ -99,9 +99,9 @@ class ViewController {
 
             const getUserId = await UsersModel.findById(user.id);
 
-            if (!getUserId.myGames || !Array.isArray(getUserId.myGames)) {
-                throw new Error('MyGames пользователя не определен или не является массивом.');
-            }
+            // if (!getUserId.myGames || !Array.isArray(getUserId.myGames)) {
+            //     throw new Error('MyGames пользователя не определен или не является массивом.');
+            // }
 
             const myGamesId = getUserId.myGames.map(games => games.gameId);
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
