@@ -134,7 +134,8 @@ header{
 
 
 .progress {
-    background-color: #fff;
+    background-color: #f0f2f5;
+    /*background-color: #fff;*/
     width: 300px;
     height: 20px;
     border-radius: 100px;

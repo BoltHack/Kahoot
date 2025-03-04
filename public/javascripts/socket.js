@@ -83,6 +83,11 @@ const gameTimerStart = () => {
 
 socket.on('updateUserCount', (onlineCount) => {
     console.log('onlineCount', onlineCount);
+    const getId = onlineCount.users.map(user => user.userId) || [];
+    const checkAllId = getId.length !== new Set(getId).size;
+    if (checkAllId){
+        window.location.href = `/error?message=${encodeURIComponent('Вы не можете зайти в игру с одного аккаунта больше одного раза.')}`;
+    }
     document.getElementById('onlineCount').innerText = `Онлайн: ${onlineCount.online}`;
 
     const users = document.getElementById('usersCount');

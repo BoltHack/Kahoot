@@ -160,8 +160,6 @@ io.on('connection', async (socket) => {
     });
 
     socket.on('leaveGame', async (gameId, userId, userName) => {
-        const userInfo = await UsersModel.findById(userId);
-        const userImage = userInfo.image;
         console.log(`Пользователь ${userId} покидает игру ${gameId}`);
         console.log(`Получено событие leaveGame: gameId = ${gameId}, userId = ${userId}`);
 
