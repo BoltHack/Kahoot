@@ -34,7 +34,7 @@ class AuthController {
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render('ru/auth/register', {locale});
+            return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', {locale});
         } catch (e) {
             next(e)
         }
@@ -70,7 +70,7 @@ class AuthController {
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render('ru/auth/login', {locale});
+            return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', {locale});
         } catch (e) {
             next(e)
         }
@@ -203,7 +203,7 @@ class AuthController {
                 return res.redirect('/');
             }
 
-            return res.render('ru/auth/sessionExpired', { locale });
+            return res.render(locale === 'en' ? 'en/auth/sessionExpired' : 'ru/auth/sessionExpired', { locale });
         }catch (err){
             next(err)
         }
@@ -220,7 +220,7 @@ class AuthController {
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render('ru/auth/forget-password');
+            return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password');
         } catch (e) {
             next(e)
         }
@@ -294,7 +294,7 @@ class AuthController {
             if (req.cookies['token'] && req.cookies['refreshToken'] || !req.cookies['email']){
                 return res.redirect('/')
             }
-            return res.render('ru/auth/account-recovery');
+            return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery');
         } catch (e) {
             next(e)
         }

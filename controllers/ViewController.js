@@ -9,7 +9,7 @@ class ViewController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            return res.render('ru/main', {locale, acceptCookies});
+            return res.render(locale === 'en' ? 'en/main' : 'ru/main', {locale, acceptCookies});
         } catch (e) {
             next(e);
         }
@@ -18,7 +18,7 @@ class ViewController {
     static createGameView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render('ru/create-game', {locale});
+            return res.render(locale === 'en' ? 'en/create-game' : 'ru/create-game', {locale});
         } catch (e) {
             next(e);
         }
@@ -51,7 +51,7 @@ class ViewController {
             gameId.game_users.push({userId: user.id});
             await gameId.save();
 
-            return res.render('ru/game', {user, myGame, gameId, soundTrack});
+            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack});
         } catch (e) {
             next(e);
         }
@@ -85,7 +85,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent('Игра не найдена.')}`);
             }
 
-            return res.render('ru/redaction', { user, game_id, gamesInfo, locale });
+            return res.render(locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, locale });
         } catch (e) {
             next(e);
         }
@@ -99,14 +99,10 @@ class ViewController {
 
             const getUserId = await UsersModel.findById(user.id);
 
-            // if (!getUserId.myGames || !Array.isArray(getUserId.myGames)) {
-            //     throw new Error('MyGames пользователя не определен или не является массивом.');
-            // }
-
             const myGamesId = getUserId.myGames.map(games => games.gameId);
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
 
-            return res.render('ru/my-games', {getUserId, myGames, locale});
+            return res.render(locale === 'en' ? 'en/my-games' : 'ru/my-games', {getUserId, myGames, locale});
         } catch (e) {
             next(e);
         }
@@ -115,7 +111,7 @@ class ViewController {
     static shopView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render('ru/shop', {locale});
+            return res.render(locale === 'en' ? 'en/shop' : 'ru/shop', {locale});
         } catch (e) {
             next(e);
         }
@@ -131,7 +127,7 @@ class ViewController {
             const soundTrack = req.cookies['soundTrack'];
             const locale = req.cookies['locale'];
 
-            return res.render('ru/settings', {user, userId, theme, notifications, soundTrack, locale });
+            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, soundTrack, locale });
         } catch (e) {
             next(e);
         }
@@ -140,7 +136,7 @@ class ViewController {
     static returnMenuView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render('ru/return-menu', {locale});
+            return res.render(locale === 'en' ? 'en/return-menu' : 'ru/return-menu', {locale});
         } catch (e) {
             next(e);
         }
@@ -149,7 +145,7 @@ class ViewController {
     static privacyPolicyView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render('ru/privacyPolicy', {locale});
+            return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {locale});
         } catch (e) {
             next(e);
         }

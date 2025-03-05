@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kahoot | Настройки</title>
+    <title>Kahoot | Settings</title>
     <link rel="stylesheet" href="/stylesheets/settings.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
@@ -13,14 +13,14 @@
     const settingImage = "<%= userId.image %>";
 </script>
 <header>
-    <h1>Настройки</h1>
+    <h1>Settings</h1>
 </header>
-<a href="/" class="home-btn">На главную</a>
+<a href="/" class="home-btn">Home</a>
 <div class="container">
     <section class="section" id="profile">
-        <h2>Профиль</h2>
+        <h2>Profile</h2>
         <div class="profile">
-            <img src="data:image/png;base64,<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
+            <img src="data:image/png;base64,<%= userId.image %>" alt="User Avatar" id="editImageBtn" title="Change Avatar" />
             <div class="profile-info">
                 <h3><%= userId.name %></h3>
                 <p><%= userId.email %></p>
@@ -30,9 +30,9 @@
 
     <form action="/changeSettings/<%= userId.id %>" method="POST">
         <section class="section" id="settings">
-            <h2>Основные настройки</h2>
+            <h2>General Settings</h2>
             <div class="setting">
-                <span>Тёмная тема</span>
+                <span>Dark Theme</span>
                 <div class="toggle-container">
                     <label class="toggle">
                         <input type="checkbox" name="theme" id="themeCheckbox" <%= theme === 'dark' ? 'checked' : '' %> />
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="setting">
-                <span>Уведомления об обновлениях</span>
+                <span>Update Notifications</span>
                 <div class="toggle-container">
                     <label class="toggle">
                         <input type="checkbox" name="notifications" id="notificationsCheckbox" <%= notifications === 'on' ? 'checked' : '' %> />
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="setting">
-                <span>Звуковое сопровождение</span>
+                <span>Sound Effects</span>
                 <div class="toggle-container">
                     <label class="toggle">
                         <input type="checkbox" name="soundTrack" id="soundTrackCheckbox" <%= soundTrack === 'on' ? 'checked' : '' %> />
@@ -61,45 +61,45 @@
         </section>
 
         <section class="section" id="extra-settings">
-            <h2>Дополнительные настройки</h2>
+            <h2>Additional Settings</h2>
             <div class="extra-settings">
                 <div class="extra-setting">
-                    <h3>Настройки языка</h3>
-                    <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
+                    <h3>Language Settings</h3>
+                    <p>Select your preferred interface language (feature in development).</p>
                     <select name="locale" class="type" style="width: 150px;">
                         <option value="en" <%= locale === 'en' ? 'selected' : '' %> ><%= locale === 'en' ? 'English (Selected)' : 'English'%></option>
-                        <option value="ru" <%= locale === 'ru' ? 'selected' : '' %> ><%= locale === 'ru' ? 'Русский (Выбран)' : 'Русский'%></option>
+                        <option value="ru" <%= locale === 'ru' ? 'selected' : '' %> ><%= locale === 'ru' ? 'Russian (Selected)' : 'Russian'%></option>
                     </select>
                 </div>
 
                 <div class="extra-setting">
-                    <h3>Конфиденциальность</h3>
-                    <p>Управляйте настройками приватности аккаунта.</p>
+                    <h3>Privacy</h3>
+                    <p>Manage your account privacy settings.</p>
                 </div>
             </div>
         </section>
 
         <div style="text-align: center">
-            <button type="submit" class="save-settings">Сохранить изменения</button>
+            <button type="submit" class="save-settings">Save Changes</button>
         </div>
     </form>
 
     <section class="section" id="change-password">
-        <h2>Сменить пароль</h2>
+        <h2>Change Password</h2>
         <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
-            <label for="current-password">Текущий пароль</label>
-            <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" required />
+            <label for="current-password">Current Password</label>
+            <input type="password" name="oldPassword" id="current-password" placeholder="Enter current password" required />
 
-            <label for="new-password">Новый пароль</label>
-            <input type="password" name="password" id="pwd" placeholder="Введите новый пароль" required />
+            <label for="new-password">New Password</label>
+            <input type="password" name="password" id="pwd" placeholder="Enter new password" required />
 
-            <label for="confirm-password">Подтверждение пароля</label>
-            <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" required />
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="confirmPassword" id="cpwd" placeholder="Confirm new password" required />
 
-            <p class="text" id="togglePassword1">Показать пароль</p>
-            <p class="text" id="togglePassword2" hidden>Скрыть пароль</p>
+            <p class="text" id="togglePassword1">Show Password</p>
+            <p class="text" id="togglePassword2" hidden>Hide Password</p>
             <div style="text-align: center">
-                <button type="submit">Сменить пароль</button>
+                <button type="submit">Change Password</button>
             </div>
         </form>
     </section>
@@ -111,8 +111,8 @@
             <input type="file" name="file" id="attachFile" style="display: none">
         </label>
         <div class="edit-buttons">
-            <input type="button" value="Сохранить" id="saveImageBtn">
-            <input type="button" value="Удалить" id="deleteImageBtn">
+            <input type="button" value="Save" id="saveImageBtn">
+            <input type="button" value="Delete" id="deleteImageBtn">
         </div>
     </section>
 </form>

@@ -12,7 +12,7 @@ if (myToken){
 `
 }
 else{
-    account.innerHTML = `<a href="/auth/login" class="ha">Войти</a>`
+    account.innerHTML = `<a href="/auth/login" class="ha">${localeType === 'en' ? 'Sign in' : 'Войти'}</a>`
 }
 
 

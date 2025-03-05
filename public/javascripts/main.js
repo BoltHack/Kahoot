@@ -43,7 +43,8 @@ checkCookie();
 
 function createSnowflake() {
     const snowflake = document.createElement("div");
-    snowflake.innerHTML = "❄";
+    // snowflake.innerHTML = "❄";
+    snowflake.innerHTML = ".";
     snowflake.classList.add("snowflake");
 
     const size = Math.random() * 10 + 10 + "px";
