@@ -9,7 +9,7 @@ body {
     height: 100vh;
     background-repeat: no-repeat;
     grid-template-rows: auto 1fr auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .home-container {
@@ -121,4 +121,20 @@ footer button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    font-size: 10px;
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
 }
