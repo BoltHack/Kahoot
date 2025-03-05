@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahoot | Главная</title>
+    <title>Kahoot | Home</title>
     <link rel="icon" type="image/png" href="/images/icon.png">
     <link rel="stylesheet" href="/stylesheets/main.css">
 </head>
@@ -15,20 +15,20 @@
 <%- include('header.ejs') %>
 <main>
     <div class="home-container">
-        <a class="btn" href="/create-game">Создать игру</a>
-        <a class="btn" onclick="findGame()">Найти игру</a>
-        <a class="btn" href="/my-games">Мои игры</a>
-        <a class="btn" href="/shop">Магазин</a>
-        <a class="btn" href="/settings">Настройки</a>
+        <a class="btn" href="/create-game">Create Game</a>
+        <a class="btn" onclick="findGame()">Find Game</a>
+        <a class="btn" href="/my-games">My Games</a>
+        <a class="btn" href="/shop">Shop</a>
+        <a class="btn" href="/settings">Settings</a>
     </div>
     <div class="new-border" id="border" hidden>
         <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>
-        <h4 style="text-align: center">Поиск доступных игр</h4>
+        <h4 style="text-align: center">Search for available games</h4>
         <div class="border-data">
-            <input type="text" name="text" placeholder="Куда отправимся?" class="find-input" id="infoInput">
+            <input type="text" name="text" placeholder="Where shall we go?" class="find-input" id="infoInput">
             <br>
             <br>
-            <button type="submit" id="searchButton" class="find-button">Присоенидиться</button>
+            <button type="submit" id="searchButton" class="find-button">Join</button>
         </div>
     </div>
 
@@ -36,10 +36,10 @@
 </main>
 <footer id="acceptCookiesFooter">
     <p>
-        Мы используем файлы cookie, чтобы обеспечить вам максимальное удобство использования нашего веб-сайта.
-        <a href="/privacyPolicy"> Правила конфиденциальности</a>.
+        We use cookies to ensure you get the best experience on our website.
+        <a href="/privacyPolicy">Privacy Policy</a>.
         <button onclick="acceptCookiesFunc()">
-            ОК
+            OK
         </button>
     </p>
 </footer>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/header.css">
+    <noscript>
+        <style>
+            body{
+                overflow: hidden;
+            }
+        </style>
+        <div class="header-barrier"></div>
+        <div class="header-border">
+            <h1>JavaScript is disabled!</h1>
+            <p>To ensure the website works properly, please enable JavaScript in your browser settings. Here’s how to do it:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Google Chrome:</strong> Open Settings → Privacy and security → Site Settings → JavaScript → Enable.</li>
+                <li><strong>Mozilla Firefox:</strong> Type <code>about:config</code> in the address bar → Find <code>javascript.enabled</code> → Set it to <code>true</code>.</li>
+                <li><strong>Safari:</strong> Open Settings → Security → Enable JavaScript.</li>
+                <li><strong>Microsoft Edge:</strong> Go to Settings → Cookies and site permissions → JavaScript → Enable.</li>
+                <li style="text-align: center;"><a href="/">Refresh the page</a> after enabling JavaScript.</li>
+            </ul>
+            <p style="margin-top: -10px;">If the issue persists, please contact <a href="mailto:hffreelancers@gmail.com">support</a>.</p>
+            <br>
+        </div>
+    </noscript>
+</head>
+<body>
+<header>
+    <div class="container-logo">
+        <h2><a class="logo" href="/">Kahoot</a></h2>
+    </div>
+
+    <div>
+        <ul class="get">
+            <li id="account"></li>
+        </ul>
+    </div>
+
+    <div id="language">
+        <% if (locale === 'en') { %>
+            <div class="dropdown" style="height: 35px;">
+                <span class="dropdown-title" style="background: none">
+                    <img src="/images/english-flag.jpg">
+                </span>
+                <div class="dropdown-content">
+                    <span class="locale">
+                        <img src="/images/russia-flag.png" onclick="changeLocaleRu();">
+                    </span>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="dropdown" style="height: 35px;">
+                    <span class="dropdown-title" style="background: none">
+                        <img src="/images/russia-flag.png">
+                    </span>
+                <div class="dropdown-content">
+                        <span class="locale">
+                            <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">
+                        </span>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</header>
+<script src="/javascripts/header.js"></script>
+<script src="/javascripts/locale.js"></script>
+</body>
+</html>

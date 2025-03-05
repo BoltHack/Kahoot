@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
 <body>
 <main>
     <div style="display: flex; position: absolute; top: 1%; left: 1%;" id="b-c">
-        <button onclick="window.location.replace('/');" class="leave-button">Выйти</button>
+        <button onclick="window.location.replace('/');" class="leave-button">Exit</button>
         <button type="button" class="button" onclick="window.location.reload();" id="refresh">
             <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@
                         d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
                 ></path>
             </svg>
-            Обновить
+            Refresh
         </button>
     </div>
 
@@ -76,9 +76,9 @@
                 </div>
             <% }) %>
         <% } %>
-            <div id="gameTimer"></div>
-            <div id="correctAnswersCount" class="game-correct-answers-count"></div>
-            <div id="answersCount" class="answers-count"></div>
+        <div id="gameTimer"></div>
+        <div id="correctAnswersCount" class="game-correct-answers-count"></div>
+        <div id="answersCount" class="answers-count"></div>
     </div>
     <div id="timer"></div>
     <div class="card">
@@ -86,7 +86,7 @@
     </div>
     <div class="game-pin">
         <span>
-            <p>Код игры:</p>
+            <p>Game code:</p>
             <p style="font-weight: 600"><%= gameId._id%></p>
         </span>
     </div>
