@@ -52,7 +52,7 @@ class ViewController {
             gameId.game_users.push({userId: user.id});
             await gameId.save();
 
-            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack});
+            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale});
         } catch (e) {
             next(e);
         }
