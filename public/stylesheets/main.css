@@ -124,7 +124,7 @@ footer button {
 }
 
 
-.snowflake {
+.symbolTop {
     position: absolute;
     top: -10px;
     color: white;
@@ -132,10 +132,27 @@ footer button {
     user-select: none;
     pointer-events: none;
     transition-duration: 0.3s;
-    animation: fall linear infinite;
+    animation: fallTop linear infinite;
 }
-@keyframes fall {
+@keyframes fallTop {
     to {
         transform: translateY(100vh);
+    }
+}
+
+
+.symbolBottom {
+    position: absolute;
+    bottom: -10px;
+    color: white;
+    font-size: 10px;
+    user-select: none;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    animation: fallBottom linear infinite;
+}
+@keyframes fallBottom {
+    to {
+        transform: translateY(-100vh);
     }
 }
