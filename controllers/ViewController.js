@@ -28,6 +28,7 @@ class ViewController {
             const {game_id} = req.params;
 
             const soundTrack = req.cookies['soundTrack'];
+            const locale = req.cookies['locale'] || 'en';
 
             const user = req.user;
             const gameId = await GamesModel.findById(game_id);

@@ -10,15 +10,15 @@ async function start() {
         }
 
         mongoose.connection.on('connected', () => {
-            console.log('✅ Mongoose успешно подключился к MongoDB');
+            console.log('✅  Mongoose успешно подключился к MongoDB');
         });
 
         mongoose.connection.on('error', (err) => {
-            console.error('❌ Ошибка подключения Mongoose:', err.message);
+            console.error('❌  Ошибка подключения Mongoose:', err.message);
         });
 
         mongoose.connection.on('disconnected', () => {
-            console.log('⚠️ Mongoose отключился от MongoDB');
+            console.log('⚠️  Mongoose отключился от MongoDB');
         });
 
         await mongoose.connect(process.env.MONGODB_URL, {
@@ -29,8 +29,8 @@ async function start() {
 
         console.log("🚀 База данных подключена...");
     } catch (e) {
-        console.error('❌ Ошибка подключения к базе данных:', e.message);
-        console.error('ℹ️ Проверь MONGODB_URL:', process.env.MONGODB_URL);
+        console.error('❌  Ошибка подключения к базе данных:', e.message);
+        console.error('ℹ️ Проверьте MONGODB_URL:', process.env.MONGODB_URL);
     }
 }
 

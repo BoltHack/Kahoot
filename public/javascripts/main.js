@@ -41,24 +41,47 @@ function checkCookie() {
 checkCookie();
 
 
-function createSnowflake() {
-    const snowflake = document.createElement("div");
-    // snowflake.innerHTML = "❄";
-    snowflake.innerHTML = "|";
-    snowflake.classList.add("snowflake");
+function createSymbolTop() {
+    const symbol = document.createElement("div");
+    // symbol.innerHTML = "❄";
+    symbol.innerHTML = "|";
+    symbol.classList.add("symbolTop");
 
     const size = Math.random() * 10 + 10 + "px";
-    snowflake.style.fontSize = size;
+    symbol.style.fontSize = size;
 
-    snowflake.style.left = Math.random() * window.innerWidth + "px";
-    snowflake.style.animationDuration = Math.random() * 5 + 4 + "s";
-    snowflake.style.opacity = Math.random();
+    symbol.style.left = Math.random() * window.innerWidth + "px";
+    symbol.style.animationDuration = Math.random() * 5 + 4 + "s";
+    symbol.style.opacity = Math.random();
 
-    document.body.appendChild(snowflake);
+    document.body.appendChild(symbol);
 
     setTimeout(() => {
-        snowflake.remove();
+        symbol.remove();
     }, 5000);
 }
 
-setInterval(createSnowflake, 100);
+setInterval(createSymbolTop, 100);
+
+
+function createSymbolBottom() {
+    const symbol = document.createElement("div");
+    // symbol.innerHTML = "❄";
+    symbol.innerHTML = "|";
+    symbol.classList.add("symbolBottom");
+
+    const size = Math.random() * 10 + 10 + "px";
+    symbol.style.fontSize = size;
+
+    symbol.style.left = Math.random() * window.innerWidth + "px";
+    symbol.style.animationDuration = Math.random() * 5 + 4 + "s";
+    symbol.style.opacity = Math.random();
+
+    document.body.appendChild(symbol);
+
+    setTimeout(() => {
+        symbol.remove();
+    }, 5000);
+}
+
+setInterval(createSymbolBottom, 100);
