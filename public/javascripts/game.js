@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         if (gameQuestions[dataNumber].correct_question === dataName){
                             question.hidden = true;
-                            successMenu('Правильный ответ!');
+                            successMenu(localeType === 'en' ? 'Correct answer!' : 'Правильный ответ!');
                             fetch(`/game-correct-users/${id}`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' }
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 })
                         } else {
                             question.hidden = true;
-                            wrongMenu('Неверный ответ!');
+                            wrongMenu(localeType === 'en' ? 'Wrong answer!' : 'Неверный ответ!');
                             fetch(`/game-users/${id}`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' }

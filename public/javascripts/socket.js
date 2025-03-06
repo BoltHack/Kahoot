@@ -22,7 +22,7 @@ const startCountdown = () => {
             gameTimerStart();
             soundTrackAuto();
         } else {
-            document.getElementById('timer').innerHTML = `<p class="timer">До начала игры: ${timeLeft}</p>`;
+            document.getElementById('timer').innerHTML = `<p class="timer">${localeType === 'en' ? 'Before the game starts: ' + timeLeft : 'До начала игры: ' + timeLeft}</p>`;
             timeLeft--;
         }
     }, 1000);
@@ -82,13 +82,13 @@ const gameTimerStart = () => {
 
 
 socket.on('updateUserCount', (onlineCount) => {
-    console.log('onlineCount', onlineCount);
     const getId = onlineCount.users.map(user => user.userId) || [];
     const checkAllId = getId.length !== new Set(getId).size;
     if (checkAllId){
-        window.location.href = `/error?message=${encodeURIComponent('Вы не можете зайти в игру с одного аккаунта больше одного раза.')}`;
+        const errorMsg = localeType === 'en' ? 'You cannot log into the game from one account more than once.' : 'Вы не можете зайти в игру с одного аккаунта больше одного раза.';
+        window.location.href = `/error?message=${encodeURIComponent(errorMsg)}`;
     }
-    document.getElementById('onlineCount').innerText = `Онлайн: ${onlineCount.online}`;
+    document.getElementById('onlineCount').innerText = `${localeType === 'en' ? 'online: ' + onlineCount.online  : 'Онлайн: ' + onlineCount.online}`;
 
     const users = document.getElementById('usersCount');
     if (users && Array.isArray(onlineCount.users)) {
@@ -111,7 +111,7 @@ socket.on('updateUserCount', (onlineCount) => {
         <div class="progress">
             <div class="inner"></div>
         </div>
-        <p class="pi">Ожидание игроков...</p>
+        <p class="pi">${localeType === 'en' ? 'Waiting for players...' : 'Ожидание игроков...'}</p>
         `;
         bc.style.top = '2%';
         stopSound();
@@ -137,7 +137,7 @@ socket.on('updateUserCount', (onlineCount) => {
     });
 
     socket.on('updateAnswersCount', (answersCount) => {
-        document.getElementById('correctAnswersCount').innerHTML = `<span><p class="game_correct-answers">${answersCount[0].game_correct_answers || 0}</p> <p class="game_correct-answers-text">Правильных ответов</p></span>`;
+        document.getElementById('correctAnswersCount').innerHTML = `<span><p class="game_correct-answers">${answersCount[0].game_correct_answers || 0}</p> <p class="game_correct-answers-text">${localeType === 'en' ? 'Correct answers' : 'Правильных ответов'}</p></span>`;
         document.getElementById('answersCount').innerHTML = `<span><p class="game-answers">${answersCount[0].game_answers || 0}/${gameMaxQuestions}</p></span>`;
     });
 
@@ -155,7 +155,12 @@ socket.on('updateUserCount', (onlineCount) => {
                     div.innerHTML = `
                     <div class="color eerie-black">
                         #${index + 1} ${leader.name}
-                        <span class="hex">|  Правильных ответов: ${leader.correct_answers}  |  Время: ${leader.time} сек.</span>
+                        <span class="hex">
+                    ${localeType === 'en' ? 
+                        `|  Correct answers: ${leader.correct_answers}  |  Time: ${leader.time} sec.` : 
+                        `|  Правильных ответов: ${leader.correct_answers}  |  Время: ${leader.time} сек.`
+                    }
+                        </span>
                     </div>
                 `;
                     fragment.appendChild(div);

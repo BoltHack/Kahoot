@@ -1,6 +1,5 @@
 function successMenu(text) {
-    const local = localStorage.getItem('local');
-    const success = local === 'ru' ? 'Выполнено!' : 'Success!';
+    const success = localeType === 'ru' ? 'Выполнено!' : 'Success!';
     const alert = document.createElement('div');
 
     alert.innerHTML = `
@@ -67,8 +66,7 @@ function successMenu(text) {
     })
 }
 function errorMenu(text) {
-    const local = localStorage.getItem('local');
-    const error = local === 'ru' ? 'Ошибка!' : 'Error!';
+    const error = localeType === 'ru' ? 'Ошибка!' : 'Error!';
     const alert = document.createElement('div');
     alert.innerHTML = `
 <div class="error-card" id="errorCard">
@@ -131,8 +129,7 @@ function errorMenu(text) {
 
 
 function wrongMenu(text) {
-    const local = localStorage.getItem('local');
-    const error = local === 'ru' ? 'Неверный ответ!' : 'Wrong!';
+    const error = localeType === 'ru' ? 'Неверный ответ!' : 'Wrong!';
     const alert = document.createElement('div');
     alert.innerHTML = `
 <div class="error-card" id="errorCard">
