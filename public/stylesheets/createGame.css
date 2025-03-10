@@ -209,7 +209,8 @@ body{
 .questions-modal {
     position: absolute;
     left: 2%;
-    top: 20%;
+    /*top: 20%;*/
+    top: 17.4%;
     max-width: 850px;
     border: 1px solid black;
 }

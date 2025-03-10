@@ -43,7 +43,9 @@
         <% } else { %>
             <div class="not-found">
                 <p>Ничего не найдено.</p>
-                <a href="/create-game" style="text-decoration: none">Создать новую игру</a>
+                <div style="text-align: center">
+                    <a href="/create-game" style="text-decoration: none; color: #219ebc">Создать</a>
+                </div>
             </div>
                 <% if (getUserId.myGames && getUserId.myGames.length > 0) { %>
                     <script>

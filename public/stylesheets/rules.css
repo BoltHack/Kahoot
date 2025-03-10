@@ -8,26 +8,27 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
-.privacyPolicy-container {
+.rules-container {
     max-width: 800px;
-    margin: 70px auto;
+    margin: 90px auto;
     padding: 20px;
 }
 
-.privacyPolicy-info {
+.rules-info {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.privacyPolicy-info h2 {
+.rules-container h2 {
     color: black;
     font-size: 24px;
 }
 
-.privacyPolicy-info b {
+.rules-container b {
     color: black;
 }
-.privacyPolicy-info p {
+
+.rules-info p {
     color: black;
 }

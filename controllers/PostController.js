@@ -33,13 +33,11 @@ class PostController {
             })
             await newGame.save();
 
-            // if (!userId.myGames.some(fav => fav.gameId === newGame._id)) {
             userId.myGames.push({gameId: newGame._id});
             await userId.save();
-            // }
 
             return res.redirect(`/redaction/${newGame._id}`);
-        }catch (err){
+        } catch (err){
             console.error(err);
             res.status(500).json({ error: err.message });
             next(err);

@@ -48,7 +48,7 @@ class ViewController {
             const id = user.id;
             await UsersModel.findByIdAndUpdate(id, { $set: { current_game: game_id }, game: { game_id: user.id, game_name: user.name, game_answers: 0, game_correct_answers: 0 } });
             await GamesModel.findByIdAndUpdate(game_id, { $set: { expiresInMinutes: 60 } });
-            console.log('добавлено', game_id);
+            console.log('добавлен новый игрок:', game_id);
             gameId.game_users.push({userId: user.id});
             await gameId.save();
 
@@ -147,6 +147,24 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {locale});
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static rulesView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {locale});
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static aboutUsView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {locale});
         } catch (e) {
             next(e);
         }
