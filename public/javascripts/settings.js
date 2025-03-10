@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
     barrier.addEventListener('click', () => {
         editImage.hidden = true;
         barrier.hidden = true;
+        userInfo.profileImage = `data:image/png;base64,${settingImage}`
         document.body.style.overflowY = 'auto';
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
     })
 
 

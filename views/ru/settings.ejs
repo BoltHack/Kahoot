@@ -24,6 +24,7 @@
             <div class="profile-info">
                 <h3><%= userId.name %></h3>
                 <p><%= userId.email %></p>
+                <p>ID: <%= userId.id %></p>
             </div>
         </div>
     </section>
@@ -41,7 +42,7 @@
                 </div>
             </div>
             <div class="setting">
-                <span>Уведомления об обновлениях</span>
+                <span>Показывать уведомления</span>
                 <div class="toggle-container">
                     <label class="toggle">
                         <input type="checkbox" name="notifications" id="notificationsCheckbox" <%= notifications === 'on' ? 'checked' : '' %> />

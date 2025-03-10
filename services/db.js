@@ -23,8 +23,8 @@ async function start() {
 
         await mongoose.connect(process.env.MONGODB_URL, {
             serverSelectionTimeoutMS: 30000,
-            useNewUrlParser: true,
-            useUnifiedTopology: true
+            // useNewUrlParser: true,
+            // useUnifiedTopology: true
         });
 
         console.log("🚀 База данных подключена...");

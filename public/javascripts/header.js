@@ -6,7 +6,7 @@ if (myToken){
 <div class="dropdown">
     <a class="ha dropdown-title" style="color: #ced4da; background-color: #1C2025;">${userInfo.name}</a>
     <div class="dropdown-content">
-        <a onclick="logout();">Выйти</a>
+        <a onclick="logout();">${localeType === 'en' ? 'Sign Out' : 'Выйти'}</a>
     </div>
 </div>
 `

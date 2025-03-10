@@ -10,12 +10,15 @@ let questions = document.getElementById('questions');
 let refresh = document.getElementById('refresh');
 let bc = document.getElementById('b-c');
 
+let requestSent = false;
+
 const startCountdown = () => {
     countdown = setInterval(() => {
         if (timeLeft <= 0) {
             clearInterval(countdown);
             document.getElementById('timer').innerHTML = '';
             questions.hidden = false;
+            requestSent = false;
             refresh.style.display = 'none';
             bc.style.top = '11%';
             checkReload();
@@ -32,7 +35,6 @@ const startCountdown = () => {
 let gameTimerCooldown;
 let gameTimer = Number(gamesExpiresInSeconds);
 let gameStartTime;
-let requestSent = false;
 
 const updateTimer = () => {
     const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
@@ -157,8 +159,8 @@ socket.on('updateUserCount', (onlineCount) => {
                         #${index + 1} ${leader.name}
                         <span class="hex">
                     ${localeType === 'en' ? 
-                        `|  Correct answers: ${leader.correct_answers}  |  Time: ${leader.time} sec.` : 
-                        `|  Правильных ответов: ${leader.correct_answers}  |  Время: ${leader.time} сек.`
+`|  Correct answers: ${leader.correct_answers}  |  Time: ${leader.time} sec.` : 
+`|  Правильных ответов: ${leader.correct_answers}  |  Время: ${leader.time} сек.`
                     }
                         </span>
                     </div>
