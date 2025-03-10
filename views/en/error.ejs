@@ -407,8 +407,8 @@
 
 <div class="error">
     <div class="error__title"><%= error.status %></div>
-    <div class="error__subtitle">Возникла ошибка...</div>
-    <div class="error__description"><%= message === 'Not Found' ? 'Страница не найдена.' : message %></div>
+    <div class="error__subtitle">An error occurred ...</div>
+    <div class="error__description"><%= message %></div>
     <button class="error__button error__button--active" onclick="window.location.href = '/'">Home</button>
     <button class="error__button" onclick="window.history.back()">Go back</button>
 </div>
