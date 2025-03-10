@@ -241,7 +241,7 @@ app.use(function(err, req, res, next) {
     res.cookie('locale', locale, { httpOnly: true });
   }
 
-  res.render('ru/error', { message });
+  res.render(locale === 'en' ? 'en/error' : 'ru/error', { message });
 });
 
 server.listen(3000, () => {

@@ -87,7 +87,7 @@ socket.on('updateUserCount', (onlineCount) => {
     const getId = onlineCount.users.map(user => user.userId) || [];
     const checkAllId = getId.length !== new Set(getId).size;
     if (checkAllId){
-        const errorMsg = localeType === 'en' ? 'You cannot log into the game from one account more than once.' : 'Вы не можете зайти в игру с одного аккаунта больше одного раза.';
+        const errorMsg = localeType === 'en' ? 'You cannot log into the same game with the same account from different browser windows.' : 'Вы не можете зайти в одну и ту же игру с одного аккаунта с разных окон браузера.';
         window.location.href = `/error?message=${encodeURIComponent(errorMsg)}`;
     }
     document.getElementById('onlineCount').innerText = `${localeType === 'en' ? 'online: ' + onlineCount.online  : 'Онлайн: ' + onlineCount.online}`;
