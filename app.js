@@ -244,6 +244,21 @@ app.use(function(err, req, res, next) {
   res.render(locale === 'en' ? 'en/error' : 'ru/error', { message });
 });
 
-server.listen(3000, () => {
-  console.log('Сервер запущен на порту: http://localhost:3000');
+server.listen(3000, async () => {
+    const getAllId = await GamesModel.find({});
+    const reloadGameData = getAllId.map(get => get.id);
+    await GamesModel.updateMany(
+        { _id: { $in: reloadGameData } },
+        {
+            $set: {
+                'game_online.online': 0,
+                'game_online.users': [],
+                'game_users': [],
+                'game_leaders': []
+            }
+        },
+    );
+    io.emit('reloadPage');
+    console.log('reloadGameData', reloadGameData)
+    console.log('Сервер запущен на порту: http://localhost:3000');
 });

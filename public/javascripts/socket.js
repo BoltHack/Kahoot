@@ -193,3 +193,6 @@ function showUserName(event){
     })
 }
 
+socket.on('reloadPage', () => {
+    window.location.reload();
+});
