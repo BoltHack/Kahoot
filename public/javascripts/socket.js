@@ -135,7 +135,7 @@ socket.on('updateUserCount', (onlineCount) => {
     });
 
     socket.on('gameOff', () => {
-        window.location.href = '/';
+        window.location.href = `/error?message=${encodeURIComponent('Игра выключена.')}`;
     });
 
     socket.on('updateAnswersCount', (answersCount) => {
@@ -145,6 +145,7 @@ socket.on('updateUserCount', (onlineCount) => {
 
     socket.on('updateLeaderBoard', (leaderBoard) => {
         const leaderB = document.getElementById('leaderBoard');
+        const loaderSvg = document.getElementById('loaderSvg');
 
         if (leaderBoard && leaderBoard.length > 0) {
             leaderB.innerHTML = '';
@@ -154,13 +155,14 @@ socket.on('updateUserCount', (onlineCount) => {
                 .sort((a, b) => b.correct_answers - a.correct_answers)
                 .forEach((leader, index) => {
                     const div = document.createElement('div');
+                    loaderSvg.style.display = 'none';
                     div.innerHTML = `
                     <div class="color eerie-black">
                         #${index + 1} ${leader.name}
                         <span class="hex">
-                    ${localeType === 'en' ? 
-`|  Correct answers: ${leader.correct_answers}  |  Time: ${leader.time} sec.` : 
-`|  Правильных ответов: ${leader.correct_answers}  |  Время: ${leader.time} сек.`
+                    ${localeType === 'en' ?
+`|   Correct answers: ${leader.correct_answers}   |   Time: ${leader.time} sec.` :
+`|   Правильных ответов: ${leader.correct_answers}   |   Время: ${leader.time} сек.`
                     }
                         </span>
                     </div>

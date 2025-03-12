@@ -74,7 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 }, 500);
                                 stopSound();
                                 const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+
+                                const openModal = document.getElementById('openModal');
+                                const closeModal = document.getElementById('closeModal');
+                                const overlay = document.getElementById('overlay');
+                                const modal = document.querySelector('.modal');
+
+
                                 requestSent = true;
+                                overlay.classList.add('active');
+                                modal.classList.add('active');
                                 fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' }
@@ -145,3 +154,19 @@ function checkGamePermissions(){
     }
 }
 checkGamePermissions();
+
+
+
+
+
+closeModal.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    modal.classList.remove('active');
+});
+
+// overlay.addEventListener('click', (e) => {
+//     if (e.target === overlay) {
+//         overlay.classList.remove('active');
+//         modal.classList.remove('active');
+//     }
+// });
