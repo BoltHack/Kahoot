@@ -82,8 +82,17 @@
             <div id="answersCount" class="answers-count"></div>
     </div>
     <div id="timer"></div>
-    <div class="card">
-        <div id="leaderBoard" class="wrapper"></div>
+    <div class="overlay" id="overlay">
+        <div class="modal">
+            <h2>Таблица лидеров</h2>
+            <svg viewBox="25 25 50 50" id="loaderSvg">
+                <circle r="20" cy="50" cx="50"></circle>
+            </svg>
+            <div class="card">
+                <div id="leaderBoard" class="wrapper"></div>
+            </div>
+            <button class="close-btn" id="closeModal">Закрыть</button>
+        </div>
     </div>
     <div class="game-pin">
         <span>
