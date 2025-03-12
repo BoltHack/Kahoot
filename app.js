@@ -245,10 +245,10 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(3000, async () => {
-    const getAllId = await GamesModel.find({});
-    const reloadGameData = getAllId.map(get => get.id);
+    const findAllGames = await GamesModel.find({});
+    const getAllId = findAllGames.map(get => get.id);
     await GamesModel.updateMany(
-        { _id: { $in: reloadGameData } },
+        { _id: { $in: getAllId } },
         {
             $set: {
                 'game_online.online': 0,
@@ -259,6 +259,5 @@ server.listen(3000, async () => {
         },
     );
     io.emit('reloadPage');
-    console.log('reloadGameData', reloadGameData)
     console.log('Сервер запущен на порту: http://localhost:3000');
 });
