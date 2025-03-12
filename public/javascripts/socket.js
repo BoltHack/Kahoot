@@ -98,7 +98,7 @@ socket.on('updateUserCount', (onlineCount) => {
             .map(user => `
 <div class="userImage checkUser" data-id="${user.userId}">
     <img src="data:image/png;base64,${user.userImage}" onmouseover="showUserName(event);">
-    <div id="userName-${user.userId}" class="tooltip" hidden><span>${user.userName}</span></div>
+    <div id="userName-${user.userId}" class="userName" hidden><span>${user.userId === id ? 'Вы' : user.userName}</span></div>
 </div>
 `)
             .join('');

@@ -372,7 +372,7 @@ header{
     transition: transform 0.3s ease;
 }
 
-.tooltip {
+.userName {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
@@ -382,8 +382,4 @@ header{
     border-radius: 5px;
     font-size: 14px;
     white-space: nowrap;
-    /*margin-left: 4px;*/
 }
-/*.tooltip.visible {*/
-/*    display: block;*/
-/*}*/
