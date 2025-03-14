@@ -308,6 +308,7 @@ header{
     background: #2e2e2e;
     color: var(--ch-white);
     border: 1px solid #2e2e2e;
+    border-bottom: 1px solid white;
 }
 
 .chinese-black {
@@ -502,7 +503,7 @@ circle {
 }
 
 
-.kick-btn, .unban-btn {
+.ban-btn, .unban-btn {
     cursor: pointer;
     background-color: #24527a;
     color: white;
@@ -564,6 +565,9 @@ circle {
     border-radius: 8px;
     background: #f9f9f9;
     box-sizing: border-box;
+}
+.banned-container p {
+    margin-left: 2px;
 }
 .not-found {
     text-align: center;

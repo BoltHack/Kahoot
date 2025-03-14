@@ -156,7 +156,7 @@ io.on('connection', async (socket) => {
                 socket.emit('updateBannedUsersCount', updateBannedUsersCount.game_banned_users);
             });
 
-            socket.on('kick', async (userId) => {
+            socket.on('ban', async (userId) => {
                 const {gameId} = socket;
                 const getUserData = await UsersModel.findById(userId);
                 const game = await GamesModel.findById(gameId);
@@ -164,9 +164,6 @@ io.on('connection', async (socket) => {
                 const isAlreadyBanned = game.game_banned_users.some(user => {
                     const bannedId = user.bannedId.toString();
                     const checkingUserId = userId.toString();
-
-                    console.log('Checking user:', bannedId, 'against userId:', checkingUserId);
-
                     return bannedId === checkingUserId;
                 });
 
@@ -180,7 +177,7 @@ io.on('connection', async (socket) => {
                         },
                         {new: true}
                     );
-                    console.log('kick', userId, 'from', gameId);
+                    console.log('ban', userId, 'from', gameId);
                     io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
                 }
 

@@ -104,7 +104,7 @@ socket.on('updateUserCount', (onlineCount) => {
   ${user.userId === id 
                 ? (localeType === 'en' ? 'You' : 'Вы') 
                 : authorId === id 
-                    ? `${user.userName} <button onclick="kickUser('${user.userId}')" class="kick-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>` 
+                    ? `${user.userName} <button onclick="banUser('${user.userId}')" class="ban-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>` 
                     : user.userName}
 </span>
     </div>
@@ -188,20 +188,19 @@ socket.on('updateUserCount', (onlineCount) => {
         const getId = bannedUsers.map(doc => doc.bannedId);
         if (getId.includes(id)){
         // if (bannedUsers.some(user => user.bannedId === id)){
-            const kickMsg= localeType === 'en' ? 'You have been kicked from the game by an administrator.' : 'Вы были кикнуты из игры администатором.';
+            const kickMsg= localeType === 'en' ? 'You have been banned by the admin.' : 'Вы были забанены администатором.';
             window.location.replace(`/error?message=${encodeURIComponent(kickMsg)}`);
         }
     });
 
     socket.on('updateBannedUsersCount', (bannedUsersCount) => {
-        console.log('bannedUsersCount', bannedUsersCount);
         const users = document.getElementById('bannedUsersCount');
         if (users && Array.isArray(bannedUsersCount)) {
             users.innerHTML = bannedUsersCount
                 .map(user => `
 <div class="banned-container" id="banId-${user.bannedId}">
     <div class="userImage">
-        <div style="display: block; margin-top: -10px;">
+        <div style="display: block; margin-top: -10px;" title="${user.bannedId}">
            <p>${user.bannedName}</p>
            <img src="data:image/png;base64,${user.bannedImage}" style="margin-top: -14px;">
         </div>
@@ -240,7 +239,7 @@ socket.on('updateUserCount', (onlineCount) => {
 
     socket.on('banBroadcast', (userName) => {
         Swal.fire({
-            text: localeType === 'en' ? `Player ${userName} has been kicked from the game!` : `Игрок ${userName} кикнут из игры!`,
+            text: localeType === 'en' ? `Player ${userName} banned!` : `Игрок ${userName} забанен!`,
             icon: "success",
             position: "top-end",
             timer: 2000,
@@ -273,29 +272,31 @@ function showUserName(event){
     })
 }
 
-let alreadyKickedUserIds = [];
+let alreadyBannedUserIds = [];
 
-function kickUser(userId) {
+function banUser(userId) {
     if (typeof socket !== 'undefined') {
-        if (!alreadyKickedUserIds.includes(userId)) {
-            console.log('userDataString', userId);
-            socket.emit('kick', userId);
-
-            alreadyKickedUserIds.push(userId);
-        } else {
-            console.log('User has already been kicked:', userId);
+        if (authorId === id) {
+            if (!alreadyBannedUserIds.includes(userId)) {
+                socket.emit('ban', userId);
+                alreadyBannedUserIds.push(userId);
+            } else {
+                console.log('Пользователь уже забанен:', userId);
+            }
         }
     } else {
-        console.error("Socket is not defined");
+        console.error("Игрок не найден.");
     }
 }
 
 
 function unbanUser(userId) {
     if (typeof socket !== 'undefined') {
-        socket.emit('unban', userId);
+        if (authorId === id) {
+            socket.emit('unban', userId);
+        }
     } else {
-        console.error("Socket is not defined");
+        console.error("Игрок не найден.");
     }
 }
 
