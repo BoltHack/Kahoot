@@ -96,9 +96,18 @@ socket.on('updateUserCount', (onlineCount) => {
     if (users && Array.isArray(onlineCount.users)) {
         users.innerHTML = onlineCount.users
             .map(user => `
+<br>
 <div class="userImage checkUser" data-id="${user.userId}">
     <img src="data:image/png;base64,${user.userImage}" onmouseover="showUserName(event);">
-    <div id="userName-${user.userId}" class="userName" hidden><span>${user.userId === id ? 'Вы' : user.userName}</span></div>
+    <div id="userName-${user.userId}" class="userName" hidden>
+        <span>
+  ${user.userId === id 
+                ? (localeType === 'en' ? 'You' : 'Вы') 
+                : authorId === id 
+                    ? `${user.userName} <button onclick="kickUser('${user.userId}')" class="kick-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>` 
+                    : user.userName}
+</span>
+    </div>
 </div>
 `)
             .join('');
@@ -106,6 +115,7 @@ socket.on('updateUserCount', (onlineCount) => {
 
     if (onlineCount.online < 2) {
         questions.hidden = true;
+        requestSent = true;
         console.log('Онлайна мало');
         clearInterval(countdown);
         timeLeft = 10;
@@ -173,6 +183,74 @@ socket.on('updateUserCount', (onlineCount) => {
             leaderB.appendChild(fragment);
         }
     });
+
+    socket.on('updateBannedUsers', (bannedUsers) => {
+        const getId = bannedUsers.map(doc => doc.bannedId);
+        if (getId.includes(id)){
+        // if (bannedUsers.some(user => user.bannedId === id)){
+            const kickMsg= localeType === 'en' ? 'You have been kicked from the game by an administrator.' : 'Вы были кикнуты из игры администатором.';
+            window.location.replace(`/error?message=${encodeURIComponent(kickMsg)}`);
+        }
+    });
+
+    socket.on('updateBannedUsersCount', (bannedUsersCount) => {
+        console.log('bannedUsersCount', bannedUsersCount);
+        const users = document.getElementById('bannedUsersCount');
+        if (users && Array.isArray(bannedUsersCount)) {
+            users.innerHTML = bannedUsersCount
+                .map(user => `
+<div class="banned-container" id="banId-${user.bannedId}">
+    <div class="userImage">
+        <div style="display: block; margin-top: -10px;">
+           <p>${user.bannedName}</p>
+           <img src="data:image/png;base64,${user.bannedImage}" style="margin-top: -14px;">
+        </div>
+    
+        <div id="banName-${user.bannedId}" class="banName">
+            <span>
+                <button onclick="unbanUser('${user.bannedId}')" data-id="${user.bannedId}" class="unban-btn" style="margin-left: 2px;">${localeType === 'en' ? 'Unban' : 'Разбанить'}</button>
+            </span>
+        </div>
+    </div>
+</div>
+`)
+                .join('');
+        }
+        if (!bannedUsersCount || !bannedUsersCount.length) {
+            users.innerHTML = `<p class="not-found">Нет забаненных игроков.</p>`;
+        }
+    })
+
+    socket.on('unbanBroadcast', (userId) => {
+        setTimeout(function () {
+            socket.emit('requestBannedUsersCount');
+        }, 500);
+        Swal.fire({
+            text: localeType === 'en' ? `Player ${userId} has been unbanned!` : `Игрок ${userId} разбанен!`,
+            icon: "success",
+            position: "top-end",
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
+    });
+
+    socket.on('banBroadcast', (userName) => {
+        Swal.fire({
+            text: localeType === 'en' ? `Player ${userName} has been kicked from the game!` : `Игрок ${userName} кикнут из игры!`,
+            icon: "success",
+            position: "top-end",
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
+    });
 });
 
 socket.emit('joinGame', gameId, userId, userName);
@@ -193,6 +271,32 @@ function showUserName(event){
             userName.style.display = 'none';
         })
     })
+}
+
+let alreadyKickedUserIds = [];
+
+function kickUser(userId) {
+    if (typeof socket !== 'undefined') {
+        if (!alreadyKickedUserIds.includes(userId)) {
+            console.log('userDataString', userId);
+            socket.emit('kick', userId);
+
+            alreadyKickedUserIds.push(userId);
+        } else {
+            console.log('User has already been kicked:', userId);
+        }
+    } else {
+        console.error("Socket is not defined");
+    }
+}
+
+
+function unbanUser(userId) {
+    if (typeof socket !== 'undefined') {
+        socket.emit('unban', userId);
+    } else {
+        console.error("Socket is not defined");
+    }
 }
 
 socket.on('reloadPage', () => {

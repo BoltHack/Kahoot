@@ -15,13 +15,14 @@
     const gamesId = `<%= gameId._id %>`;
     const gamesExpiresInSeconds = `<%= gameId.game_expiresInSeconds %>`;
     const gameMaxQuestions = `<%= gameId.game_max_questions %>`;
+    const authorId = `<%= gameId.game_author.id %>`;
     const sounds = '<%= soundTrack %>';
     const localeType = '<%= locale %>';
 </script>
 <body>
 <main>
     <div style="display: flex; position: absolute; top: 1%; left: 1%;" id="b-c">
-        <button onclick="window.location.replace('/');" class="leave-button">Exit</button>
+        <button onclick="window.location.replace('/');" class="leave-button">Leave</button>
         <button type="button" class="button" onclick="window.location.reload();" id="refresh">
             <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -81,16 +82,40 @@
         <div id="correctAnswersCount" class="game-correct-answers-count"></div>
         <div id="answersCount" class="answers-count"></div>
     </div>
+    <% if (gameId.game_author.id === user.id) {%>
+        <div class="banned-users">
+            <a id="openBannedPlayersMenu">Banned players</a>
+        </div>
+    <% } %>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
         <div class="modal">
             <h2>Leaderboard</h2>
+            <svg viewBox="25 25 50 50" id="loaderSvg">
+                <circle r="20" cy="50" cx="50"></circle>
+            </svg>
             <div class="card">
                 <div id="leaderBoard" class="wrapper"></div>
             </div>
             <button class="close-btn" id="closeModal">Close</button>
         </div>
     </div>
+    <% if (gameId.game_author.id === user.id) {%>
+        <div class="overlay" id="overlayBannedUsersMenu">
+            <div id="bannedPlayersMenu">
+                <h2 style="text-align: center">Banned players</h2>
+                <div class="card">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="bannedUsersCount"></div>
+                </div>
+                <p class="not-found" id="not-banned-users">No banned players.</p>
+                <button class="close-btn" id="closeBannedUsersMenu" style="position: absolute; top: 0; right: 2%;">Закрыть</button>
+            </div>
+        </div>
+    <% } %>
     <div class="game-pin">
         <span>
             <p>Game code:</p>
