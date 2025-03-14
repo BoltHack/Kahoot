@@ -111,7 +111,6 @@ io.on('connection', async (socket) => {
             const userInfo = await UsersModel.findById(userId);
             const userImage = userInfo.image;
             const game = await GamesModel.findOne({ _id: gameId });
-            const expiresInMinutes = game.expiresInMinutes;
 
             if (!game) {
                 console.error('Игра не найдена!');
@@ -132,7 +131,7 @@ io.on('connection', async (socket) => {
                 },
                 { new: true }
             );
-            await GamesModel.updateMany({}, { $unset: { expiresInMinutes: 1, createdAt: 1, expiresInMinutes: 1, expiresAt: 1 } });
+            await GamesModel.updateMany({}, { $unset: { expiresInMinutes: 1, createdAt: 1, expiresAt: 1 } });
 
             socket.emit('updateUserCount', updatedGame.game_online);
             socket.emit('updateUsersOnline', updatedGame.game_online.online);
@@ -255,6 +254,20 @@ io.on('connection', async (socket) => {
                     },
                     { new: true }
                 );
+
+                if (game.game_online?.online === 0){
+                    await GamesModel.findOneAndUpdate(
+                        { _id: gameId },
+                        {
+                            $set: {
+                                expiresInMinutes: 60,
+                                expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+                                createdAt: Date.now()
+                            }
+                        },
+                        { new: true }
+                    );
+                }
 
                 socket.emit('updateUserCount', updatedGame.game_online);
 
