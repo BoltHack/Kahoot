@@ -416,6 +416,7 @@ header{
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, visibility 0.3s;
+    z-index: 4;
 }
 
 .modal {
@@ -462,7 +463,7 @@ header{
 
 
 
-#loaderSvg {
+#loaderSvg, #bannedLoaderSvg {
     width: 3.25em;
     transform-origin: center;
     animation: rotate4 2s linear infinite;
@@ -498,4 +499,72 @@ circle {
     100% {
         stroke-dashoffset: -125px;
     }
+}
+
+
+.kick-btn, .unban-btn {
+    cursor: pointer;
+    background-color: #24527a;
+    color: white;
+    border: none;
+    border-bottom: 5px;
+}
+
+.banned-users {
+    position: absolute;
+    top: 30%;
+    right: 4%;
+}
+.banned-users a {
+    color: #24527a;
+    cursor: pointer;
+}
+
+#bannedPlayersMenu {
+    width: 500px;
+    max-height: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+}
+#bannedUsersCount {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 500px;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50px);
+}
+#bannedPlayersMenu.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+#bannedPlayersMenu h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.banned-container {
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+    width: 102px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-sizing: border-box;
+}
+.not-found {
+    text-align: center;
 }

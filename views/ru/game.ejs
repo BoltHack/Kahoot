@@ -15,6 +15,7 @@
     const gamesId = `<%= gameId._id %>`;
     const gamesExpiresInSeconds = `<%= gameId.game_expiresInSeconds %>`;
     const gameMaxQuestions = `<%= gameId.game_max_questions %>`;
+    const authorId = `<%= gameId.game_author.id %>`;
     const sounds = '<%= soundTrack %>';
     const localeType = '<%= locale %>';
 </script>
@@ -81,6 +82,11 @@
             <div id="correctAnswersCount" class="game-correct-answers-count"></div>
             <div id="answersCount" class="answers-count"></div>
     </div>
+    <% if (gameId.game_author.id === user.id) {%>
+        <div class="banned-users">
+            <a id="openBannedPlayersMenu">Забаненные игроки</a>
+        </div>
+    <% } %>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
         <div class="modal">
@@ -94,6 +100,22 @@
             <button class="close-btn" id="closeModal">Закрыть</button>
         </div>
     </div>
+    <% if (gameId.game_author.id === user.id) {%>
+        <div class="overlay" id="overlayBannedUsersMenu">
+            <div id="bannedPlayersMenu">
+                <h2 style="text-align: center">Забаненные игроки</h2>
+                <div class="card">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="bannedUsersCount"></div>
+                </div>
+<!--                <p class="not-found" id="not-banned-users">Нет забаненных игроков.</p>-->
+                <button class="close-btn" id="closeBannedUsersMenu" style="position: absolute; top: 0; right: 2%;">Закрыть</button>
+            </div>
+        </div>
+    <% } %>
     <div class="game-pin">
         <span>
             <p>Код игры:</p>
@@ -107,5 +129,6 @@
 <script src="/javascripts/socket.js"></script>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/alert.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

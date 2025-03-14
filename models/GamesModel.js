@@ -58,6 +58,18 @@ const GameUsersSchema = new Schema({
     }
 })
 
+const BannedUsersSchema = new Schema({
+    bannedId: {
+        type: String
+    },
+    bannedName: {
+        type: String
+    },
+    bannedImage: {
+        type: String
+    }
+})
+
 const LeadersSchema = new Schema({
     name: {
         type: String
@@ -114,16 +126,21 @@ const GamesSchema = new Schema({
     game_leaders: {
         type: [LeadersSchema]
     },
+    game_banned_users: {
+        type: [BannedUsersSchema]
+    },
     createdAt: {
         type: Date,
         default: Date.now,
+        // immutable: true
     },
     expiresInMinutes: {
         type: Number,
         required: true
     },
     expiresAt: {
-        type: Date
+        type: Date,
+        index: { expires: 0 }
     },
 });
 

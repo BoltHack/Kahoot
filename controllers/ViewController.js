@@ -47,10 +47,9 @@ class ViewController {
 
             const id = user.id;
             await UsersModel.findByIdAndUpdate(id, { $set: { current_game: game_id }, game: { game_id: user.id, game_name: user.name, game_answers: 0, game_correct_answers: 0 } });
-            await GamesModel.findByIdAndUpdate(game_id, { $set: { expiresInMinutes: 60 } });
             console.log('добавлен новый игрок:', game_id);
-            gameId.game_users.push({userId: user.id});
-            await gameId.save();
+            // gameId.game_users.push({userId: user.id});
+            // await gameId.save();
 
             return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale});
         } catch (e) {

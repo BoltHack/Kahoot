@@ -75,11 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 stopSound();
                                 const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
 
-                                const openModal = document.getElementById('openModal');
-                                const closeModal = document.getElementById('closeModal');
                                 const overlay = document.getElementById('overlay');
                                 const modal = document.querySelector('.modal');
-
 
                                 requestSent = true;
                                 overlay.classList.add('active');
@@ -170,3 +167,18 @@ closeModal.addEventListener('click', () => {
 //         modal.classList.remove('active');
 //     }
 // });
+
+const overlayBannedUsersMenu = document.getElementById('overlayBannedUsersMenu');
+const bannedPlayersMenu = document.getElementById('bannedPlayersMenu');
+document.getElementById('openBannedPlayersMenu').addEventListener('click', () => {
+    overlayBannedUsersMenu.classList.add('active');
+    bannedPlayersMenu.classList.add('active');
+    setTimeout(function () {
+        socket.emit('requestBannedUsersCount');
+    }, 500);
+})
+
+document.getElementById('closeBannedUsersMenu').addEventListener('click', () => {
+    overlayBannedUsersMenu.classList.remove('active');
+    bannedPlayersMenu.classList.remove('active');
+})
