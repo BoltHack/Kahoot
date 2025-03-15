@@ -315,7 +315,8 @@ class PostController {
                 const {game_id} = req.params;
                 const getData = await GamesModel.findById(game_id);
                 const gameQuestions = getData.game_questions;
-                res.json({gameQuestions});
+                const gameType = getData.game_type
+                res.json({gameQuestions, gameType});
             }
         }catch (err){
             console.error('Ошибка:', err);

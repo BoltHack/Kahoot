@@ -91,9 +91,7 @@ const GamesSchema = new Schema({
     },
     game_online: {
         users: {
-            type: Object,
-            // name: {type: String},
-            // image: {type: String}
+            type: Object
         },
         max_online: {
             type: Number
@@ -116,6 +114,9 @@ const GamesSchema = new Schema({
     },
     game_max_questions: {
         type: Number
+    },
+    game_type: {
+        type: String,
     },
     game_questions: {
         type: [QuestionsSchema],

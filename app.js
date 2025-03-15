@@ -22,7 +22,6 @@ io.on('connection', async (socket) => {
     socket.on('disconnect', async () => {
         const { gameId, userId, userName } = socket;
         const game_max_online = await GamesModel.findById(gameId);
-        // const expiresInMinutes = game_max_online.expiresInMinutes;
 
         if (!gameId || !userId) {
             console.error('Ошибка: не переданы gameId или userId');
@@ -57,6 +56,7 @@ io.on('connection', async (socket) => {
                     {
                         $set: {
                             'game_leaders': [],
+                            'game_type': 'Open'
                         }
                     },
                     { new: true }
@@ -69,7 +69,8 @@ io.on('connection', async (socket) => {
                         $set: {
                             expiresInMinutes: 60,
                             expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-                            createdAt: Date.now()
+                            createdAt: Date.now(),
+                            'game_type': 'Open'
                         }
                     },
                     { new: true }
@@ -96,6 +97,7 @@ io.on('connection', async (socket) => {
         const updateAnswers = await UsersModel.findById(userId);
         const game_questions = await GamesModel.findById(gameId)
         const checkUserBanned = await GamesModel.findById(gameId);
+        const updateGameTypeCount = await GamesModel.findById(gameId);
 
         if (!gameUsers[gameId]) {
             gameUsers[gameId] = [];
@@ -139,6 +141,7 @@ io.on('connection', async (socket) => {
             socket.emit('updateAnswersCount', updateAnswers.game);
             socket.emit('updateGameQuestions', game_questions);
             socket.emit('updateBannedUsers', checkUserBanned.game_banned_users);
+            socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
 
             socket.on('requestAnswersCount', async () => {
                 const updateAnswers = await UsersModel.findById(userId);
@@ -153,6 +156,10 @@ io.on('connection', async (socket) => {
             socket.on('requestBannedUsersCount', async () => {
                 const updateBannedUsersCount = await GamesModel.findById(gameId);
                 socket.emit('updateBannedUsersCount', updateBannedUsersCount.game_banned_users);
+            });
+
+            socket.on('requestGameTypeCount', async () => {
+                socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             });
 
             socket.on('ban', async (userId) => {
@@ -196,6 +203,24 @@ io.on('connection', async (socket) => {
                 io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
                 socket.emit('unbanBroadcast', userId);
             });
+
+            socket.on('closeGame', async () => {
+                await GamesModel.updateOne(
+                    { _id: gameId },
+                    { $set: { game_type: 'Close' } }
+                );
+                console.log('the game is closed.');
+                socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
+            })
+            socket.on('openGame', async () => {
+                await GamesModel.updateOne(
+                    { _id: gameId },
+                    { $set: { game_type: 'Open' } }
+                );
+
+                console.log('the game is open.');
+                socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
+            })
 
 
             if (updatedGame) {
