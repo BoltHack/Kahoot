@@ -24,13 +24,15 @@ const startCountdown = () => {
             checkReload();
             gameTimerStart();
             soundTrackAuto();
+            setTimeout(function () {
+                socket.emit('closeGame');
+            }, 500);
         } else {
             document.getElementById('timer').innerHTML = `<p class="timer">${localeType === 'en' ? 'Before the game starts: ' + timeLeft : 'До начала игры: ' + timeLeft}</p>`;
             timeLeft--;
         }
     }, 1000);
 };
-
 
 let gameTimerCooldown;
 let gameTimer = Number(gamesExpiresInSeconds);
@@ -132,7 +134,19 @@ socket.on('updateUserCount', (onlineCount) => {
         clearInterval(countdown);
         timeLeft = 10;
         console.log('Поехали!');
-        startCountdown();
+        fetch(`/getData/${gamesId}`, {
+            method: 'post',
+            headers: {
+                'Content-type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                let {gameType} = data;
+                if (gameType === 'Open') {
+                    startCountdown();
+                }
+            })
     }
 
     if (sessionStorage.getItem("redirectAfterReload") === "true"){
@@ -237,9 +251,9 @@ socket.on('updateUserCount', (onlineCount) => {
         });
     });
 
-    socket.on('banBroadcast', (userName) => {
+    socket.on('banBroadcast', (userId) => {
         Swal.fire({
-            text: localeType === 'en' ? `Player ${userName} banned!` : `Игрок ${userName} забанен!`,
+            text: localeType === 'en' ? `Player ${userId} banned!` : `Игрок ${userId} забанен!`,
             icon: "success",
             position: "top-end",
             timer: 2000,
@@ -250,6 +264,7 @@ socket.on('updateUserCount', (onlineCount) => {
             }
         });
     });
+
 });
 
 socket.emit('joinGame', gameId, userId, userName);
@@ -302,4 +317,12 @@ function unbanUser(userId) {
 
 socket.on('reloadPage', () => {
     window.location.reload();
+});
+
+socket.on('updateGameTypeCount', (gameTypeCount) => {
+    console.log('updateGameTypeCount', gameTypeCount);
+    if (gameTypeCount === 'Close'){
+        const gameTypeMsg = localeType === 'en' ? 'This game has already begun.' : 'Данная игра уже началась.';
+        window.location.replace(`/error?message=${encodeURIComponent(gameTypeMsg)}`);
+    }
 });
