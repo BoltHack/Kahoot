@@ -30,6 +30,7 @@ class PostController {
                     online: 0,
                 },
                 game_max_questions: 2,
+                game_type: 'Open'
             })
             await newGame.save();
 

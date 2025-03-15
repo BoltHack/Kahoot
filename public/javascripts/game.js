@@ -77,10 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                                 const overlay = document.getElementById('overlay');
                                 const modal = document.querySelector('.modal');
-
-                                requestSent = true;
                                 overlay.classList.add('active');
                                 modal.classList.add('active');
+
+                                requestSent = true;
                                 fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' }
