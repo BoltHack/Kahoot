@@ -374,7 +374,8 @@ server.listen(3000, async () => {
                 'game_online.online': 0,
                 'game_online.users': [],
                 'game_users': [],
-                'game_leaders': []
+                'game_leaders': [],
+                'game_type': 'Open'
             }
         },
     );

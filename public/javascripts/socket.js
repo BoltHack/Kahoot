@@ -54,6 +54,11 @@ const updateTimer = () => {
         }, 500);
         stopSound();
         const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+
+        const overlay = document.getElementById('overlay');
+        const modal = document.querySelector('.modal');
+        overlay.classList.add('active');
+        modal.classList.add('active');
         requestSent = true;
         fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
             method: 'POST',
@@ -131,9 +136,6 @@ socket.on('updateUserCount', (onlineCount) => {
         stopSound();
     }
     if (onlineCount.online >= 2) {
-        clearInterval(countdown);
-        timeLeft = 10;
-        console.log('Поехали!');
         fetch(`/getData/${gamesId}`, {
             method: 'post',
             headers: {
@@ -144,7 +146,10 @@ socket.on('updateUserCount', (onlineCount) => {
             .then(data => {
                 let {gameType} = data;
                 if (gameType === 'Open') {
+                    clearInterval(countdown);
+                    timeLeft = 10;
                     startCountdown();
+                    console.log('Поехали!');
                 }
             })
     }
