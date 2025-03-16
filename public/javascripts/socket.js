@@ -53,6 +53,8 @@ const updateTimer = () => {
             socket.emit('requestLeadersCount');
         }, 500);
         stopSound();
+        // redirectTimerStart();
+        // socket.emit('closeGame');
         const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
 
         const overlay = document.getElementById('overlay');
@@ -331,3 +333,18 @@ socket.on('updateGameTypeCount', (gameTypeCount) => {
         window.location.replace(`/error?message=${encodeURIComponent(gameTypeMsg)}`);
     }
 });
+
+// let redirectCountdown;
+// let redirectTimeLeft = 10;
+// const redirectTimerStart = () => {
+//     redirectCountdown = setInterval(() => {
+//         if (redirectTimeLeft <= 0) {
+//             clearInterval(redirectCountdown);
+//             document.getElementById('redirect-timer').innerHTML = '';
+//             window.location.replace('/');
+//         } else {
+//             document.getElementById('redirect-timer').innerHTML = `<p class="redirect-timer">${localeType === 'en' ? 'Before the game end: ' + redirectTimeLeft : 'До конца игры: ' + redirectTimeLeft}</p>`;
+//             redirectTimeLeft--;
+//         }
+//     }, 1000);
+// };
