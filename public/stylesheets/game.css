@@ -445,6 +445,9 @@ header{
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+    position: absolute;
+    top: 0;
+    right: 2%;
 }
 
 .close-btn:hover {
@@ -571,4 +574,15 @@ circle {
 }
 .not-found {
     text-align: center;
+}
+
+.redirect-button {
+    margin-top: 15px;
+    padding: 10px 18px;
+    border: none;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
 }

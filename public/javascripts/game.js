@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     socket.emit('requestLeadersCount');
                                 }, 500);
                                 stopSound();
+                                // redirectTimerStart();
                                 const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
 
                                 const overlay = document.getElementById('overlay');
@@ -156,10 +157,10 @@ checkGamePermissions();
 
 
 
-closeModal.addEventListener('click', () => {
-    overlay.classList.remove('active');
-    modal.classList.remove('active');
-});
+// closeModal.addEventListener('click', () => {
+//     overlay.classList.remove('active');
+//     modal.classList.remove('active');
+// });
 
 // overlay.addEventListener('click', (e) => {
 //     if (e.target === overlay) {

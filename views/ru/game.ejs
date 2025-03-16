@@ -97,7 +97,7 @@
             <div class="card">
                 <div id="leaderBoard" class="wrapper"></div>
             </div>
-            <button class="close-btn" id="closeModal">Закрыть</button>
+            <button onclick="window.location.replace('/');" class="redirect-button">Выйти из игры</button>
         </div>
     </div>
     <% if (gameId.game_author.id === user.id) {%>
@@ -111,8 +111,7 @@
                     <br>
                     <div id="bannedUsersCount"></div>
                 </div>
-<!--                <p class="not-found" id="not-banned-users">Нет забаненных игроков.</p>-->
-                <button class="close-btn" id="closeBannedUsersMenu" style="position: absolute; top: 0; right: 2%;">Закрыть</button>
+                <button class="close-btn" id="closeBannedUsersMenu">X</button>
             </div>
         </div>
     <% } %>
