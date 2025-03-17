@@ -213,9 +213,11 @@ class PostController {
         try {
             const { game_id } = req.params;
             const game = await GamesModel.findById(game_id);
+            const locale = req.cookies['locale'] || 'en';
 
             if (game.game_online.online > 0){
-                return res.redirect(`/error?message=${encodeURIComponent('Вы не можете Удалить игру, в котором есть пользователи.')}`);
+                const errorMsg = locale === 'en' ? 'You cannot Delete a game that has players in it.' : 'Вы не можете Удалить игру, в котором есть игроки.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
             await GamesModel.findByIdAndDelete(game_id);
             return res.redirect('/my-games');
