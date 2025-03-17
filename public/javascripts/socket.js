@@ -28,7 +28,7 @@ const startCountdown = () => {
                 socket.emit('closeGame');
             }, 500);
         } else {
-            document.getElementById('timer').innerHTML = `<p class="timer">${localeType === 'en' ? 'Before the game starts: ' + timeLeft : 'До начала игры: ' + timeLeft}</p>`;
+            document.getElementById('timer').innerHTML = `<span class="timer">${localeType === 'en' ? `<p class="beforeStart">Before the game starts</p><p class="timerLeft">${timeLeft}</p>` : `<p class="beforeStart">До начала игры</p><p class="timerLeft">${timeLeft}</p>` }</span>`;
             timeLeft--;
         }
     }, 1000);
@@ -113,7 +113,8 @@ socket.on('updateUserCount', (onlineCount) => {
   ${user.userId === id 
                 ? (localeType === 'en' ? 'You' : 'Вы') 
                 : authorId === id 
-                    ? `${user.userName} <button onclick="banUser('${user.userId}')" class="ban-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>` 
+                    ? `${user.userName} <button id="ban-${user.userId}" onclick="banUser('${user.userId}')" class="ban-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>
+                                        <a id="banLoad-${user.userId}" hidden>${localeType === 'en' ? 'Loading...' : 'Загрузка...'}</a>` 
                     : user.userName}
 </span>
     </div>
@@ -216,12 +217,14 @@ socket.on('updateUserCount', (onlineCount) => {
 
     socket.on('updateBannedUsersCount', (bannedUsersCount) => {
         const users = document.getElementById('bannedUsersCount');
+        const banLoaderSvg = document.getElementById('banLoaderSvg');
         if (users && Array.isArray(bannedUsersCount)) {
+            banLoaderSvg.style.display = 'none';
             users.innerHTML = bannedUsersCount
                 .map(user => `
 <div class="banned-container" id="banId-${user.bannedId}">
     <div class="userImage">
-        <div style="display: block; margin-top: -10px;" title="${user.bannedId}">
+        <div style="display: block; margin-top: -10px;" title="${user.bannedName + ' | ' + user.bannedId}">
            <p>${user.bannedName}</p>
            <img src="data:image/png;base64,${user.bannedImage}" style="margin-top: -14px;">
         </div>
@@ -237,6 +240,7 @@ socket.on('updateUserCount', (onlineCount) => {
                 .join('');
         }
         if (!bannedUsersCount || !bannedUsersCount.length) {
+            banLoaderSvg.style.display = 'none';
             users.innerHTML = `<p class="not-found">Нет забаненных игроков.</p>`;
         }
     })
@@ -302,6 +306,8 @@ function banUser(userId) {
             if (!alreadyBannedUserIds.includes(userId)) {
                 socket.emit('ban', userId);
                 alreadyBannedUserIds.push(userId);
+                document.getElementById('ban-'+userId).hidden = true;
+                document.getElementById('banLoad-'+userId).hidden = false;
             } else {
                 console.log('Пользователь уже забанен:', userId);
             }
@@ -316,6 +322,7 @@ function unbanUser(userId) {
     if (typeof socket !== 'undefined') {
         if (authorId === id) {
             socket.emit('unban', userId);
+            alreadyBannedUserIds.splice(userId);
         }
     } else {
         console.error("Игрок не найден.");

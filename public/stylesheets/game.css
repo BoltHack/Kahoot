@@ -189,6 +189,15 @@ header{
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.timerLeft {
+    margin-top: -5px;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 500;
+}
+.beforeStart {
+    font-size: 18px;
+}
 #gameTimer{
     position: absolute;
     top: 30%;
@@ -467,7 +476,7 @@ header{
 
 
 
-#loaderSvg, #bannedLoaderSvg {
+#loaderSvg, #banLoaderSvg {
     width: 3.25em;
     transform-origin: center;
     animation: rotate4 2s linear infinite;

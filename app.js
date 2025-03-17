@@ -162,18 +162,14 @@ io.on('connection', async (socket) => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             });
 
+            let alreadyBannedUserIds = [];
+
             socket.on('ban', async (userId) => {
                 const {gameId} = socket;
                 const getUserData = await UsersModel.findById(userId);
-                const game = await GamesModel.findById(gameId);
 
-                const isAlreadyBanned = game.game_banned_users.some(user => {
-                    const bannedId = user.bannedId.toString();
-                    const checkingUserId = userId.toString();
-                    return bannedId === checkingUserId;
-                });
-
-                if (!isAlreadyBanned){
+                if (!alreadyBannedUserIds.includes(userId)){
+                    alreadyBannedUserIds.push(userId);
                     let updateBannedUsers = await GamesModel.findOneAndUpdate(
                         { _id: gameId },
                         {
@@ -193,7 +189,7 @@ io.on('connection', async (socket) => {
 
             socket.on('unban', async (userId) => {
                 const { gameId } = socket;
-
+                alreadyBannedUserIds.splice(userId);
                 let updateBannedUsers = await GamesModel.updateOne(
                     { _id: gameId },
                     { $pull: { game_banned_users: { bannedId: { $in: userId } } } }
@@ -280,6 +276,18 @@ io.on('connection', async (socket) => {
                     { new: true }
                 );
 
+                if (game.game_online?.online <= 1){
+                    await GamesModel.findOneAndUpdate(
+                        { _id: gameId },
+                        {
+                            $set: {
+                                'game_leaders': [],
+                                'game_type': 'Open'
+                            }
+                        },
+                        { new: true }
+                    );
+                }
                 if (game.game_online?.online === 0){
                     await GamesModel.findOneAndUpdate(
                         { _id: gameId },
@@ -287,7 +295,8 @@ io.on('connection', async (socket) => {
                             $set: {
                                 expiresInMinutes: 60,
                                 expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-                                createdAt: Date.now()
+                                createdAt: Date.now(),
+                                'game_type': 'Open'
                             }
                         },
                         { new: true }

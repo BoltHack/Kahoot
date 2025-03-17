@@ -97,13 +97,16 @@
             <div class="card">
                 <div id="leaderBoard" class="wrapper"></div>
             </div>
-            <button onclick="window.location.replace('/');" class="redirect-button">Quit the game</button>
+            <button onclick="window.location.replace('/');" class="redirect-button">Leave the game</button>
         </div>
     </div>
     <% if (gameId.game_author.id === user.id) {%>
         <div class="overlay" id="overlayBannedUsersMenu">
             <div id="bannedPlayersMenu">
                 <h2 style="text-align: center">List of banned players</h2>
+                <svg viewBox="25 25 50 50" id="banLoaderSvg">
+                    <circle r="20" cy="50" cx="50"></circle>
+                </svg>
                 <div class="card">
                     <br>
                     <br>
