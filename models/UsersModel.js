@@ -12,6 +12,12 @@ const MyGamesSchema = new Schema({
     gameId: { type: String },
 });
 
+const MyFriendsSchema = new Schema({
+    id: { type: String },
+    name: { type: String },
+    image: { type: String },
+});
+
 const GameSchema = new Schema({
     game_id: {
         type: String,
@@ -73,6 +79,10 @@ const UsersSchema = new Schema({
     },
     game: {
         type: [GameSchema],
+        default: []
+    },
+    myFriends: {
+        type: [MyFriendsSchema],
         default: []
     }
 });

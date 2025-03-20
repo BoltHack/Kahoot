@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Friends</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/friends.css">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main class="friends-container">
+    <h1>My friends</h1>
+    <div class="friends-list">
+                <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
+        <circle r="20" cy="50" cx="50"></circle>
+        </svg>
+        <div id="myFriendsCount"></div>
+    </div>
+
+    <div class="add-friend">
+        <input type="text" placeholder="Enter player ID" id="friendId" required>
+        <button onclick="addFriend()">Send</button>
+    </div>
+</main>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/friends.js"></script>
+</body>
+</html>

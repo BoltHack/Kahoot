@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {UsersModel} = require('../models/UsersModel')
 const {GamesModel} = require("../models/GamesModel");
+const {authenticateJWT} = require('../middlewares/jwtAuth');
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
@@ -9,7 +10,16 @@ class ViewController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            return res.render(locale === 'en' ? 'en/main' : 'ru/main', {locale, acceptCookies});
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, acceptCookies});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, acceptCookies});
+            }
         } catch (e) {
             next(e);
         }
@@ -17,8 +27,9 @@ class ViewController {
 
     static createGameView = async (req, res, next) => {
         try {
+            const user = req.user;
             const locale = req.cookies['locale'] || 'en';
-            return res.render(locale === 'en' ? 'en/create-game' : 'ru/create-game', {locale});
+            return res.render(locale === 'en' ? 'en/create-game' : 'ru/create-game', {user, locale});
         } catch (e) {
             next(e);
         }
@@ -110,16 +121,17 @@ class ViewController {
             const myGamesId = getUserId.myGames.map(games => games.gameId);
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
 
-            return res.render(locale === 'en' ? 'en/my-games' : 'ru/my-games', {getUserId, myGames, locale});
+            return res.render(locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, locale});
         } catch (e) {
             next(e);
         }
     }
 
-    static shopView = async (req, res, next) => {
+    static friendsView = async (req, res, next) => {
         try {
+            const user = req.user;
             const locale = req.cookies['locale'] || 'en';
-            return res.render(locale === 'en' ? 'en/shop' : 'ru/shop', {locale});
+            return res.render(locale === 'en' ? 'en/friends' : 'ru/friends', {user, locale});
         } catch (e) {
             next(e);
         }
@@ -153,7 +165,16 @@ class ViewController {
     static privacyPolicyView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {locale});
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, locale});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, locale});
+            }
         } catch (e) {
             next(e);
         }
@@ -162,7 +183,16 @@ class ViewController {
     static rulesView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {locale});
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user, locale});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user, locale});
+            }
         } catch (e) {
             next(e);
         }
@@ -171,7 +201,16 @@ class ViewController {
     static aboutUsView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {locale});
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user, locale});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user, locale});
+            }
         } catch (e) {
             next(e);
         }

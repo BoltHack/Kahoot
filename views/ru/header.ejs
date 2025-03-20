@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/header.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
     <noscript>
         <style>
             body{
@@ -28,6 +29,7 @@
 </head>
 <script>
     const localeType = '<%= locale %>';
+    const sendId = '<%= user.id %>';
 </script>
 <body>
 <header>
@@ -67,7 +69,10 @@
             <% } %>
     </div>
 </header>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/header.js"></script>
 <script src="/javascripts/locale.js"></script>
+<script src="/javascripts/alert.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

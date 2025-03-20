@@ -1,0 +1,1 @@
+socket.emit('requestMyFriendsCount', sendId);
