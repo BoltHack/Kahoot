@@ -6,11 +6,13 @@
     <title>Kahoot | <%= gameId.game_name %></title>
     <link rel="icon" type="image/png" href="/images/icon.png">
     <link rel="stylesheet" href="/stylesheets/game.css">
+    <link rel="stylesheet" href="/stylesheets/friends.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
 </head>
 <script>
     const game = '<%= myGame %>';
     const id = '<%= user.id %>';
+    const sendId = '<%= user.id %>';
     const name = '<%= user.name %>';
     const gamesId = `<%= gameId._id %>`;
     const gamesExpiresInSeconds = `<%= gameId.game_expiresInSeconds %>`;
@@ -82,11 +84,16 @@
             <div id="correctAnswersCount" class="game-correct-answers-count"></div>
             <div id="answersCount" class="answers-count"></div>
     </div>
-    <% if (gameId.game_author.id === user.id) {%>
-        <div class="banned-users">
-            <a id="openBannedPlayersMenu">Забаненные игроки</a>
+    <div class="user-info">
+        <% if (gameId.game_author.id === user.id) {%>
+            <div class="banned-users">
+                <button id="openBannedPlayersMenu">Банлист</button>
+            </div>
+        <% } %>
+        <div class="my-friends">
+            <button id="openFriendListMenu">Друзья</button>
         </div>
-    <% } %>
+    </div>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
         <div class="modal">
@@ -98,6 +105,19 @@
                 <div id="leaderBoard" class="wrapper"></div>
             </div>
             <button onclick="window.location.replace('/');" class="redirect-button">Выйти из игры</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlayFriendListMenu">
+        <div id="friendListMenu">
+            <h2 style="text-align: center">Список друзей</h2>
+            <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
+                <circle r="20" cy="50" cx="50"></circle>
+            </svg>
+            <div class="card">
+                <div id="myFriendsCount" class="wrapper"></div>
+            </div>
+            <button class="close-btn" id="closeFriendsMenu">X</button>
         </div>
     </div>
     <% if (gameId.game_author.id === user.id) {%>
@@ -130,6 +150,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/socket.js"></script>
 <script src="/javascripts/timer.js"></script>
+<script src="/javascripts/friends.js"></script>
 <script src="/javascripts/alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

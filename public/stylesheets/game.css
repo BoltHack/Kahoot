@@ -476,7 +476,7 @@ header{
 
 
 
-#loaderSvg, #banLoaderSvg {
+#loaderSvg, #banLoaderSvg, #friendsLoaderSvg {
     width: 3.25em;
     transform-origin: center;
     animation: rotate4 2s linear infinite;
@@ -523,17 +523,36 @@ circle {
     border-bottom: 5px;
 }
 
-.banned-users {
+.user-info {
     position: absolute;
     top: 30%;
     right: 4%;
+    display: block;
 }
-.banned-users a {
-    color: #24527a;
+.user-info button {
+    margin-top: 10px;
+    text-align: center;
+    background-color: #24527a;
+    border-radius: 10px;
+    padding: 5px;
+    width: 100px;
     cursor: pointer;
+    color: white;
+    border: none;
+}
+.user-info button:hover {
+    opacity: 0.9;
+}
+.user-info button:active {
+    opacity: 1;
+}
+.user-info a {
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
 }
 
-#bannedPlayersMenu {
+#bannedPlayersMenu, #friendListMenu {
     width: 500px;
     max-height: 400px;
     background: white;
@@ -557,12 +576,12 @@ circle {
     justify-content: center;
     transform: translateY(-50px);
 }
-#bannedPlayersMenu.active {
+#bannedPlayersMenu.active, #friendListMenu.active {
     transform: translateY(0);
     opacity: 1;
 }
 
-#bannedPlayersMenu h2 {
+#bannedPlayersMenu h2, #friendListMenu h2 {
     margin-top: 0;
     text-align: center;
 }
@@ -595,3 +614,36 @@ circle {
     cursor: pointer;
     transition: 0.3s;
 }
+
+/*.friend-container {*/
+/*    border-bottom: 1px solid black;*/
+/*    width: 200px;*/
+/*}*/
+/*.friend-delete-a {*/
+/*    color: #c1121f;*/
+/*    font-size: 14px;*/
+/*    margin-top: 10px;*/
+/*    margin-left: 10px;*/
+/*    cursor: pointer;*/
+/*}*/
+/*.friend-delete-a:hover {*/
+/*    text-decoration: underline;*/
+/*    text-decoration-color: black;*/
+/*}*/
+/*.friend-invite-a {*/
+/*    color: #4c956c;*/
+/*    font-size: 14px;*/
+/*    margin-top: 10px;*/
+/*    margin-left: 10px;*/
+/*    cursor: pointer;*/
+/*}*/
+/*.friend-invite-a:hover {*/
+/*    text-decoration: underline;*/
+/*    text-decoration-color: black;*/
+/*}*/
+
+/*.friend-image {*/
+/*    width: 50px;*/
+/*    height: 50px;*/
+/*    border-radius: 50%;*/
+/*}*/

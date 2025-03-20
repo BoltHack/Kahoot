@@ -276,6 +276,35 @@ socket.on('updateUserCount', (onlineCount) => {
         });
     });
 
+//     socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
+//         console.log('updateMyFriendsCount', updateMyFriendsCount);
+//         const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
+//
+//         const myFriendsCount = document.getElementById('myFriendsCount');
+//         if (myFriendsCount && Array.isArray(updateMyFriendsCount)) {
+//             friendsLoaderSvg.style.display = 'none';
+//             myFriendsCount.innerHTML = updateMyFriendsCount
+//                 .map(friends => `
+// <br>
+// <div class="friend-container">
+//     <div style="display: flex; gap: 10px;">
+//         <img src="data:image/png;base64,${friends.image}" class="friend-image">
+//         <p>${friends.name}</p>
+//         <a onclick="deleteFriend('${friends.id}')" class="friend-delete-a">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
+//         <a onclick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>
+//     </div>
+//     <br>
+// </div>
+//
+// `)
+//                 .join('');
+//         }
+//         if (!updateMyFriendsCount || !updateMyFriendsCount.length) {
+//             friendsLoaderSvg.style.display = 'none';
+//             myFriendsCount.innerHTML = `<p>${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>`;
+//         }
+//     });
+
 });
 
 socket.emit('joinGame', gameId, userId, userName);
@@ -340,18 +369,3 @@ socket.on('updateGameTypeCount', (gameTypeCount) => {
         window.location.replace(`/error?message=${encodeURIComponent(gameTypeMsg)}`);
     }
 });
-
-// let redirectCountdown;
-// let redirectTimeLeft = 10;
-// const redirectTimerStart = () => {
-//     redirectCountdown = setInterval(() => {
-//         if (redirectTimeLeft <= 0) {
-//             clearInterval(redirectCountdown);
-//             document.getElementById('redirect-timer').innerHTML = '';
-//             window.location.replace('/');
-//         } else {
-//             document.getElementById('redirect-timer').innerHTML = `<p class="redirect-timer">${localeType === 'en' ? 'Before the game end: ' + redirectTimeLeft : 'До конца игры: ' + redirectTimeLeft}</p>`;
-//             redirectTimeLeft--;
-//         }
-//     }, 1000);
-// };

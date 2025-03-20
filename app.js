@@ -335,7 +335,13 @@ io.on('connection', async (socket) => {
         const data = await UsersModel.findById(senderData.senderData.senderId);
 
         if (friendSocketId) {
-            io.to(friendSocketId).emit('friendRequest', {requestData: {senderName: data.name, senderId: data.id, senderImage: data.image, friendId: senderData.senderData.friendId}});
+            io.to(friendSocketId).emit('friendRequest', {
+                requestData: {
+                    senderName: data.name,
+                    senderId: data.id,
+                    senderImage: data.image,
+                    friendId: senderData.senderData.friendId,
+            }});
             console.log(`Запрос в друзья отправлен пользователю ${senderData.senderData.friendId}`);
         } else {
             console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
@@ -403,9 +409,30 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('requestMyFriendsCount', async (sendId) => {
+        // console.log('gameUsers', gameUsers[userId])
         const updateMyFriendsCount = await UsersModel.findById(sendId);
         socket.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
     });
+
+
+    socket.on('inviteFriend', async (senderData) => {
+        const friendSocketId = clients[senderData.senderData.friendId];
+
+        const data = await UsersModel.findById(senderData.senderData.senderId);
+
+        if (friendSocketId) {
+            io.to(friendSocketId).emit('inviteRequest', {
+                requestData: {
+                    senderName: data.name,
+                    senderImage: data.image,
+                    gameId: senderData.senderData.gameId
+                }
+            });
+            console.log(`Запрос отправлен пользователю ${senderData.senderData.friendId}`);
+        } else {
+            console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+        }
+    })
 });
 
 
