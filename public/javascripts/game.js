@@ -169,17 +169,35 @@ checkGamePermissions();
 //     }
 // });
 
-const overlayBannedUsersMenu = document.getElementById('overlayBannedUsersMenu');
-const bannedPlayersMenu = document.getElementById('bannedPlayersMenu');
-document.getElementById('openBannedPlayersMenu').addEventListener('click', () => {
-    overlayBannedUsersMenu.classList.add('active');
-    bannedPlayersMenu.classList.add('active');
+if (authorId === id) {
+    const overlayBannedUsersMenu = document.getElementById('overlayBannedUsersMenu');
+    const bannedPlayersMenu = document.getElementById('bannedPlayersMenu');
+    document.getElementById('openBannedPlayersMenu').addEventListener('click', () => {
+        overlayBannedUsersMenu.classList.add('active');
+        bannedPlayersMenu.classList.add('active');
+        setTimeout(function () {
+            socket.emit('requestBannedUsersCount');
+        }, 500);
+    })
+
+    document.getElementById('closeBannedUsersMenu').addEventListener('click', () => {
+        overlayBannedUsersMenu.classList.remove('active');
+        bannedPlayersMenu.classList.remove('active');
+    })
+}
+
+
+const overlayFriendListMenu = document.getElementById('overlayFriendListMenu');
+const friendListMenu = document.getElementById('friendListMenu');
+document.getElementById('openFriendListMenu').addEventListener('click', () => {
+    overlayFriendListMenu.classList.add('active');
+    friendListMenu.classList.add('active');
     setTimeout(function () {
-        socket.emit('requestBannedUsersCount');
+        socket.emit('requestMyFriendsCount', id);
     }, 500);
 })
 
-document.getElementById('closeBannedUsersMenu').addEventListener('click', () => {
-    overlayBannedUsersMenu.classList.remove('active');
-    bannedPlayersMenu.classList.remove('active');
+document.getElementById('closeFriendsMenu').addEventListener('click', () => {
+    overlayFriendListMenu.classList.remove('active');
+    friendListMenu.classList.remove('active');
 })

@@ -85,6 +85,7 @@ const LeadersSchema = new Schema({
 const GamesSchema = new Schema({
     game_name: {
         type: String,
+        required: true
     },
     game_number: {
         type: Number
