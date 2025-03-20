@@ -179,3 +179,23 @@
     color: #555;
     cursor: pointer;
 }
+.success-message-request {
+    text-align: center;
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.accept-request {
+    color: #269b24;
+}
+.accept-request:hover {
+    text-decoration: underline;
+}
+
+#closeSuccessMenu {
+    color: #c1121f;
+}
+#closeSuccessMenu:hover {
+    text-decoration: underline;
+}

@@ -319,7 +319,25 @@ class PostController {
                 const getData = await GamesModel.findById(game_id);
                 const gameQuestions = getData.game_questions;
                 const gameType = getData.game_type
+
                 res.json({gameQuestions, gameType});
+            }
+        }catch (err){
+            console.error('Ошибка:', err);
+            res.status(500).json({error: err.message});
+            next(err);
+        }
+    }
+
+    static getUserData = async (req, res, next) => {
+        try {
+            if (req.cookies['token']) {
+                const {user_id} = req.params;
+                const getData = await UsersModel.findById(user_id);
+
+                const myFriends = getData.myFriends;
+
+                res.json({myFriends});
             }
         }catch (err){
             console.error('Ошибка:', err);

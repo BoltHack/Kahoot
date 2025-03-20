@@ -218,7 +218,6 @@ io.on('connection', async (socket) => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             })
 
-
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);
                 io.to(gameId).emit('updateUserCount', updatedGame.game_online);
@@ -322,21 +321,92 @@ io.on('connection', async (socket) => {
     });
 });
 
-// io.on('connection', (socket) => {
-//     socket.on('kick', async (userId) => {
-//         const {gameId} = socket;
-//         let updateBannedUsers = await GamesModel.findByIdAndUpdate(
-//             { _id: gameId },
-//             {
-//                 $push: { 'game_banned_users': {bannedId: userId} },
-//             },
-//             {new: true}
-//         );
-//         console.log('kick', userId, 'from', gameId);
-//         io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
-//     });
-// });
+const clients = {};
+io.on('connection', async (socket) => {
+    socket.on('registerUser', async (userId) => {
+        console.log('userId', userId);
+        clients[userId] = socket.id;
+        console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
+    });
 
+    socket.on('addFriend', async (senderData) => {
+        const friendSocketId = clients[senderData.senderData.friendId];
+
+        const data = await UsersModel.findById(senderData.senderData.senderId);
+
+        if (friendSocketId) {
+            io.to(friendSocketId).emit('friendRequest', {requestData: {senderName: data.name, senderId: data.id, senderImage: data.image, friendId: senderData.senderData.friendId}});
+            console.log(`Запрос в друзья отправлен пользователю ${senderData.senderData.friendId}`);
+        } else {
+            console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+        }
+    });
+
+    socket.on('acceptFriendRequest', async (acceptData) => {
+        const friend = await UsersModel.findById(acceptData.acceptData.dataId);
+        const sender = await UsersModel.findById(acceptData.acceptData.senderId);
+        const senderSocketId = clients[acceptData.acceptData.senderId];
+        console.log('friendSocketId', senderSocketId)
+
+        if (senderSocketId) {
+            await UsersModel.findOneAndUpdate(
+                { _id: acceptData.acceptData.senderId },
+                {
+                    $push: {
+                        myFriends: { id: friend.id, name: friend.name, image: friend.image }
+                    }
+                },
+                { new: true }
+            );
+
+            await UsersModel.findOneAndUpdate(
+                { _id: acceptData.acceptData.dataId },
+                {
+                    $push: {
+                        myFriends: { id: sender.id, name: sender.name, image: sender.image }
+                    }
+                },
+                { new: true }
+            );
+
+            const updateMyFriendsCount = await UsersModel.findById(acceptData.acceptData.senderId);
+            io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+            io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+
+            io.to(senderSocketId).emit('updateMyFriendsBroadcast', updateMyFriendsCount.myFriends);
+            console.log('send to', senderSocketId + ' | ' + acceptData.acceptData.senderId);
+        }
+    })
+
+    socket.on('delete-friend', async (deleteData) => {
+        const myId = deleteData.deleteData.myId;
+        const deleteId = deleteData.deleteData.deleteId;
+        console.log('deleteId', deleteId)
+
+        await UsersModel.findOneAndUpdate(
+            { _id: myId },
+            {
+                $pull: { myFriends: { id: { $in: deleteId } } }
+            },
+            { new: true }
+        );
+
+        await UsersModel.findOneAndUpdate(
+            { _id: deleteId },
+            {
+                $pull: { myFriends: { id: { $in: myId } } }
+            },
+            { new: true }
+        );
+        const updateMyFriendsCount = await UsersModel.findById(myId);
+        io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+    })
+
+    socket.on('requestMyFriendsCount', async (sendId) => {
+        const updateMyFriendsCount = await UsersModel.findById(sendId);
+        socket.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+    });
+});
 
 
 start();
