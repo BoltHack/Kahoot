@@ -336,6 +336,7 @@ io.on('connection', async (socket) => {
         const data = await UsersModel.findById(senderData.senderData.senderId);
 
         if (friendSocketId) {
+            socket.emit('broadcastFriendRequest');
             io.to(friendSocketId).emit('friendRequest', {
                 requestData: {
                     senderName: data.name,
