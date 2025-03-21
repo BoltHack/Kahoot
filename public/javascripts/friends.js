@@ -113,7 +113,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
 
 socket.on('updateMyFriendsBroadcast', async () => {
     Swal.fire({
-        text: localeType === 'en' ? 'Player Accepted your request' : 'Игрок Принял ваш запрос!',
+        text: localeType === 'en' ? 'Player accepted your request' : 'Игрок принял ваш запрос!',
         icon: "success",
         position: "top-end",
         timer: 2000,
@@ -136,7 +136,7 @@ function deleteFriend(deleteId){
 
 function inviteFriend(friendId) {
     if (typeof socket !== 'undefined') {
-        socket.emit('inviteFriend', {senderData: { senderId: sendId, gameId: gamesId, friendId: friendId } });
+        socket.emit('inviteFriend', {senderData: { senderId: sendId, friendId: friendId, gameId: gamesId} });
         console.log('friendId', friendId);
         Swal.fire({
             text: localeType === 'en' ? 'Invitation sent!' : 'Приглашение отправлено!',

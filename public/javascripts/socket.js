@@ -113,7 +113,7 @@ socket.on('updateUserCount', (onlineCount) => {
   ${user.userId === id 
                 ? (localeType === 'en' ? 'You' : 'Вы') 
                 : authorId === id 
-                    ? `${user.userName} <button id="ban-${user.userId}" onclick="banUser('${user.userId}')" class="ban-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>
+                    ? `${user.userName + ' | '} <button id="ban-${user.userId}" onclick="banUser('${user.userId}')" class="ban-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>
                                         <a id="banLoad-${user.userId}" hidden>${localeType === 'en' ? 'Loading...' : 'Загрузка...'}</a>` 
                     : user.userName}
 </span>
@@ -209,9 +209,8 @@ socket.on('updateUserCount', (onlineCount) => {
     socket.on('updateBannedUsers', (bannedUsers) => {
         const getId = bannedUsers.map(doc => doc.bannedId);
         if (getId.includes(id)){
-        // if (bannedUsers.some(user => user.bannedId === id)){
             const kickMsg= localeType === 'en' ? 'You have been banned by the admin.' : 'Вы были забанены администатором.';
-            window.location.replace(`/error?message=${encodeURIComponent(kickMsg)}`);
+            window.location.assign(`/error?message=${encodeURIComponent(kickMsg)}`);
         }
     });
 
@@ -275,36 +274,6 @@ socket.on('updateUserCount', (onlineCount) => {
             }
         });
     });
-
-//     socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
-//         console.log('updateMyFriendsCount', updateMyFriendsCount);
-//         const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
-//
-//         const myFriendsCount = document.getElementById('myFriendsCount');
-//         if (myFriendsCount && Array.isArray(updateMyFriendsCount)) {
-//             friendsLoaderSvg.style.display = 'none';
-//             myFriendsCount.innerHTML = updateMyFriendsCount
-//                 .map(friends => `
-// <br>
-// <div class="friend-container">
-//     <div style="display: flex; gap: 10px;">
-//         <img src="data:image/png;base64,${friends.image}" class="friend-image">
-//         <p>${friends.name}</p>
-//         <a onclick="deleteFriend('${friends.id}')" class="friend-delete-a">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
-//         <a onclick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>
-//     </div>
-//     <br>
-// </div>
-//
-// `)
-//                 .join('');
-//         }
-//         if (!updateMyFriendsCount || !updateMyFriendsCount.length) {
-//             friendsLoaderSvg.style.display = 'none';
-//             myFriendsCount.innerHTML = `<p>${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>`;
-//         }
-//     });
-
 });
 
 socket.emit('joinGame', gameId, userId, userName);

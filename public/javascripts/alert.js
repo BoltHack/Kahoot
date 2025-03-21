@@ -231,7 +231,6 @@ function requestFriendMenu(text) {
             const dataId = this.getAttribute('data-id');
             const dataSenderId = this.getAttribute('data-senderId');
             socket.emit('requestMyFriendsCount', dataId);
-            console.log('test');
 
             if (alreadyFriendAdd.includes(dataSenderId)) {
                 Swal.fire({
