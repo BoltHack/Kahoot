@@ -346,6 +346,7 @@ io.on('connection', async (socket) => {
             console.log(`Запрос в друзья отправлен пользователю ${senderData.senderData.friendId}`);
         } else {
             console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+            socket.emit('playerIsOffline');
         }
     });
 
@@ -425,7 +426,8 @@ io.on('connection', async (socket) => {
                 requestData: {
                     senderName: data.name,
                     senderImage: data.image,
-                    gameId: senderData.senderData.gameId
+                    gameId: senderData.senderData.gameId,
+                    // friendId: senderData.senderData.friendId,
                 }
             });
             console.log(`Запрос отправлен пользователю ${senderData.senderData.friendId}`);

@@ -29,7 +29,6 @@
 </head>
 <script>
     const localeType = '<%= locale %>';
-    const sendId = '<%= user.id %>';
 </script>
 <body>
 <header>
@@ -76,6 +75,7 @@
 <script src="/javascripts/alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    const sendId = '<%= user.id %>';
     document.addEventListener("DOMContentLoaded", () => {
         if (localStorage.getItem('token')) {
             if (typeof socket !== "undefined" && sendId) {
