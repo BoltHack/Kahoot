@@ -295,8 +295,8 @@ function inviteFriendMenu(data) {
     <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `${data.requestData.senderName } invites you to the game.` : `${data.requestData.senderName } приглашает вас в игру.`}</p>
     <br>
     <span class="success-message-request">
-        <a class="accept-request" data-gameId="${data.requestData.gameId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
-        <a id="closeSuccessMenu">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
+        <a class="accept-request" data-gameId="${data.requestData.gameId}" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
+        <a id="closeSuccessMenu" class="reject-request" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
     </span>
   </div>
 </div>
@@ -318,26 +318,43 @@ function inviteFriendMenu(data) {
     acceptRequest.forEach(button => {
         button.addEventListener('click', function () {
             const dataGameId = this.getAttribute('data-gameId');
+            const dataSenderId = this.getAttribute('data-senderId');
+            const dataMyId = this.getAttribute('data-myId');
 
-            console.log('dataGameId', dataGameId);
+            socket.emit('requestAcceptInvite', {
+                requestData: {
+                    senderId: dataSenderId,
+                    friendId: dataMyId
+                }});
+
             window.location.href = `/game/${dataGameId}`;
 
             successCard.classList.add('back-show');
             setTimeout(() => {
                 document.body.removeChild(alert);
                 }, 2000);
+        })
+    })
 
-            Swal.fire({
-                text: localeType === 'en' ? 'Invitation accepted!' : 'Приглашение принято!',
-                icon: "success",
-                position: "top-end",
-                timer: 4000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+
+    const rejectRequest = document.querySelectorAll('.reject-request');
+
+    rejectRequest.forEach(button => {
+        button.addEventListener('click', function () {
+            const dataGameId = this.getAttribute('data-gameId');
+            const dataSenderId = this.getAttribute('data-senderId');
+            const dataMyId = this.getAttribute('data-myId');
+
+            socket.emit('requestRejectInvite', {
+                requestData: {
+                    senderId: dataSenderId,
+                    friendId: dataMyId
+                }});
+
+            successCard.classList.add('back-show');
+            setTimeout(() => {
+                document.body.removeChild(alert);
+            }, 2000);
         })
     })
 }

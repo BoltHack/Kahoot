@@ -2,6 +2,11 @@
 
 socket.on('connect', () => {
     if (localStorage.getItem('token')) {
+        if (sendId === undefined) {
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        }
         const userId = sendId;
         socket.emit('registerUser', userId);
         console.log(`Пользователь ${userId} зарегистрирован`);
@@ -163,6 +168,34 @@ socket.on('inviteRequest', async (requestData) => {
 socket.on('playerIsOffline', async () => {
     Swal.fire({
         text: localeType === 'en' ? 'Player is offline.' : 'Игрок не в сети.',
+        icon: "error",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
+
+socket.on('broadcastAcceptInvite', async (data) => {
+    Swal.fire({
+        text: localeType === 'en' ? `${data.requestData.name} accepted your invitation!` : `${data.requestData.name} принял ваше приглашение!`,
+        icon: "success",
+        position: "top-end",
+        timer: 2000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
+
+socket.on('broadcastRejectInvite', async (data) => {
+    Swal.fire({
+        text: localeType === 'en' ? `${data.requestData.name} declined your invitation!` : `${data.requestData.name} отклонил ваше приглашение!`,
         icon: "error",
         position: "top-end",
         timer: 4000,

@@ -424,10 +424,11 @@ io.on('connection', async (socket) => {
         if (friendSocketId) {
             io.to(friendSocketId).emit('inviteRequest', {
                 requestData: {
+                    senderId: senderData.senderData.senderId,
                     senderName: data.name,
                     senderImage: data.image,
                     gameId: senderData.senderData.gameId,
-                    // friendId: senderData.senderData.friendId,
+                    friendId: senderData.senderData.friendId,
                 }
             });
             console.log(`Запрос отправлен пользователю ${senderData.senderData.friendId}`);
@@ -436,6 +437,43 @@ io.on('connection', async (socket) => {
             socket.emit('playerIsOffline');
         }
     });
+
+    socket.on('requestAcceptInvite', async (data) => {
+        const friendSocketId = clients[data.requestData.senderId];
+
+        const getId = await UsersModel.findById(data.requestData.friendId);
+
+        if (friendSocketId) {
+            io.to(friendSocketId).emit('broadcastAcceptInvite', {
+                requestData: {
+                    name: getId.name,
+                }
+            });
+            console.log(`Запрос отправлен пользователю ${data.requestData.friendId}`);
+        } else {
+            console.log(`Пользователь ${data.requestData.friendId} не в сети`);
+            socket.emit('playerIsOffline');
+        }
+    });
+
+    socket.on('requestRejectInvite', async (data) => {
+        const friendSocketId = clients[data.requestData.senderId];
+
+        const getId = await UsersModel.findById(data.requestData.friendId);
+
+        if (friendSocketId) {
+            io.to(friendSocketId).emit('broadcastRejectInvite', {
+                requestData: {
+                    name: getId.name,
+                }
+            });
+            console.log(`Запрос отправлен пользователю ${data.requestData.friendId}`);
+        } else {
+            console.log(`Пользователь ${data.requestData.friendId} не в сети`);
+            socket.emit('playerIsOffline');
+        }
+    });
+
 });
 
 
