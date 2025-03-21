@@ -45,7 +45,7 @@ function addFriend() {
                     if (friendId !== '') {
                         if (getId.includes(friendId)) {
                             Swal.fire({
-                                text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже есть в вашем списке друзей.',
+                                text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
                                 icon: "error",
                                 position: "top-end",
                                 timer: 3000,
@@ -59,17 +59,17 @@ function addFriend() {
                         else {
                             socket.emit('addFriend', {senderData: { senderId: sendId, friendId: friendId } });
                             console.log('friendId', friendId);
-                            Swal.fire({
-                                text: localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!',
-                                icon: "success",
-                                position: "top-end",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                toast: true,
-                                customClass: {
-                                    popup: "small-alert"
-                                }
-                            });
+                            // Swal.fire({
+                            //     text: localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!',
+                            //     icon: "success",
+                            //     position: "top-end",
+                            //     timer: 2000,
+                            //     showConfirmButton: false,
+                            //     toast: true,
+                            //     customClass: {
+                            //         popup: "small-alert"
+                            //     }
+                            // });
                         }
                     }
                 }
@@ -199,6 +199,20 @@ socket.on('broadcastRejectInvite', async (data) => {
         icon: "error",
         position: "top-end",
         timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
+
+socket.on('broadcastFriendRequest', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!',
+        icon: "success",
+        position: "top-end",
+        timer: 2000,
         showConfirmButton: false,
         toast: true,
         customClass: {
