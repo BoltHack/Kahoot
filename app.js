@@ -322,29 +322,13 @@ io.on('connection', async (socket) => {
 });
 
 
-function parseCookies(cookieString) {
-    if (!cookieString) return {};
-    return Object.fromEntries(
-        cookieString.split('; ').map(cookie => {
-            const [key, value] = cookie.split('=');
-            return [key, decodeURIComponent(value)];
-        })
-    );
-}
-
 const clients = {};
 io.on('connection', async (socket) => {
-    const cookies = parseCookies(socket.handshake.headers.cookie);
-
-    const cookieToken = cookies['token'];
-
-    if (cookieToken) {
-        socket.on('registerUser', async (userId) => {
-            console.log('userId', userId);
-            clients[userId] = socket.id;
-            console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
-        });
-    }
+    socket.on('registerUser', async (userId) => {
+        console.log('userId', userId);
+        clients[userId] = socket.id;
+        console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
+    });
 
     socket.on('addFriend', async (senderData) => {
         const friendSocketId = clients[senderData.senderData.friendId];
