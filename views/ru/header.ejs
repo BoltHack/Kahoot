@@ -77,13 +77,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        if (typeof socket !== "undefined" && sendId) {
-            socket.emit('requestMyFriendsCount', sendId);
-        } else {
-            console.error("Socket or sendId is not defined.");
+        if (localStorage.getItem('token')) {
+            if (typeof socket !== "undefined" && sendId) {
+                socket.emit('requestMyFriendsCount', sendId);
+            } else {
+                console.error("Socket or sendId is not defined.");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
         }
     });
-
 </script>
 </body>
 </html>

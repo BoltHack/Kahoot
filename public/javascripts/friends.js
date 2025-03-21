@@ -1,9 +1,11 @@
 // const socket = io();
 
 socket.on('connect', () => {
-    const userId = sendId;
-    socket.emit('registerUser', userId);
-    console.log(`Пользователь ${userId} зарегистрирован`);
+    if (localStorage.getItem('token')) {
+        const userId = sendId;
+        socket.emit('registerUser', userId);
+        console.log(`Пользователь ${userId} зарегистрирован`);
+    }
 });
 
 function addFriend() {
@@ -41,7 +43,7 @@ function addFriend() {
                                 text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже есть в вашем списке друзей.',
                                 icon: "error",
                                 position: "top-end",
-                                timer: 2000,
+                                timer: 3000,
                                 showConfirmButton: false,
                                 toast: true,
                                 customClass: {
@@ -79,7 +81,6 @@ socket.on('friendRequest', async (requestData) => {
 })
 
 socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
-    console.log('updateMyFriendsCount', updateMyFriendsCount);
     const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
 
     const myFriendsCount = document.getElementById('myFriendsCount');
@@ -135,7 +136,6 @@ function deleteFriend(deleteId){
 
 function inviteFriend(friendId) {
     if (typeof socket !== 'undefined') {
-
         socket.emit('inviteFriend', {senderData: { senderId: sendId, gameId: gamesId, friendId: friendId } });
         console.log('friendId', friendId);
         Swal.fire({
@@ -158,4 +158,18 @@ function inviteFriend(friendId) {
 socket.on('inviteRequest', async (requestData) => {
     console.log('inviteData', requestData);
     inviteFriendMenu(requestData);
+})
+
+socket.on('playerIsOffline', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? 'Player is offline.' : 'Игрок не в сети.',
+        icon: "error",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
 })

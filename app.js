@@ -321,13 +321,30 @@ io.on('connection', async (socket) => {
     });
 });
 
+
+function parseCookies(cookieString) {
+    if (!cookieString) return {};
+    return Object.fromEntries(
+        cookieString.split('; ').map(cookie => {
+            const [key, value] = cookie.split('=');
+            return [key, decodeURIComponent(value)];
+        })
+    );
+}
+
 const clients = {};
 io.on('connection', async (socket) => {
-    socket.on('registerUser', async (userId) => {
-        console.log('userId', userId);
-        clients[userId] = socket.id;
-        console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
-    });
+    const cookies = parseCookies(socket.handshake.headers.cookie);
+
+    const cookieToken = cookies['token'];
+
+    if (cookieToken) {
+        socket.on('registerUser', async (userId) => {
+            console.log('userId', userId);
+            clients[userId] = socket.id;
+            console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
+        });
+    }
 
     socket.on('addFriend', async (senderData) => {
         const friendSocketId = clients[senderData.senderData.friendId];
@@ -409,7 +426,6 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('requestMyFriendsCount', async (sendId) => {
-        // console.log('gameUsers', gameUsers[userId])
         const updateMyFriendsCount = await UsersModel.findById(sendId);
         socket.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
     });
@@ -431,8 +447,9 @@ io.on('connection', async (socket) => {
             console.log(`Запрос отправлен пользователю ${senderData.senderData.friendId}`);
         } else {
             console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+            socket.emit('playerIsOffline');
         }
-    })
+    });
 });
 
 
