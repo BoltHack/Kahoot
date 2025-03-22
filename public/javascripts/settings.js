@@ -115,3 +115,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     viewAvatar();
 });
+
+const socket = io();

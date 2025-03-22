@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kahoot | Настройки</title>
     <link rel="stylesheet" href="/stylesheets/settings.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <body>
 <script>
     const settingId = "<%= userId.id %>";
     const settingImage = "<%= userId.image %>";
+    const localeType = '<%= locale %>';
 </script>
 <header>
     <h1>Настройки</h1>
@@ -120,7 +122,25 @@
 
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/settings.js"></script>
+<script src="/javascripts/friends.js"></script>
+<script src="/javascripts/alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const sendId = '<%= user.id %>';
+    document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem('token')) {
+            if (typeof socket !== "undefined" && sendId) {
+                socket.emit('requestMyFriendsCount', sendId);
+            } else {
+                console.error("Socket or sendId is not defined.");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+        }
+    });
+</script>
 </body>
 </html>
