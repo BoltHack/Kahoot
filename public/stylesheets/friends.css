@@ -137,3 +137,40 @@ circle {
         stroke-dashoffset: -125px;
     }
 }
+
+.delete-border {
+    width: 400px;
+    height: 150px;
+    /*background: rgb(231,225,231);*/
+    /*background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);*/
+    background-color: #fff;
+    border-radius: 10px;
+    z-index: 4;
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.delete-modal {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.delete-modal button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #023047;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#requestDeleteFriend {
+    background-color: #cc0000;
+}
+.delete-modal button:hover {
+    opacity: 0.8;
+}

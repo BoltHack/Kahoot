@@ -1,4 +1,5 @@
 function changeLocaleRu() {
+    document.body.style.cursor = 'wait';
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     const homeId = userInfo.id;
     const token = localStorage.getItem('token');
@@ -26,6 +27,7 @@ function changeLocaleRu() {
 }
 
 function changeLocaleEn() {
+    document.body.style.cursor = 'wait';
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     const homeId = userInfo.id;
     const token = localStorage.getItem('token');

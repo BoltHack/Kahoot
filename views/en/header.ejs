@@ -29,6 +29,7 @@
 </head>
 <script>
     const localeType = '<%= locale %>';
+    const sendId = '<%= user.id %>';
 </script>
 <body>
 <header>
@@ -74,20 +75,5 @@
 <script src="/javascripts/friends.js"></script>
 <script src="/javascripts/alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    const sendId = '<%= user.id %>';
-    document.addEventListener("DOMContentLoaded", () => {
-        if (localStorage.getItem('token')) {
-            if (typeof socket !== "undefined" && sendId) {
-                socket.emit('requestMyFriendsCount', sendId);
-            } else {
-                console.error("Socket or sendId is not defined.");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 2000);
-            }
-        }
-    });
-</script>
 </body>
 </html>
