@@ -354,8 +354,10 @@ io.on('connection', async (socket) => {
     socket.on('acceptFriendRequest', async (acceptData) => {
         const friend = await UsersModel.findById(acceptData.acceptData.dataId);
         const sender = await UsersModel.findById(acceptData.acceptData.senderId);
+        const friendSocketId = clients[acceptData.acceptData.dataId];
         const senderSocketId = clients[acceptData.acceptData.senderId];
-        console.log('friendSocketId', senderSocketId)
+        console.log('friendSocketId', friendSocketId)
+        console.log('senderSocketId', senderSocketId)
 
         if (senderSocketId) {
             await UsersModel.findOneAndUpdate(
@@ -379,10 +381,13 @@ io.on('connection', async (socket) => {
             );
 
             const updateMyFriendsCount = await UsersModel.findById(acceptData.acceptData.senderId);
-            io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
-            io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+            io.emit('updatePage');
 
-            io.to(senderSocketId).emit('updateMyFriendsBroadcast', updateMyFriendsCount.myFriends);
+            // io.to(friendSocketId).emit('updateMyFriendsCount', friend.myFriends);
+            // io.to(senderSocketId).emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+
+            io.to(senderSocketId).emit('broadcastUpdateMyFriends', updateMyFriendsCount.myFriends);
+
             console.log('send to', senderSocketId + ' | ' + acceptData.acceptData.senderId);
         }
     })
@@ -407,8 +412,9 @@ io.on('connection', async (socket) => {
             },
             { new: true }
         );
-        const updateMyFriendsCount = await UsersModel.findById(myId);
-        io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+        // const updateMyFriendsCount = await UsersModel.findById(myId);
+        // io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+        io.emit('updatePage');
     })
 
     socket.on('requestMyFriendsCount', async (sendId) => {
@@ -423,6 +429,7 @@ io.on('connection', async (socket) => {
         const data = await UsersModel.findById(senderData.senderData.senderId);
 
         if (friendSocketId) {
+            socket.emit('broadcastInviteRequest');
             io.to(friendSocketId).emit('inviteRequest', {
                 requestData: {
                     senderId: senderData.senderData.senderId,

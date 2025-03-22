@@ -254,6 +254,11 @@ function requestFriendMenu(text) {
                 console.log('acceptId', dataId);
                 socket.emit('acceptFriendRequest', { acceptData: { dataId: dataId, senderId: dataSenderId } });
 
+                const sendId = dataId
+                setTimeout(function () {
+                    socket.emit('requestMyFriendsCount', sendId);
+                }, 500);
+
                 successCard.classList.add('back-show');
                 setTimeout(() => {
                     document.body.removeChild(alert);
@@ -341,7 +346,6 @@ function inviteFriendMenu(data) {
 
     rejectRequest.forEach(button => {
         button.addEventListener('click', function () {
-            const dataGameId = this.getAttribute('data-gameId');
             const dataSenderId = this.getAttribute('data-senderId');
             const dataMyId = this.getAttribute('data-myId');
 
