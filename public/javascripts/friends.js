@@ -33,7 +33,7 @@ function addFriend() {
                         text: localeType === 'en' ? "You can't be friends with yourself!" : 'Вы не можете подружиться с самим собой!',
                         icon: "error",
                         position: "top-end",
-                        timer: 2000,
+                        timer: 4000,
                         showConfirmButton: false,
                         toast: true,
                         customClass: {
@@ -48,7 +48,7 @@ function addFriend() {
                                 text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
                                 icon: "error",
                                 position: "top-end",
-                                timer: 3000,
+                                timer: 4000,
                                 showConfirmButton: false,
                                 toast: true,
                                 customClass: {
@@ -59,17 +59,6 @@ function addFriend() {
                         else {
                             socket.emit('addFriend', {senderData: { senderId: sendId, friendId: friendId } });
                             console.log('friendId', friendId);
-                            // Swal.fire({
-                            //     text: localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!',
-                            //     icon: "success",
-                            //     position: "top-end",
-                            //     timer: 2000,
-                            //     showConfirmButton: false,
-                            //     toast: true,
-                            //     customClass: {
-                            //         popup: "small-alert"
-                            //     }
-                            // });
                         }
                     }
                 }
@@ -116,12 +105,12 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
     }
 });
 
-socket.on('updateMyFriendsBroadcast', async () => {
+socket.on('broadcastUpdateMyFriends', async () => {
     Swal.fire({
         text: localeType === 'en' ? 'Player accepted your request' : 'Игрок принял ваш запрос!',
         icon: "success",
         position: "top-end",
-        timer: 2000,
+        timer: 3000,
         showConfirmButton: false,
         toast: true,
         customClass: {
@@ -143,18 +132,6 @@ function inviteFriend(friendId) {
     if (typeof socket !== 'undefined') {
         socket.emit('inviteFriend', {senderData: { senderId: sendId, friendId: friendId, gameId: gamesId} });
         console.log('friendId', friendId);
-        Swal.fire({
-            text: localeType === 'en' ? 'Invitation sent!' : 'Приглашение отправлено!',
-            icon: "success",
-            position: "top-end",
-            timer: 2000,
-            showConfirmButton: false,
-            toast: true,
-            customClass: {
-                popup: "small-alert"
-            }
-        });
-
     } else {
         console.error("Игрок не найден.");
     }
@@ -179,12 +156,25 @@ socket.on('playerIsOffline', async () => {
     });
 })
 
+socket.on('broadcastInviteRequest', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? 'Invitation sent!' : 'Приглашение отправлено!',
+        icon: "success",
+        position: "top-end",
+        timer: 3000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
 socket.on('broadcastAcceptInvite', async (data) => {
     Swal.fire({
         text: localeType === 'en' ? `${data.requestData.name} accepted your invitation!` : `${data.requestData.name} принял ваше приглашение!`,
         icon: "success",
         position: "top-end",
-        timer: 2000,
+        timer: 3000,
         showConfirmButton: false,
         toast: true,
         customClass: {
@@ -212,11 +202,17 @@ socket.on('broadcastFriendRequest', async () => {
         text: localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!',
         icon: "success",
         position: "top-end",
-        timer: 2000,
+        timer: 3000,
         showConfirmButton: false,
         toast: true,
         customClass: {
             popup: "small-alert"
         }
     });
+})
+
+socket.on('updatePage', async () => {
+    if (window.location.pathname ==='/friends') {
+        window.location.reload();
+    }
 })
