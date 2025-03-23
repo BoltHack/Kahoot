@@ -107,9 +107,6 @@ const GamesSchema = new Schema({
     game_expiresInSeconds: {
         type: Number
     },
-    game_language: {
-        type: String
-    },
     game_author: {
         type: Object
     },

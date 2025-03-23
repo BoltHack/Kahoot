@@ -19,7 +19,6 @@ class PostController {
                 game_access: 'General',
                 game_expiresInSeconds: 100,
                 expiresInMinutes: 60,
-                game_language: 'En',
                 game_author: {
                     name: user.name,
                     email: user.email,
@@ -48,7 +47,7 @@ class PostController {
     static redaction = async (req, res, next) => {
         try {
             const { game_id } = req.params;
-            const { game_name, game_access, max_online, game_language, game_expiresInSeconds, game_max_questions,
+            const { game_name, game_access, max_online, game_expiresInSeconds, game_max_questions,
                 question_title0, question_title1, question_title2, question_title3, question_title4,
                 question_title0_question_1, question_title0_question_2, question_title0_question_3, question_title0_question_4, question_title0_correct_question,
                 question_title1_question_1, question_title1_question_2, question_title1_question_3, question_title1_question_4, question_title1_correct_question,
@@ -63,7 +62,6 @@ class PostController {
             if (game_access) updateFields.game_access = game_access;
             if (game_access) updateFields.expiresInMinutes = 60;
             if (max_online) updateFields["game_online.max_online"] = max_online;
-            if (game_language) updateFields.game_language = game_language;
             if (game_expiresInSeconds) updateFields.game_expiresInSeconds = game_expiresInSeconds;
             if (game_max_questions) updateFields.game_max_questions = game_max_questions;
 
