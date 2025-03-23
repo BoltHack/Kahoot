@@ -8,9 +8,7 @@ body {
     grid-template-rows: auto 1fr auto;
     overflow-x: hidden;
 }
-/*html {*/
-/*    text-decoration: none;*/
-/*}*/
+
 .friends-container {
     width: 600px;
     margin: 50px auto;
@@ -151,6 +149,7 @@ circle {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border: 1px solid black;
 }
 .delete-modal {
     display: flex;

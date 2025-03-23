@@ -614,36 +614,3 @@ circle {
     cursor: pointer;
     transition: 0.3s;
 }
-
-/*.friend-container {*/
-/*    border-bottom: 1px solid black;*/
-/*    width: 200px;*/
-/*}*/
-/*.friend-delete-a {*/
-/*    color: #c1121f;*/
-/*    font-size: 14px;*/
-/*    margin-top: 10px;*/
-/*    margin-left: 10px;*/
-/*    cursor: pointer;*/
-/*}*/
-/*.friend-delete-a:hover {*/
-/*    text-decoration: underline;*/
-/*    text-decoration-color: black;*/
-/*}*/
-/*.friend-invite-a {*/
-/*    color: #4c956c;*/
-/*    font-size: 14px;*/
-/*    margin-top: 10px;*/
-/*    margin-left: 10px;*/
-/*    cursor: pointer;*/
-/*}*/
-/*.friend-invite-a:hover {*/
-/*    text-decoration: underline;*/
-/*    text-decoration-color: black;*/
-/*}*/
-
-/*.friend-image {*/
-/*    width: 50px;*/
-/*    height: 50px;*/
-/*    border-radius: 50%;*/
-/*}*/
