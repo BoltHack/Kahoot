@@ -98,6 +98,7 @@ io.on('connection', async (socket) => {
         const game_questions = await GamesModel.findById(gameId)
         const checkUserBanned = await GamesModel.findById(gameId);
         const updateGameTypeCount = await GamesModel.findById(gameId);
+        const updateGameAccessCount = await GamesModel.findById(gameId);
 
         if (!gameUsers[gameId]) {
             gameUsers[gameId] = [];
@@ -161,6 +162,20 @@ io.on('connection', async (socket) => {
             socket.on('requestGameTypeCount', async () => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             });
+
+            socket.on('requestGameAccessCount', async () => {
+                const updateGameAccessCount = await GamesModel.findById(gameId);
+                const updateUserFriendsCount = await UsersModel.findById(userId);
+                socket.emit('updateGameAccessCount', {
+                    gameData:
+                     { userFriends: updateUserFriendsCount.myFriends, gameAccess: updateGameAccessCount.game_access }
+                });
+            });
+
+            // socket.on('requestUserFriendsCount', async () => {
+            //     const updateUser = await UsersModel.findById(userAuthorId);
+            //     socket.emit('updateUserFriendsCount', updateUser.myFriends);
+            // });
 
             let alreadyBannedUserIds = [];
 
