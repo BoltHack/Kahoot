@@ -93,6 +93,9 @@ const gameTimerStart = () => {
 
 
 socket.on('updateUserCount', (onlineCount) => {
+    setTimeout(function () {
+        socket.emit('requestGameAccessCount');
+    }, 500);
     const getId = onlineCount.users.map(user => user.userId) || [];
     const checkAllId = getId.length !== new Set(getId).size;
     if (checkAllId){
@@ -274,6 +277,19 @@ socket.on('updateUserCount', (onlineCount) => {
             }
         });
     });
+
+    socket.on('updateGameAccessCount', async (data) => {
+        if (data.gameData.gameAccess === 'Private') {
+            const getId = data.gameData.userFriends?.map(user => String(user.id)) || [];
+            if (getId.includes(String(authorId)) || authorId === id) {
+                console.log('пропуск', id);
+            }
+            else {
+                const privateKickMsg = localeType === 'en' ? 'Access to this game is restricted! You must be on the room creator\'s friends list to participate.' : 'Доступ к этой игре ограничен! Вам необходимо быть в списке друзей создателя комнаты, чтобы принять участие.';
+                window.location.assign(`/error?message=${encodeURIComponent(privateKickMsg)}`);
+            }
+        }
+    });
 });
 
 socket.emit('joinGame', gameId, userId, userName);
@@ -331,7 +347,7 @@ socket.on('reloadPage', () => {
     window.location.reload();
 });
 
-socket.on('updateGameTypeCount', (gameTypeCount) => {
+socket.on('updateGameTypeCount', async (gameTypeCount) => {
     console.log('updateGameTypeCount', gameTypeCount);
     if (gameTypeCount === 'Close'){
         const gameTypeMsg = localeType === 'en' ? 'This game has already begun.' : 'Данная игра уже началась.';

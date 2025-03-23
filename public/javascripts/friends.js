@@ -101,7 +101,10 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
     }
     if (!updateMyFriendsCount || !updateMyFriendsCount.length) {
         friendsLoaderSvg.style.display = 'none';
-        myFriendsCount.innerHTML = `<p>${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>`;
+        myFriendsCount.innerHTML = `<p style="position: absolute; left: 50%; transform: translate(-50%); font-size: 16px;">${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>
+<br>
+<br>
+`;
     }
 });
 
