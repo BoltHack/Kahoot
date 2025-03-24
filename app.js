@@ -341,16 +341,40 @@ const clients = {};
 io.on('connection', async (socket) => {
     socket.on('registerUser', async (userId) => {
         console.log('userId', userId);
+        socket.userId = userId;
         clients[userId] = socket.id;
         console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
+        if (userId) {
+            await UsersModel.findOneAndUpdate(
+                { _id: userId },
+                { $set: {onlineMod: 'Online'} },
+                { new: true }
+            );
+        }
     });
+
+    socket.on('disconnect', async () => {
+        const userId = socket.userId;
+        if (userId) {
+            console.log(`Пользователь ${userId} отключился`);
+
+            await UsersModel.findOneAndUpdate(
+                { _id: userId },
+                { $set: { onlineMod: 'Offline' } },
+                { new: true }
+            );
+            console.log(`${userId} отключился.`)
+            delete clients[userId];
+        }
+    })
 
     socket.on('addFriend', async (senderData) => {
         const friendSocketId = clients[senderData.senderData.friendId];
+        const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
 
         const data = await UsersModel.findById(senderData.senderData.senderId);
 
-        if (friendSocketId) {
+        if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
             socket.emit('broadcastFriendRequest');
             io.to(friendSocketId).emit('friendRequest', {
                 requestData: {
@@ -440,10 +464,12 @@ io.on('connection', async (socket) => {
 
     socket.on('inviteFriend', async (senderData) => {
         const friendSocketId = clients[senderData.senderData.friendId];
+        const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
+        console.log('friendSocketId', friendSocketId);
 
         const data = await UsersModel.findById(senderData.senderData.senderId);
 
-        if (friendSocketId) {
+        if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
             socket.emit('broadcastInviteRequest');
             io.to(friendSocketId).emit('inviteRequest', {
                 requestData: {

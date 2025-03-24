@@ -58,7 +58,6 @@ function logout() {
 
 function checkGamePath(){
     if (!window.location.pathname.startsWith('/game/') && sessionStorage.getItem('gamePage') === 'true'){
-        // sessionStorage.removeItem('gamePage');
         sessionStorage.setItem('gamePage', 'false');
     }
 }

@@ -84,6 +84,9 @@ const UsersSchema = new Schema({
     myFriends: {
         type: [MyFriendsSchema],
         default: []
+    },
+    onlineMod: {
+        type: String
     }
 });
 
