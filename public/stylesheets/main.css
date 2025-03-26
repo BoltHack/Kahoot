@@ -17,7 +17,7 @@ body {
     top: 53%;
     left: 25%;
     transform: translate(-50%, -50%);
-    text-align: center;
+    text-align: start;
     /*background-color: rgba(255, 255, 255, 0.9);*/
     padding: 50px 40px;
     border-radius: 20px;
@@ -51,6 +51,14 @@ body {
 .btn:active {
     transform: translateY(2px);
 }
+
+.support-btn {
+    background: #ff5733;
+}
+.support-btn:hover {
+    background: #ff2e00;
+}
+
 a {
     text-decoration: none;
 }

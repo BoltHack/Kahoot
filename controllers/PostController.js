@@ -437,7 +437,9 @@ class PostController {
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            return res.redirect('/settings');
+            setTimeout(function () {
+                return res.redirect('/settings');
+            }, 1000);
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });

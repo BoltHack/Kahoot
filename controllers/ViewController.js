@@ -215,6 +215,24 @@ class ViewController {
             next(e);
         }
     }
+
+    static supportView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user, locale});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user, locale});
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = ViewController;
