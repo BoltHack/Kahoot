@@ -3,7 +3,7 @@ const AuthRouter = require('./AuthRouter');
 
 const {
     mainView, createGameView, gameView, redactionView, myGamesView, friendsView, settingsView, returnMenuView, privacyPolicyView,
-    rulesView, aboutUsView
+    rulesView, aboutUsView, supportView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, gameUsers, gameCorrectUsers, userLeader, getData, getUserData, changeAvatar, deleteImage,
@@ -25,6 +25,7 @@ router.get('/return-menu', returnMenuView);
 router.get('/privacyPolicy', privacyPolicyView);
 router.get('/rules', rulesView);
 router.get('/aboutUs', aboutUsView);
+router.get('/support', supportView);
 
 router.post('/create-game', authenticateJWT, createGame);
 router.post('/delete-game/:game_id', authenticateJWT, deleteGame);

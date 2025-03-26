@@ -153,22 +153,6 @@ function checkGamePermissions(){
 }
 checkGamePermissions();
 
-
-
-
-
-// closeModal.addEventListener('click', () => {
-//     overlay.classList.remove('active');
-//     modal.classList.remove('active');
-// });
-
-// overlay.addEventListener('click', (e) => {
-//     if (e.target === overlay) {
-//         overlay.classList.remove('active');
-//         modal.classList.remove('active');
-//     }
-// });
-
 if (authorId === id) {
     const overlayBannedUsersMenu = document.getElementById('overlayBannedUsersMenu');
     const bannedPlayersMenu = document.getElementById('bannedPlayersMenu');

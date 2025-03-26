@@ -42,10 +42,6 @@ io.on('connection', async (socket) => {
                 {
                     $inc: { 'game_online.online': -1 },
                     $pull: { 'game_online.users': { userId, userName, userImage }, 'game_users': {userId} },
-                    // $set: {
-                    //     'game_users': [],
-                    //     'game_leaders': []
-                    // }
                 },
                 { new: true }
             );
@@ -70,7 +66,18 @@ io.on('connection', async (socket) => {
                             expiresInMinutes: 60,
                             expiresAt: new Date(Date.now() + 60 * 60 * 1000),
                             createdAt: Date.now(),
-                            'game_type': 'Open'
+                            'game_type': 'Open',
+                        }
+                    },
+                    { new: true }
+                );
+            }
+            if (game.game_online.users.length === 0){
+                await GamesModel.findOneAndUpdate(
+                    { _id: gameId },
+                    {
+                        $set: {
+                            'game_online.online': 0,
                         }
                     },
                     { new: true }

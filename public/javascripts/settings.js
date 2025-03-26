@@ -116,4 +116,18 @@ document.addEventListener('DOMContentLoaded', function () {
     viewAvatar();
 });
 
+function saveSettings() {
+    Swal.fire({
+        text: localeType === 'en' ? 'All settings saved!' : 'Все настройки сохранены!',
+        icon: "success",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+}
+
 const socket = io();

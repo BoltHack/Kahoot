@@ -53,10 +53,19 @@
                 </div>
             </div>
             <div class="setting">
-                <span>Музыка</span>
+                <span>Звуки в игре</span>
                 <div class="toggle-container">
                     <label class="toggle">
                         <input type="checkbox" name="soundTrack" id="soundTrackCheckbox" <%= soundTrack === 'on' ? 'checked' : '' %> />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="setting">
+                <span>Звуки в главном меню</span>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" name="mainSoundTrack" id="mainSoundTrackCheckbox"> />
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -83,7 +92,7 @@
         </section>
 
         <div style="text-align: center">
-            <button type="submit" class="save-settings">Сохранить изменения</button>
+            <button type="submit" class="save-settings" onclick="saveSettings()">Сохранить изменения</button>
         </div>
     </form>
 
