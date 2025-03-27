@@ -18,7 +18,7 @@ const myToken = localStorage.getItem('token');
 const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 if (myToken){
     account.innerHTML = `
-<div class="dropdown" style="text-align: center">
+<div class="dropdown">
     <p class="ha dropdown-title" style="color: #ced4da; background-color: #1C2025;">${userInfo.name}</p>
     <div class="dropdown-content">
         <a onclick="logout();">${localeType === 'en' ? 'Sign Out' : 'Выйти'}</a>
@@ -62,3 +62,19 @@ function checkGamePath(){
     }
 }
 checkGamePath();
+
+const dropdownTitles = document.querySelectorAll('.dropdown-title');
+const dropdownContents = document.querySelectorAll('.dropdown-content');
+const dropdown = document.querySelectorAll('.dropdown');
+
+dropdown.forEach((title, index) => {
+    title.addEventListener('mouseover', () => {
+        dropdownContents[index].style.display = 'flex';
+        dropdownContents[index].style.transform = 'scaleY(1)';
+    });
+
+    title.addEventListener('mouseout', () => {
+        dropdownContents[index].style.display = 'none';
+        dropdownContents[index].style.transform = 'scaleY(0)';
+    });
+});
