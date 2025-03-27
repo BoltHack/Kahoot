@@ -37,37 +37,35 @@
         <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
     </div>
 
-    <div>
-        <ul class="get">
-            <li id="account"></li>
-        </ul>
-    </div>
+    <div class="header-container">
 
-    <div id="language">
-        <% if (locale === 'en') { %>
-            <div class="dropdown" style="height: 35px;">
+        <div id="rules">
+            <div class="dropdown" style="text-align: center">
+                <p class="ha dropdown-title">Правила</p>
+                <div class="dropdown-content">
+                    <a href="/privacyPolicy" target="_blank">Правила конфиденциальности</a>
+                    <a href="/rules" target="_blank">Условия использования</a>
+                    <a href="/aboutUs" target="_blank">О нас</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="language">
+            <div class="dropdown locale">
                 <span class="dropdown-title" style="background: none">
-                    <img src="/images/english-flag.jpg">
+                    <img src="/images/russia-flag.png">
                 </span>
                 <div class="dropdown-content">
                     <span class="locale">
-                        <img src="/images/russia-flag.png" onclick="changeLocaleRu();">
+                        <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">
                     </span>
                 </div>
             </div>
-            <% } else { %>
-                <div class="dropdown" style="height: 35px;">
-                    <span class="dropdown-title" style="background: none">
-                        <img src="/images/russia-flag.png">
-                    </span>
-                    <div class="dropdown-content">
-                        <span class="locale">
-                            <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">
-                        </span>
-                    </div>
-                </div>
-            <% } %>
+        </div>
+
     </div>
+
+    <div id="account"></div>
 </header>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/header.js"></script>
