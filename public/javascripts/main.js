@@ -85,28 +85,3 @@ function createSymbolBottom() {
 }
 
 setInterval(createSymbolBottom, 500);
-
-
-function rulesMenu(){
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-    const rulesContainer = document.getElementById('rulesContainer');
-    if (userInfo.rulesMenu === 'true') {
-        rulesContainer.hidden = false;
-    }
-    else {
-        rulesContainer.hidden = true;
-    }
-    document.getElementById('openRulesContainer').addEventListener('click', () => {
-        if (userInfo.rulesMenu === 'true') {
-            rulesContainer.hidden = true;
-            userInfo.rulesMenu = 'false';
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        }
-        else {
-            rulesContainer.hidden = false;
-            userInfo.rulesMenu = 'true';
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        }
-    });
-}
-rulesMenu();

@@ -29,16 +29,7 @@ header{
     cursor: pointer;
     z-index: 2;
 }
-.get{
-    display: flex;
-    position: absolute;
-    top: -10%;
-    right: 5%;
-}
-li{
-    margin: 20px 10px;
-    list-style-type: none;
-}
+
 .ha{
     text-decoration: none;
     color: #ced4da;
@@ -47,7 +38,7 @@ li{
     background-color: #1C2025;
     padding: 8px;
     border-radius: 8px;
-    margin-right: 15px;
+    /*margin-right: 15px;*/
 }
 .ha:hover{
     /*color: #a2a8d3;*/
@@ -269,16 +260,28 @@ html.lightTheme {
     color: #666;
     font-size: 14px;
 }
-#language {
-    position: absolute;
-    top: 30%;
-    right: 2%;
-}
+
 .locale {
-    margin-top: 10px;
+    margin-top: 18px;
 }
 .locale img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+}
+
+.header-container {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#account {
+    position: absolute;
+    top: 8%;
+    right: 5%;
 }

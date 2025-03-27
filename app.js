@@ -578,7 +578,10 @@ server.listen(3000, async () => {
                 'game_online.users': [],
                 'game_users': [],
                 'game_leaders': [],
-                'game_type': 'Open'
+                'game_type': 'Open',
+                expiresInMinutes: 60,
+                expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+                createdAt: Date.now(),
             }
         },
     );
