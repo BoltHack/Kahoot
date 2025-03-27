@@ -138,6 +138,10 @@ html.lightTheme {
     --border-radius: 8px;
     --title-content-space: 4px;
 }
+
+.dropdown {
+    height: 100%;
+}
 .dropdown img{
     width: 30px;
     height: 30px;
@@ -168,11 +172,13 @@ html.lightTheme {
     background-color: var(--hover-background-color);
     color: #a2a8d3;
 }
-.dropdown-title:hover + .dropdown-content, .dropdown-content:hover{
-    transform: scaleY(1);
-}
+/*.dropdown-title:hover + .dropdown-content, .dropdown-content:hover{*/
+/*    transform: scaleY(1);*/
+/*}*/
 .dropdown-content{
-    display: flex;
+    position: absolute;
+    /*display: flex;*/
+    display: none;
     flex-direction: column;
     /*transition: transform 0.35s ease;*/
     transform-origin: top;
