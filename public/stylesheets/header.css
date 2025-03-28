@@ -286,7 +286,15 @@ html.lightTheme {
     gap: 20px;
 }
 
-#account {
+/*#account {*/
+/*    position: absolute;*/
+/*    top: 8%;*/
+/*    right: 5%;*/
+/*}*/
+
+.account-container {
+    gap: 20px;
+    display: flex;
     position: absolute;
     top: 8%;
     right: 5%;
