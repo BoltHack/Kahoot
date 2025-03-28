@@ -333,6 +333,7 @@ function inviteFriendMenu(data) {
                 }});
 
             window.location.href = `/game/${dataGameId}`;
+            sessionStorage.setItem('gamePage', 'false');
 
             successCard.classList.add('back-show');
             setTimeout(() => {
