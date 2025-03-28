@@ -347,31 +347,41 @@ io.on('connection', async (socket) => {
 const clients = {};
 io.on('connection', async (socket) => {
     socket.on('registerUser', async (userId) => {
-        console.log('userId', userId);
-        socket.userId = userId;
-        clients[userId] = socket.id;
-        console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
-        if (userId) {
-            await UsersModel.findOneAndUpdate(
-                { _id: userId },
-                { $set: {onlineMod: 'Online'} },
-                { new: true }
-            );
+        try {
+            console.log('userId', userId);
+            socket.userId = userId;
+            clients[userId] = socket.id;
+            console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
+            if (userId) {
+                await UsersModel.findOneAndUpdate(
+                    { _id: userId },
+                    { $set: {onlineMod: 'Online'} },
+                    { new: true }
+                );
+            }
+        } catch (error) {
+            console.error(`Ошибка при регистрации пользователя ${userId}:`, error);
         }
     });
 
     socket.on('disconnect', async () => {
-        const userId = socket.userId;
-        if (userId) {
-            console.log(`Пользователь ${userId} отключился`);
+        try {
+            const userId = socket.userId;
+            if (userId) {
+                console.log(`Пользователь ${userId} отключился`);
 
-            await UsersModel.findOneAndUpdate(
-                { _id: userId },
-                { $set: { onlineMod: 'Offline' } },
-                { new: true }
-            );
-            console.log(`${userId} отключился.`)
-            delete clients[userId];
+                await UsersModel.findOneAndUpdate(
+                    { _id: userId },
+                    { $set: { onlineMod: 'Offline' } },
+                    { new: true }
+                );
+                console.log(`${userId} отключился.`)
+                if (clients[userId]) {
+                    delete clients[userId];
+                }
+            }
+        } catch (error) {
+            console.error(`Ошибка при отключении пользователя ${socket.userId}:`, error);
         }
     })
 
