@@ -348,7 +348,6 @@ const clients = {};
 io.on('connection', async (socket) => {
     socket.on('registerUser', async (userId) => {
         try {
-            console.log('userId', userId);
             socket.userId = userId;
             clients[userId] = socket.id;
             console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
@@ -368,17 +367,19 @@ io.on('connection', async (socket) => {
         try {
             const userId = socket.userId;
             if (userId) {
-                console.log(`Пользователь ${userId} отключился`);
-
-                await UsersModel.findOneAndUpdate(
-                    { _id: userId },
-                    { $set: { onlineMod: 'Offline' } },
-                    { new: true }
-                );
-                console.log(`${userId} отключился.`)
-                if (clients[userId]) {
-                    delete clients[userId];
-                }
+                setTimeout(async () => {
+                    if (!clients[userId] || clients[userId] === socket.id) {
+                        console.log(`${userId} отключился.`);
+                        await UsersModel.findOneAndUpdate(
+                            { _id: userId },
+                            { $set: { onlineMod: 'Offline' } },
+                            { new: true }
+                        );
+                        delete clients[userId];
+                    } else {
+                        console.log(`${userId} всё ещё в сети.`);
+                    }
+                }, 3000);
             }
         } catch (error) {
             console.error(`Ошибка при отключении пользователя ${socket.userId}:`, error);
@@ -506,10 +507,11 @@ io.on('connection', async (socket) => {
 
     socket.on('requestAcceptInvite', async (data) => {
         const friendSocketId = clients[data.requestData.senderId];
+        const friendOnlineMod = await UsersModel.findById(data.requestData.senderId);
 
         const getId = await UsersModel.findById(data.requestData.friendId);
 
-        if (friendSocketId) {
+        if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
             io.to(friendSocketId).emit('broadcastAcceptInvite', {
                 requestData: {
                     name: getId.name,
@@ -525,9 +527,11 @@ io.on('connection', async (socket) => {
     socket.on('requestRejectInvite', async (data) => {
         const friendSocketId = clients[data.requestData.senderId];
 
+        const friendOnlineMod = await UsersModel.findById(data.requestData.senderId);
+
         const getId = await UsersModel.findById(data.requestData.friendId);
 
-        if (friendSocketId) {
+        if (friendOnlineMod.onlineMod === 'Online') {
             io.to(friendSocketId).emit('broadcastRejectInvite', {
                 requestData: {
                     name: getId.name,
