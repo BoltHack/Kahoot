@@ -1,0 +1,25 @@
+.back{
+    position: absolute;
+    margin-top: 70px;
+    left: 0;
+    padding: 12px;
+    display: flex;
+    gap: 5px;
+    background-color: #16171d;
+    border-radius: 0 0 10px 0 / 0 0 10px 0;
+}
+.between{
+    color: #586f7c;
+    z-index: 1;
+}
+.color-btn{
+    color: #adb5bd;
+    text-decoration: none;
+    cursor: pointer;
+}
+.other-color{
+    color: #6c757d;
+}
+.color-btn:hover{
+    text-decoration: underline;
+}
