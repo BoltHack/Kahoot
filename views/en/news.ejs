@@ -15,8 +15,8 @@
         <div class="search-tag-container">
             <a href="?tag=Updates" class="tag search-tag">Updates</a>
             <a href="?tag=News" class="tag search-tag">News</a>
-            <a href="?tag=Errors" class="tag search-tag">Errors</a>
-            <a href="/news" class="tag search-tag">All</a>
+            <a href="?tag=Errors" class="tag search-tag">Bugs/Errors</a>
+            <a href="/news" class="tag search-tag">All news</a>
         </div>
         <% if (allNews && allNews.length > 0) { %>
             <% allNews.reverse().forEach(news => { %>
@@ -34,7 +34,7 @@
                                 <div class="tags">
                                     <% if (news.tags && news.tags.length > 0) {%>
                                         <% news.tags.forEach(tags => { %>
-                                            <div class="tag"><%= tags.tagName %></div>
+                                            <div class="tag"><%= tags.tagName === 'Updates' ? 'Updates' : tags.tagName === 'News' ? 'News' : tags.tagName === 'Errors' ? 'Bugs/Errors' : 'All news' %></div>
                                         <% }) %>
                                     <% } %>
                                 </div>
