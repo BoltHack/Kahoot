@@ -433,10 +433,10 @@ class PostController {
             }
 
             updateFilesProcess(title0, content0, 'image0', 0);
-            updateFilesProcess(title1, content1, 'image0', 1);
-            updateFilesProcess(title2, content2, 'image0', 2);
-            updateFilesProcess(title3, content3, 'image0', 3);
-            updateFilesProcess(title4, content4, 'image0', 4);
+            updateFilesProcess(title1, content1, 'image1', 1);
+            updateFilesProcess(title2, content2, 'image2', 2);
+            updateFilesProcess(title3, content3, 'image3', 3);
+            updateFilesProcess(title4, content4, 'image4', 4);
 
             console.log('news_id', news_id);
 
