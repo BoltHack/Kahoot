@@ -70,6 +70,7 @@ body {
     height: 500px;
     border-radius: 8px;
     margin-top: 15px;
+    border: 1px solid grey;
 }
 .news-summary {
     margin-top: 15px;

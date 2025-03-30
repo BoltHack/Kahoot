@@ -390,12 +390,24 @@ class PostController {
     static redactionNews = async (req, res, next) => {
         try {
             const {news_id} = req.params;
+            const user = req.user;
+            let locale = req.cookies['locale'] || 'en';
+
+            if (!req.cookies['locale']) {
+                res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+            }
             const {updateTitle, title0, content0, title1, content1, title2, content2, title3, content3, title4, content4} = req.body;
             const {updatesTag, newsTag, errorsTag} = req.body;
 
             const updateFields = {};
 
+            const getData = await UsersModel.findById(user.id);
+
             if (updateTitle) updateFields.updateTitle = updateTitle;
+            if (updateTitle) updateFields.author = {
+                authorName: getData.name,
+                authorImage: getData.image
+            };
 
             if (!updateFields["tags"]) {
                 updateFields["tags"] = [];

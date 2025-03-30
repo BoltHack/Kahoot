@@ -14,6 +14,6 @@ router.get('/redaction-news/:news_id', verifyPermissions('Admin'), authenticateJ
 
 router.post('/post-news', verifyPermissions('Admin'), postNews);
 router.post('/delete-news/:news_id', verifyPermissions('Admin'), deleteNews);
-router.post('/redaction-news/:news_id', verifyPermissions('Admin'), redactionNews);
+router.post('/redaction-news/:news_id', verifyPermissions('Admin'), authenticateJWT, redactionNews);
 
 module.exports = router;
