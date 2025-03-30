@@ -1,13 +1,14 @@
 const express = require('express');
 const AuthRouter = require('./AuthRouter');
+const AdminRouter = require('./AdminRouter');
 
 const {
     mainView, createGameView, gameView, redactionView, myGamesView, friendsView, settingsView, returnMenuView, privacyPolicyView,
-    rulesView, aboutUsView, supportView
+    rulesView, aboutUsView, supportView, newsView, writeNewsView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, gameUsers, gameCorrectUsers, userLeader, getData, getUserData, changeAvatar, deleteImage,
-    changeLocal, changeLocalAuth, changeSettings
+    changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -26,6 +27,9 @@ router.get('/privacyPolicy', privacyPolicyView);
 router.get('/rules', rulesView);
 router.get('/aboutUs', aboutUsView);
 router.get('/support', supportView);
+router.get('/news', newsView);
+router.get('/writeNews/:news_id', writeNewsView);
+
 
 router.post('/create-game', authenticateJWT, createGame);
 router.post('/delete-game/:game_id', authenticateJWT, deleteGame);
@@ -48,9 +52,14 @@ router.post('/changeLocalAuth/:id/:locale', changeLocalAuth);
 
 router.post('/changeSettings/:user_id', changeSettings);
 
+router.post('/sendContacts', sendContacts);
+
+router.post('/viewNews/:news_id', viewNews);
+
 router.post('/accessToken', accessToken);
 router.post('/refreshToken', refreshToken);
 
 router.use('/auth', AuthRouter);
+router.use('/admin', AdminRouter);
 
 module.exports = router;

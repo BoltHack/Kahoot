@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    display: grid;
+    background-color: #f0f2f5;
+    grid-template-rows: auto 1fr auto;
+    overflow-x: hidden;
+}
+.card {
+    width: 350px;
+    border: 1px solid black;
+    background: linear-gradient(to bottom, white, #e5e5e5, #cccccc);
+    padding: 20px;
+    border-radius: 10px;
+
+}
+.date{
+    margin-left: 260px;
+    color: black;
+    font-weight: bold;
+}
+.title {
+    margin-left: 280px;
+    color: red;
+    cursor: pointer;
+}
+.title:hover {
+    text-decoration: underline;
+}
+.quote {
+    margin-top: 20px;
+    padding-left: 10px;
+    border-left: 4px solid red;
+    font-size: 16px;
+    color: #333;
+    display: block;
+}
+.message {
+    margin-top: 20px;
+    color: black;
+}
+.position {
+    font-weight: bold;
+    color: grey;
+    transition: color 0.5s;
+}
+.position:hover {
+    color: #777;
+}

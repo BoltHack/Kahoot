@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel | User contacts</title>
+    <link rel="stylesheet"  href="/stylesheets/admin/user-contacts.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<main>
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 50px;">
+        <% if (userContacts && userContacts.length > 0) { %>
+            <% userContacts.forEach(contacts => { %>
+                <article class="card">
+                    <div class="date">
+                        <span><%= contacts.date %></span>
+                    </div>
+
+                    <div class="quote">
+                        <p><%= contacts.email %></p>
+                        <p><%= contacts.name %></p>
+                    </div>
+
+                    <div>
+                        <p class="message">
+                            <a>- <%= contacts.message %></a>
+                        </p>
+                    </div>
+                </article>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Nothing found.</p>
+            </div>
+        <% } %>
+    </div>
+</main>
+<script src="/javascripts/timer.js"></script>
+</body>
+</html>

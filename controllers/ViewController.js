@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const {UsersModel} = require('../models/UsersModel')
 const {GamesModel} = require("../models/GamesModel");
 const {authenticateJWT} = require('../middlewares/jwtAuth');
+const {NewsModel} = require("../models/NewsModel");
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
@@ -228,6 +229,58 @@ class ViewController {
             else {
                 const user = '';
                 return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user, locale});
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static newsView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+
+            const tag = req.query.tag;
+            const query = tag ? {"tags.tagName": tag} : {};
+
+            const allNews = await NewsModel.find(query);
+
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, currentTag: tag, locale});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, currentTag: tag, locale});
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
+
+
+    static writeNewsView = async (req, res, next) => {
+        try {
+            const {news_id} = req.params;
+            const locale = req.cookies['locale'] || 'en';
+
+            if (!mongoose.Types.ObjectId.isValid(news_id)) {
+                const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const writeNews = await NewsModel.findById(news_id);
+
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/writeNews' : 'ru/writeNews', {user, writeNews, locale});
+                });
+            }
+            else {
+                const user = '';
+                return res.render(locale === 'en' ? 'en/writeNews' : 'ru/writeNews', {user, writeNews, locale});
             }
         } catch (e) {
             next(e);

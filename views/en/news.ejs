@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Новости</title>
+    <link rel="stylesheet" href="/stylesheets/news.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <br>
+    <div class="container">
+        <div class="search-tag-container">
+            <a href="?tag=Updates" class="tag search-tag">Updates</a>
+            <a href="?tag=News" class="tag search-tag">News</a>
+            <a href="?tag=Errors" class="tag search-tag">Errors</a>
+            <a href="/news" class="tag search-tag">All</a>
+        </div>
+        <% if (allNews && allNews.length > 0) { %>
+            <% allNews.reverse().forEach(news => { %>
+                <% if (news.update && news.update.length > 0) { %>
+                    <div class="news-container">
+                        <article class="news-card">
+                            <h2 class="news-title"><%= news.updateTitle %></h2>
+                            <div class="news-meta">
+                                <div class="news-author">
+                                    <span>Author</span>
+                                    <img src="data:image/png;base64,<%= news.author.authorImage %>">
+                                    <span><%= news.author.authorName %></span>
+                                </div>
+                                <span class="news-date">📅 <%= news.date %></span>
+                                <div class="tags">
+                                    <% if (news.tags && news.tags.length > 0) {%>
+                                        <% news.tags.forEach(tags => { %>
+                                            <div class="tag"><%= tags.tagName %></div>
+                                        <% }) %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="news-image">
+                                <% if (news.update[0].image) {%>
+                                    <img src="<%= 'data:image/png;base64,' +  news.update[0].image %>" alt="News">
+                                <% } %>
+                            </div>
+                            <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>
+
+                            <div class="news-footer">
+                                <div class="stats">
+                                    <span style="font-size: 25px; font-weight: 600">&#128065;</span>
+                                    <p style="margin-top: 11.5px;"><%= news.views %></p>
+                                </div>
+                                <% if (user.role === 'Admin') {%>
+                                    <div style="display: flex; gap: 20px;">
+                                        <a href="/admin/redaction-news/<%= news.id %>" class="news-edit">Edit</a>
+                                        <form action="/admin/delete-news/<%= news.id %>" method="POST">
+                                            <button type="submit" class="news-delete">Delete</button>
+                                        </form>
+                                    </div>
+                                <% } %>
+                                <form action="/viewNews/<%= news.id %>" method="POST">
+                                    <button class="read-more">Read more</button>
+                                </form>
+                            </div>
+                        </article>
+                    </div>
+                <% } %>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Nothing found.</p>
+            </div>
+        <% } %>
+    </div>
+</main>
+<br>
+<br>
+<br>
+<br>
+<%- include('footer.ejs') %>
+<script src="/javascripts/timer.js"></script>
+</body>
+</html>

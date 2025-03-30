@@ -27,7 +27,7 @@ if (myToken){
 `
 }
 else{
-    account.innerHTML = `<a href="/auth/login" class="ha">${localeType === 'en' ? 'Sign in' : 'Войти'}</a>`
+    account.innerHTML = `<p class="ha dropdown-title" onclick="window.location.href = '/auth/login'">${localeType === 'en' ? 'Sign in' : 'Войти'}</p>`
 }
 
 
