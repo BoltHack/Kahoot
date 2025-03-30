@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahoot | Новости</title>
+    <title>Kahoot | News</title>
     <link rel="stylesheet" href="/stylesheets/news.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
@@ -11,8 +11,12 @@
 <%- include('header.ejs') %>
 <main>
     <br>
+    <br>
+    <br>
+    <br>
     <div class="container">
         <div class="search-tag-container">
+            <h4>Popular Topics</h4>
             <a href="?tag=Updates" class="tag search-tag">Updates</a>
             <a href="?tag=News" class="tag search-tag">News</a>
             <a href="?tag=Errors" class="tag search-tag">Bugs/Errors</a>
@@ -41,7 +45,7 @@
                             </div>
                             <div class="news-image">
                                 <% if (news.update[0].image) {%>
-                                    <img src="<%= 'data:image/png;base64,' +  news.update[0].image %>" alt="News">
+                                    <img src="data:image/png;base64,<%= news.update[0].image %>" alt="News">
                                 <% } %>
                             </div>
                             <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>

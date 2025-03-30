@@ -8,6 +8,7 @@ body {
 
 .container {
     margin-left: 100px;
+    margin-top: 150px;
 }
 
 .news-container {
@@ -17,7 +18,7 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: block;
-    margin-top: 150px;
+    margin-top: 80px;
 }
 .news-title {
     font-size: 24px;

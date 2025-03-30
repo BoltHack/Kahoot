@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahoot | Новости</title>
+    <title>News | <%= writeNews.updateTitle %></title>
     <link rel="stylesheet" href="/stylesheets/news.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
@@ -27,9 +27,11 @@
                 <% if (writeNews.update && Array.isArray(writeNews.update) && writeNews.update.length > 0) { %>
                     <% writeNews.update.forEach(updateNews => { %>
                         <h3><%= updateNews.title %></h3>
-                        <div class="news-image" style="margin-top: -30px;">
-                            <img src="<%= updateNews.image ? 'data:image/png;base64,' + updateNews.image : 'default-image.jpg' %>" alt="Новость">
-                        </div>
+                        <% if (updateNews.image) { %>
+                            <div class="news-image" style="margin-top: -30px;">
+                                <img src="data:image/png;base64,<%= updateNews.image %>" alt="Новость">
+                            </div>
+                        <% } %>
                         <p class="news-summary"><%= updateNews.content %></p>
                     <br>
                     <br>
