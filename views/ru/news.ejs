@@ -16,10 +16,13 @@
     <br>
     <div class="container">
         <div class="search-tag-container">
-            <a href="?tag=Updates" class="tag search-tag">Обновления</a>
-            <a href="?tag=News" class="tag search-tag">Новости</a>
-            <a href="?tag=Errors" class="tag search-tag">Ошибки</a>
-            <a href="/news" class="tag search-tag">Всё</a>
+            <h4>Попурярные темы</h4>
+            <div style="display: flex; gap: 10px;">
+                <a href="?tag=Updates" class="tag search-tag">Обновления</a>
+                <a href="?tag=News" class="tag search-tag">Новости</a>
+                <a href="?tag=Errors" class="tag search-tag">Баги/Ошибки</a>
+                <a href="/news" class="tag search-tag">Все новости</a>
+            </div>
         </div>
         <% if (allNews && allNews.length > 0) { %>
             <% allNews.reverse().forEach(news => { %>
@@ -37,7 +40,7 @@
                                 <div class="tags">
                                     <% if (news.tags && news.tags.length > 0) {%>
                                         <% news.tags.forEach(tags => { %>
-                                            <div class="tag"><%= tags.tagName === 'Updates' ? 'Обновления' : tags.tagName === 'News' ? 'Новости' : tags.tagName === 'Errors' ? 'Ошибки' : 'Всё' %></div>
+                                            <div class="tag"><%= tags.tagName === 'Updates' ? 'Обновления' : tags.tagName === 'News' ? 'Новости' : tags.tagName === 'Errors' ? 'Баги/Ошибки' : 'Все новости' %></div>
                                         <% }) %>
                                     <% } %>
                                 </div>
