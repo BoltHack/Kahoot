@@ -10,19 +10,28 @@
 <body>
 <%- include('header.ejs') %>
 <main>
-    <div class="container">
-        <h2>Свяжитесь с нами</h2>
-        <form>
-            <input type="text" placeholder="Ваше имя" required>
-            <input type="email" placeholder="Ваш email" required>
-            <textarea placeholder="Ваше сообщение" rows="5" required></textarea>
-            <button type="submit">Отправить</button>
-        </form>
-        <div class="contacts">
-            <a href="mailto:hffreelancers@gmail.com">support@example.com</a>
-            <a href="tel:циферки"> +7 (900) 123-45-67</a>
+    <form action="/sendContacts" method="POST">
+        <div class="container">
+            <h2>Свяжитесь с нами</h2>
+            <form>
+                <input type="text" name="name" placeholder="Ваше имя" required>
+                <input type="email" name="email" placeholder="Ваш email" required>
+                <textarea name="message" placeholder="Ваше сообщение" rows="5" required></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+            <div class="contacts">
+                <a href="mailto:hffreelancers@gmail.com">support@example.com</a>
+                <a href="tel:циферки"> +7 (900) 123-45-67</a>
+            </div>
         </div>
-    </div>
+    </form>
 </main>
+<script>
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('keydown', event => {
+            if (event.key === 'Enter') event.preventDefault();
+        });
+    });
+</script>
 </body>
 </html>

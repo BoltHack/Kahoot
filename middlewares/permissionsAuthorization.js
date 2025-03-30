@@ -6,8 +6,7 @@ function verifyPermissions(role) {
         const token = req.cookies.token;
 
         if (!token) {
-            // return res.redirect(`/error?message=${encodeURIComponent("Требуется аутентификация.")}`);
-            throw new HttpErrors('Not Found');
+            throw new HttpErrors('Страница не найдена.');
         }
 
         jwt.verify(token, process.env.JWTSecret, (err, decoded) => {
@@ -16,8 +15,7 @@ function verifyPermissions(role) {
             }
 
             if (!decoded.role || decoded.role !== role) {
-                // return res.redirect(`/error?message=${encodeURIComponent("У вас нет доступа к этому ресурсу.")}`);
-                throw new HttpErrors('Not Found');
+                throw new HttpErrors('Страница не найдена.');
             }
 
             req.user = decoded;

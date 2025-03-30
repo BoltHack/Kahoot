@@ -1,6 +1,9 @@
 const {GamesModel} = require('../models/GamesModel')
 const {UsersModel} = require("../models/UsersModel");
+const {AdminUserContactsModel} = require("../models/AdminUserContactsModel");
+const {NewsModel} = require("../models/NewsModel");
 const {changeAvatar} = require("./ViewController");
+const {ForgottenPasswordsModel} = require("../models/ForgottenPasswords");
 
 require('dotenv').config();
 
@@ -446,6 +449,181 @@ class PostController {
             next(err);
         }
     }
+
+    static sendContacts = async (req, res, next) => {
+        try {
+            const {name, email, message} = req.body;
+
+            const sendContacts = new AdminUserContactsModel({
+                name: name,
+                email: email,
+                message: message
+            })
+            sendContacts.save();
+
+            return res.redirect('/support');
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static postNews = async (req, res, next) => {
+        try {
+            const {updateTitle} = req.body;
+            const user = req.user;
+            const getData = await UsersModel.findById(user.id);
+
+            const postNews = new NewsModel({
+                author: {
+                    authorName: user.name,
+                    authorImage: getData.image
+                },
+                updateTitle: updateTitle
+            })
+            postNews.save();
+
+            return res.redirect(`/admin/redaction-news/${postNews._id}`);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static redactionNews = async (req, res, next) => {
+        try {
+            const {news_id} = req.params;
+            const {updateTitle, title0, content0, title1, content1, title2, content2, title3, content3, title4, content4} = req.body;
+            const {updatesTag, newsTag, errorsTag} = req.body;
+
+            const updateFields = {};
+
+            if (updateTitle) updateFields.updateTitle = updateTitle;
+
+            if (!updateFields["tags"]) {
+                updateFields["tags"] = [];
+            }
+
+            if (updatesTag) updateFields["tags"].push({ tagName: 'Updates' });
+            if (newsTag) updateFields["tags"].push({ tagName: 'News' });
+            if (errorsTag) updateFields["tags"].push({ tagName: 'Errors' });
+
+
+
+            if (title0) {
+                let base64Image;
+                if (req.files && req.files.image0) {
+                    const imageFile = req.files.image0;
+                    base64Image = imageFile.data.toString('base64');
+                }
+                updateFields["update.0"] = {
+                    title: title0,
+                    image: base64Image,
+                    content: content0
+                }
+            }
+            if (title1) {
+                let base64Image;
+                if (req.files && req.files.image1) {
+                    const imageFile = req.files.image1;
+                    base64Image = imageFile.data.toString('base64');
+                }
+                updateFields["update.1"] = {
+                    title: title1,
+                    image: base64Image,
+                    content: content1
+                }
+            }
+            if (title2) {
+                let base64Image;
+                if (req.files && req.files.image2) {
+                    const imageFile = req.files.image2;
+                    base64Image = imageFile.data.toString('base64');
+                }
+                updateFields["update.2"] = {
+                    title: title2,
+                    image: base64Image,
+                    content: content2
+                }
+            }
+            if (title3) {
+                let base64Image;
+                if (req.files && req.files.image3) {
+                    const imageFile = req.files.image3;
+                    base64Image = imageFile.data.toString('base64');
+                }
+                updateFields["update.3"] = {
+                    title: title3,
+                    image: base64Image,
+                    content: content3
+                }
+            }
+            if (title4) {
+                let base64Image;
+                if (req.files && req.files.image4) {
+                    const imageFile = req.files.image4;
+                    base64Image = imageFile.data.toString('base64');
+                }
+                updateFields["update.4"] = {
+                    title: title4,
+                    image: base64Image,
+                    content: content4
+                }
+            }
+
+            console.log('news_id', news_id);
+
+            await NewsModel.findOneAndUpdate(
+                { _id: news_id },
+                { $set: updateFields },
+                { new: true }
+            )
+
+            return res.redirect(`/admin/redaction-news/${news_id}`);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static viewNews = async (req, res, next) => {
+        try {
+            const {news_id} = req.params;
+            const viewNews = await NewsModel.findById(news_id);
+
+            await NewsModel.findOneAndUpdate(
+                { _id: news_id },
+                {
+                    $set: {
+                        views: viewNews.views + 1
+                    },
+                },
+                { new: true }
+            )
+            return res.redirect(`/writeNews/${news_id}`);
+        }catch (err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
+    static deleteNews = async (req, res, next) => {
+        try {
+            const {news_id} = req.params;
+
+            await NewsModel.findByIdAndDelete(news_id)
+
+            return res.redirect(`/news`);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
 
 }
 

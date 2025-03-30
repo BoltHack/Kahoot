@@ -1,0 +1,111 @@
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .line{
+        border-top: 1px solid #666;
+        position: relative;
+        /*margin-left: 200px;*/
+        margin-left: 0;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        width: 100%;
+    }
+    footer {
+        background-color: #16171d;
+        color: white;
+        padding: 20px 0;
+        width: 100%;
+        margin-bottom: auto;
+
+    }
+    main {
+        flex: 1;
+    }
+    footer h3{
+        color: #f3d5b5
+    }
+    footer a {
+        color: #ECF1FD;
+        text-decoration: none;
+    }
+    footer a:hover{
+        color: #F2F2F2;
+        text-decoration: underline;
+    }
+    footer p {
+        color: #F2F2F2
+    }
+    .footer-links {
+        display: flex;
+        margin: 20px 200px;
+    }
+    .footer-our-company{
+        width: 350px;
+        flex-wrap: wrap;
+    }
+    .footer-info{
+        display: grid;
+        gap: 10px;
+        margin-left: 50px;
+        margin-top: -14.5px;
+    }
+    .footer-contacts{
+        display: grid;
+        gap: 10px;
+        margin-left: 50px;
+        margin-top: -14.5px;
+    }
+    .footer-links a {
+        margin-right: 20px;
+    }
+
+    .footer-links a:last-child {
+        margin-right: 0;
+    }
+    .company-logo{
+        width: 30px;
+        height: 30px;
+    }
+    .company-name{
+        margin-left: 200px;
+        /*color: #6c757d;*/
+        color: white;
+    }
+    .contact-us{
+        display: grid;
+        gap: 10px;
+        margin-left: 50px;
+        margin-top: -14.5px;
+    }
+</style>
+<footer id="footerSection">
+    <div class="footer-container">
+        <div class="footer-links">
+            <div class="footer-our-company">
+                <div style="display: flex">
+                    <img src="../images/icon.png" class="company-logo">
+                    <h3 style="margin: 5px 10px;">Kahoot</h3>
+                </div>
+                <p style="color: white;">Kahoot — игровая обучающая платформа, используемая в классе в школах и других учебных заведениях.</p>
+            </div>
+            <div class="footer-info">
+                <h3>Информация</h3>
+                <a href="/aboutUs">О нас</a>
+                <a href="/rules">Правила использования</a>
+                <a href="/privacyPolicy">Политика конфиденциальности</a>
+            </div>
+            <div class="contact-us">
+                <h3>Связь с нами</h3>
+                <a href="mailto:hffreelancers@gmail.com" style="color: #b7b4be">Kahoot@gmail.com</a>
+                <a href="tel:циферки" style="color: #b7b4be">+7 123 456 78 90</a>
+            </div>
+        </div>
+        <div class="line"></div>
+        <p class="company-name" style="color: white;">&copy; 2025 Kahoot. Все права защищены. Полное или частичное копирование сайта запрещено.</p>
+    </div>
+</footer>
