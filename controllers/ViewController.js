@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const {UsersModel} = require('../models/UsersModel')
 const {GamesModel} = require("../models/GamesModel");
-const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {NewsModel} = require("../models/NewsModel");
+const {authenticateJWT} = require('../middlewares/jwtAuth');
 class ViewController {
     static mainView = async (req, res, next) => {
         try {

@@ -440,9 +440,6 @@ io.on('connection', async (socket) => {
             const updateMyFriendsCount = await UsersModel.findById(acceptData.acceptData.senderId);
             io.emit('updatePage');
 
-            // io.to(friendSocketId).emit('updateMyFriendsCount', friend.myFriends);
-            // io.to(senderSocketId).emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
-
             io.to(senderSocketId).emit('broadcastUpdateMyFriends', updateMyFriendsCount.myFriends);
 
             console.log('send to', senderSocketId + ' | ' + acceptData.acceptData.senderId);
@@ -469,14 +466,16 @@ io.on('connection', async (socket) => {
             },
             { new: true }
         );
-        // const updateMyFriendsCount = await UsersModel.findById(myId);
-        // io.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
         io.emit('updatePage');
     })
 
     socket.on('requestMyFriendsCount', async (sendId) => {
-        const updateMyFriendsCount = await UsersModel.findById(sendId);
-        socket.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+        try {
+            const updateMyFriendsCount = await UsersModel.findById(sendId);
+            socket.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+        } catch (error) {
+            console.log('error', error);
+        }
     });
 
 

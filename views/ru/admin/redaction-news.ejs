@@ -175,39 +175,36 @@
         </div>
     </form>
 </main>
-    <script>
-        document.querySelector('select[name="max_news"]').addEventListener('change', function () {
-            const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
-            const inputs = [...Array(3)].map((_, i) => document.getElementById(`modal_input${i}`));
+<script>
+    document.querySelector('select[name="max_news"]').addEventListener('change', function () {
+        const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
+        const inputs = [...Array(3)].map((_, i) => document.getElementById(`modal_input${i}`));
 
-            const value = Number(this.value);
-            console.log('value', value);
+        const value = Number(this.value);
+        console.log('value', value);
 
-            modals.forEach((modal, i) => modal.hidden = i >= value);
+        modals.forEach((modal, i) => modal.hidden = i >= value);
 
-            inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
-        });
+        inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
+    });
 
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function (event) {
-                document.querySelectorAll('input[required]').forEach(input => {
-                    if (input.hidden || input.offsetParent === null) {
-                        input.required = false;
-                    }
-                });
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            document.querySelectorAll('input[required]').forEach(input => {
+                if (input.hidden || input.offsetParent === null) {
+                    input.required = false;
+                }
             });
         });
+    });
 
 
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('keydown', event => {
-                if (event.key === 'Enter') event.preventDefault();
-            });
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('keydown', event => {
+            if (event.key === 'Enter') event.preventDefault();
         });
-    </script>
-    <script src="/javascripts/timer.js"></script>
-
-
+    });
+</script>
 </body>
 </html>
 

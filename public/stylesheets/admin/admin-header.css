@@ -279,7 +279,9 @@ html.lightTheme {
     justify-content: center;
     gap: 20px;
 }
-
+.header-container h3 {
+    color: #fff;
+}
 .account-container {
     gap: 20px;
     display: flex;

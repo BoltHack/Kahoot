@@ -8,8 +8,9 @@
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <body>
+<%- include('admin-header.ejs') %>
 <main>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 50px;">
+    <div class="contacts-container">
         <% if (userContacts && userContacts.length > 0) { %>
             <% userContacts.forEach(contacts => { %>
                 <article class="card">
@@ -31,11 +32,10 @@
             <% }) %>
         <% } else { %>
             <div class="not-found">
-                <p>Nothing found.</p>
+                <p>Ничего не найдено.</p>
             </div>
         <% } %>
     </div>
 </main>
-<script src="/javascripts/timer.js"></script>
 </body>
 </html>

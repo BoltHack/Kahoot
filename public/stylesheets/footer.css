@@ -8,7 +8,6 @@ html, body {
 .line{
     border-top: 1px solid #666;
     position: relative;
-    /*margin-left: 200px;*/
     margin-left: 0;
     margin-top: 50px;
     margin-bottom: 50px;
@@ -72,7 +71,6 @@ footer p {
 }
 .company-name{
     margin-left: 200px;
-    /*color: #6c757d;*/
     color: white;
 }
 .contact-us{

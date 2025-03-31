@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/header.css">
-    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
+    <title>Admin panel</title>
     <noscript>
         <style>
             body{
@@ -27,36 +27,21 @@
         </div>
     </noscript>
 </head>
-<script>
-    const localeType = '<%= locale %>';
-    const sendId = '<%= user.id %>';
-</script>
 <body>
 <header>
     <div class="container-logo">
-        <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
+        <h2><a class="logo" href="/admin/admin-panel">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
     </div>
 
     <div class="header-container">
+
         <div id="rules">
             <div class="dropdown">
-                <p class="ha dropdown-title">Rules</p>
-                <div class="dropdown-content">
-                    <a href="/privacyPolicy">Privacy Policy</a>
-                    <a href="/rules">Terms of Use</a>
-                    <a href="/aboutUs">About Us</a>
-                </div>
-            </div>
-        </div>
-
-        <div id="news">
-            <div class="dropdown">
-                <p class="ha dropdown-title">News</p>
-                <div class="dropdown-content" style="width: 140px;">
-                    <a href="/news?tag=Updates">Updates</a>
-                    <a href="/news?tag=News">News about the game</a>
-                    <a href="/news?tag=Errors">Bugs/Errors</a>
-                    <a href="/news">All news</a>
+                <p class="ha dropdown-title">Admin panel</p>
+                <div class="dropdown-content" style="width: 150px;">
+                    <a href="/admin/user-contacts">Player contact list</a>
+                    <a href="/admin/list-news">News list</a>
+                    <a href="/admin/post-news">Post news</a>
                 </div>
             </div>
         </div>
@@ -64,10 +49,6 @@
     </div>
 
     <div class="account-container">
-
-        <% if (user.role === 'Admin') {%>
-            <p class="ha dropdown-title" onclick="window.location.href = '/admin/admin-panel'">Admin panel</p>
-        <% } %>
 
         <div id="account"></div>
 
@@ -87,12 +68,23 @@
     </div>
 
 </header>
-<%- include('back.ejs') %>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/header.js"></script>
+<script src="/javascripts/timer.js"></script>
 <script src="/javascripts/locale.js"></script>
-<script src="/javascripts/friends.js"></script>
-<script src="/javascripts/alert.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const dropdownContents = document.querySelectorAll('.dropdown-content');
+    const dropdown = document.querySelectorAll('.dropdown');
+
+    dropdown.forEach((title, index) => {
+        title.addEventListener('mouseover', () => {
+            dropdownContents[index].style.display = 'flex';
+            dropdownContents[index].style.transform = 'scaleY(1)';
+        });
+
+        title.addEventListener('mouseout', () => {
+            dropdownContents[index].style.display = 'none';
+            dropdownContents[index].style.transform = 'scaleY(0)';
+        });
+    });
+</script>
 </body>
 </html>

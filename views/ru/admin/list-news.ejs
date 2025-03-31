@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель | Список новостей</title>
+    <link rel="stylesheet"  href="/stylesheets/news.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <style>
+        .listNews-container {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+    </style>
+</head>
+<body>
+<%- include('admin-header.ejs') %>
+<main>
+    <div class="listNews-container">
+        <% if (listNews && listNews.length > 0) { %>
+            <% listNews.reverse().forEach(news => { %>
+                <div class="news-container" style="margin-top: 150px;">
+                    <article class="news-card">
+                        <h2 class="news-title"><%= news.updateTitle %></h2>
+                        <br>
+                        <div class="news-meta">
+                            <div class="news-author">
+                                <span>Автор</span>
+                                <img src="data:image/png;base64,<%= news.author.authorImage %>">
+                                <span><%= news.author.authorName %></span>
+                            </div>
+                            <span class="news-date">📅 <%= news.date %></span>
+                            <div class="tags">
+                                <% if (news.tags && news.tags.length > 0) {%>
+                                    <% news.tags.forEach(tags => { %>
+                                        <div class="tag"><%= tags.tagName === 'Updates' ? 'Обновления' : tags.tagName === 'News' ? 'Новости' : tags.tagName === 'Errors' ? 'Баги/Ошибки' : 'Все новости' %></div>
+                                    <% }) %>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="news-image">
+                            <% if (news.update && news.update.length > 0 && news.update[0].image) { %>
+                                <img src="data:image/png;base64,<%= news.update[0].image %>">
+                            <% } %>
+                        </div>
+                        <% if (news.update && news.update.length > 0 && news.update[0].content) { %>
+                            <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>
+                        <% } %>
+                        <br>
+                        <br>
+                        <div class="news-footer">
+                            <div class="stats">
+                                <span style="font-size: 25px; font-weight: 600">&#128065;</span>
+                                <p style="margin-top: 11.5px;"><%= news.views %></p>
+                            </div>
+                            <div style="display: flex; gap: 20px;">
+                                <a href="/admin/redaction-news/<%= news.id %>" class="news-edit">Редактировать</a>
+                                <form action="/admin/delete-news/<%= news.id %>" method="POST">
+                                    <button type="submit" class="news-delete">Удалить</button>
+                                </form>
+                            </div>
+                            <form action="/viewNews/<%= news.id %>" method="POST">
+                                <button class="read-more">Читать полностью</button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Ничего не найдено.</p>
+            </div>
+        <% } %>
+    </div>
+</main>
+</body>
+</html>
