@@ -14,12 +14,14 @@
     z-index: 1;
 }
 .color-btn{
-    color: #adb5bd;
+    /*color: #adb5bd;*/
+    color: #DAE2ED;
     text-decoration: none;
     cursor: pointer;
 }
 .other-color{
-    color: #6c757d;
+    /*color: #6c757d;*/
+    color: #adb5bd;
 }
 .color-btn:hover{
     text-decoration: underline;
