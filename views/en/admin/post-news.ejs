@@ -1,91 +1,14 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin panel | Updates</title>
+    <title>Admin panel | Post news</title>
+    <link rel="stylesheet"  href="/stylesheets/admin/post-news.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-        }
-
-        .news-container {
-            width: 600px;
-            margin: 100px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #333333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            color: #333333;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        textarea {
-            min-height: 150px;
-            max-height: 200px;
-            resize: vertical;
-        }
-
-        button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .add-btn {
-            margin-top: 10px;
-            background-color: #28a745;
-        }
-
-        .add-btn:hover {
-            background-color: #218838;
-        }
-    </style>
 </head>
 <body>
+<%- include('admin-header.ejs') %>
 <main>
     <div class="news-container">
         <h2>Create news</h2>
@@ -100,7 +23,5 @@
         </form>
     </div>
 </main>
-
-<script src="/javascripts/timer.js"></script>
 </body>
 </html>

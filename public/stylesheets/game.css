@@ -2,11 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    flex-direction: column;
-    display: grid;
     background-color: #f0f2f5;
-    /*background-color: #ECF1FD;*/
-    grid-template-rows: auto 1fr auto;
     overflow-x: hidden;
 }
 a{

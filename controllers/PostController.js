@@ -479,10 +479,24 @@ class PostController {
     static deleteNews = async (req, res, next) => {
         try {
             const {news_id} = req.params;
+            const user = req.user;
 
             await NewsModel.findByIdAndDelete(news_id)
 
-            return res.redirect(`/news`);
+            return res.redirect(user.role === 'Admin' ? '/admin/list-news' : '/news');
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static deleteUser = async (req, res, next) => {
+        try {
+            const {user_id} = req.params;
+            await UsersModel.findByIdAndDelete(user_id);
+
+            return res.redirect('/admin/admin-panel');
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });

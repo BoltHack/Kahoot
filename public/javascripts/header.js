@@ -1,17 +1,16 @@
+const socket = io();
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem('token')) {
         if (typeof socket !== "undefined" && sendId) {
             socket.emit('requestMyFriendsCount', sendId);
         } else {
-            console.error("Socket or sendId is not defined.");
+            console.error(`Socket or sendId(${sendId}) is not defined.`);
             setTimeout(function () {
                 window.location.reload();
-            }, 2000);
+            }, 3000);
         }
     }
 });
-
-const socket = io();
 
 const account = document.getElementById('account');
 const myToken = localStorage.getItem('token');

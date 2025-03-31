@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +8,9 @@
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <body>
+<%- include('admin-header.ejs') %>
 <main>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 50px;">
+    <div class="contacts-container">
         <% if (userContacts && userContacts.length > 0) { %>
             <% userContacts.forEach(contacts => { %>
                 <article class="card">
@@ -23,7 +24,7 @@
                     </div>
 
                     <div>
-                        <p class="message">
+                        <p class="data">
                             <a>- <%= contacts.message %></a>
                         </p>
                     </div>
