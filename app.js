@@ -179,11 +179,6 @@ io.on('connection', async (socket) => {
                 });
             });
 
-            // socket.on('requestUserFriendsCount', async () => {
-            //     const updateUser = await UsersModel.findById(userAuthorId);
-            //     socket.emit('updateUserFriendsCount', updateUser.myFriends);
-            // });
-
             let alreadyBannedUserIds = [];
 
             socket.on('ban', async (userId) => {
