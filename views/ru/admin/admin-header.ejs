@@ -27,10 +27,13 @@
         </div>
     </noscript>
 </head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
 <body>
 <header>
     <div class="container-logo">
-        <h2><a class="logo" href="/admin/admin-panel">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
+        <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
     </div>
 
     <div class="header-container">
@@ -39,7 +42,8 @@
             <div class="dropdown">
                 <p class="ha dropdown-title">Админ панель</p>
                 <div class="dropdown-content" style="width: 150px;">
-                    <a href="/admin/user-contacts">Список контактов игроков</a>
+                    <a href="/admin/user-contacts">Список контактов</a>
+                    <a href="/admin/admin-panel">Список игроков</a>
                     <a href="/admin/list-news">Список новостей</a>
                     <a href="/admin/post-news">Разместить новость</a>
                 </div>
@@ -68,6 +72,7 @@
     </div>
 
 </header>
+<%- include('../back.ejs') %>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/locale.js"></script>
 <script>

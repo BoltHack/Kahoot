@@ -5,8 +5,15 @@ function verifyPermissions(role) {
     return (req, res, next) => {
         const token = req.cookies.token;
 
+        let locale = req.cookies['locale'] || 'en';
+
+        if (!req.cookies['locale']) {
+            res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+        }
+
         if (!token) {
-            throw new HttpErrors('Страница не найдена.');
+            const errorMsg = locale === 'en' ? 'Not Found' : 'Страница не найдена.';
+            throw new HttpErrors(errorMsg, 404);
         }
 
         jwt.verify(token, process.env.JWTSecret, (err, decoded) => {
@@ -15,7 +22,8 @@ function verifyPermissions(role) {
             }
 
             if (!decoded.role || decoded.role !== role) {
-                throw new HttpErrors('Страница не найдена.');
+                const errorMsg = locale === 'en' ? 'Not Found' : 'Страница не найдена.';
+                throw new HttpErrors(errorMsg, 404);
             }
 
             req.user = decoded;
