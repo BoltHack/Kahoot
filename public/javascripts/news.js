@@ -45,5 +45,6 @@ document.getElementById('closeIcon').addEventListener('click', () => {
     Array.from(searchNews).forEach(news => {
         news.style.display = 'block';
         stickyContainer.style.top = 'auto';
+        searchNotFound.style.display = 'none';
     });
 })
