@@ -14,7 +14,27 @@
     <br>
     <br>
     <br>
-    <div class="container">
+    <div class="sticky-container" id="stickyContainer">
+        <div class="search-container">
+            <h3>Поиск статей</h3>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Поиск" id="searchInput">
+                <span class="close-icon" id="closeIcon">✖</span>
+            </div>
+<!--            <button class="search-button" id="searchButton">Поиск</button>-->
+<!--            <div class="search-dropdown">-->
+<!--                <span class="search-icon">🐞</span>-->
+<!--                <span class="search-dropdown-text">Уровень сложности</span>-->
+<!--                <span class="arrow">▼</span>-->
+<!--            </div>-->
+        </div>
+        <br>
+        <div class="search-info">
+            <span>Ищите новости по заголовкам.</span>
+        </div>
+    </div>
+    <ul class="container" id="newsList">
         <div class="search-tag-container">
             <h4>Попурярные темы</h4>
             <div style="display: flex; gap: 10px;">
@@ -27,7 +47,7 @@
         <% if (allNews && allNews.length > 0) { %>
             <% allNews.reverse().forEach(news => { %>
                 <% if (news.update && news.update.length > 0) { %>
-                    <div class="news-container">
+                    <li class="news-container">
                         <article class="news-card">
                             <h2 class="news-title"><%= news.updateTitle %></h2>
                             <div class="news-meta">
@@ -57,20 +77,12 @@
                                     <span style="font-size: 25px; font-weight: 600">&#128065;</span>
                                     <p style="margin-top: 11.5px;"><%= news.views %></p>
                                 </div>
-                                <% if (user.role === 'Admin') {%>
-                                <div style="display: flex; gap: 20px;">
-                                    <a href="/admin/redaction-news/<%= news.id %>" class="news-edit">Редактировать</a>
-                                    <form action="/admin/delete-news/<%= news.id %>" method="POST">
-                                        <button type="submit" class="news-delete">Удалить</button>
-                                    </form>
-                                </div>
-                                <% } %>
                                 <form action="/viewNews/<%= news.id %>" method="POST">
                                     <button class="read-more">Читать полностью</button>
                                 </form>
                             </div>
                         </article>
-                    </div>
+                    </li>
                 <% } %>
             <% }) %>
         <% } else { %>
@@ -84,7 +96,7 @@
                 <br>
             </div>
         <% } %>
-    </div>
+    </ul>
 </main>
 <br>
 <br>
@@ -94,5 +106,6 @@
 <br>
 <%- include('footer.ejs') %>
 <script src="/javascripts/timer.js"></script>
+<script src="/javascripts/news.js"></script>
 </body>
 </html>

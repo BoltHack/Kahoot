@@ -18,8 +18,8 @@
                 <div class="modal__body" style="border-bottom: none;">
                     <div class="input">
                         <label class="input__label">Название</label>
-                        <input class="input__field" type="text" name="updateTitle" placeholder="Введите название" value="<%= newsInfo.updateTitle %>" maxlength="10">
-                        <p class="input__description">Название должно содержать максимум 10 символов.</p>
+                        <input class="input__field" type="text" name="updateTitle" placeholder="Введите название" value="<%= newsInfo.updateTitle %>" maxlength="100">
+                        <p class="input__description">Название должно содержать максимум 100 символов.</p>
                     </div>
                     <div class="input">
                         <div class="input_container">
@@ -178,7 +178,7 @@
 <script>
     document.querySelector('select[name="max_news"]').addEventListener('change', function () {
         const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
-        const inputs = [...Array(3)].map((_, i) => document.getElementById(`modal_input${i}`));
+        const inputs = [...Array(5)].map((_, i) => document.querySelector(`input[name="title${i}"]`));
 
         const value = Number(this.value);
         console.log('value', value);
