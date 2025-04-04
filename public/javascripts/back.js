@@ -9,6 +9,8 @@ function pages(){
     } else if (page.startsWith('/redaction')) {
         pageName.innerHTML = `
             <a class="between"> > </a>
+            <a href="/my-games" class="color-btn">${localeType === 'en' ? 'My games' : 'Мои игры'}</a>
+            <a class="between"> > </a>
             <a class="other-color">${localeType === 'en' ? 'Editor' : 'Редактор'}</a>`
     }
     else if (page.startsWith('/my-games')) {
