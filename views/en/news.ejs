@@ -14,7 +14,21 @@
     <br>
     <br>
     <br>
-    <div class="container">
+    <div class="sticky-container" id="stickyContainer">
+        <div class="search-container">
+            <h3>Search articles</h3>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search" id="searchInput">
+                <span class="close-icon" id="closeIcon">✖</span>
+            </div>
+        </div>
+        <br>
+        <div class="search-info">
+            <span>Search news by headlines.</span>
+        </div>
+    </div>
+    <ul class="container" id="newsList">
         <div class="search-tag-container">
             <h4>Popular Topics</h4>
             <a href="?tag=Updates" class="tag search-tag">Updates</a>
@@ -25,7 +39,7 @@
         <% if (allNews && allNews.length > 0) { %>
             <% allNews.reverse().forEach(news => { %>
                 <% if (news.update && news.update.length > 0) { %>
-                    <div class="news-container">
+                    <li class="news-container">
                         <article class="news-card">
                             <h2 class="news-title"><%= news.updateTitle %></h2>
                             <div class="news-meta">
@@ -55,20 +69,12 @@
                                     <span style="font-size: 25px; font-weight: 600">&#128065;</span>
                                     <p style="margin-top: 11.5px;"><%= news.views %></p>
                                 </div>
-                                <% if (user.role === 'Admin') {%>
-                                    <div style="display: flex; gap: 20px;">
-                                        <a href="/admin/redaction-news/<%= news.id %>" class="news-edit">Edit</a>
-                                        <form action="/admin/delete-news/<%= news.id %>" method="POST">
-                                            <button type="submit" class="news-delete">Delete</button>
-                                        </form>
-                                    </div>
-                                <% } %>
                                 <form action="/viewNews/<%= news.id %>" method="POST">
                                     <button class="read-more">Read more</button>
                                 </form>
                             </div>
                         </article>
-                    </div>
+                    </li>
                 <% } %>
             <% }) %>
         <% } else { %>
@@ -82,7 +88,7 @@
                 <br>
             </div>
         <% } %>
-    </div>
+    </ul>
 </main>
 <br>
 <br>
@@ -92,5 +98,6 @@
 <br>
 <%- include('footer.ejs') %>
 <script src="/javascripts/timer.js"></script>
+<script src="/javascripts/news.js"></script>
 </body>
 </html>
