@@ -5,19 +5,18 @@ function getCookie(name) {
 }
 
 const ACCESS_TIMER_DURATION = 900000;
-function accessStartTimer(duration) {
+const REFRESH_TIMER_DURATION = 864000000;
+function startTokenTimer (duration, tokenType) {
     const startTime = Date.now();
     const endTime = startTime + duration;
 
-    if (localStorage.getItem('token')){
-        document.cookie = `accessTokenEndTime=${endTime}; path=/;`;
-    }
+    document.cookie = `${tokenType}=${endTime}; path=/;`;
 
-    accessUpdateTimer();
+    updateTokenTimer(tokenType);
 }
 
-function accessUpdateTimer() {
-    const endTime = parseInt(getCookie('accessTokenEndTime'), 10);
+function updateTokenTimer(tokenType) {
+    const endTime = parseInt(getCookie(tokenType), 10);
 
     const interval = setInterval(() => {
         const currentTime = Date.now();
@@ -25,25 +24,29 @@ function accessUpdateTimer() {
 
         if (remainingTime <= 0) {
             clearInterval(interval);
-            getAccessTokens();
-            document.cookie = `accessTokenEndTime=; max-age=0; path=/;`;
+            tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+            document.cookie = `${tokenType}=; max-age=0; path=/;`;
         }
     }, 1000);
 }
 
-const accessStoredEndTime = getCookie('accessTokenEndTime');
+function storedTime(tokenType) {
+    const storedEndTime = getCookie(tokenType);
 
-if (accessStoredEndTime) {
-    accessUpdateTimer();
-}
-if (accessStoredEndTime === typeof String){
-    getAccessTokens();
-}
-else if (localStorage.getItem('token') && !accessStoredEndTime){
-    console.log('test')
-    getAccessTokens();
+    if (storedEndTime) {
+        updateTokenTimer(tokenType);
+    }
+    if (storedEndTime === typeof String){
+        tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+    }
+    else if (localStorage.getItem('token') && !storedEndTime){
+        console.log('test')
+        tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+    }
 }
 
+storedTime('accessTokenEndTime');
+storedTime('refreshTokenEndTime');
 
 async function getAccessTokens() {
     try {
@@ -64,8 +67,9 @@ async function getAccessTokens() {
             if (token){
                 localStorage.setItem('token', token);
             }
-            accessStartTimer(ACCESS_TIMER_DURATION);
-            console.log('токен выдан');
+
+        startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime')
+        console.log('токен выдан');
 
         } else {
             console.error('Ошибка', response.status);
@@ -74,55 +78,6 @@ async function getAccessTokens() {
         console.error('Ошибка:', error);
     }
 }
-
-
-
-
-
-
-
-
-const REFRESH_TIMER_DURATION = 864000000;
-function refreshStartTimer(duration) {
-    const startTime = Date.now();
-    const endTime = startTime + duration;
-
-    if (localStorage.getItem('token')) {
-        document.cookie = `refreshTokenEndTime=${endTime}; max-age=${10 * 24 * 60 * 60}; path=/;`;
-    }
-
-    refreshUpdateTimer();
-}
-
-function refreshUpdateTimer() {
-    const endTime = parseInt(getCookie('refreshTokenEndTime'), 10);
-
-    const interval = setInterval(() => {
-        const currentTime = Date.now();
-        const remainingTime = endTime - currentTime;
-
-        if (remainingTime <= 0) {
-            clearInterval(interval);
-            getRefreshTokens();
-            document.cookie = `refreshTokenEndTime=; max-age=0; path=/;`;
-        }
-    }, 1000);
-}
-
-const refreshStoredEndTime = getCookie('refreshTokenEndTime');
-
-if (refreshStoredEndTime) {
-    refreshUpdateTimer();
-}
-if (refreshStoredEndTime === typeof String){
-    console.log('refresh test')
-    getRefreshTokens();
-}
-else if (localStorage.getItem('token') && !refreshStoredEndTime) {
-    console.log('refresh test 2')
-    getRefreshTokens();
-}
-
 
 async function getRefreshTokens() {
     try {
@@ -142,8 +97,8 @@ async function getRefreshTokens() {
             if (token){
                 localStorage.setItem('token', token);
             }
-            refreshStartTimer(REFRESH_TIMER_DURATION);
-            console.log('refresh токен выдан');
+        startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
+        console.log('refresh токен выдан');
 
         } else {
             console.error('Ошибка', response.status);
@@ -152,11 +107,6 @@ async function getRefreshTokens() {
         console.error('Ошибка:', error);
     }
 }
-
-
-
-
-
 
 
 

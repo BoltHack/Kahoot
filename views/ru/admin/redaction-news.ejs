@@ -37,13 +37,13 @@
                         <div class="input_container">
                             <p>Теги:</p>
                             <div style="margin-top: 15px;">
-                                <input type="checkbox" id="updatesTag" name="updatesTag">
+                                <input type="checkbox" id="updatesTag" name="updatesTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Updates') ? 'checked' : '' %> >
                                 <label for="updatesTag">Обновление</label>
 
-                                <input type="checkbox" id="newsTag" name="newsTag">
+                                <input type="checkbox" id="newsTag" name="newsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'News') ? 'checked' : '' %> >
                                 <label for="newsTag">Новости</label>
 
-                                <input type="checkbox" id="errorsTag" name="errorsTag">
+                                <input type="checkbox" id="errorsTag" name="errorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Errors') ? 'checked' : '' %> >
                                 <label for="errorsTag">Ошибки</label>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                 <div class="input">
                     <label class="input__label">Картинка (необязательно)</label>
                     <br>
-                    <input type="file" accept="image/*" name="image0">
+                    <input type="file" accept="image/*" name="image0" id="image0">
                 </div>
                 <div class="input">
                     <br>

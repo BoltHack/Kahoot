@@ -37,13 +37,13 @@
                         <div class="input_container">
                             <p>Tags:</p>
                             <div style="margin-top: 15px;">
-                                <input type="checkbox" id="updatesTag" name="updatesTag">
+                                <input type="checkbox" id="updatesTag" name="updatesTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Updates') ? 'checked' : '' %> >
                                 <label for="updatesTag">Updates</label>
 
-                                <input type="checkbox" id="newsTag" name="newsTag">
+                                <input type="checkbox" id="newsTag" name="newsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'News') ? 'checked' : '' %> >
                                 <label for="newsTag">News</label>
 
-                                <input type="checkbox" id="errorsTag" name="errorsTag">
+                                <input type="checkbox" id="errorsTag" name="errorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Errors') ? 'checked' : '' %> >
                                 <label for="errorsTag">Errors</label>
                             </div>
                         </div>
