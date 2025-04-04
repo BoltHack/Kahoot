@@ -13,20 +13,16 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
         const newsTitle = newsTitleElement ? newsTitleElement.textContent.toLowerCase() : '';
 
-        // newsTitle.includes(searchValue) ? showNews() : hideNews();
-
         if (newsTitle.includes(searchValue)) {
             showNews(news);
             foundVisible = true;
-        }
-        else {
-            hideNews(news);
         }
 
         if (foundVisible) {
             stickyContainer.style.top = 'auto';
             stickyContainer.style.right = '10%';
         } else {
+            hideNews(news);
             stickyContainer.style.top = '-5%';
             stickyContainer.style.right = '10.9%';
         }
