@@ -1,4 +1,5 @@
 const stickyContainer = document.getElementById('stickyContainer');
+const searchNotFound = document.getElementById('searchNotFound');
 
 document.getElementById('searchInput').addEventListener('input', function() {
     const searchValue = this.value.trim().toLowerCase();
@@ -31,13 +32,13 @@ document.getElementById('searchInput').addEventListener('input', function() {
         }
 
         function showNews () {
-            console.log('show');
             news.style.display = 'block';
+            searchNotFound.style.display = 'none';
         }
 
         function hideNews () {
-            console.log('hide');
             news.style.display = 'none';
+            searchNotFound.style.display = 'block';
         }
     });
 });

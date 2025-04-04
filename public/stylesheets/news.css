@@ -81,6 +81,10 @@ body {
     flex: 1;
 }
 
+#searchNotFound {
+    display: none;
+}
+
 
 .news-container {
     width: 720px;
