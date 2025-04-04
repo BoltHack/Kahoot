@@ -36,7 +36,7 @@ function storedTime(tokenType) {
     if (storedEndTime) {
         updateTokenTimer(tokenType);
     }
-    if (storedEndTime === typeof String){
+    if (!Number(storedEndTime)){
         tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
     }
     else if (localStorage.getItem('token') && !storedEndTime){
