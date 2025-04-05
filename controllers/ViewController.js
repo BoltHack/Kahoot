@@ -260,7 +260,7 @@ class ViewController {
     }
 
 
-    static writeNewsView = async (req, res, next) => {
+    static readNewsView = async (req, res, next) => {
         try {
             const {news_id} = req.params;
             const locale = req.cookies['locale'] || 'en';
@@ -270,17 +270,17 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            const writeNews = await NewsModel.findById(news_id);
+            const readNews = await NewsModel.findById(news_id);
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/writeNews' : 'ru/writeNews', {user, writeNews, locale});
+                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, locale});
                 });
             }
             else {
                 const user = '';
-                return res.render(locale === 'en' ? 'en/writeNews' : 'ru/writeNews', {user, writeNews, locale});
+                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, locale});
             }
         } catch (e) {
             next(e);

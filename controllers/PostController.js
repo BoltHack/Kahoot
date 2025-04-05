@@ -397,7 +397,7 @@ class PostController {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
             const {updateTitle, title0, content0, title1, content1, title2, content2, title3, content3, title4, content4} = req.body;
-            const {updatesTag, newsTag, errorsTag} = req.body;
+            const {updatesTag, aboutGameTag, bugsErrorsTag} = req.body;
 
             const updateFields = {};
 
@@ -414,8 +414,8 @@ class PostController {
             }
 
             if (updatesTag) updateFields["tags"].push({ tagName: 'Updates' });
-            if (newsTag) updateFields["tags"].push({ tagName: 'News' });
-            if (errorsTag) updateFields["tags"].push({ tagName: 'Errors' });
+            if (aboutGameTag) updateFields["tags"].push({ tagName: 'AboutGame' });
+            if (bugsErrorsTag) updateFields["tags"].push({ tagName: 'BugsErrors' });
 
             function updateFilesProcess(title, content, imageKey, index) {
                 if (title) {
@@ -468,7 +468,7 @@ class PostController {
                 },
                 { new: true }
             )
-            return res.redirect(`/writeNews/${news_id}`);
+            return res.redirect(`/read-news/${news_id}`);
         }catch (err){
             console.error(err);
             res.status(500).json({ error: err.message });

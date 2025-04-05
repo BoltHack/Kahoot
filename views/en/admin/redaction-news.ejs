@@ -40,11 +40,11 @@
                                 <input type="checkbox" id="updatesTag" name="updatesTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Updates') ? 'checked' : '' %> >
                                 <label for="updatesTag">Updates</label>
 
-                                <input type="checkbox" id="newsTag" name="newsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'News') ? 'checked' : '' %> >
-                                <label for="newsTag">News</label>
+                                <input type="checkbox" id="aboutGameTag" name="aboutGameTag" <%= newsInfo.tags.some(tag => tag.tagName === 'AboutGame') ? 'checked' : '' %> >
+                                <label for="newsTag">About the game</label>
 
-                                <input type="checkbox" id="errorsTag" name="errorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Errors') ? 'checked' : '' %> >
-                                <label for="errorsTag">Errors</label>
+                                <input type="checkbox" id="bugsErrorsTag" name="bugsErrorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'BugsErrors') ? 'checked' : '' %> >
+                                <label for="errorsTag">Bugs/Errors</label>
                             </div>
                         </div>
                     </div>

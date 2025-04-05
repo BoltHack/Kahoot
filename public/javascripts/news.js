@@ -1,4 +1,4 @@
-const stickyContainer = document.getElementById('stickyContainer');
+const searchContainer = document.getElementById('searchContainer');
 const searchNotFound = document.getElementById('searchNotFound');
 
 document.getElementById('searchInput').addEventListener('input', function() {
@@ -23,13 +23,13 @@ document.getElementById('searchInput').addEventListener('input', function() {
         if (foundVisible) {
             // console.log('foundVisible 1', foundVisible);
             searchNotFound.style.display = 'none';
-            stickyContainer.style.top = 'auto';
-            stickyContainer.style.right = '10%';
+            searchContainer.style.top = 'auto';
+            searchContainer.style.right = '10%';
         } else {
             // console.log('foundVisible 2', foundVisible);
             searchNotFound.style.display = 'block';
-            stickyContainer.style.top = '-5%';
-            stickyContainer.style.right = '10.9%';
+            searchContainer.style.top = '-5%';
+            searchContainer.style.right = '10.9%';
         }
 
         function showNews () {
@@ -48,7 +48,7 @@ document.getElementById('closeIcon').addEventListener('click', () => {
     const searchNews = newsList.getElementsByTagName('li');
     Array.from(searchNews).forEach(news => {
         news.style.display = 'block';
-        stickyContainer.style.top = 'auto';
+        searchContainer.style.top = 'auto';
         searchNotFound.style.display = 'none';
     });
 })

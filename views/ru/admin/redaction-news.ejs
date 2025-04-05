@@ -38,13 +38,13 @@
                             <p>Теги:</p>
                             <div style="margin-top: 15px;">
                                 <input type="checkbox" id="updatesTag" name="updatesTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Updates') ? 'checked' : '' %> >
-                                <label for="updatesTag">Обновление</label>
+                                <label for="updatesTag">Обновления</label>
 
-                                <input type="checkbox" id="newsTag" name="newsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'News') ? 'checked' : '' %> >
-                                <label for="newsTag">Новости</label>
+                                <input type="checkbox" id="aboutGameTag" name="aboutGameTag" <%= newsInfo.tags.some(tag => tag.tagName === 'AboutGame') ? 'checked' : '' %> >
+                                <label for="newsTag">Об игре</label>
 
-                                <input type="checkbox" id="errorsTag" name="errorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Errors') ? 'checked' : '' %> >
-                                <label for="errorsTag">Ошибки</label>
+                                <input type="checkbox" id="bugsErrorsTag" name="bugsErrorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'BugsErrors') ? 'checked' : '' %> >
+                                <label for="errorsTag">Баги/Ошибки</label>
                             </div>
                         </div>
                     </div>

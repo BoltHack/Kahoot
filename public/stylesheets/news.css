@@ -11,7 +11,7 @@ body {
     margin-top: 150px;
     display: block;
 }
-.sticky-container {
+.search-container {
     margin-top: 150px;
     position: absolute;
     right: 10%;
@@ -21,7 +21,7 @@ body {
     /*background: lightgray;*/
 }
 
-.search-container {
+.search {
     /*position: sticky;*/
     /*top: 20px;*/
     width: 250px;
@@ -220,4 +220,129 @@ body {
 }
 .search-tag:hover {
     opacity: 0.8;
+}
+
+
+.sticky-container {
+    margin-top: 200px;
+    position: absolute;
+    right: 10%;
+    left: auto;
+}
+
+.sticky {
+    position: sticky;
+    top: 50px;
+    width: 250px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sticky-box {
+    /*background-color: #fff;*/
+    padding: 10px 20px;
+    /*border-radius: 10px;*/
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-items: center;*/
+}
+
+/* Стили для блока с кнопками */
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Общий стиль для кнопок */
+.social-btn {
+    display: flex;
+    align-items: center;
+    text-align: start;
+    /*padding: 8px 15px;*/
+    padding: 8px 0;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    /*width: 250px;*/
+    width: 100%;
+    /*justify-content: center;*/
+    text-indent: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.copy-link {
+    padding: 10px;
+    /*text-align: start;*/
+    text-indent: 10px;
+}
+
+.social-btn:hover {
+    background-color: #0056b3;
+}
+
+.social-btn .icon {
+    margin-right: 10px;
+    font-family: FontAwesome;
+}
+
+/* Иконки соцсетей */
+.social-btn.facebook {
+    background-color: #3b5998;
+}
+
+.social-btn.twitter {
+    background-color: #1da1f2;
+}
+
+.social-btn.vk {
+    background-color: #4c75a3;
+}
+
+.social-btn.pinterest {
+    background-color: #e60023;
+}
+
+.social-btn.email {
+    background-color: #d44638;
+}
+
+.social-btn.copy-link {
+    background-color: #28a745;
+}
+
+/* Hover эффекты для соцсетей */
+.social-btn.facebook:hover {
+    background-color: #2d4373;
+}
+
+.social-btn.twitter:hover {
+    background-color: #1a91c2;
+}
+
+.social-btn.vk:hover {
+    background-color: #3a5b81;
+}
+
+.social-btn.pinterest:hover {
+    background-color: #c40018;
+}
+
+.social-btn.email:hover {
+    background-color: #b63c2a;
+}
+
+.social-btn.copy-link:hover {
+    background-color: #218838;
+}
+
+/* Кнопка для копирования ссылки */
+#copyLinkBtn {
+    cursor: pointer;
 }

@@ -48,7 +48,7 @@ function pages(){
             <a class="between"> > </a>
             <a class="other-color">${localeType === 'en' ? 'News' : 'Новости'}</a>`
     }
-    else if (page.startsWith('/writeNews')) {
+    else if (page.startsWith('/read-news')) {
         pageName.innerHTML = `
             <a class="between"> > </a>
             <a href="/news" class="color-btn">${localeType === 'en' ? 'News' : 'Новости'}</a>
