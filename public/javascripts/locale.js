@@ -12,7 +12,7 @@ function changeLocaleRu() {
     })
         .then(response => {
             if (response.ok) {
-                window.location.href = '/';
+                window.location.reload();
             }
             else {
                 response.json().then(errorMessage => {
@@ -40,7 +40,7 @@ function changeLocaleEn() {
     })
         .then(response => {
             if (response.ok) {
-                window.location.href = '/';
+                window.location.reload();
             }
             else {
                 response.json().then(errorMessage => {

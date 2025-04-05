@@ -4,7 +4,7 @@ const AdminRouter = require('./AdminRouter');
 
 const {
     mainView, createGameView, gameView, redactionView, myGamesView, friendsView, settingsView, returnMenuView, privacyPolicyView,
-    rulesView, aboutUsView, supportView, newsView, writeNewsView
+    rulesView, aboutUsView, supportView, newsView, readNewsView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, gameUsers, gameCorrectUsers, userLeader, getData, getUserData, changeAvatar, deleteImage,
@@ -28,7 +28,7 @@ router.get('/rules', rulesView);
 router.get('/aboutUs', aboutUsView);
 router.get('/support', supportView);
 router.get('/news', newsView);
-router.get('/writeNews/:news_id', writeNewsView);
+router.get('/read-news/:news_id', readNewsView);
 
 
 router.post('/create-game', authenticateJWT, createGame);
