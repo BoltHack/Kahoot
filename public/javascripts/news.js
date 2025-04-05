@@ -1,5 +1,6 @@
 const searchContainer = document.getElementById('searchContainer');
 const searchNotFound = document.getElementById('searchNotFound');
+const infoCard = document.getElementById('infoCard');
 
 document.getElementById('searchInput').addEventListener('input', function() {
     const searchValue = this.value.trim().toLowerCase();
@@ -23,13 +24,16 @@ document.getElementById('searchInput').addEventListener('input', function() {
         if (foundVisible) {
             // console.log('foundVisible 1', foundVisible);
             searchNotFound.style.display = 'none';
+            // infoCard.style.display = 'block';
             searchContainer.style.top = 'auto';
             searchContainer.style.right = '10%';
         } else {
             // console.log('foundVisible 2', foundVisible);
             searchNotFound.style.display = 'block';
+            // infoCard.style.display = 'none';
             searchContainer.style.top = '-5%';
-            searchContainer.style.right = '10.9%';
+            // searchContainer.style.right = '10.9%';
+            searchContainer.style.right = '10%';
         }
 
         function showNews () {
@@ -50,5 +54,6 @@ document.getElementById('closeIcon').addEventListener('click', () => {
         news.style.display = 'block';
         searchContainer.style.top = 'auto';
         searchNotFound.style.display = 'none';
+        // infoCard.style.display = 'block';
     });
 })

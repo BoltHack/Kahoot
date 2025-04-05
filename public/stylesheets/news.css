@@ -31,11 +31,10 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .search-info {
-    width: 250px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 5px 0;
+    border-radius: 5px;
+    border: 1px solid grey;
     text-align: center;
 }
 
@@ -83,6 +82,8 @@ body {
 
 #searchNotFound {
     display: none;
+    margin-bottom: 450px;
+    width: 600px;
 }
 
 
@@ -371,7 +372,8 @@ body {
 
 .info-title {
     color: #111827;
-    font-size: 1.125rem;
+    /*font-size: 1.125rem;*/
+    font-size: 16px;
     line-height: 1.75rem;
     font-weight: 600;
 }
