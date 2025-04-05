@@ -15,26 +15,30 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
         if (newsTitle.includes(searchValue)) {
             showNews(news);
-            foundVisible = true;
+        }
+        else {
+            hideNews(news);
         }
 
         if (foundVisible) {
+            // console.log('foundVisible 1', foundVisible);
+            searchNotFound.style.display = 'none';
             stickyContainer.style.top = 'auto';
             stickyContainer.style.right = '10%';
         } else {
-            hideNews(news);
+            // console.log('foundVisible 2', foundVisible);
+            searchNotFound.style.display = 'block';
             stickyContainer.style.top = '-5%';
             stickyContainer.style.right = '10.9%';
         }
 
         function showNews () {
+            foundVisible = true;
             news.style.display = 'block';
-            searchNotFound.style.display = 'none';
         }
 
         function hideNews () {
             news.style.display = 'none';
-            searchNotFound.style.display = 'block';
         }
     });
 });
