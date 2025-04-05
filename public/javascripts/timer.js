@@ -9,8 +9,9 @@ const REFRESH_TIMER_DURATION = 864000000;
 function startTokenTimer (duration, tokenType) {
     const startTime = Date.now();
     const endTime = startTime + duration;
+    const maxAge = duration / 1000;
 
-    document.cookie = `${tokenType}=${endTime}; path=/;`;
+    document.cookie = `${tokenType}=${endTime}; max-age=${maxAge}; path=/;`;
 
     updateTokenTimer(tokenType);
 }
@@ -68,8 +69,8 @@ async function getAccessTokens() {
                 localStorage.setItem('token', token);
             }
 
-        startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime')
-        console.log('токен выдан');
+            startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime')
+            console.log('токен выдан');
 
         } else {
             console.error('Ошибка', response.status);
@@ -97,8 +98,8 @@ async function getRefreshTokens() {
             if (token){
                 localStorage.setItem('token', token);
             }
-        startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
-        console.log('refresh токен выдан');
+            startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
+            console.log('refresh токен выдан');
 
         } else {
             console.error('Ошибка', response.status);
