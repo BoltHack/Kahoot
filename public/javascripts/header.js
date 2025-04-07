@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 socket.emit('requestMyFriendsCount', sendId);
             } else {
                 console.error(`Socket or sendId(${sendId}) is not defined.`);
-                setTimeout(function () {
-                    window.location.reload();
-                }, 3000);
+                // setTimeout(function () {
+                //     window.location.reload();
+                // }, 3000);
             }
         }
     } catch (error) {

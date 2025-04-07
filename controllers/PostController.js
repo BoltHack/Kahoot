@@ -228,12 +228,13 @@ class PostController {
     static getUserData = async (req, res, next) => {
         try {
             if (req.cookies['token']) {
-                const {user_id} = req.params;
-                const getData = await UsersModel.findById(user_id);
+                const user = req.user
+                const getData = await UsersModel.findById(user.id);
 
                 const myFriends = getData.myFriends;
+                const id = getData.id;
 
-                res.json({myFriends});
+                res.json({myFriends, id});
             }
         }catch (err){
             console.error('Ошибка:', err);
@@ -328,9 +329,8 @@ class PostController {
 
     static changeSettings = async (req, res, next) => {
         try {
-            const {theme, notifications, soundTrack, locale} = req.body;
+            const {notifications, soundTrack, locale} = req.body;
 
-            res.cookie('theme', theme ? 'dark' : 'light', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });

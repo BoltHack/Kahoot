@@ -42,7 +42,7 @@ router.post('/user-leader/:game_id/:game_time', authenticateJWT, userLeader);
 router.post('/deleteAllGames', authenticateJWT, deleteAllGames);
 
 router.post('/getData/:game_id', authenticateJWT, getData);
-router.post('/getUserData/:user_id', authenticateJWT, getUserData);
+router.post('/getUserData', authenticateJWT, getUserData);
 
 router.post('/changeAvatar/:user_id', authenticateJWT, changeAvatar);
 router.post('/deleteAvatar/:user_id', authenticateJWT, deleteImage);

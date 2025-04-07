@@ -1,13 +1,26 @@
-// const socket = io();
-
+let userId = sendId;
 socket.on('connect', () => {
     if (localStorage.getItem('token')) {
-        if (sendId === undefined) {
-            setTimeout(function () {
-                window.location.reload();
-            }, 2000);
+        if (!userId) {
+            fetch(`/getUserData`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+            })
+
+            .then(response => response.json())
+                .then(data => {
+                    const { id } = data;
+                    userId = id
+                    console.log('id', userId);
+                    socket.emit('registerUser', userId);
+                    console.log(`Пользователь ${userId} зарегистрирован`);
+                    socket.emit('requestMyFriendsCount', userId);
+                })
+
+
         }
-        const userId = sendId;
         socket.emit('registerUser', userId);
         console.log(`Пользователь ${userId} зарегистрирован`);
     }
@@ -17,7 +30,7 @@ function addFriend() {
     const friendId = document.getElementById('friendId').value;
     if (typeof socket !== 'undefined') {
 
-        fetch(`/getUserData/${sendId}`, {
+        fetch(`/getUserData`, {
             method: 'post',
             headers: {
                 'Content-type': 'application/json'
@@ -75,10 +88,11 @@ socket.on('friendRequest', async (requestData) => {
 })
 
 socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
+    console.log('updateMyFriendsCount', updateMyFriendsCount);
     const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
 
     const myFriendsCount = document.getElementById('myFriendsCount');
-    if (myFriendsCount && Array.isArray(updateMyFriendsCount)) {
+    if (Array.isArray(updateMyFriendsCount) && updateMyFriendsCount.length > 0) {
         friendsLoaderSvg.style.display = 'none';
         myFriendsCount.innerHTML = updateMyFriendsCount
             .map(friends => `
@@ -99,7 +113,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
 `)
             .join('');
     }
-    if (!updateMyFriendsCount || !updateMyFriendsCount.length) {
+    else {
         friendsLoaderSvg.style.display = 'none';
         myFriendsCount.innerHTML = `<p style="position: absolute; left: 50%; transform: translate(-50%); font-size: 16px;">${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>
 <br>

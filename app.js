@@ -416,7 +416,8 @@ io.on('connection', async (socket) => {
                 { _id: acceptData.acceptData.senderId },
                 {
                     $push: {
-                        myFriends: { id: friend.id, name: friend.name, image: friend.image }
+                        // myFriends: { id: friend.id, name: friend.name, image: friend.image }
+                        myFriends: { id: friend.id }
                     }
                 },
                 { new: true }
@@ -467,7 +468,16 @@ io.on('connection', async (socket) => {
     socket.on('requestMyFriendsCount', async (sendId) => {
         try {
             const updateMyFriendsCount = await UsersModel.findById(sendId);
-            socket.emit('updateMyFriendsCount', updateMyFriendsCount.myFriends);
+            const getIds = updateMyFriendsCount.myFriends.map(doc => doc.id);
+            const myFriendsData = await UsersModel.find({ '_id': { $in: getIds } });
+
+            const friendsInfo = myFriendsData.map(friend => ({
+                id: friend.id,
+                name: friend.name,
+                image: friend.image
+            }));
+
+            socket.emit('updateMyFriendsCount', friendsInfo);
         } catch (error) {
             console.log('error', error);
         }
