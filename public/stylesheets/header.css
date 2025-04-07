@@ -76,7 +76,11 @@ html.lightTheme {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.header-border li {
+    margin-top: 5px;
+}
 .header-border a{
+    text-decoration: none;
     color: #24527a;
 }
 .header-border a:hover{
