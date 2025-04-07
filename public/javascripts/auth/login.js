@@ -115,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function (){
                             else{
                                 localStorage.setItem('session', 'false');
                             }
-                            localStorage.setItem('ref', 'refMain');
                             setTimeout(function () {
                                 window.location.href = `/`;
                                 setTimeout(function () {
