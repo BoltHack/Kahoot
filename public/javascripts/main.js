@@ -1,20 +1,25 @@
 function findGame() {
-    const barrier = document.getElementById('barrier');
-    const border = document.getElementById('border');
-    const close = document.getElementById('close');
+    if (localStorage.getItem('token')) {
+        const barrier = document.getElementById('barrier');
+        const border = document.getElementById('border');
+        const close = document.getElementById('close');
 
-    barrier.hidden = false;
-    border.hidden = false;
-    document.body.style.overflow = 'hidden';
+        barrier.hidden = false;
+        border.hidden = false;
+        document.body.style.overflow = 'hidden';
 
-    barrier.addEventListener('click', () => {
-        barrier.hidden = true;
-        border.hidden = true;
-    })
-    close.addEventListener('click', () => {
-        barrier.hidden = true;
-        border.hidden = true;
-    })
+        barrier.addEventListener('click', () => {
+            barrier.hidden = true;
+            border.hidden = true;
+        })
+        close.addEventListener('click', () => {
+            barrier.hidden = true;
+            border.hidden = true;
+        })
+    }
+    else {
+        authMenu();
+    }
 }
 document.getElementById('searchButton').addEventListener('click', () => {
     const infoInput = document.getElementById('infoInput').value;
@@ -90,24 +95,12 @@ if (effects === 'on') {
 
 
 function redirectPage(page){
-    const authBorder = document.getElementById('authBorder');
-    const barrier = document.getElementById('barrier');
-    const closeAuthBorder = document.getElementById('closeAuthBorder');
     if (localStorage.getItem('token')) {
         window.location.href = page;
     }
     else {
-        authBorder.hidden = false;
-        barrier.hidden = false;
+        authMenu()
     }
-    closeAuthBorder.addEventListener('click', () => {
-        authBorder.hidden = true;
-        barrier.hidden = true;
-    })
-    barrier.addEventListener('click', () => {
-        authBorder.hidden = true;
-        barrier.hidden = true;
-    })
 }
 
 function MainMenuBackground() {
@@ -119,6 +112,24 @@ function MainMenuBackground() {
     }
 }
 MainMenuBackground();
+
+function authMenu() {
+    const authBorder = document.getElementById('authBorder');
+    const barrier = document.getElementById('barrier');
+    const closeAuthBorder = document.getElementById('closeAuthBorder');
+
+    authBorder.hidden = false;
+    barrier.hidden = false;
+
+    closeAuthBorder.addEventListener('click', () => {
+        authBorder.hidden = true;
+        barrier.hidden = true;
+    })
+    barrier.addEventListener('click', () => {
+        authBorder.hidden = true;
+        barrier.hidden = true;
+    })
+}
 
 
 // const body = document.body, html = document.documentElement;
