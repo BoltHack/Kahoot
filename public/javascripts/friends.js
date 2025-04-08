@@ -1,7 +1,7 @@
-let userId = sendId;
+let globalUserId = sendId;
 socket.on('connect', () => {
     if (localStorage.getItem('token')) {
-        if (!userId) {
+        if (!globalUserId) {
             fetch(`/getUserData`, {
                 method: 'POST',
                 headers: {
@@ -12,17 +12,17 @@ socket.on('connect', () => {
             .then(response => response.json())
                 .then(data => {
                     const { id } = data;
-                    userId = id
-                    console.log('id', userId);
-                    socket.emit('registerUser', userId);
-                    console.log(`Пользователь ${userId} зарегистрирован`);
-                    socket.emit('requestMyFriendsCount', userId);
+                    globalUserId = id
+                    console.log('id', globalUserId);
+                    socket.emit('registerUser', globalUserId);
+                    console.log(`Пользователь ${globalUserId} зарегистрирован`);
+                    socket.emit('requestMyFriendsCount', globalUserId);
                 })
-
-
         }
-        socket.emit('registerUser', userId);
-        console.log(`Пользователь ${userId} зарегистрирован`);
+        else {
+            socket.emit('registerUser', globalUserId);
+            console.log(`Пользователь ${globalUserId} зарегистрирован`);
+        }
     }
 });
 
@@ -88,37 +88,43 @@ socket.on('friendRequest', async (requestData) => {
 })
 
 socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
-    console.log('updateMyFriendsCount', updateMyFriendsCount);
-    const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
+    if (window.location.pathname.startsWith('/friends') || window.location.pathname.startsWith('/game')) {
+        const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
 
-    const myFriendsCount = document.getElementById('myFriendsCount');
-    if (Array.isArray(updateMyFriendsCount) && updateMyFriendsCount.length > 0) {
-        friendsLoaderSvg.style.display = 'none';
-        myFriendsCount.innerHTML = updateMyFriendsCount
-            .map(friends => `
+        const myFriendsCount = document.getElementById('myFriendsCount');
+        if (Array.isArray(updateMyFriendsCount) && updateMyFriendsCount.length > 0) {
+            friendsLoaderSvg.style.display = 'none';
+            myFriendsCount.innerHTML = updateMyFriendsCount
+                .map(friends => `
 <br>
 <div class="friend-container">
     <div style="display: flex; gap: 10px;">
-        <img src="data:image/png;base64,${friends.image}" class="friend-image">
+
+    <div class="avatar-wrapper">
+        <img src="data:image/png;base64,${friends.image}" alt="Avatar" class="avatar">
+        <span class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></span>
+    </div>
+        
         <p>${friends.name}</p>
         <a onclick="deleteFriend('${friends.id}')" class="friend-delete-a">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
         ${window.location.pathname.startsWith('/game/') ?
-                `<a onClick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>`
-                : ''
-            }
+                    `<a onClick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>`
+                    : ''
+                }
     </div>
     <br>
 </div>
    
 `)
-            .join('');
-    }
-    else {
-        friendsLoaderSvg.style.display = 'none';
-        myFriendsCount.innerHTML = `<p style="position: absolute; left: 50%; transform: translate(-50%); font-size: 16px;">${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>
+                .join('');
+        }
+        else {
+            friendsLoaderSvg.style.display = 'none';
+            myFriendsCount.innerHTML = `<p style="position: absolute; left: 50%; transform: translate(-50%); font-size: 16px;">${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>
 <br>
 <br>
 `;
+        }
     }
 });
 

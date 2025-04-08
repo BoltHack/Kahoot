@@ -474,7 +474,8 @@ io.on('connection', async (socket) => {
             const friendsInfo = myFriendsData.map(friend => ({
                 id: friend.id,
                 name: friend.name,
-                image: friend.image
+                image: friend.image,
+                onlineMod: friend.onlineMod
             }));
 
             socket.emit('updateMyFriendsCount', friendsInfo);
