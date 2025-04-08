@@ -14,13 +14,15 @@
 <%- include('header.ejs') %>
 <main>
     <div class="home-container">
-        <a class="btn" href="/create-game">📜 Создать игру</a>
+        <a class="btn" onclick="redirectPage('/create-game')">📜 Создать игру</a>
         <a class="btn" onclick="findGame()">🔎 Найти игру</a>
-        <a class="btn" href="/my-games">🎮 Мои игры</a>
-        <a class="btn" href="/friends">👥 Друзья</a>
-        <a class="btn" href="/settings">⚙ Настройки</a>
+        <a class="btn" onclick="redirectPage('/my-games')">🎮 Мои игры</a>
+        <a class="btn" onclick="redirectPage('/friends')">👥 Друзья</a>
+        <a class="btn" onclick="redirectPage('/settings')">⚙ Настройки</a>
         <a class="btn support-btn" href="/support">📩 Поддержка</a>
     </div>
+
+
     <div class="new-border" id="border" hidden>
         <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>
         <h4 style="text-align: center">Поиск доступных игр</h4>
@@ -32,32 +34,22 @@
         </div>
     </div>
 
-    <div class="new-barrier" id="barrier" hidden></div>
 
-<!--    <div class="different-rules">-->
-<!--    <span id="openRulesContainer">-->
-<!--        <b>Правила</b>-->
-<!--    </span>-->
-<!--        <div id="rulesContainer" hidden>-->
-<!--            <br>-->
-<!--            <br>-->
-<!--            <span>-->
-<!--                <a href="/privacyPolicy" target="_blank">Правила конфиденциальности</a>-->
-<!--            </span>-->
-<!--            <br>-->
-<!--            <br>-->
-<!--            <span>-->
-<!--                <a href="/rules" target="_blank">Условия использования</a>-->
-<!--            </span>-->
-<!--            <br>-->
-<!--            <br>-->
-<!--            <span>-->
-<!--                <a href="/aboutUs" target="_blank">О нас</a>-->
-<!--            </span>-->
-<!--            <br>-->
-<!--            <br>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="auth-border" id="authBorder" hidden>
+        <div class="auth-data">
+            <h2>Мой аккаунт</h2>
+            <h3>Вы не авторизованы</h3>
+            <p>Войдите в учётную запись или создайте аккаунт.</p>
+            <button onclick="window.location.href = '/auth/login'" class="auth-btn">Войти</button>
+            <button onclick="window.location.href = '/auth/register'" class="auth-btn">Создать аккаунт</button>
+            <br>
+            <br>
+            <span>Регистрируясь или авторизируясь, вы принимаете наши <a class="termsOfUse" href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Политику конфиденциальности</a>.</span>
+        </div>
+        <button class="close-btn" id="closeAuthBorder">X</button>
+    </div>
+
+    <div class="new-barrier" id="barrier" hidden></div>
 </main>
 
 

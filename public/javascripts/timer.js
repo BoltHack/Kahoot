@@ -46,8 +46,10 @@ function storedTime(tokenType) {
     }
 }
 
-storedTime('accessTokenEndTime');
-storedTime('refreshTokenEndTime');
+if (localStorage.getItem('token')) {
+    storedTime('accessTokenEndTime');
+    storedTime('refreshTokenEndTime');
+}
 
 async function getAccessTokens() {
     try {

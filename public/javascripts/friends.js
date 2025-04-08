@@ -249,3 +249,10 @@ socket.on('updatePage', async () => {
         window.location.reload();
     }
 })
+
+if (localStorage.getItem('token')) {
+    setInterval(function () {
+        console.log('online mod');
+        socket.emit('requestMyFriendsCount', sendId);
+    }, 60000);
+}

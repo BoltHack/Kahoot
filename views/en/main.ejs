@@ -14,13 +14,15 @@
 <%- include('header.ejs') %>
 <main>
     <div class="home-container">
-        <a class="btn" href="/create-game">📜 Create Game</a>
+        <a class="btn" onclick="redirectPage('/create-game')">📜 Create Game</a>
         <a class="btn" onclick="findGame()">🔎 Find Game</a>
-        <a class="btn" href="/my-games">🎮 My Games</a>
-        <a class="btn" href="/friends">👥 friends</a>
-        <a class="btn" href="/settings">⚙ Settings</a>
+        <a class="btn" onclick="redirectPage('/my-games')">🎮 My Games</a>
+        <a class="btn" onclick="redirectPage('/friends')">👥 Friends</a>
+        <a class="btn" onclick="redirectPage('/settings')">⚙ Settings</a>
         <a class="btn support-btn" href="/support">📩 Support</a>
     </div>
+
+
     <div class="new-border" id="border" hidden>
         <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>
         <h4 style="text-align: center">Search for available games</h4>
@@ -30,6 +32,21 @@
             <br>
             <button type="submit" id="searchButton" class="find-button">Join</button>
         </div>
+    </div>
+
+
+    <div class="auth-border" id="authBorder" hidden>
+        <div class="auth-data">
+            <h2>My account</h2>
+            <h3>You are not logged in</h3>
+            <p>Sign in or create an account.</p>
+            <button onclick="window.location.href = '/auth/login'" class="auth-btn">Log in</button>
+            <button onclick="window.location.href = '/auth/register'" class="auth-btn">Create an account</button>
+            <br>
+            <br>
+            <span>By registering or logging in, you agree to our <a class="termsOfUse" href="/rules" target="_blank">Terms of Use</a> and <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Privacy Policy</a>.</span>
+        </div>
+        <button class="close-btn" id="closeAuthBorder">X</button>
     </div>
 
     <div class="new-barrier" id="barrier" hidden></div>
