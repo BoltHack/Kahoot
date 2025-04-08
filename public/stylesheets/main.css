@@ -193,7 +193,7 @@ footer button {
 
 .auth-border {
     width: 500px;
-    height: 400px;
+    height: 360px;
     background: rgb(231,225,231);
     background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);
     border-radius: 10px;

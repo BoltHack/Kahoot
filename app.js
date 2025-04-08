@@ -8,6 +8,7 @@ const start = require('./services/db');
 const indexRouter = require('./routes/index');
 const http = require("http");
 const socketIo = require('socket.io');
+const mongoose = require('mongoose');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
 
@@ -347,11 +348,18 @@ io.on('connection', async (socket) => {
             clients[userId] = socket.id;
             console.log(`Пользователь ${userId} зарегистрирован с socket ID: ${socket.id}`);
             if (userId) {
-                await UsersModel.findOneAndUpdate(
-                    { _id: userId },
-                    { $set: {onlineMod: 'Online'} },
-                    { new: true }
-                );
+                setTimeout(async () => {
+                    if (!clients[userId] || clients[userId] === socket.id) {
+                        console.log(`${userId} Присоединился.`);
+                        await UsersModel.findOneAndUpdate(
+                            { _id: userId },
+                            { $set: { onlineMod: 'Online' } },
+                            { new: true }
+                        );
+                    } else {
+                        console.log(`${userId} ещё не вышел.`);
+                    }
+                }, 3000);
             }
         } catch (error) {
             console.error(`Ошибка при регистрации пользователя ${userId}:`, error);
@@ -588,9 +596,9 @@ app.use(function(err, req, res, next) {
 
 server.listen(3000, async () => {
     const findAllGames = await GamesModel.find({});
-    const getAllId = findAllGames.map(get => get.id);
+    const getAllGameId = findAllGames.map(get => get.id);
     await GamesModel.updateMany(
-        { _id: { $in: getAllId } },
+        { _id: { $in: getAllGameId } },
         {
             $set: {
                 'game_online.online': 0,
@@ -601,6 +609,16 @@ server.listen(3000, async () => {
                 expiresInMinutes: 60,
                 expiresAt: new Date(Date.now() + 60 * 60 * 1000),
                 createdAt: Date.now(),
+            }
+        },
+    );
+    const findAllUsers = await UsersModel.find({});
+    const getAllUserId = findAllUsers.map(get => get.id);
+    await UsersModel.updateMany(
+        { _id: { $in: getAllUserId } },
+        {
+            $set: {
+                'onlineMod': 'Offline',
             }
         },
     );
