@@ -7,6 +7,7 @@ class ViewController {
     static mainView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
+            const mainEffects = req.cookies['mainEffects'] || 'on';
             const acceptCookies = req.cookies['acceptCookies'];
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
@@ -14,12 +15,12 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, acceptCookies});
+                    return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies});
                 });
             }
             else {
                 const user = '';
-                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, acceptCookies});
+                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies});
             }
         } catch (e) {
             next(e);
@@ -146,9 +147,10 @@ class ViewController {
             const theme = req.cookies['theme'];
             const notifications = req.cookies['notifications'];
             const soundTrack = req.cookies['soundTrack'];
+            const mainEffects = req.cookies['mainEffects'];
             const locale = req.cookies['locale'];
 
-            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, soundTrack, locale });
+            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, soundTrack, mainEffects, locale });
         } catch (e) {
             next(e);
         }
