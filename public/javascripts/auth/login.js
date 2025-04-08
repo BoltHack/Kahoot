@@ -109,8 +109,7 @@ document.addEventListener('DOMContentLoaded', function (){
                             localStorage.setItem('token', token);
                             localStorage.setItem('userInfo', JSON.stringify({
                                 'id': user._id,
-                                'name': user.name,
-                                'profileImage': 'data:image/png;base64,' + user.image
+                                'name': user.name
                             }));
                             const checkbox = document.getElementById('rememberMeCheckbox');
                             if (checkbox.checked){

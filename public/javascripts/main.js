@@ -104,11 +104,11 @@ function redirectPage(page){
 }
 
 function MainMenuBackground() {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-    if (!userInfo.mainMenuBackground) {
+    const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+    if (!settings.mainMenuBackground) {
         document.body.style.backgroundImage = 'url("/images/kahoot2.png")';
     } else {
-        document.body.style.backgroundImage = `url("${userInfo.mainMenuBackground}")`;
+        document.body.style.backgroundImage = `url("${settings.mainMenuBackground}")`;
     }
 }
 MainMenuBackground();
