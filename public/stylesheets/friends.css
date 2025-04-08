@@ -89,11 +89,7 @@ h1 {
     text-decoration: underline;
     text-decoration-color: black;
 }
-.friend-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
+
 
 #friendsLoaderSvg {
     width: 3.25em;
@@ -169,4 +165,40 @@ circle {
 }
 .delete-modal button:hover {
     opacity: 0.8;
+}
+
+
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid black;
+}
+
+.status {
+    position: absolute;
+    bottom: -4px;
+    right: 1px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 3px solid #2f3136;
+    background-color: grey;
+}
+
+.status.online {
+    background-color: #43b581;
+}
+
+.status.offline {
+    background-color: #747f8d;
 }
