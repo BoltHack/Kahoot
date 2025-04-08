@@ -188,17 +188,20 @@ circle {
     position: absolute;
     bottom: -4px;
     right: 1px;
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     border: 3px solid #2f3136;
     background-color: grey;
+    transition-duration: 1s;
 }
 
 .status.online {
     background-color: #43b581;
+    transition-duration: 1s;
 }
 
 .status.offline {
     background-color: #747f8d;
+    transition-duration: 1s;
 }

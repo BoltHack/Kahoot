@@ -85,3 +85,25 @@ function createSymbolBottom() {
 }
 
 setInterval(createSymbolBottom, 500);
+
+
+function redirectPage(page){
+    const authBorder = document.getElementById('authBorder');
+    const barrier = document.getElementById('barrier');
+    const closeAuthBorder = document.getElementById('closeAuthBorder');
+    if (localStorage.getItem('token')) {
+        window.location.href = page;
+    }
+    else {
+        authBorder.hidden = false;
+        barrier.hidden = false;
+    }
+    closeAuthBorder.addEventListener('click', () => {
+        authBorder.hidden = true;
+        barrier.hidden = true;
+    })
+    barrier.addEventListener('click', () => {
+        authBorder.hidden = true;
+        barrier.hidden = true;
+    })
+}
