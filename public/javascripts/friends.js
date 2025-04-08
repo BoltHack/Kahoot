@@ -1,27 +1,11 @@
-let globalUserId = sendId;
 socket.on('connect', () => {
     if (localStorage.getItem('token')) {
-        if (!globalUserId) {
-            fetch(`/getUserData`, {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-            })
-
-            .then(response => response.json())
-                .then(data => {
-                    const { id } = data;
-                    globalUserId = id
-                    console.log('id', globalUserId);
-                    socket.emit('registerUser', globalUserId);
-                    console.log(`Пользователь ${globalUserId} зарегистрирован`);
-                    socket.emit('requestMyFriendsCount', globalUserId);
-                })
+        if (typeof socket !== "undefined" && sendId) {
+            socket.emit('registerUser', sendId);
+            console.log(`Пользователь ${sendId} зарегистрирован`);
         }
         else {
-            socket.emit('registerUser', globalUserId);
-            console.log(`Пользователь ${globalUserId} зарегистрирован`);
+            console.error(`Socket or sendId(${sendId}) is not defined.`);
         }
     }
 });
