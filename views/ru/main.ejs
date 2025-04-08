@@ -24,7 +24,7 @@
 
 
     <div class="new-border" id="border" hidden>
-        <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>
+<!--        <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>-->
         <h4 style="text-align: center">Поиск доступных игр</h4>
         <div class="border-data">
             <input type="text" name="text" placeholder="Куда отправимся?" class="find-input" id="infoInput">
@@ -32,13 +32,13 @@
             <br>
             <button type="submit" id="searchButton" class="find-button">Присоенидиться</button>
         </div>
+        <button class="close-btn" id="close">X</button>
     </div>
 
 
     <div class="auth-border" id="authBorder" hidden>
         <div class="auth-data">
-            <h2>Мой аккаунт</h2>
-            <h3>Вы не авторизованы</h3>
+            <h2>Вы не авторизованы!</h2>
             <p>Войдите в учётную запись или создайте аккаунт.</p>
             <button onclick="window.location.href = '/auth/login'" class="auth-btn">Войти</button>
             <button onclick="window.location.href = '/auth/register'" class="auth-btn">Создать аккаунт</button>
