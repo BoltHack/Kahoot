@@ -84,7 +84,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
 <div class="friend-container">
     <div style="display: flex; gap: 10px;">
 
-    <div class="avatar-wrapper">
+    <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}">
         <img src="data:image/png;base64,${friends.image}" alt="Avatar" class="avatar">
         <span class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></span>
     </div>
@@ -145,8 +145,8 @@ function deleteFriend(deleteId){
     document.getElementById('closeDeleteBorder').addEventListener('click', () => {
         document.body.removeChild(deleteBorder);
         if (!window.location.pathname.startsWith('/game/')) {
-        document.getElementById('barrier').hidden = true;
-    }
+            document.getElementById('barrier').hidden = true;
+        }
     })
 
     document.getElementById('requestDeleteFriend').addEventListener('click', () => {
