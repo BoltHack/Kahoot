@@ -130,4 +130,83 @@ function saveSettings() {
     });
 }
 
+
+
+const editMainBackgroundBtn = document.getElementById('editMainBackgroundBtn');
+const editMainMenu = document.getElementById('editMainMenu');
+const barrier = document.getElementById('barrier');
+const mainBackgroundView = document.getElementById('mainBackgroundView');
+const backgroundFile = document.getElementById('backgroundFile');
+const defaultBackground = document.getElementById('defaultBackground');
+const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+editMainBackgroundBtn.addEventListener('click', () => {
+
+    editMainMenu.hidden = false;
+    barrier.hidden = false;
+
+    barrier.addEventListener('click', () => {
+        editMainMenu.hidden = true;
+        barrier.hidden = true;
+    });
+
+    backgroundFile.addEventListener('change', () => {
+        defaultBackground.hidden = true;
+        mainBackgroundView.hidden = false;
+        let href = URL.createObjectURL(backgroundFile.files[0])
+        mainBackgroundView.src = href;
+    });
+    document.getElementById('saveMainBackgroundBtn').addEventListener('click', () => {
+        const reader = new FileReader();
+        reader.readAsDataURL(backgroundFile.files[0]);
+        reader.onload = function () {
+            const imageDataUrl = reader.result;
+            userInfo.mainMenuBackground = imageDataUrl
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            editMainMenu.hidden = true;
+            barrier.hidden = true;
+
+            Swal.fire({
+                text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
+                icon: "success",
+                position: "top-end",
+                timer: 4000,
+                showConfirmButton: false,
+                toast: true,
+                customClass: {
+                    popup: "small-alert"
+                }
+            });
+        };
+    });
+    document.getElementById('deleteMainBackgroundBtn').addEventListener('click', () => {
+        userInfo.mainMenuBackground = null;
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        editMainMenu.hidden = true;
+        barrier.hidden = true;
+
+        Swal.fire({
+            text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
+            icon: "success",
+            position: "top-end",
+            timer: 4000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
+    })
+});
+
+function viewMainBackground(){
+    if (!userInfo.mainMenuBackground) {
+        mainBackgroundView.hidden = true;
+        defaultBackground.hidden = false;
+    }
+    else {
+        mainBackgroundView.src = userInfo.mainMenuBackground;
+    }
+}
+viewMainBackground();
+
 const socket = io();

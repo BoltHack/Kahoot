@@ -52,6 +52,15 @@
                     </label>
                 </div>
             </div>
+            <div class="setting">
+                <span>Effects in the main menu</span>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" name="mainEffects" id="mainEffectsCheckbox"<%= mainEffects === 'on' ? 'checked' : '' %> />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
         </section>
 
         <section class="section" id="extra-settings">
@@ -66,9 +75,9 @@
                     </select>
                 </div>
 
-                <div class="extra-setting">
-                    <h3>Privacy</h3>
-                    <p>Manage your account privacy settings.</p>
+                <div class="extra-setting" id="editMainBackgroundBtn">
+                    <h3>Main menu background</h3>
+                    <p>If you wish, you can change the background of the game's main menu.</p>
                 </div>
             </div>
         </section>
@@ -110,6 +119,18 @@
         </div>
     </section>
 </form>
+
+<section id="editMainMenu" hidden>
+    <label>
+        <img src="" class="main-pic-edit" id="mainBackgroundView">
+        <img src="/images/kahoot2.png" class="main-pic-edit" id="defaultBackground" hidden>
+        <input type="file" name="file" id="backgroundFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Save" id="saveMainBackgroundBtn">
+        <input type="button" value="Reset" id="deleteMainBackgroundBtn">
+    </div>
+</section>
 
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>

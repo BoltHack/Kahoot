@@ -107,7 +107,11 @@ document.addEventListener('DOMContentLoaded', function (){
                             loginButton.hidden = false;
                             loaderButton.hidden = true;
                             localStorage.setItem('token', token);
-                            localStorage.setItem('userInfo', JSON.stringify({ 'id': user._id, 'name': user.name, 'profileImage': 'data:image/png;base64,' + user.image }));
+                            localStorage.setItem('userInfo', JSON.stringify({
+                                'id': user._id,
+                                'name': user.name,
+                                'profileImage': 'data:image/png;base64,' + user.image
+                            }));
                             const checkbox = document.getElementById('rememberMeCheckbox');
                             if (checkbox.checked){
                                 localStorage.setItem('session', 'true');

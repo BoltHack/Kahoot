@@ -2,8 +2,6 @@ const {GamesModel} = require('../models/GamesModel')
 const {UsersModel} = require("../models/UsersModel");
 const {AdminUserContactsModel} = require("../models/AdminUserContactsModel");
 const {NewsModel} = require("../models/NewsModel");
-const {changeAvatar} = require("./ViewController");
-const {ForgottenPasswordsModel} = require("../models/ForgottenPasswords");
 
 require('dotenv').config();
 
@@ -329,10 +327,11 @@ class PostController {
 
     static changeSettings = async (req, res, next) => {
         try {
-            const {notifications, soundTrack, locale} = req.body;
+            const {notifications, soundTrack, mainEffects, locale} = req.body;
 
             res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            res.cookie('mainEffects', mainEffects ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
             setTimeout(function () {

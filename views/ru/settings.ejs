@@ -53,10 +53,10 @@
                 </div>
             </div>
             <div class="setting">
-                <span>Звуки в главном меню</span>
+                <span>Эффекты в главном меню</span>
                 <div class="toggle-container">
                     <label class="toggle">
-                        <input type="checkbox" name="mainSoundTrack" id="mainSoundTrackCheckbox"> />
+                        <input type="checkbox" name="mainEffects" id="mainEffectsCheckbox" <%= mainEffects === 'on' ? 'checked' : '' %> />
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -75,9 +75,9 @@
                     </select>
                 </div>
 
-                <div class="extra-setting">
-                    <h3>Конфиденциальность</h3>
-                    <p>Управляйте настройками приватности аккаунта.</p>
+                <div class="extra-setting" id="editMainBackgroundBtn">
+                    <h3>Фон главного меню</h3>
+                    <p>При желании вы можете сменить фон главного меню игры.</p>
                 </div>
             </div>
         </section>
@@ -119,6 +119,18 @@
         </div>
     </section>
 </form>
+
+<section id="editMainMenu" hidden>
+    <label>
+        <img src="" class="main-pic-edit" id="mainBackgroundView">
+        <img src="/images/kahoot2.png" class="main-pic-edit" id="defaultBackground" hidden>
+        <input type="file" name="file" id="backgroundFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
+        <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
+    </div>
+</section>
 
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>

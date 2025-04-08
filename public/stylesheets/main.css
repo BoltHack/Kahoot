@@ -2,13 +2,12 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    flex-direction: column;
-    display: grid;
-    background-image: url("../images/kahoot2.png");
-    /*background-size: 100%;*/
-    height: 100vh;
+    /*background-image: url("../images/kahoot2.png");*/
+    /*background-position: top;*/
+    /*background-position: inherit;*/
+    height: auto;
     background-repeat: no-repeat;
-    grid-template-rows: auto 1fr auto;
+    background-size: cover;
     overflow: hidden;
 }
 
@@ -18,11 +17,8 @@ body {
     left: 25%;
     transform: translate(-50%, -50%);
     text-align: start;
-    /*background-color: rgba(255, 255, 255, 0.9);*/
     padding: 50px 40px;
     border-radius: 20px;
-    /*box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);*/
-    /*backdrop-filter: blur(10px);*/
     width: 600px;
 }
 
@@ -222,7 +218,7 @@ footer button {
 }
 .auth-btn{
     width: 300px;
-    height: 40px;
+    height: 42px;
     background-color: #2a2a2a;
     color: #fff;
     border: none;

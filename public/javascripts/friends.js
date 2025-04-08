@@ -250,7 +250,7 @@ socket.on('updatePage', async () => {
     }
 })
 
-if (localStorage.getItem('token')) {
+if (window.location.pathname.startsWith('/friends')) {
     setInterval(function () {
         console.log('online mod');
         socket.emit('requestMyFriendsCount', sendId);
