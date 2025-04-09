@@ -75,7 +75,7 @@
             </div>
         </div>
         <% if (allNews && allNews.length > 0) { %>
-            <% allNews.reverse().forEach(news => { %>
+            <% allNews.forEach(news => { %>
                 <% if (news.update && news.update.length > 0) { %>
                     <li class="news-container">
                         <article class="news-card">
@@ -125,6 +125,7 @@
             <br>
         <% } %>
         <h3 class="not-found" id="searchNotFound">Ничего не найдено.</h3>
+        <%- include('../pagination.ejs') %>
     </ul>
 </main>
 <br>

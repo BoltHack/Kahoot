@@ -52,6 +52,10 @@ const newsSchema = new Schema({
     date: {
         type: String,
         default: dateOnly
+    },
+    fullDate: {
+        type: String,
+        default: currentDate
     }
 });
 

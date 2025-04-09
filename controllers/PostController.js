@@ -402,6 +402,7 @@ class PostController {
             const getData = await UsersModel.findById(user.id);
 
             if (updateTitle) updateFields.updateTitle = updateTitle;
+            if (updateTitle) updateFields.fullDate = new Date;
             if (updateTitle) updateFields.author = {
                 authorName: getData.name,
                 authorImage: getData.image
