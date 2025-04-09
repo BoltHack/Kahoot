@@ -63,29 +63,29 @@
             </div>
         </section>
 
-        <section class="section" id="extra-settings">
-            <h2>Дополнительные настройки</h2>
-            <div class="extra-settings">
-                <div class="extra-setting">
-                    <h3>Настройки языка</h3>
-                    <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
-                    <select name="locale" class="type" style="width: 150px;">
-                        <option value="en" <%= locale === 'en' ? 'selected' : '' %> ><%= locale === 'en' ? 'English (Selected)' : 'English'%></option>
-                        <option value="ru" <%= locale === 'ru' ? 'selected' : '' %> ><%= locale === 'ru' ? 'Русский (Выбран)' : 'Русский'%></option>
-                    </select>
-                </div>
-
-                <div class="extra-setting" id="editMainBackgroundBtn">
-                    <h3>Фон главного меню</h3>
-                    <p>При желании вы можете сменить фон главного меню игры.</p>
-                </div>
-            </div>
-        </section>
-
         <div style="text-align: center">
-            <button type="submit" class="save-settings" onclick="saveSettings()" id="saveMainBackgroundBtn">Сохранить изменения</button>
+            <button type="submit" class="save-settings" onclick="saveSettings()">Сохранить изменения</button>
         </div>
     </form>
+
+    <section class="section" id="extra-settings">
+        <h2>Дополнительные настройки</h2>
+        <div class="extra-settings">
+            <div class="extra-setting">
+                <h3>Настройки языка</h3>
+                <p>Выберите предпочитаемый язык интерфейса (функционал в разработке).</p>
+                <select name="locale" class="type" style="width: 150px;" id="changeLocale">
+                    <option value="en" <%= locale === 'en' ? 'selected' : '' %> ><%= locale === 'en' ? 'English (Selected)' : 'English'%></option>
+                    <option value="ru" <%= locale === 'ru' ? 'selected' : '' %> ><%= locale === 'ru' ? 'Русский (Выбран)' : 'Русский'%></option>
+                </select>
+            </div>
+
+            <div class="extra-setting" id="editMainBackgroundBtn">
+                <h3>Фон главного меню</h3>
+                <p>При желании вы можете сменить фон главного меню игры.</p>
+            </div>
+        </div>
+    </section>
 
     <section class="section" id="change-password">
         <h2>Сменить пароль</h2>
@@ -128,7 +128,7 @@
         <input type="file" name="file" id="backgroundFile" style="display: none">
     </label>
     <div class="edit-buttons">
-        <input type="button" value="Закрыть" id="cancelBtn">
+        <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
         <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
     </div>
 </section>
@@ -138,6 +138,7 @@
 <script src="/javascripts/settings.js"></script>
 <script src="/javascripts/friends.js"></script>
 <script src="/javascripts/alert.js"></script>
+<script src="/javascripts/locale.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const sendId = '<%= user.id %>';

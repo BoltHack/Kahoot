@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function saveSettings() {
     Swal.fire({
-        text: localeType === 'en' ? 'All settings saved!' : 'Все настройки сохранены!',
+        text: localeType === 'en' ? 'Basic settings saved!' : 'Основные настройки сохранены!',
         icon: "success",
         position: "top-end",
         timer: 4000,
@@ -124,13 +124,14 @@ const backgroundFile = document.getElementById('backgroundFile');
 const defaultBackground = document.getElementById('defaultBackground');
 const settings = JSON.parse(localStorage.getItem('settings') || '{}');
 editMainBackgroundBtn.addEventListener('click', () => {
-
     editMainMenu.hidden = false;
     barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
 
     barrier.addEventListener('click', () => {
         editMainMenu.hidden = true;
         barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
     });
 
     backgroundFile.addEventListener('change', () => {
@@ -148,18 +149,19 @@ editMainBackgroundBtn.addEventListener('click', () => {
             localStorage.setItem('settings', JSON.stringify(settings));
             editMainMenu.hidden = true;
             barrier.hidden = true;
+            document.body.style.overflowY = 'auto';
 
-            // Swal.fire({
-            //     text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
-            //     icon: "success",
-            //     position: "top-end",
-            //     timer: 4000,
-            //     showConfirmButton: false,
-            //     toast: true,
-            //     customClass: {
-            //         popup: "small-alert"
-            //     }
-            // });
+            Swal.fire({
+                text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
+                icon: "success",
+                position: "top-end",
+                timer: 4000,
+                showConfirmButton: false,
+                toast: true,
+                customClass: {
+                    popup: "small-alert"
+                }
+            });
         };
     });
     document.getElementById('deleteMainBackgroundBtn').addEventListener('click', () => {
@@ -167,23 +169,20 @@ editMainBackgroundBtn.addEventListener('click', () => {
         localStorage.setItem('settings', JSON.stringify(settings));
         editMainMenu.hidden = true;
         barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
 
-        // Swal.fire({
-        //     text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
-        //     icon: "success",
-        //     position: "top-end",
-        //     timer: 4000,
-        //     showConfirmButton: false,
-        //     toast: true,
-        //     customClass: {
-        //         popup: "small-alert"
-        //     }
-        // });
+        Swal.fire({
+            text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
+            icon: "success",
+            position: "top-end",
+            timer: 4000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
     });
-    document.getElementById('cancelBtn').addEventListener('click', () => {
-        editMainMenu.hidden = true;
-        barrier.hidden = true;
-    })
 });
 
 function viewMainBackground(){
@@ -196,5 +195,11 @@ function viewMainBackground(){
     }
 }
 viewMainBackground();
+
+
+const changeLocale = document.getElementById('changeLocale');
+changeLocale.addEventListener('change', () => {
+    changeLocale.value === 'en' ? changeLocaleEn() : changeLocaleRu();
+})
 
 const socket = io();

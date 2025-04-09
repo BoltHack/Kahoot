@@ -254,5 +254,5 @@ if (window.location.pathname.startsWith('/friends')) {
     setInterval(function () {
         console.log('online mod');
         socket.emit('requestMyFriendsCount', sendId);
-    }, 60000);
+    }, 20000);
 }
