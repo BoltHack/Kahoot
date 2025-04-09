@@ -169,6 +169,8 @@ editMainBackgroundBtn.addEventListener('click', () => {
         localStorage.setItem('settings', JSON.stringify(settings));
         editMainMenu.hidden = true;
         barrier.hidden = true;
+        defaultBackground.hidden = false;
+        mainBackgroundView.hidden = true;
         document.body.style.overflowY = 'auto';
 
         Swal.fire({
