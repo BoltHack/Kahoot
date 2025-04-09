@@ -244,17 +244,29 @@ class ViewController {
             const tag = req.query.tag;
             const query = tag ? {"tags.tagName": tag} : {};
 
-            const allNews = await NewsModel.find(query);
+            const page = parseInt(req.query.page) || 1;
+            const limit = 3;
+            const skip = (page - 1) * limit;
+            const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
+            const totalNews = await NewsModel.countDocuments(query);
+
+            const renderData = {
+                allNews,
+                currentPage: page,
+                totalPages: Math.ceil(totalNews / limit),
+                currentTag: tag,
+                locale
+            }
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, currentTag: tag, locale});
+                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
                 });
             }
             else {
                 const user = '';
-                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, currentTag: tag, locale});
+                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
             }
         } catch (e) {
             next(e);
