@@ -83,7 +83,7 @@
         </section>
 
         <div style="text-align: center">
-            <button type="submit" class="save-settings" onclick="saveSettings()">Сохранить изменения</button>
+            <button type="submit" class="save-settings" onclick="saveSettings()" id="saveMainBackgroundBtn">Сохранить изменения</button>
         </div>
     </form>
 
@@ -123,12 +123,12 @@
 
 <section id="editMainMenu" hidden>
     <label>
-        <img src="" class="main-pic-edit" id="mainBackgroundView">
-        <img src="/images/kahoot2.png" class="main-pic-edit" id="defaultBackground" hidden>
+        <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
+        <img src="/images/kahoot2.png" class="main-pic-edit" id="defaultBackground" title="Нажми, чтобы изменить фон" hidden>
         <input type="file" name="file" id="backgroundFile" style="display: none">
     </label>
     <div class="edit-buttons">
-        <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
+        <input type="button" value="Закрыть" id="cancelBtn">
         <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
     </div>
 </section>

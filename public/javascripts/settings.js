@@ -149,17 +149,17 @@ editMainBackgroundBtn.addEventListener('click', () => {
             editMainMenu.hidden = true;
             barrier.hidden = true;
 
-            Swal.fire({
-                text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
-                icon: "success",
-                position: "top-end",
-                timer: 4000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+            // Swal.fire({
+            //     text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
+            //     icon: "success",
+            //     position: "top-end",
+            //     timer: 4000,
+            //     showConfirmButton: false,
+            //     toast: true,
+            //     customClass: {
+            //         popup: "small-alert"
+            //     }
+            // });
         };
     });
     document.getElementById('deleteMainBackgroundBtn').addEventListener('click', () => {
@@ -168,17 +168,21 @@ editMainBackgroundBtn.addEventListener('click', () => {
         editMainMenu.hidden = true;
         barrier.hidden = true;
 
-        Swal.fire({
-            text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
-            icon: "success",
-            position: "top-end",
-            timer: 4000,
-            showConfirmButton: false,
-            toast: true,
-            customClass: {
-                popup: "small-alert"
-            }
-        });
+        // Swal.fire({
+        //     text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
+        //     icon: "success",
+        //     position: "top-end",
+        //     timer: 4000,
+        //     showConfirmButton: false,
+        //     toast: true,
+        //     customClass: {
+        //         popup: "small-alert"
+        //     }
+        // });
+    });
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+        editMainMenu.hidden = true;
+        barrier.hidden = true;
     })
 });
 
