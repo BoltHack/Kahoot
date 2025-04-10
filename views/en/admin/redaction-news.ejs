@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="/stylesheets/admin/redactionNews.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
+<script>
+    const editNews = `<%= newsInfo.updateTitle %>`;
+</script>
 <body>
+<%- include('admin-header.ejs') %>
 <main>
     <form action="/admin/redaction-news/<%= newsInfo.id %>" method="POST" enctype="multipart/form-data">
         <div class="container" style="left: 60%; top: -20%;">

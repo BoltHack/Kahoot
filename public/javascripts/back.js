@@ -81,6 +81,13 @@ function pages(){
             <a class="between"> > </a>
             <a class="other-color">${localeType === 'en' ? 'Post news' : 'Разместить новость'}</a>`
     }
+    else if (page.startsWith('/admin/redaction-news')) {
+        pageName.innerHTML = `
+            <a class="between"> > </a>
+            <a href="/admin/list-news" class="color-btn">${localeType === 'en' ? 'List news' : 'Список новостей'}</a>
+            <a class="between"> > </a>
+            <a class="other-color">${localeType === 'en' ? `Edit ${editNews}` : `Редактирование ${editNews}`}</a>`
+    }
     else if (page === '/') {
         document.getElementById('back').style.display = 'none';
     }
