@@ -391,6 +391,14 @@ class PostController {
             const user = req.user;
             let locale = req.cookies['locale'] || 'en';
 
+            const currentDate = new Date();
+
+            const year = currentDate.getFullYear();
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const day = currentDate.getDate().toString().padStart(2, '0');
+
+            const dateOnly = `${day}.${month}.${year}`;
+
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
@@ -403,6 +411,7 @@ class PostController {
 
             if (updateTitle) updateFields.updateTitle = updateTitle;
             if (updateTitle) updateFields.fullDate = new Date;
+            if (updateTitle) updateFields.date = dateOnly;
             if (updateTitle) updateFields.author = {
                 authorName: getData.name,
                 authorImage: getData.image
@@ -416,7 +425,7 @@ class PostController {
             if (aboutGameTag) updateFields["tags"].push({ tagName: 'AboutGame' });
             if (bugsErrorsTag) updateFields["tags"].push({ tagName: 'BugsErrors' });
 
-            function updateFilesProcess(title, content, imageKey, index) {
+            function updateFilesProcess(title, content, imageKey, index, isDelete) {
                 if (title) {
                     let base64Image;
                     if (req.files && req.files[imageKey]) {
@@ -425,9 +434,11 @@ class PostController {
                     }
                     updateFields[`update.${index}`] = {
                         title,
-                        image: base64Image,
                         content
                     };
+                    if (!isDelete && base64Image) {
+                        updateFields[`update.${index}`].image = base64Image;
+                    }
                 }
             }
 
