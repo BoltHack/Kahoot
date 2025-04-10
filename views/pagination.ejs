@@ -17,6 +17,7 @@
         padding: 10px 16px;
         border-radius: 8px;
         transition: background-color 0.3s, color 0.3s;
+        cursor: pointer;
     }
     .pagination a:hover,
     .pagination a:focus {
@@ -45,7 +46,7 @@
 
 <div class="pagination">
     <% if (currentPage > 1) { %>
-        <a href="?page=<%= currentPage - 1 %>"> < </a>
+        <a id="previousPage"> < </a>
     <% } else { %>
         <a class="disabled"> < </a>
     <% } %>
@@ -67,19 +68,58 @@
     <% } %>
 
     <% for (let i = startPage; i <= endPage; i++) { %>
-        <a href="?page=<%= i %>" class="<%= i === currentPage ? 'current' : '' %>"><%= i %></a>
+        <a class="<%= i === currentPage ? 'current' : '' %>" onclick="listPages(<%= i %>)"><%= i %></a>
     <% } %>
 
     <% if (endPage < totalPages) { %>
         <% if (endPage < totalPages - 1) { %>
             <span>...</span>
         <% } %>
-        <a href="?page=<%= totalPages %>"><%= totalPages %></a>
+        <a id="totalPages"><%= totalPages %></a>
     <% } %>
 
     <% if (currentPage < totalPages) { %>
-        <a href="?page=<%= currentPage + 1 %>"> > </a>
+        <a id="nextPage"> > </a>
     <% } else { %>
         <a class="disabled"> > </a>
     <% } %>
 </div>
+<div style="margin-bottom: 350px;"></div>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const tag = params.get('tag');
+    document.getElementById('nextPage').addEventListener('click', () => {
+        if (tag) {
+            window.location.href = `?page=<%= currentPage + 1%>&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=<%= currentPage + 1%>`;
+        }
+    });
+    document.getElementById('previousPage').addEventListener('click', () => {
+        if (tag) {
+            window.location.href = `?page=<%= currentPage - 1%>&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=<%= currentPage - 1%>`;
+        }
+    });
+    document.getElementById('totalPages').addEventListener('click', () => {
+        if (tag) {
+            console.log('test');
+            window.location.href = `?page=<%= totalPages %>&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=<%= totalPages %>`;
+        }
+    })
+
+    function listPages(i) {
+        if (tag) {
+            window.location.href = `?page=${i}&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=${i}`;
+        }
+    }
+</script>

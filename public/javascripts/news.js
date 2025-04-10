@@ -50,3 +50,16 @@ document.getElementById('closeIcon').addEventListener('click', () => {
         searchNotFound.style.display = 'none';
     });
 })
+
+// function tagRegulator (tag) {
+//     const params = new URLSearchParams(window.location.search);
+//     const page = params.get('page');
+//     console.log('tag', tag);
+//
+//     if (window.location.search.startsWith('?page')) {
+//         window.location.href = `?page=${page}&tag=${tag}`;
+//     }
+//     else {
+//         window.location.href = `?tag=${tag}`;
+//     }
+// }

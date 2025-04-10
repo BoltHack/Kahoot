@@ -54,10 +54,12 @@ const newsSchema = new Schema({
         default: dateOnly
     },
     fullDate: {
-        type: String,
+        type: Date,
         default: currentDate
     }
 });
+
+newsSchema.index({ fullDate: -1 });
 
 
 const NewsModel = model('news', newsSchema);

@@ -247,7 +247,7 @@ class ViewController {
             const page = parseInt(req.query.page) || 1;
             const limit = 3;
             const skip = (page - 1) * limit;
-            const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
+            const allNews = await NewsModel.find(query).sort({fullDate: -1}).allowDiskUse(true).skip(skip).limit(limit);
             const totalNews = await NewsModel.countDocuments(query);
 
             const renderData = {
