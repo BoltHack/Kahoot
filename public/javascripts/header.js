@@ -5,10 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (typeof socket !== "undefined" && sendId) {
                 socket.emit('requestMyFriendsCount', sendId);
             } else {
-                console.error(`Socket or sendId(${sendId}) is not defined.`);
+                console.error(`Socket or sendId is not defined.`);
+                Swal.fire({
+                    text: localeType === 'en' ? "There was an error in the site. Updating the page..." : 'Возникла ошибка в работе сайта. Обновление страницы...',
+                    icon: "error",
+                    position: "top-end",
+                    timer: 4000,
+                    showConfirmButton: false,
+                    toast: true,
+                    customClass: {
+                        popup: "small-alert"
+                    }
+                });
                 setTimeout(function () {
                     window.location.reload();
-                }, 3000);
+                }, 5000);
             }
         }
     } catch (error) {
@@ -47,8 +58,7 @@ function logout() {
         }
 
         if (status) {
-            localStorage.removeItem('name');
-            localStorage.removeItem('return_id');
+            localStorage.removeItem('userInfo');
             localStorage.removeItem('token');
             localStorage.removeItem('session');
             localStorage.removeItem('sessionEndTime');

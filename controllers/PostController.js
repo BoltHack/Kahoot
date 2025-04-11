@@ -425,7 +425,7 @@ class PostController {
             if (aboutGameTag) updateFields["tags"].push({ tagName: 'AboutGame' });
             if (bugsErrorsTag) updateFields["tags"].push({ tagName: 'BugsErrors' });
 
-            function updateFilesProcess(title, content, imageKey, index, isDelete) {
+            function updateFilesProcess(title, content, imageKey, index) {
                 if (title) {
                     let base64Image;
                     if (req.files && req.files[imageKey]) {
@@ -434,11 +434,12 @@ class PostController {
                     }
                     updateFields[`update.${index}`] = {
                         title,
+                        image: base64Image,
                         content
                     };
-                    if (!isDelete && base64Image) {
-                        updateFields[`update.${index}`].image = base64Image;
-                    }
+                    // if (!isDelete && base64Image) {
+                    //     updateFields[`update.${index}`].image = base64Image;
+                    // }
                 }
             }
 
