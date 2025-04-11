@@ -5,7 +5,7 @@ socket.on('connect', () => {
             console.log(`Пользователь ${sendId} зарегистрирован`);
         }
         else {
-            console.error(`Socket or sendId(${sendId}) is not defined.`);
+            console.error(`Friend socket or sendId is not defined.`);
         }
     }
 });

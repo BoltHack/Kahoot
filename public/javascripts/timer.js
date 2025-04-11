@@ -36,78 +36,101 @@ function storedTime(tokenType) {
 
     if (storedEndTime) {
         updateTokenTimer(tokenType);
+        return;
     }
     if (!Number(storedEndTime)){
-        tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+        console.log('Значение токена было изменено. Выдаю новый токен...');
+        setTimeout(function () {
+            tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+        }, 500);
     }
     else if (localStorage.getItem('token') && !storedEndTime){
-        console.log('test')
-        tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+        console.log('Выдаю токен');
+        setTimeout(function () {
+            tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
+        }, 500);
     }
 }
 
 if (localStorage.getItem('token')) {
+    console.log('Работа с токенами.');
     storedTime('accessTokenEndTime');
     storedTime('refreshTokenEndTime');
 }
 
 async function getAccessTokens() {
+    if (!navigator.onLine) {
+        console.warn('Нет интернета. Пропускаем получение токена.');
+        return;
+    }
+
     try {
         const response = await fetch('/accessToken', {
             method: 'POST',
             credentials: 'include'
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            const { token } = data;
-
-            if(!token) {
-                console.log('Токен не найден')
-                return;
-            }
-
-            if (token){
-                localStorage.setItem('token', token);
-            }
-
-            startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime')
-            console.log('токен выдан');
-
-        } else {
-            console.error('Ошибка', response.status);
+        if (!response.ok) {
+            console.error(`Ошибка: ${response.status} ${response.statusText}`);
+            return;
         }
+
+        const data = await response.json();
+        const { token } = data;
+
+        if (!token) {
+            console.warn('Токен отсутствует в ответе сервера.');
+            return;
+        }
+
+        localStorage.setItem('token', token);
+        startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime');
+        console.log('Access-токен выдан и таймер запущен.');
+
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error('💥 Ошибка при запросе токена:', error.message || error);
+        setTimeout(() => {
+            console.log('Повторная попытка получить access токен...');
+            getAccessTokens();
+        }, 5000);
     }
 }
 
 async function getRefreshTokens() {
+    if (!navigator.onLine) {
+        console.warn('Нет интернета. Пропускаем получение токена.');
+        return;
+    }
+
     try {
         const response = await fetch('/refreshToken', {
             method: 'POST',
             credentials: 'include'
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            const { token } = data;
-
-            if(!token) {
-                console.log('Токен не найден')
-            }
-
-            if (token){
-                localStorage.setItem('token', token);
-            }
-            startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
-            console.log('refresh токен выдан');
-
-        } else {
-            console.error('Ошибка', response.status);
+        if (!response.ok) {
+            console.error(`Ошибка: ${response.status} ${response.statusText}`);
+            return;
         }
+
+        const data = await response.json();
+        const { token } = data;
+
+        if (!token) {
+            console.warn('Refresh-токен отсутствует в ответе сервера.');
+            return;
+        }
+
+        localStorage.setItem('token', token);
+        startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
+        console.log('Refresh-токен выдан и таймер запущен.');
+
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error('Ошибка при запросе refresh токена:', error.message || error);
+        setTimeout(() => {
+            console.log('Повторная попытка получить refresh токен...');
+            getRefreshTokens();
+        }, 5000);
     }
 }
 
