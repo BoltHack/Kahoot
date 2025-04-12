@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error(`Socket or sendId is not defined.`);
                 Swal.fire({
-                    text: localeType === 'en' ? "There was an error with the site. Please reload the page." : 'Возникла ошибка в работе сайта. Перезагрузите страницу, пожалуйста.',
+                    text: localeType === 'en' ? "There was an error with the site." : 'Возникла ошибка в работе сайта.',
                     icon: "error",
                     position: "top-end",
                     // timer: 4000,
@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         popup: "small-alert"
                     }
                 });
-                // setTimeout(function () {
-                //     window.location.reload();
-                // }, 5000);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 5000);
             }
         }
     } catch (error) {

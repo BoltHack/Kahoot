@@ -73,17 +73,17 @@ io.on('connection', async (socket) => {
                     { new: true }
                 );
             }
-            if (game.game_online.users.length === 0){
-                await GamesModel.findOneAndUpdate(
-                    { _id: gameId },
-                    {
-                        $set: {
-                            'game_online.online': 0,
-                        }
-                    },
-                    { new: true }
-                );
-            }
+            // if (game.game_online.users.length === 0){
+            //     await GamesModel.findOneAndUpdate(
+            //         { _id: gameId },
+            //         {
+            //             $set: {
+            //                 'game_online.online': 0,
+            //             }
+            //         },
+            //         { new: true }
+            //     );
+            // }
 
             socket.emit('updateUserCount', game.game_online);
 
@@ -235,6 +235,37 @@ io.on('connection', async (socket) => {
                 console.log('the game is open.');
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             })
+
+            socket.on('gameCorrectAnswer', async (id) => {
+                console.log('Событие получено для пользователя:', id);
+                const updatedUser = await UsersModel.findOneAndUpdate(
+                    { _id: id },
+                    {
+                        $inc: {
+                            'game.0.game_answers': 1,
+                            'game.0.game_correct_answers': 1,
+                        },
+                    },
+                    { new: true }
+                );
+
+                console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
+            });
+
+            socket.on('gameWrongAnswer', async (id) => {
+                console.log('Событие получено для пользователя:', id);
+                const updatedUser = await UsersModel.findOneAndUpdate(
+                    { _id: id },
+                    {
+                        $inc: {
+                            'game.0.game_answers': 1,
+                        },
+                    },
+                    { new: true }
+                );
+
+                console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
+            });
 
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);

@@ -163,18 +163,27 @@ class PostController {
     static gameCorrectUsers = async (req, res, next) => {
         try {
             const {user_id} = req.params;
-            const userGame = await UsersModel.findById(user_id);
 
-            await UsersModel.findOneAndUpdate(
+            const updatedUserGame = await UsersModel.findOneAndUpdate(
                 { _id: user_id },
                 {
-                    $set: {
-                        'game.0.game_answers': userGame.game[0].game_answers + 1,
-                        'game.0.game_correct_answers': userGame.game[0].game_correct_answers + 1,
+                    $inc: {
+                        'game.0.game_answers': 1,
+                        'game.0.game_correct_answers': 1,
                     },
                 },
                 { new: true }
-            )
+            );
+
+            console.log('Обновлено. Кол-во правильных ответов:', updatedUserGame.game[0].game_correct_answers);
+
+            // if (updatedUserGame) {
+            //     res.json({
+            //         'game.0.game_correct_answers': updatedUserGame.game[0].game_correct_answers,
+            //     });
+            // } else {
+            //     res.status(500).json({ error: 'Failed to update user data' });
+            // }
         }catch (err){
             console.error(err);
             res.status(500).json({ error: err.message });
@@ -190,7 +199,7 @@ class PostController {
             console.log('answers', userId.game[0].game_answers);
             console.log('correct_answers', userId.game[0].game_correct_answers);
 
-            await GamesModel.findOneAndUpdate(
+           const userLeader = await GamesModel.findOneAndUpdate(
                 { _id: game_id },
                 {
                     $push: {
@@ -199,6 +208,7 @@ class PostController {
                 },
                 { new: true }
             )
+            res.json({userLeader});
         }catch (err){
             console.error(err);
             res.status(500).json({ error: err.message });
