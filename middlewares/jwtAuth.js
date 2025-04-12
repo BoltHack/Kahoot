@@ -54,7 +54,6 @@ const authenticateJWT = async (req, res, next) => {
                     role: user.role,
                     ip: user.ip
                 };
-
                 console.log('payload', payload);
                 const accessToken = jwt.sign(payload, JWTSecret, { expiresIn: '15m' });
                 res.cookie('token', accessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });

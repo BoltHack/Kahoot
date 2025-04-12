@@ -8,7 +8,7 @@ const {
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, gameUsers, gameCorrectUsers, userLeader, getData, getUserData, changeAvatar, deleteImage,
-    changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews
+    changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -58,6 +58,7 @@ router.post('/viewNews/:news_id', viewNews);
 
 router.post('/accessToken', accessToken);
 router.post('/refreshToken', refreshToken);
+router.post('/checkToken', checkToken);
 
 router.use('/auth', AuthRouter);
 router.use('/admin', AdminRouter);
