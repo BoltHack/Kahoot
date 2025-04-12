@@ -411,7 +411,7 @@
 <div class="error">
     <div class="error__title"><%= error.status %></div>
     <div class="error__subtitle">Возникла ошибка...</div>
-    <div class="error__description"><%= message === 'Not Found' ? 'Страница не найдена.' : message === 'read ECONNRESET' ? 'Нет подключения к интернету.' : message %></div>
+    <div class="error__description"><%= message === 'Not Found' ? 'Страница не найдена.' : message %></div>
     <button class="error__button error__button--active" onclick="window.location.href = '/'">Домой</button>
     <button class="error__button" onclick="window.history.back()">Назад</button>
 </div>

@@ -7,19 +7,19 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error(`Socket or sendId is not defined.`);
                 Swal.fire({
-                    text: localeType === 'en' ? "There was an error in the site. Updating the page..." : 'Возникла ошибка в работе сайта. Обновление страницы...',
+                    text: localeType === 'en' ? "There was an error with the site. Please reload the page." : 'Возникла ошибка в работе сайта. Перезагрузите страницу, пожалуйста.',
                     icon: "error",
                     position: "top-end",
-                    timer: 4000,
+                    // timer: 4000,
                     showConfirmButton: false,
                     toast: true,
                     customClass: {
                         popup: "small-alert"
                     }
                 });
-                setTimeout(function () {
-                    window.location.reload();
-                }, 5000);
+                // setTimeout(function () {
+                //     window.location.reload();
+                // }, 5000);
             }
         }
     } catch (error) {
@@ -76,7 +76,6 @@ function checkGamePath(){
 }
 checkGamePath();
 
-const dropdownTitles = document.querySelectorAll('.dropdown-title');
 const dropdownContents = document.querySelectorAll('.dropdown-content');
 const dropdown = document.querySelectorAll('.dropdown');
 

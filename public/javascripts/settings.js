@@ -48,6 +48,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     saveImageBtn.addEventListener('click', () => {
+        Swal.fire({
+            text: localeType === 'en' ? 'Loading image...' : 'Загрузка изображения...',
+            icon: "warning",
+            position: "top-end",
+            // timer: 4000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
+
         const formData = new FormData();
         const selectedFile = attachFile.files[0];
         formData.append('image', selectedFile);
@@ -61,9 +73,22 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if(response.ok){
-                    window.location.href = '/settings';
                     console.log('Изображение успешно сохранено!')
-                    return response.json();
+                    Swal.fire({
+                        text: localeType === 'en' ? 'Image saved successfully!' : 'Изображение успешно сохранено!',
+                        icon: "success",
+                        position: "top-end",
+                        timer: 4000,
+                        showConfirmButton: false,
+                        toast: true,
+                        customClass: {
+                            popup: "small-alert"
+                        }
+                    });
+                    setTimeout(function () {
+                        window.location.href = '/settings';
+                        return response.json();
+                    }, 1000);
                 } else {
                     console.log('Ошибка при загрузке изображения');
                 }

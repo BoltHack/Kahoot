@@ -40,15 +40,15 @@ function storedTime(tokenType) {
     }
     if (!Number(storedEndTime)){
         console.log('Значение токена было изменено. Выдаю новый токен...');
-        setTimeout(function () {
+        // setTimeout(function () {
             tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
-        }, 500);
+        // }, 500);
     }
     else if (localStorage.getItem('token') && !storedEndTime){
         console.log('Выдаю токен');
-        setTimeout(function () {
+        // setTimeout(function () {
             tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
-        }, 500);
+        // }, 500);
     }
 }
 
@@ -88,7 +88,7 @@ async function getAccessTokens() {
         console.log('Access-токен выдан и таймер запущен.');
 
     } catch (error) {
-        console.error('💥 Ошибка при запросе токена:', error.message || error);
+        console.error('Ошибка при запросе токена:', error.message || error);
         setTimeout(() => {
             console.log('Повторная попытка получить access токен...');
             getAccessTokens();

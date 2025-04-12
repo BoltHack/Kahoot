@@ -247,8 +247,8 @@ class ViewController {
             const page = parseInt(req.query.page) || 1;
             const limit = 3;
             const skip = (page - 1) * limit;
-            const allNews = await NewsModel.find(query).sort({fullDate: -1}).allowDiskUse(true).skip(skip).limit(limit);
-            // const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
+            // const allNews = await NewsModel.find(query).sort({fullDate: -1}).allowDiskUse(true).skip(skip).limit(limit);
+            const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
             const totalNews = await NewsModel.countDocuments(query);
             // const [allNews, totalNews] = await Promise.all([
             //     NewsModel.find(query)
@@ -261,7 +261,6 @@ class ViewController {
             // ]);
 
             const renderData = {
-                allNews,
                 currentPage: page,
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
@@ -271,12 +270,12 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
+                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, ...renderData});
                 });
             }
             else {
                 const user = '';
-                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
+                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, ...renderData});
             }
         } catch (e) {
             next(e);
