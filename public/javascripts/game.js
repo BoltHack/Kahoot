@@ -33,37 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         }, 500);
 
                         if (dataNumber < questions.length - 1) {
-                            questions[dataNumber + 1].hidden = false;
+                            setTimeout(function () {
+                                questions[dataNumber + 1].hidden = false;
+                            }, 1000);
                         }
 
                         if (gameQuestions[dataNumber].correct_question === dataName){
                             question.hidden = true;
                             successMenu(localeType === 'en' ? 'Correct answer!' : 'Правильный ответ!');
-                            fetch(`/game-correct-users/${id}`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
-                            })
-                                .then(response => {
-                                    if (response.ok)
-                                        console.log('ok')
-                                })
-                                .catch(error => {
-                                    console.log('err', error)
-                                })
+                            socket.emit('gameCorrectAnswer', id);
                         } else {
                             question.hidden = true;
                             wrongMenu(localeType === 'en' ? 'Wrong answer!' : 'Неверный ответ!');
-                            fetch(`/game-users/${id}`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
-                            })
-                                .then(response => {
-                                    if (response.ok)
-                                        console.log('ok')
-                                })
-                                .catch(error => {
-                                    console.log('err', error)
-                                })
+                            socket.emit('gameWrongAnswer', id);
                         }
 
                         setTimeout(function (){
@@ -73,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                     socket.emit('requestLeadersCount');
                                 }, 500);
                                 stopSound();
-                                // redirectTimerStart();
                                 const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
 
                                 const overlay = document.getElementById('overlay');
@@ -82,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 modal.classList.add('active');
 
                                 requestSent = true;
+
                                 fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' }
@@ -93,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     .catch(error => {
                                         console.log('err', error);
                                     })
+
                             } else {
                                 console.log('пока победы нет', dataNumber + 1);
                             }

@@ -8,7 +8,6 @@ async function accessToken() {
         const data = await res.json();
         if (data.token && data.token !== localStorage.getItem('token')) {
             localStorage.setItem('token', data.token);
-            console.log('data', data.token);
         }
     } catch (err) {
         console.error('Ошибка при обновлении токена:', err);
