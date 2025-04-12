@@ -131,6 +131,7 @@ class AuthController {
 
             return res.json({ token: accessToken, refreshToken, user, locale });
         } catch (e) {
+            console.log(e);
             next(e);
         }
     }
@@ -292,7 +293,7 @@ class AuthController {
 
     static accountRecoveryView = async (req, res, next) => {
         try {
-
+            let locale = req.cookies['locale'] || 'en';
             if (req.cookies['token'] && req.cookies['refreshToken'] || !req.cookies['email']){
                 return res.redirect('/')
             }

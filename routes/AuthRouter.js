@@ -4,7 +4,6 @@ const {registerView, registerNewUser, loginView, loginUser, sessionExpiredView, 
 } = require('../controllers/AuthController')
 const {validateRegister, validateLogin} =require('../middlewares/validate')
 const {checkEmail} = require("../middlewares/checkEmail");
-const {verifyToken} = require("../middlewares/authorization");
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const router = express.Router();
 
