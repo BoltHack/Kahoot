@@ -139,58 +139,6 @@ class PostController {
         }
     }
 
-    static gameUsers = async (req, res, next) => {
-        try {
-            const {user_id} = req.params;
-            const userGame = await UsersModel.findById(user_id);
-
-            await UsersModel.findOneAndUpdate(
-                { _id: user_id },
-                {
-                    $set: {
-                        'game.0.game_answers': userGame.game[0].game_answers + 1
-                    }
-                },
-                { new: true }
-            )
-        }catch (err){
-            console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    }
-
-    static gameCorrectUsers = async (req, res, next) => {
-        try {
-            const {user_id} = req.params;
-
-            const updatedUserGame = await UsersModel.findOneAndUpdate(
-                { _id: user_id },
-                {
-                    $inc: {
-                        'game.0.game_answers': 1,
-                        'game.0.game_correct_answers': 1,
-                    },
-                },
-                { new: true }
-            );
-
-            console.log('Обновлено. Кол-во правильных ответов:', updatedUserGame.game[0].game_correct_answers);
-
-            // if (updatedUserGame) {
-            //     res.json({
-            //         'game.0.game_correct_answers': updatedUserGame.game[0].game_correct_answers,
-            //     });
-            // } else {
-            //     res.status(500).json({ error: 'Failed to update user data' });
-            // }
-        }catch (err){
-            console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    }
-
     static userLeader = async (req, res, next) => {
         try {
             const {game_id, game_time} = req.params;

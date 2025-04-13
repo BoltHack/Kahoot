@@ -73,17 +73,17 @@ io.on('connection', async (socket) => {
                     { new: true }
                 );
             }
-            // if (game.game_online.users.length === 0){
-            //     await GamesModel.findOneAndUpdate(
-            //         { _id: gameId },
-            //         {
-            //             $set: {
-            //                 'game_online.online': 0,
-            //             }
-            //         },
-            //         { new: true }
-            //     );
-            // }
+            if (game.game_online.users.length === 0){
+                await GamesModel.findOneAndUpdate(
+                    { _id: gameId },
+                    {
+                        $set: {
+                            'game_online.online': 0,
+                        }
+                    },
+                    { new: true }
+                );
+            }
 
             socket.emit('updateUserCount', game.game_online);
 
