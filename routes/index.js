@@ -35,9 +35,6 @@ router.post('/create-game', authenticateJWT, createGame);
 router.post('/delete-game/:game_id', authenticateJWT, deleteGame);
 router.post('/redaction/:game_id', authenticateJWT, redaction);
 
-router.post('/game-users/:user_id', authenticateJWT, gameUsers);
-router.post('/game-correct-users/:user_id', authenticateJWT, gameCorrectUsers);
-
 router.post('/user-leader/:game_id/:game_time', authenticateJWT, userLeader);
 router.post('/deleteAllGames', authenticateJWT, deleteAllGames);
 
