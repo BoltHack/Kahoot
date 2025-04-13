@@ -7,7 +7,7 @@ const {
     rulesView, aboutUsView, supportView, newsView, readNewsView
 } = require('../controllers/ViewController');
 const {
-    createGame, redaction, deleteGame, deleteAllGames, gameUsers, gameCorrectUsers, userLeader, getData, getUserData, changeAvatar, deleteImage,
+    createGame, redaction, deleteGame, deleteAllGames, userLeader, getData, getUserData, changeAvatar, deleteImage,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
