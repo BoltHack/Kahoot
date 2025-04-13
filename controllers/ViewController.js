@@ -9,6 +9,7 @@ class ViewController {
             const locale = req.cookies['locale'] || 'en';
             const mainEffects = req.cookies['mainEffects'] || 'on';
             const acceptCookies = req.cookies['acceptCookies'];
+
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
@@ -66,8 +67,6 @@ class ViewController {
             const id = user.id;
             await UsersModel.findByIdAndUpdate(id, { $set: { current_game: game_id }, game: { game_id: user.id, game_name: user.name, game_answers: 0, game_correct_answers: 0 } });
             console.log('добавлен новый игрок:', game_id);
-            // gameId.game_users.push({userId: user.id});
-            // await gameId.save();
 
             return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale});
         } catch (e) {
@@ -248,19 +247,11 @@ class ViewController {
             const limit = 3;
             const skip = (page - 1) * limit;
             // const allNews = await NewsModel.find(query).sort({fullDate: -1}).allowDiskUse(true).skip(skip).limit(limit);
-            const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
+            const allNews = await NewsModel.find().sort({fullDate: -1}).skip(skip).limit(limit).lean();
             const totalNews = await NewsModel.countDocuments(query);
-            // const [allNews, totalNews] = await Promise.all([
-            //     NewsModel.find(query)
-            //         .sort({ fullDate: -1 })
-            //         .skip(skip)
-            //         .limit(limit)
-            //         .lean()
-            //         .select('updateTitle fullDate author tags views update'),
-            //     NewsModel.countDocuments(query)
-            // ]);
 
             const renderData = {
+                allNews,
                 currentPage: page,
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
@@ -270,12 +261,12 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, ...renderData});
+                    return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
                 });
             }
             else {
                 const user = '';
-                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, allNews, ...renderData});
+                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
             }
         } catch (e) {
             next(e);

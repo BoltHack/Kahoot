@@ -60,7 +60,7 @@ const newsSchema = new Schema({
 });
 
 newsSchema.index({ fullDate: -1 });
-
+newsSchema.index({ 'tags.tagName': 1 });
 
 const NewsModel = model('news', newsSchema);
 
