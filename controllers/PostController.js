@@ -356,12 +356,11 @@ class PostController {
         try {
             const {updateTitle} = req.body;
             const user = req.user;
-            const getData = await UsersModel.findById(user.id);
 
             const postNews = new NewsModel({
                 author: {
                     authorName: user.name,
-                    authorImage: getData.image
+                    authorId: user.id
                 },
                 updateTitle: updateTitle
             })
@@ -404,7 +403,7 @@ class PostController {
             if (updateTitle) updateFields.date = dateOnly;
             if (updateTitle) updateFields.author = {
                 authorName: getData.name,
-                authorImage: getData.image
+                authorId: getData.id
             };
 
             if (!updateFields["tags"]) {
@@ -442,6 +441,12 @@ class PostController {
                             title,
                             content,
                             image: imagePath
+                        };
+                    }
+                    else {
+                        updateFields[`update.${index}`] = {
+                            title,
+                            content,
                         };
                     }
                 }

@@ -62,11 +62,21 @@ class AdminController{
 
             const listNews = await NewsModel.find({});
 
+            const authorIds = listNews.map(news => news.author.authorId);
+            const authors = await UsersModel.find({ _id: { $in: authorIds } });
+            const enrichedNews = listNews.map(news => {
+                const author = authors.find(a => a._id.toString() === news.author.authorId.toString());
+                return {
+                    ...news.toObject(),
+                    authorImage: author ? author.image : '/images/default-avatar.png'
+                };
+            });
+
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
-            return res.render(locale === 'en' ? 'en/admin/list-news' : 'ru/admin/list-news', {user, listNews, locale});
+            return res.render(locale === 'en' ? 'en/admin/list-news' : 'ru/admin/list-news', {user, listNews: enrichedNews , locale});
         } catch (e) {
             next(e);
         }
