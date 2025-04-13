@@ -22,7 +22,7 @@
     <section class="section" id="profile">
         <h2>Профиль</h2>
         <div class="profile">
-            <img src="data:image/png;base64,<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
+            <img src="<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
             <div class="profile-info">
                 <h3><%= userId.name %></h3>
                 <p><%= userId.email %></p>

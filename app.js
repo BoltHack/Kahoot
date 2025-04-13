@@ -10,7 +10,6 @@ const http = require("http");
 const socketIo = require('socket.io');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
-const { NewsModel } = require('./models/NewsModel');
 
 const app = express();
 const server = http.createServer(app);
@@ -465,7 +464,7 @@ io.on('connection', async (socket) => {
                 { _id: acceptData.acceptData.dataId },
                 {
                     $push: {
-                        myFriends: { id: sender.id, name: sender.name, image: sender.image }
+                        myFriends: { id: sender.id }
                     }
                 },
                 { new: true }
@@ -586,45 +585,6 @@ io.on('connection', async (socket) => {
             socket.emit('playerIsOffline');
         }
     });
-
-
-    // socket.on('requestNewsInfo', async (data) => {
-    //     try {
-    //         const { page, tag } = data.newsInfo;
-    //         console.log('page', page);
-    //         console.log('tag', tag);
-    //
-    //         const limit = 3;
-    //         const skip = (page - 1) * limit;
-    //         const query = tag ? { "tags.tagName": tag } : {};
-    //         console.log('query', query);
-    //
-    //         const test = await NewsModel.find();
-    //         console.log('test', test);
-    //
-    //         const allNews = await NewsModel.find(query)
-    //             .sort({ fullDate: -1 })
-    //             .skip(skip)
-    //             .limit(limit);
-    //
-    //         console.log('allNews', allNews);
-    //
-    //         const totalNews = await NewsModel.countDocuments(query);
-    //         console.log('totalNews', totalNews);
-    //
-    //         const renderData = {
-    //             currentPage: Number(page),
-    //             totalPages: Math.ceil(totalNews / limit),
-    //             currentTag: tag,
-    //         };
-    //         console.log('renderData', renderData);
-    //
-    //         socket.emit('updateNewsCount', allNews, renderData);
-    //     } catch (err) {
-    //         console.error('Ошибка при получении новостей:', err);
-    //         socket.emit('newsError', { message: 'Ошибка при загрузке новостей' });
-    //     }
-    // });
 });
 
 
@@ -635,10 +595,14 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload());
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+}));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, '..', 'public', 'uploads')));
 
 app.use('/', indexRouter);
 

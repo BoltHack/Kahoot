@@ -79,7 +79,7 @@
                             <div class="news-meta">
                                 <div class="news-author">
                                     <span>Автор</span>
-                                    <img src="data:image/png;base64,<%= news.author.authorImage %>">
+                                    <img src="<%= authorImage %>">
                                     <span><%= news.author.authorName %></span>
                                 </div>
                                 <span class="news-date">📅 <%= news.date %></span>
@@ -92,8 +92,8 @@
                                 </div>
                             </div>
                             <div class="news-image">
-                                <% if (news.update[0].image) {%>
-                                    <img src="data:image/png;base64,<%= news.update[0].image %>">
+                                <% if (news.update[0] && news.update[0].image) {%>
+                                    <img src="<%= news.update[0].image %>">
                                 <% } %>
                             </div>
                             <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>

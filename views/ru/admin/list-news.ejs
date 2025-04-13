@@ -42,8 +42,8 @@
                             </div>
                         </div>
                         <div class="news-image">
-                            <% if (news.update && news.update.length > 0 && news.update[0].image) { %>
-                                <img src="data:image/png;base64,<%= news.update[0].image %>">
+                            <% if (news.update[0] && news.update[0].image) {%>
+                                <img src="<%= news.update[0].image %>">
                             <% } %>
                         </div>
                         <% if (news.update && news.update.length > 0 && news.update[0].content) { %>

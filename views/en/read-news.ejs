@@ -48,7 +48,7 @@
                 <h2 class="news-title"><%= readNews.updateTitle %></h2>
                 <div class="news-meta">
                     <div class="news-author" style="margin-left: 55px;">
-                        <img src="data:image/png;base64,<%= readNews.author.authorImage %>">
+                        <img src="<%= authorImage %>">
                         <span><%= readNews.author.authorName %></span>
                     </div>
                     <span class="news-date">📅 <%= readNews.date %></span>
@@ -58,7 +58,9 @@
                         <h3><%= updateNews.title %></h3>
                         <% if (updateNews.image) { %>
                             <div class="news-image" style="margin-top: -30px;">
-                                <img src="data:image/png;base64,<%= updateNews.image %>" alt="Новость">
+                                <% if (updateNews && updateNews.image) {%>
+                                    <img src="<%= updateNews.image %>">
+                                <% } %>
                             </div>
                         <% } %>
                         <p class="news-summary"><%= updateNews.content %></p>
