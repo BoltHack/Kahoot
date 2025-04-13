@@ -8,9 +8,9 @@ const start = require('./services/db');
 const indexRouter = require('./routes/index');
 const http = require("http");
 const socketIo = require('socket.io');
-const mongoose = require('mongoose');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
+const { NewsModel } = require('./models/NewsModel');
 
 const app = express();
 const server = http.createServer(app);
@@ -455,7 +455,6 @@ io.on('connection', async (socket) => {
                 { _id: acceptData.acceptData.senderId },
                 {
                     $push: {
-                        // myFriends: { id: friend.id, name: friend.name, image: friend.image }
                         myFriends: { id: friend.id }
                     }
                 },
@@ -588,6 +587,44 @@ io.on('connection', async (socket) => {
         }
     });
 
+
+    // socket.on('requestNewsInfo', async (data) => {
+    //     try {
+    //         const { page, tag } = data.newsInfo;
+    //         console.log('page', page);
+    //         console.log('tag', tag);
+    //
+    //         const limit = 3;
+    //         const skip = (page - 1) * limit;
+    //         const query = tag ? { "tags.tagName": tag } : {};
+    //         console.log('query', query);
+    //
+    //         const test = await NewsModel.find();
+    //         console.log('test', test);
+    //
+    //         const allNews = await NewsModel.find(query)
+    //             .sort({ fullDate: -1 })
+    //             .skip(skip)
+    //             .limit(limit);
+    //
+    //         console.log('allNews', allNews);
+    //
+    //         const totalNews = await NewsModel.countDocuments(query);
+    //         console.log('totalNews', totalNews);
+    //
+    //         const renderData = {
+    //             currentPage: Number(page),
+    //             totalPages: Math.ceil(totalNews / limit),
+    //             currentTag: tag,
+    //         };
+    //         console.log('renderData', renderData);
+    //
+    //         socket.emit('updateNewsCount', allNews, renderData);
+    //     } catch (err) {
+    //         console.error('Ошибка при получении новостей:', err);
+    //         socket.emit('newsError', { message: 'Ошибка при загрузке новостей' });
+    //     }
+    // });
 });
 
 

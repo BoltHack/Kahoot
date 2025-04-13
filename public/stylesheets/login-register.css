@@ -144,6 +144,7 @@ body {
     font-weight: 800;
     color: #2879f3;
     cursor: pointer;
+    text-decoration: none;
 }
 .link:hover{
     text-decoration: underline;
