@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (dataNumber < questions.length - 1) {
                             setTimeout(function () {
                                 questions[dataNumber + 1].hidden = false;
-                            }, 1000);
+                            }, 500);
                         }
 
                         if (gameQuestions[dataNumber].correct_question === dataName){
