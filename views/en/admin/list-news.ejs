@@ -8,22 +8,77 @@
     <link rel="icon" type="image/png" href="/images/icon.png">
     <style>
         .listNews-container {
-            position: absolute;
-            left: 50%;
-            transform: translate(-50%);
+            margin: 200px auto;
+            max-width: 850px;
             flex-wrap: wrap;
             gap: 50px;
+        }
+        .deleteNewsMenu{
+            width: 350px;
+            height: 180px;
+            background-color: #212529;
+            border-radius: 10px;
+            z-index: 2;
+            opacity: 1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .barrier{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        .no-btn {
+            background: none;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 80px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .yes-btn{
+            background: none;
+            color: #90e0ef;
+            border: none;
+            padding: 10px 20px;
+            width: 80px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .no-btn:hover{
+            background-color: #6c757d;
+        }
+        .yes-btn:hover{
+            background-color: #118ab2;
+        }
+        .yes-or-no{
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
 <%- include('admin-header.ejs') %>
 <main>
-    <div class="listNews-container">
+    <ul class="listNews-container">
         <% if (listNews && listNews.length > 0) { %>
             <% listNews.reverse().forEach(news => { %>
-                <div class="news-container" style="margin-top: 150px;">
-                    <article class="news-card">
+                <li class="news-container" style="margin-top: 150px;">
+                    <div class="news-card">
                         <h2 class="news-title"><%= news.updateTitle %></h2>
                         <br>
                         <div class="news-meta">
@@ -58,23 +113,51 @@
                             </div>
                             <div style="display: flex; gap: 20px;">
                                 <a href="/admin/redaction-news/<%= news.id %>" class="news-edit">Edit</a>
-                                <form action="/admin/delete-news/<%= news.id %>" method="POST">
-                                    <button type="submit" class="news-delete">Delete</button>
-                                </form>
+                                <button type="submit" class="news-delete" data-id="<%= news._id %>">Delete</button>
                             </div>
                             <form action="/viewNews/<%= news.id %>" method="POST">
                                 <button class="read-more">Read more</button>
                             </form>
                         </div>
-                    </article>
-                </div>
+                    </div>
+
+                    <div id="deleteMenu-<%= news._id %>" class="deleteNewsMenu" hidden>
+                        <p style="text-align: center; color: white; margin: 30px 0; padding: 10px;">Delete attachment "<%= news.updateTitle %> ?</p>
+                        <div class="yes-or-no">
+                            <button class="no-btn" id="closeBtn-<%= news._id %>">Нет</button>
+                            <form action="/admin/delete-news/<%= news._id %>" method="POST">
+                                <button class="yes-btn">Да</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
             <% }) %>
         <% } else { %>
             <div class="not-found">
                 <p>Ничего не найдено.</p>
             </div>
         <% } %>
-    </div>
+    </ul>
+    <div class="barrier" hidden></div>
 </main>
+<script>
+    const deleteButton = document.querySelectorAll('.news-delete');
+
+    deleteButton.forEach(button => {
+        button.addEventListener('click', function () {
+            const dataId = this.getAttribute('data-id');
+            console.log('dataId', dataId)
+            const deleteMenu = document.getElementById('deleteMenu-' + dataId);
+            const closeBtn = document.getElementById('closeBtn-' + dataId);
+            const barrier = document.querySelector('.barrier');
+            deleteMenu.hidden = false;
+            barrier.hidden = false;
+            closeBtn.addEventListener('click', () => {
+                deleteMenu.hidden = true;
+                barrier.hidden = true;
+            })
+        })
+    })
+</script>
 </body>
 </html>
