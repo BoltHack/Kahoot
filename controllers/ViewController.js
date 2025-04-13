@@ -249,14 +249,18 @@ class ViewController {
             const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
             const totalNews = await NewsModel.countDocuments(query);
 
-            const findAllNews = await NewsModel.find({});
-            const getAllNewsId = findAllNews.map(get => get.id);
-            const authorData = await NewsModel.findById(getAllNewsId);
-            const authorId = await UsersModel.findById(authorData.author.authorId);
+            const authorIds = allNews.map(news => news.author.authorId);
+            const authors = await UsersModel.find({ _id: { $in: authorIds } });
+            const enrichedNews = allNews.map(news => {
+                const author = authors.find(a => a._id.toString() === news.author.authorId.toString());
+                return {
+                    ...news.toObject(),
+                    authorImage: author ? author.image : '/images/default-avatar.png'
+                };
+            });
 
             const renderData = {
-                allNews,
-                authorImage: authorId.image,
+                allNews: enrichedNews,
                 currentPage: page,
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
