@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     function viewAvatar(){
-        userImageView.src = 'data:image/png;base64,' + settingImage;
+        userImageView.src = settingImage;
     }
     viewAvatar();
 });

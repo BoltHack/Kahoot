@@ -246,12 +246,17 @@ class ViewController {
             const page = parseInt(req.query.page) || 1;
             const limit = 3;
             const skip = (page - 1) * limit;
-            // const allNews = await NewsModel.find(query).sort({fullDate: -1}).allowDiskUse(true).skip(skip).limit(limit);
-            const allNews = await NewsModel.find().sort({fullDate: -1}).skip(skip).limit(limit).lean();
+            const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
             const totalNews = await NewsModel.countDocuments(query);
+
+            const findAllNews = await NewsModel.find({});
+            const getAllNewsId = findAllNews.map(get => get.id);
+            const authorData = await NewsModel.findById(getAllNewsId);
+            const authorId = await UsersModel.findById(authorData.author.authorId);
 
             const renderData = {
                 allNews,
+                authorImage: authorId.image,
                 currentPage: page,
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
@@ -286,15 +291,18 @@ class ViewController {
 
             const readNews = await NewsModel.findById(news_id);
 
+            const authorId = await UsersModel.findById(readNews.author.authorId);
+            const authorImage = authorId.image;
+
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, locale});
+                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale});
                 });
             }
             else {
                 const user = '';
-                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, locale});
+                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale});
             }
         } catch (e) {
             next(e);

@@ -85,7 +85,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
     <div style="display: flex; gap: 10px;">
 
     <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}">
-        <img src="data:image/png;base64,${friends.image}" alt="Avatar" class="avatar">
+        <img src="${friends.image}" alt="Avatar" class="avatar">
         <span class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></span>
     </div>
         

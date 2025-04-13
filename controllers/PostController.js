@@ -2,6 +2,8 @@ const {GamesModel} = require('../models/GamesModel')
 const {UsersModel} = require("../models/UsersModel");
 const {AdminUserContactsModel} = require("../models/AdminUserContactsModel");
 const {NewsModel} = require("../models/NewsModel");
+const path = require("path");
+const { v4: uuidv4 } = require('uuid');
 
 require('dotenv').config();
 
@@ -218,12 +220,27 @@ class PostController {
                 const errorMsg = locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
-
             const imageFile = req.files.image;
-            const imageBuffer = imageFile.data;
-            const base64Image = imageBuffer.toString('base64');
+            const fileExt = path.extname(imageFile.name);
+            const safeFileName = `${uuidv4()}${fileExt}`;
+            const imagePath = `/uploads/${safeFileName}`;
 
-            await UsersModel.findByIdAndUpdate(user_id, { $set: { image: base64Image } }
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+
+            const savePath = path.join(uploadDir, safeFileName);
+
+            imageFile.mv(savePath, (err) => {
+                if (err) {
+                    console.error('Ошибка при сохранении файла:', err);
+                    return res.status(500).json({ error: 'Ошибка при сохранении файла' });
+                }
+            });
+
+            // const imageFile = req.files.image
+            // const imageBuffer = imageFile.data;
+            // const base64Image = imageBuffer.toString('base64');
+
+            await UsersModel.findByIdAndUpdate(user_id, { $set: { image: imagePath } }
             );
 
             return res.status(200).json('Изменения успешно загружены' );
@@ -383,21 +400,32 @@ class PostController {
             if (aboutGameTag) updateFields["tags"].push({ tagName: 'AboutGame' });
             if (bugsErrorsTag) updateFields["tags"].push({ tagName: 'BugsErrors' });
 
-            function updateFilesProcess(title, content, imageKey, index) {
+            async function updateFilesProcess(title, content, imageKey, index) {
                 if (title) {
-                    let base64Image;
                     if (req.files && req.files[imageKey]) {
                         const imageFile = req.files[imageKey];
-                        base64Image = imageFile.data.toString('base64');
+
+                        const fileExt = path.extname(imageFile.name);
+                        const safeFileName = `${uuidv4()}${fileExt}`;
+                        const imagePath = `/uploads/${safeFileName}`;
+
+                        const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+
+                        const savePath = path.join(uploadDir, safeFileName);
+
+                        imageFile.mv(savePath, (err) => {
+                            if (err) {
+                                console.error('Ошибка при сохранении файла:', err);
+                                return res.status(500).json({ error: 'Ошибка при сохранении файла' });
+                            }
+                        });
+
+                        updateFields[`update.${index}`] = {
+                            title,
+                            content,
+                            image: imagePath
+                        };
                     }
-                    updateFields[`update.${index}`] = {
-                        title,
-                        image: base64Image,
-                        content
-                    };
-                    // if (!isDelete && base64Image) {
-                    //     updateFields[`update.${index}`].image = base64Image;
-                    // }
                 }
             }
 

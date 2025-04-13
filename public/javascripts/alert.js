@@ -200,7 +200,7 @@ function requestFriendMenu(text) {
   </svg>
 
   <div>
-    <img class="success-icon-container" src="data:image/png;base64,${text.requestData.senderImage}">
+    <img class="success-icon-container" src="${text.requestData.senderImage}">
   </div>
   <div class="success-message-text-container">
     <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `Friend request from ${text.requestData.senderName }` : `Запрос на дружбу от ${text.requestData.senderName }`}</p>
