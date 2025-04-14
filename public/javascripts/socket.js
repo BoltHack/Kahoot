@@ -110,7 +110,7 @@ socket.on('updateUserCount', (onlineCount) => {
             .map(user => `
 <br>
 <div class="userImage checkUser" data-id="${user.userId}">
-    <img src="data:image/png;base64,${user.userImage}" onmouseover="showUserName(event);">
+    <img src="${user.userImage}" onmouseover="showUserName(event);">
     <div id="userName-${user.userId}" class="userName" hidden>
         <span>
   ${user.userId === id 
@@ -228,7 +228,7 @@ socket.on('updateUserCount', (onlineCount) => {
     <div class="userImage">
         <div style="display: block; margin-top: -10px;" title="${user.bannedName + ' | ' + user.bannedId}">
            <p>${user.bannedName}</p>
-           <img src="data:image/png;base64,${user.bannedImage}" style="margin-top: -14px;">
+           <img src="${user.bannedImage}" style="margin-top: -14px;">
         </div>
     
         <div id="banName-${user.bannedId}" class="banName">
