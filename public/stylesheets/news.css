@@ -36,6 +36,8 @@ body {
     border-radius: 5px;
     border: 1px solid grey;
     text-align: center;
+    background: #343a40;
+    color: white;
 }
 
 .search-tag-container h3 {
