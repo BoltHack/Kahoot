@@ -71,6 +71,9 @@ const BannedUsersSchema = new Schema({
 })
 
 const LeadersSchema = new Schema({
+    id: {
+        type: String
+    },
     name: {
         type: String
     },
