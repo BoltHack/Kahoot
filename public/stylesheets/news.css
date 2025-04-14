@@ -216,9 +216,15 @@ body {
     color: black;
 }
 .search-tag:hover {
-    opacity: 0.8;
+    background: #343a40;
+    color: white;
 }
 
+
+.search-tag-active {
+    background: #343a40;
+    color: white;
+}
 
 .sticky-container {
     margin-top: 200px;

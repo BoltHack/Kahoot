@@ -10,6 +10,7 @@ const http = require("http");
 const socketIo = require('socket.io');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
+const mongoose = require("mongoose");
 
 const app = express();
 const server = http.createServer(app);
@@ -420,86 +421,98 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('addFriend', async (senderData) => {
-        const friendSocketId = clients[senderData.senderData.friendId];
-        const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
+        try {
+            const friendSocketId = clients[senderData.senderData.friendId];
+            const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
+            const data = await UsersModel.findById(senderData.senderData.senderId);
 
-        const data = await UsersModel.findById(senderData.senderData.senderId);
-
-        if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
-            socket.emit('broadcastFriendRequest');
-            io.to(friendSocketId).emit('friendRequest', {
-                requestData: {
-                    senderName: data.name,
-                    senderId: data.id,
-                    senderImage: data.image,
-                    friendId: senderData.senderData.friendId,
-            }});
-            console.log(`Запрос в друзья отправлен пользователю ${senderData.senderData.friendId}`);
-        } else {
-            console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
-            socket.emit('playerIsOffline');
+            if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
+                socket.emit('broadcastFriendRequest');
+                io.to(friendSocketId).emit('friendRequest', {
+                    requestData: {
+                        senderName: data.name,
+                        senderId: data.id,
+                        senderImage: data.image,
+                        friendId: senderData.senderData.friendId,
+                    }});
+                console.log(`Запрос в друзья отправлен пользователю ${senderData.senderData.friendId}`);
+            } else {
+                console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+                socket.emit('playerIsOffline');
+            }
+        } catch (error) {
+            console.log('error', error);
+            socket.emit('broadcastFriendNotFound');
         }
     });
 
     socket.on('acceptFriendRequest', async (acceptData) => {
-        const friend = await UsersModel.findById(acceptData.acceptData.dataId);
-        const sender = await UsersModel.findById(acceptData.acceptData.senderId);
-        const friendSocketId = clients[acceptData.acceptData.dataId];
-        const senderSocketId = clients[acceptData.acceptData.senderId];
-        console.log('friendSocketId', friendSocketId)
-        console.log('senderSocketId', senderSocketId)
+        try {
+            const friend = await UsersModel.findById(acceptData.acceptData.dataId);
+            const sender = await UsersModel.findById(acceptData.acceptData.senderId);
+            const friendSocketId = clients[acceptData.acceptData.dataId];
+            const senderSocketId = clients[acceptData.acceptData.senderId];
+            console.log('friendSocketId', friendSocketId)
+            console.log('senderSocketId', senderSocketId)
 
-        if (senderSocketId) {
-            await UsersModel.findOneAndUpdate(
-                { _id: acceptData.acceptData.senderId },
-                {
-                    $push: {
-                        myFriends: { id: friend.id }
-                    }
-                },
-                { new: true }
-            );
+            if (senderSocketId) {
+                await UsersModel.findOneAndUpdate(
+                    { _id: acceptData.acceptData.senderId },
+                    {
+                        $push: {
+                            myFriends: { id: friend.id }
+                        }
+                    },
+                    { new: true }
+                );
 
-            await UsersModel.findOneAndUpdate(
-                { _id: acceptData.acceptData.dataId },
-                {
-                    $push: {
-                        myFriends: { id: sender.id }
-                    }
-                },
-                { new: true }
-            );
+                await UsersModel.findOneAndUpdate(
+                    { _id: acceptData.acceptData.dataId },
+                    {
+                        $push: {
+                            myFriends: { id: sender.id }
+                        }
+                    },
+                    { new: true }
+                );
 
-            const updateMyFriendsCount = await UsersModel.findById(acceptData.acceptData.senderId);
-            io.emit('updatePage');
+                const updateMyFriendsCount = await UsersModel.findById(acceptData.acceptData.senderId);
+                io.emit('updatePage');
 
-            io.to(senderSocketId).emit('broadcastUpdateMyFriends', updateMyFriendsCount.myFriends);
+                io.to(senderSocketId).emit('broadcastUpdateMyFriends', updateMyFriendsCount.myFriends);
 
-            console.log('send to', senderSocketId + ' | ' + acceptData.acceptData.senderId);
+                console.log('send to', senderSocketId + ' | ' + acceptData.acceptData.senderId);
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     })
 
     socket.on('delete-friend', async (deleteData) => {
-        const myId = deleteData.deleteData.myId;
-        const deleteId = deleteData.deleteData.deleteId;
-        console.log('deleteId', deleteId)
+        try {
+            const myId = deleteData.deleteData.myId;
+            const deleteId = deleteData.deleteData.deleteId;
+            console.log('deleteId', deleteId)
 
-        await UsersModel.findOneAndUpdate(
-            { _id: myId },
-            {
-                $pull: { myFriends: { id: { $in: deleteId } } }
-            },
-            { new: true }
-        );
+            await UsersModel.findOneAndUpdate(
+                { _id: myId },
+                {
+                    $pull: { myFriends: { id: { $in: deleteId } } }
+                },
+                { new: true }
+            );
 
-        await UsersModel.findOneAndUpdate(
-            { _id: deleteId },
-            {
-                $pull: { myFriends: { id: { $in: myId } } }
-            },
-            { new: true }
-        );
-        io.emit('updatePage');
+            await UsersModel.findOneAndUpdate(
+                { _id: deleteId },
+                {
+                    $pull: { myFriends: { id: { $in: myId } } }
+                },
+                { new: true }
+            );
+            io.emit('updatePage');
+        } catch (error) {
+            console.log('error', error);
+        }
     })
 
     socket.on('requestMyFriendsCount', async (sendId) => {
@@ -523,66 +536,78 @@ io.on('connection', async (socket) => {
 
 
     socket.on('inviteFriend', async (senderData) => {
-        const friendSocketId = clients[senderData.senderData.friendId];
-        const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
-        console.log('friendSocketId', friendSocketId);
+        try {
+            const friendSocketId = clients[senderData.senderData.friendId];
+            const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
+            console.log('friendSocketId', friendSocketId);
 
-        const data = await UsersModel.findById(senderData.senderData.senderId);
+            const data = await UsersModel.findById(senderData.senderData.senderId);
 
-        if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
-            socket.emit('broadcastInviteRequest');
-            io.to(friendSocketId).emit('inviteRequest', {
-                requestData: {
-                    senderId: senderData.senderData.senderId,
-                    senderName: data.name,
-                    senderImage: data.image,
-                    gameId: senderData.senderData.gameId,
-                    friendId: senderData.senderData.friendId,
-                }
-            });
-            console.log(`Запрос отправлен пользователю ${senderData.senderData.friendId}`);
-        } else {
-            console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
-            socket.emit('playerIsOffline');
+            if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
+                socket.emit('broadcastInviteRequest');
+                io.to(friendSocketId).emit('inviteRequest', {
+                    requestData: {
+                        senderId: senderData.senderData.senderId,
+                        senderName: data.name,
+                        senderImage: data.image,
+                        gameId: senderData.senderData.gameId,
+                        friendId: senderData.senderData.friendId,
+                    }
+                });
+                console.log(`Запрос отправлен пользователю ${senderData.senderData.friendId}`);
+            } else {
+                console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+                socket.emit('playerIsOffline');
+            }
+        } catch (error) {
+            console.log('error', erorr)
         }
     });
 
     socket.on('requestAcceptInvite', async (data) => {
-        const friendSocketId = clients[data.requestData.senderId];
-        const friendOnlineMod = await UsersModel.findById(data.requestData.senderId);
+        try {
+            const friendSocketId = clients[data.requestData.senderId];
+            const friendOnlineMod = await UsersModel.findById(data.requestData.senderId);
 
-        const getId = await UsersModel.findById(data.requestData.friendId);
+            const getId = await UsersModel.findById(data.requestData.friendId);
 
-        if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
-            io.to(friendSocketId).emit('broadcastAcceptInvite', {
-                requestData: {
-                    name: getId.name,
-                }
-            });
-            console.log(`Запрос отправлен пользователю ${data.requestData.friendId}`);
-        } else {
-            console.log(`Пользователь ${data.requestData.friendId} не в сети`);
-            socket.emit('playerIsOffline');
+            if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
+                io.to(friendSocketId).emit('broadcastAcceptInvite', {
+                    requestData: {
+                        name: getId.name,
+                    }
+                });
+                console.log(`Запрос отправлен пользователю ${data.requestData.friendId}`);
+            } else {
+                console.log(`Пользователь ${data.requestData.friendId} не в сети`);
+                socket.emit('playerIsOffline');
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     });
 
     socket.on('requestRejectInvite', async (data) => {
-        const friendSocketId = clients[data.requestData.senderId];
+        try {
+            const friendSocketId = clients[data.requestData.senderId];
 
-        const friendOnlineMod = await UsersModel.findById(data.requestData.senderId);
+            const friendOnlineMod = await UsersModel.findById(data.requestData.senderId);
 
-        const getId = await UsersModel.findById(data.requestData.friendId);
+            const getId = await UsersModel.findById(data.requestData.friendId);
 
-        if (friendOnlineMod.onlineMod === 'Online') {
-            io.to(friendSocketId).emit('broadcastRejectInvite', {
-                requestData: {
-                    name: getId.name,
-                }
-            });
-            console.log(`Запрос отправлен пользователю ${data.requestData.friendId}`);
-        } else {
-            console.log(`Пользователь ${data.requestData.friendId} не в сети`);
-            socket.emit('playerIsOffline');
+            if (friendOnlineMod.onlineMod === 'Online') {
+                io.to(friendSocketId).emit('broadcastRejectInvite', {
+                    requestData: {
+                        name: getId.name,
+                    }
+                });
+                console.log(`Запрос отправлен пользователю ${data.requestData.friendId}`);
+            } else {
+                console.log(`Пользователь ${data.requestData.friendId} не в сети`);
+                socket.emit('playerIsOffline');
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     });
 });

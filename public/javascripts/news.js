@@ -64,3 +64,21 @@ document.getElementById('closeIcon').addEventListener('click', () => {
 //         window.location.href = `?tag=${tag}`;
 //     }
 // }
+
+function tagsRegulator () {
+    const params = new URLSearchParams(window.location.search);
+    const tag = params.get('tag');
+    if (tag === 'Updates') {
+        document.getElementById('Updates').classList.add('search-tag-active');
+    }
+    if (tag === 'AboutGame') {
+        document.getElementById('AboutGame').classList.add('search-tag-active');
+    }
+    if (tag === 'BugsErrors') {
+        document.getElementById('BugsErrors').classList.add('search-tag-active');
+    }
+    if (!tag) {
+        document.getElementById('AllNews').classList.add('search-tag-active');
+    }
+}
+tagsRegulator();

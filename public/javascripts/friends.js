@@ -66,6 +66,20 @@ function addFriend() {
     }
 }
 
+socket.on('broadcastFriendNotFound', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? 'unknown ID.' : 'неизвестный ID.',
+        icon: "error",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
+
 socket.on('friendRequest', async (requestData) => {
     console.log('requestData', requestData);
     requestFriendMenu(requestData);
