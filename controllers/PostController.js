@@ -150,16 +150,22 @@ class PostController {
             console.log('answers', userId.game[0].game_answers);
             console.log('correct_answers', userId.game[0].game_correct_answers);
 
-           const userLeader = await GamesModel.findOneAndUpdate(
-                { _id: game_id },
-                {
-                    $push: {
-                        game_leaders: { name: user.name, correct_answers: userId.game[0].game_correct_answers, time: game_time }
+            const checkGameLeaderId = await GamesModel.find({ _id: game_id });
+
+            const leaderIds = checkGameLeaderId.map(leader => leader.game_leaders);
+            console.log('leaderIds', leaderIds);
+
+            if (!leaderIds.includes(user.id)) {
+                await GamesModel.findOneAndUpdate(
+                    { _id: game_id },
+                    {
+                        $push: {
+                            game_leaders: { id: user.id, name: user.name, correct_answers: userId.game[0].game_correct_answers, time: game_time }
+                        },
                     },
-                },
-                { new: true }
-            )
-            res.json({userLeader});
+                    { new: true }
+                )
+            }
         }catch (err){
             console.error(err);
             res.status(500).json({ error: err.message });
