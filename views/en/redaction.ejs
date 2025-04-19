@@ -59,6 +59,16 @@
                         </div>
                         <div class="input">
                             <div class="input_container">
+                                <p>Game start:</p>
+                                <select name="game_start_type" class="type" style="width: 200px;" required>
+                                    <option value="Auto" <%= gamesInfo.game_start_type === 'Auto' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Auto' ? 'Auto (Current)' : 'Auto' %></option>
+                                    <option value="Manually" <%= gamesInfo.game_start_type === 'Manually' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Manually' ? 'Manually (Current)' : 'Manually' %></option>
+                                </select>
+                                <div id="questions_container" style="color: red"></div>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
                                 <p>Game Timer Time:</p>
                                 <input type="number" class="type" style="width: 200px;" name="game_expiresInSeconds" placeholder="Enter time (in seconds)" value="<%= gamesInfo.game_expiresInSeconds %>" max="100" required>
                             </div>

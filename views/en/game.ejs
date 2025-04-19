@@ -87,9 +87,12 @@
     <div class="user-info">
         <% if (gameId.game_author.id === user.id) {%>
             <div class="banned-users">
-                <button id="openBannedPlayersMenu">Banlist</button>
+                <button id="openBannedPlayersMenu">Ban list</button>
             </div>
         <% } %>
+            <% if (gameId.game_author.id === user.id && gameId.game_start_type === 'Manually') {%>
+                <button onclick="manualGameLaunch()">Start</button>
+            <% } %>
         <div class="my-friends">
             <button id="openFriendListMenu">Friends</button>
         </div>
