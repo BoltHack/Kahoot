@@ -171,6 +171,10 @@ io.on('connection', async (socket) => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             });
 
+            socket.on('requestStartGame', () => {
+                io.emit('startGame');
+            });
+
             socket.on('requestGameAccessCount', async () => {
                 const updateGameAccessCount = await GamesModel.findById(gameId);
                 const updateUserFriendsCount = await UsersModel.findById(userId);

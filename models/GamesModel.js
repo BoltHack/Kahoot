@@ -131,10 +131,12 @@ const GamesSchema = new Schema({
     game_banned_users: {
         type: [BannedUsersSchema]
     },
+    game_start_type: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
-        // immutable: true
     },
     expiresInMinutes: {
         type: Number,

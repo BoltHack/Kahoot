@@ -33,7 +33,8 @@ class PostController {
                     online: 0,
                 },
                 game_max_questions: 2,
-                game_type: 'Open'
+                game_type: 'Open',
+                game_start_type: 'Auto'
             })
             await newGame.save();
 
@@ -52,7 +53,7 @@ class PostController {
         try {
             const { game_id } = req.params;
             const {
-                game_name, game_access, max_online, game_expiresInSeconds, game_max_questions,
+                game_name, game_access, max_online, game_expiresInSeconds, game_max_questions, game_start_type,
                 ...questions
             } = req.body;
 
@@ -66,6 +67,7 @@ class PostController {
             if (max_online) updateFields["game_online.max_online"] = max_online;
             if (game_expiresInSeconds) updateFields.game_expiresInSeconds = game_expiresInSeconds;
             if (game_max_questions) updateFields.game_max_questions = game_max_questions;
+            if (game_start_type) updateFields.game_start_type = game_start_type;
 
             for (let i = 0; i < 5; i++) {
                 const titleKey = `question_title${i}`;

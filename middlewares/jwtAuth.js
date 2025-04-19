@@ -16,53 +16,57 @@ function parseMaxAge(duration) {
     }
 }
 const authenticateJWT = async (req, res, next) => {
-    const token = req.cookies.token;
+    try {
+        const token = req.cookies.token;
 
-    let locale = req.cookies['locale'] || 'en';
+        let locale = req.cookies['locale'] || 'en';
 
-    if (!req.cookies['locale']) {
-        res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
-    }
+        if (!req.cookies['locale']) {
+            res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+        }
 
-    if (token) {
-        jwt.verify(token, JWTSecret, (err, user) => {
-            if (err) {
-                const errorMsg = locale === 'en' ? 'Invalid access token.' : 'Недействительный токен доступа.';
-                throw new HttpErrors(errorMsg, 403);
-            }
-            req.user = user;
-            next();
-        });
-    }
-    else {
-        const refreshToken = req.cookies.refreshToken;
-
-        if (refreshToken) {
-            jwt.verify(refreshToken, refreshTokenSecret, async (err, user) => {
+        if (token) {
+            jwt.verify(token, JWTSecret, (err, user) => {
                 if (err) {
                     const errorMsg = locale === 'en' ? 'Invalid access token.' : 'Недействительный токен доступа.';
                     throw new HttpErrors(errorMsg, 403);
                 }
                 req.user = user;
-                console.log('user', user);
-
-                const payload = {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name,
-                    registerDate: user.registerDate,
-                    role: user.role,
-                    ip: user.ip
-                };
-                console.log('payload', payload);
-                const accessToken = jwt.sign(payload, JWTSecret, { expiresIn: '15m' });
-                res.cookie('token', accessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });
                 next();
             });
         }
         else {
-            res.redirect('/auth/login');
+            const refreshToken = req.cookies.refreshToken;
+
+            if (refreshToken) {
+                jwt.verify(refreshToken, refreshTokenSecret, async (err, user) => {
+                    if (err) {
+                        const errorMsg = locale === 'en' ? 'Invalid access token.' : 'Недействительный токен доступа.';
+                        throw new HttpErrors(errorMsg, 403);
+                    }
+                    req.user = user;
+                    console.log('user', user);
+
+                    const payload = {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name,
+                        registerDate: user.registerDate,
+                        role: user.role,
+                        ip: user.ip
+                    };
+                    console.log('payload', payload);
+                    const accessToken = jwt.sign(payload, JWTSecret, { expiresIn: '15m' });
+                    res.cookie('token', accessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });
+                    next();
+                });
+            }
+            else {
+                res.redirect('/auth/login');
+            }
         }
+    } catch (error) {
+        next(error);
     }
 };
 
