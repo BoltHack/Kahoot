@@ -1,5 +1,4 @@
 const {Schema, model} = require("mongoose");
-const url = require("url");
 
 const currentDate = new Date();
 
