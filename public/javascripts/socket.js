@@ -156,11 +156,12 @@ let userName = name;
                     let {gameType} = data;
                     if (gameType === 'Open') {
                         if (gameStartType === 'Auto') {
-                            isGameStart = true
-                            clearInterval(countdown);
-                            timeLeft = 10;
-                            startCountdown();
-                            console.log('Поехали!');
+                            // isGameStart = true
+                            // clearInterval(countdown);
+                            // timeLeft = 10;
+                            // startCountdown();
+                            // console.log('Поехали!');
+                            socket.emit('requestStartGame');
                         }
                         else {
                             document.getElementById('timer').innerHTML = `
@@ -181,7 +182,7 @@ let userName = name;
             }
             if (onlineCount.online < 2) {
                 Swal.fire({
-                    text: localeType === 'en' ? 'ВFew players!' : 'Мало игроков!',
+                    text: localeType === 'en' ? 'Few players!' : 'Мало игроков!',
                     icon: "error",
                     position: "top-end",
                     timer: 4000,
@@ -192,7 +193,7 @@ let userName = name;
                     }
                 });
             }
-            else {
+            if (isGameStart === true) {
                 Swal.fire({
                     text: localeType === 'en' ? 'The game has already started!' : 'Игра уже началась!',
                     icon: "error",
@@ -209,7 +210,6 @@ let userName = name;
 
 
         socket.on('startGame', () => {
-            console.log('gfdgd');
             isGameStart = true;
             clearInterval(countdown);
             timeLeft = 10;

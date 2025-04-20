@@ -72,15 +72,33 @@ class PostController {
             for (let i = 0; i < 5; i++) {
                 const titleKey = `question_title${i}`;
                 if (questions[titleKey]) {
-                    let base64Image = default_question_image;
+                    let imagePath;
                     const imageKey = `question_image${i}`;
                     if (req.files && req.files[imageKey]) {
-                        base64Image = req.files[imageKey].data.toString('base64');
+                        const imageFile = req.files[imageKey];
+
+                        const fileExt = path.extname(imageFile.name);
+                        const safeFileName = `${uuidv4()}${fileExt}`;
+                        imagePath = `/gameUploads/${safeFileName}`;
+
+                        const uploadDir = path.join(__dirname, '..', 'public', 'gameUploads');
+                        const savePath = path.join(uploadDir, safeFileName);
+
+                        if (!fs.existsSync(uploadDir)) {
+                            fs.mkdirSync(uploadDir, { recursive: true });
+                        }
+
+                        imageFile.mv(savePath, (err) => {
+                            if (err) {
+                                console.error('Ошибка при сохранении файла:', err);
+                                return res.status(500).json({ error: 'Ошибка при сохранении файла' });
+                            }
+                        });
                     }
 
                     updateFields[`game_questions.${i}`] = {
                         question_title: questions[titleKey],
-                        question_image: base64Image,
+                        question_image: imagePath,
                         question_1: { title: questions[`${titleKey}_question_1`] },
                         question_2: { title: questions[`${titleKey}_question_2`] },
                         question_3: { title: questions[`${titleKey}_question_3`] },
