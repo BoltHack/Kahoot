@@ -65,13 +65,16 @@ h1 {
 
 .friend-container {
     border-bottom: 1px solid black;
-    width: 200px;
+    width: 300px;
+}
+.friend-interaction {
+    margin-top: 10px;
+    margin-left: auto;
+    display: flex;
 }
 .friend-delete-a {
     color: #c1121f;
     font-size: 14px;
-    margin-top: 10px;
-    margin-left: 10px;
     cursor: pointer;
 }
 .friend-delete-a:hover {
@@ -81,9 +84,8 @@ h1 {
 .friend-invite-a {
     color: #4c956c;
     font-size: 14px;
-    margin-top: 10px;
-    margin-left: 10px;
     cursor: pointer;
+    margin-left: 10px;
 }
 .friend-invite-a:hover {
     text-decoration: underline;

@@ -239,7 +239,7 @@ footer button {
 }
 .close-btn {
     margin-top: 15px;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border: none;
     background-color: #ff4444;
     color: white;
@@ -297,9 +297,10 @@ footer button {
 }
 
 .brutalist-card__alert {
-    font-weight: 900;
+    font-weight: 700;
     color: #000;
-    font-size: 1.5rem;
+    /*font-size: 1.5rem;*/
+    font-size: 18px;
     text-transform: uppercase;
 }
 
@@ -318,6 +319,7 @@ footer button {
 }
 .brutalist-card__message a:hover{
     text-decoration: underline;
+    text-decoration-color: black;
 }
 
 .brutalist-card__actions {
