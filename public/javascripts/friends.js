@@ -104,11 +104,11 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
     </div>
         
         <p>${friends.name}</p>
+        <div class="friend-interaction"></div>
         <a onclick="deleteFriend('${friends.id}')" class="friend-delete-a">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
-        ${window.location.pathname.startsWith('/game/') ?
-                    `<a onClick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>`
-                    : ''
-                }
+        ${window.location.pathname.startsWith('/game/') ? 
+                    `<a onClick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>` 
+                    : ''}
     </div>
     <br>
 </div>
