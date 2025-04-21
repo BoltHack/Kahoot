@@ -8,7 +8,8 @@ const {
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, userLeader, getData, getUserData, changeAvatar, deleteImage,
-    changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken
+    changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
+    deleteBackgroundImage
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -43,6 +44,8 @@ router.post('/getUserData', authenticateJWT, getUserData);
 
 router.post('/changeAvatar/:user_id', authenticateJWT, changeAvatar);
 router.post('/deleteAvatar/:user_id', authenticateJWT, deleteImage);
+router.post('/changeBackgroundImage', authenticateJWT, changeBackgroundImage);
+router.post('/deleteBackgroundImage', authenticateJWT, deleteBackgroundImage);
 
 router.post('/changeLocal/:locale', changeLocal);
 router.post('/changeLocalAuth/:id/:locale', changeLocalAuth);

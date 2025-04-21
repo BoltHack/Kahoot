@@ -54,6 +54,10 @@ const UsersSchema = new Schema({
         type: String,
         default: ("/images/defaultUser.png")
     },
+    mainBackgroundImage: {
+        type: String,
+        default: ("/images/kahoot2.png")
+    },
     registerDate: {
         type: String,
         default: dateOnly

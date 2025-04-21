@@ -16,12 +16,13 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies});
+                    const getData = await UsersModel.findById(user.id);
+                    const mainBackgroundImage = getData.mainBackgroundImage;
+                    return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies, mainBackgroundImage});
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies});
+                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user: '', locale, mainEffects, acceptCookies, mainBackgroundImage: ''});
             }
         } catch (e) {
             next(e);
@@ -149,7 +150,7 @@ class ViewController {
             const mainEffects = req.cookies['mainEffects'];
             const locale = req.cookies['locale'];
 
-            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, soundTrack, mainEffects, locale });
+            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, soundTrack, mainEffects, locale});
         } catch (e) {
             next(e);
         }

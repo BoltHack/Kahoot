@@ -228,7 +228,7 @@ class PostController {
         }
     }
 
-    static changeAvatar = async (req, res, next)=>{
+    static changeAvatar = async (req, res, next)=> {
         try{
             const {user_id} = req.params;
 
@@ -306,6 +306,73 @@ class PostController {
         }
     }
 
+    static changeBackgroundImage = async (req, res, next) => {
+        try{
+            const user = req.user;
+
+            let locale = req.cookies['locale'] || 'en';
+
+            if (!req.cookies['locale']) {
+                res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+            }
+
+            if (!req.files.image.mimetype.startsWith('image/')) {
+                const errorMsg = locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            if(!req.files || !req.files.image){
+                const errorMsg = locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+            const imageFile = req.files.image;
+            const fileExt = path.extname(imageFile.name);
+            const safeFileName = `${uuidv4()}${fileExt}`;
+            const imagePath = `/uploads/${safeFileName}`;
+
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+            const savePath = path.join(uploadDir, safeFileName);
+
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+
+            imageFile.mv(savePath, (err) => {
+                if (err) {
+                    console.error('Ошибка при сохранении файла:', err);
+                    return res.status(500).json({ error: 'Ошибка при сохранении файла' });
+                }
+            });
+
+            await UsersModel.findByIdAndUpdate(user.id, { $set: { mainBackgroundImage: imagePath } }
+            );
+
+            return res.status(200).json('Изменения успешно загружены' );
+        } catch (err){
+            console.log(err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
+    static deleteBackgroundImage = async (req, res, next) => {
+        try {
+            const user = req.user;
+
+            const userId = await UsersModel.findById(user.id);
+            if (!userId || !userId.image) {
+                return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
+            }
+
+            await UsersModel.findByIdAndUpdate(user.id, { $set: { mainBackgroundImage: "/images/kahoot2.png" } });
+
+            return res.status(200).json('Картинка успешно удалена');
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
 
     static changeLocal = async (req, res, next) => {
         try {
