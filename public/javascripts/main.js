@@ -51,12 +51,17 @@ function redirectPage(page){
         window.location.href = page;
     }
     else {
-        authMenu()
+        authMenu();
     }
 }
 
 function MainMenuBackground() {
-    document.body.style.backgroundImage = `url("${mainImage}")`;
+    if (mainImage) {
+        document.body.style.backgroundImage = `url("${mainImage}")`;
+    }
+    else {
+        document.body.style.backgroundImage = `url("/images/kahoot2.png")`;
+    }
 }
 MainMenuBackground();
 
