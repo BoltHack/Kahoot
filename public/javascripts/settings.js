@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
             text: localeType === 'en' ? 'Loading image...' : 'Загрузка изображения...',
             icon: "warning",
             position: "top-end",
-            // timer: 4000,
             showConfirmButton: false,
             toast: true,
             customClass: {
@@ -160,66 +159,82 @@ editMainBackgroundBtn.addEventListener('click', () => {
     });
 
     backgroundFile.addEventListener('change', () => {
-        defaultBackground.hidden = true;
-        mainBackgroundView.hidden = false;
         let href = URL.createObjectURL(backgroundFile.files[0])
         mainBackgroundView.src = href;
     });
     document.getElementById('saveMainBackgroundBtn').addEventListener('click', () => {
-        const reader = new FileReader();
-        reader.readAsDataURL(backgroundFile.files[0]);
-        reader.onload = function () {
-            const imageDataUrl = reader.result;
-            settings.mainMenuBackground = imageDataUrl
-            localStorage.setItem('settings', JSON.stringify(settings));
-            editMainMenu.hidden = true;
-            barrier.hidden = true;
-            document.body.style.overflowY = 'auto';
+        const formData = new FormData();
+        const selectedFile = backgroundFile.files[0];
+        formData.append('image', selectedFile);
 
-            Swal.fire({
-                text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
-                icon: "success",
-                position: "top-end",
-                timer: 4000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
+        fetch('/changeBackgroundImage',{
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: formData
+        })
+            .then(response => {
+                if(response.ok){
+                    console.log('Изображение успешно сохранено!')
+                    Swal.fire({
+                        text: localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!',
+                        icon: "success",
+                        position: "top-end",
+                        timer: 4000,
+                        showConfirmButton: false,
+                        toast: true,
+                        customClass: {
+                            popup: "small-alert"
+                        }
+                    });
+                    setTimeout(function () {
+                        window.location.href = '/settings';
+                        return response.json();
+                    }, 1000);
+                } else {
+                    console.log('Ошибка при загрузке изображения');
                 }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
             });
-        };
     });
     document.getElementById('deleteMainBackgroundBtn').addEventListener('click', () => {
-        settings.mainMenuBackground = null;
-        localStorage.setItem('settings', JSON.stringify(settings));
-        editMainMenu.hidden = true;
-        barrier.hidden = true;
-        defaultBackground.hidden = false;
-        mainBackgroundView.hidden = true;
-        document.body.style.overflowY = 'auto';
-
-        Swal.fire({
-            text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
-            icon: "success",
-            position: "top-end",
-            timer: 4000,
-            showConfirmButton: false,
-            toast: true,
-            customClass: {
-                popup: "small-alert"
-            }
-        });
+        fetch('/deleteBackgroundImage',{
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+        })
+            .then(response => {
+                if(response.ok){
+                    window.location.href = '/settings';
+                    console.log('Изображение успешно удалено!');
+                    Swal.fire({
+                        text: localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!',
+                        icon: "success",
+                        position: "top-end",
+                        timer: 4000,
+                        showConfirmButton: false,
+                        toast: true,
+                        customClass: {
+                            popup: "small-alert"
+                        }
+                    });
+                    return response.json();
+                } else {
+                    console.log('Ошибка при загрузке изображения');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
     });
 });
 
 function viewMainBackground(){
-    if (!settings.mainMenuBackground) {
-        mainBackgroundView.hidden = true;
-        defaultBackground.hidden = false;
-    }
-    else {
-        mainBackgroundView.src = settings.mainMenuBackground;
-    }
+    mainBackgroundView.src = mainImage;
 }
 viewMainBackground();
 
