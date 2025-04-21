@@ -106,7 +106,6 @@ io.on('connection', async (socket) => {
         const game_questions = await GamesModel.findById(gameId)
         const checkUserBanned = await GamesModel.findById(gameId);
         const updateGameTypeCount = await GamesModel.findById(gameId);
-        const updateGameAccessCount = await GamesModel.findById(gameId);
 
         if (!gameUsers[gameId]) {
             gameUsers[gameId] = [];
@@ -171,8 +170,14 @@ io.on('connection', async (socket) => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             });
 
-            socket.on('requestStartGame', () => {
-                io.emit('startGame');
+            socket.on('requestStartGame', async () => {
+                const checkPerms = await GamesModel.findById(gameId);
+                if (checkPerms.game_author.id === userId) {
+                    io.emit('startGame');
+                }
+                else {
+                    console.log('нет прав.');
+                }
             });
 
             socket.on('requestGameAccessCount', async () => {
@@ -188,38 +193,44 @@ io.on('connection', async (socket) => {
 
             socket.on('ban', async (userId) => {
                 const {gameId} = socket;
-                const getUserData = await UsersModel.findById(userId);
+                const checkPerms = await GamesModel.findById(gameId);
 
-                if (!alreadyBannedUserIds.includes(userId)){
-                    alreadyBannedUserIds.push(userId);
-                    let updateBannedUsers = await GamesModel.findOneAndUpdate(
-                        { _id: gameId },
-                        {
-                            $push: {
-                                "game_banned_users": {bannedId: userId, bannedName: getUserData.name, bannedImage: getUserData.image}
-                            }
-                        },
-                        {new: true}
-                    );
-                    console.log('ban', userId, 'from', gameId);
-                    io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
+                if (checkPerms.game_author.id === userId) {
+                    const getUserData = await UsersModel.findById(userId);
+
+                    if (!alreadyBannedUserIds.includes(userId)){
+                        alreadyBannedUserIds.push(userId);
+                        let updateBannedUsers = await GamesModel.findOneAndUpdate(
+                            { _id: gameId },
+                            {
+                                $push: {
+                                    "game_banned_users": {bannedId: userId, bannedName: getUserData.name, bannedImage: getUserData.image}
+                                }
+                            },
+                            {new: true}
+                        );
+                        console.log('ban', userId, 'from', gameId);
+                        io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
+                    }
+                    socket.emit('banBroadcast', userName);
                 }
-
-
-                socket.emit('banBroadcast', userName);
             });
 
             socket.on('unban', async (userId) => {
                 const { gameId } = socket;
-                alreadyBannedUserIds.splice(userId);
-                let updateBannedUsers = await GamesModel.updateOne(
-                    { _id: gameId },
-                    { $pull: { game_banned_users: { bannedId: { $in: userId } } } }
-                );
+                const checkPerms = await GamesModel.findById(gameId);
 
-                console.log('unban', userId);
-                io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
-                socket.emit('unbanBroadcast', userId);
+                if (checkPerms.game_author.id === userId) {
+                    alreadyBannedUserIds.splice(userId);
+                    let updateBannedUsers = await GamesModel.updateOne(
+                        { _id: gameId },
+                        { $pull: { game_banned_users: { bannedId: { $in: userId } } } }
+                    );
+
+                    console.log('unban', userId);
+                    io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
+                    socket.emit('unbanBroadcast', userId);
+                }
             });
 
             socket.on('closeGame', async () => {
@@ -230,6 +241,7 @@ io.on('connection', async (socket) => {
                 console.log('the game is closed.');
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             })
+
             socket.on('openGame', async () => {
                 await GamesModel.updateOne(
                     { _id: gameId },
@@ -240,36 +252,39 @@ io.on('connection', async (socket) => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             })
 
-            socket.on('gameCorrectAnswer', async (id) => {
-                console.log('Событие получено для пользователя:', id);
-                const updatedUser = await UsersModel.findOneAndUpdate(
-                    { _id: id },
-                    {
-                        $inc: {
-                            'game.0.game_answers': 1,
-                            'game.0.game_correct_answers': 1,
+            socket.on('gameCheckAnswer', async (data) => {
+                const checkQuestion = await GamesModel.findById(gameId);
+                if (checkQuestion.game_questions[data.data.dataNumber].correct_question === data.data.dataName) {
+                    console.log('Событие получено для пользователя:', userId);
+                    const updatedUser = await UsersModel.findOneAndUpdate(
+                        { _id: userId },
+                        {
+                            $inc: {
+                                'game.0.game_answers': 1,
+                                'game.0.game_correct_answers': 1,
+                            },
                         },
-                    },
-                    { new: true }
-                );
-
-                console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
-            });
-
-            socket.on('gameWrongAnswer', async (id) => {
-                console.log('Событие получено для пользователя:', id);
-                const updatedUser = await UsersModel.findOneAndUpdate(
-                    { _id: id },
-                    {
-                        $inc: {
-                            'game.0.game_answers': 1,
+                        { new: true }
+                    );
+                    socket.emit('gameCorrectAnswer');
+                    console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
+                }
+                else {
+                    console.log('Событие получено для пользователя:', userId);
+                    const updatedUser = await UsersModel.findOneAndUpdate(
+                        { _id: userId },
+                        {
+                            $inc: {
+                                'game.0.game_answers': 1,
+                            },
                         },
-                    },
-                    { new: true }
-                );
+                        { new: true }
+                    );
 
-                console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
-            });
+                    console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
+                    socket.emit('gameWrongAnswer');
+                }
+            })
 
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);

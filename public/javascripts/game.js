@@ -1,93 +1,82 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cQuestion = document.querySelectorAll('.c-question');
+    function checkQuestions() {
+        const maxQuestions = Number(gameMaxQuestions);
+        const questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
+        questions[0].hidden = false;
+        if (questions.some(question => question === null)) {
+            console.error("Некоторые элементы вопросов не найдены!");
+            return;
+        }
 
-    fetch(`/getData/${gameId}`, {
-        method: 'post',
-        headers: {
-            'Content-type': 'application/json'
-        },
-    })
-        .then(response => response.json())
-        .then(data => {
-            let {gameQuestions} = data;
+        cQuestion.forEach(button => {
+            button.addEventListener('click', function () {
+                 const dataNumber = Number(this.getAttribute('data-number'));
+                 const dataName = this.getAttribute('data-name');
+                 const question = document.getElementById('question-'+dataNumber);
+                 const time = document.querySelector('.game-timer');
 
-            function checkQuestions() {
-                const maxQuestions = Number(gameMaxQuestions);
-                const questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
-                questions[0].hidden = false;
-                if (questions.some(question => question === null)) {
-                    console.error("Некоторые элементы вопросов не найдены!");
-                    return;
-                }
+                 setTimeout(function (){
+                     socket.emit('requestAnswersCount');
+                     }, 500);
 
-                cQuestion.forEach(button => {
-                    button.addEventListener('click', function () {
+                 if (dataNumber < questions.length - 1) {
+                     setTimeout(function () {
+                         questions[dataNumber + 1].hidden = false;
+                         }, 500);
+                 }
 
-                        const dataNumber = Number(this.getAttribute('data-number'));
-                        const dataName = this.getAttribute('data-name');
-                        const question = document.getElementById('question-'+dataNumber);
-                        const time = document.querySelector('.game-timer');
+                 question.hidden = true;
+                 socket.emit('gameCheckAnswer', {
+                     data: {
+                         dataNumber: dataNumber,
+                         dataName: dataName,
+                     }
+                 });
+                 socket.on('gameCorrectAnswer', () => {
+                     successMenu(localeType === 'en' ? 'Correct answer!' : 'Правильный ответ!');
+                 });
+                 socket.on('gameWrongAnswer', () => {
+                     wrongMenu(localeType === 'en' ? 'Wrong answer!' : 'Неверный ответ!');
+                 });
 
-                        setTimeout(function (){
-                            socket.emit('requestAnswersCount');
-                        }, 500);
+                const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+                const overlay = document.getElementById('overlay');
+                const modal = document.querySelector('.modal');
 
-                        if (dataNumber < questions.length - 1) {
-                            setTimeout(function () {
-                                questions[dataNumber + 1].hidden = false;
-                            }, 500);
-                        }
+                 setTimeout(function (){
+                     if (maxQuestions === dataNumber + 1) {
+                         document.getElementById('questions').hidden = true;
+                         setInterval(function (){
+                             socket.emit('requestLeadersCount');
+                             }, 500);
+                         stopSound();
 
-                        if (gameQuestions[dataNumber].correct_question === dataName){
-                            question.hidden = true;
-                            successMenu(localeType === 'en' ? 'Correct answer!' : 'Правильный ответ!');
-                            socket.emit('gameCorrectAnswer', id);
-                        } else {
-                            question.hidden = true;
-                            wrongMenu(localeType === 'en' ? 'Wrong answer!' : 'Неверный ответ!');
-                            socket.emit('gameWrongAnswer', id);
-                        }
+                         overlay.classList.add('active');
+                         modal.classList.add('active');
 
-                        setTimeout(function (){
-                            if (maxQuestions === dataNumber + 1) {
-                                document.getElementById('questions').hidden = true;
-                                setInterval(function (){
-                                    socket.emit('requestLeadersCount');
-                                }, 500);
-                                stopSound();
-                                const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+                         requestSent = true;
 
-                                const overlay = document.getElementById('overlay');
-                                const modal = document.querySelector('.modal');
-                                overlay.classList.add('active');
-                                modal.classList.add('active');
+                         fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
+                             method: 'POST',
+                             headers: { 'Content-Type': 'application/json' }
+                         })
+                             .then(response => {
+                                 if (response.ok)
+                                     console.log('ok');
+                             })
+                             .catch(error => {
+                                 console.log('err', error);
+                             })
 
-                                requestSent = true;
-
-                                fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' }
-                                })
-                                    .then(response => {
-                                        if (response.ok)
-                                            console.log('ok');
-                                    })
-                                    .catch(error => {
-                                        console.log('err', error);
-                                    })
-
-                            } else {
-                                console.log('пока победы нет', dataNumber + 1);
-                            }
-                        }, 500);
-                    })
-
-                });
-            }
-            checkQuestions();
-
+                     } else {
+                         console.log('пока победы нет', dataNumber + 1);
+                     }}, 500);
+            })
         });
-})
+    }
+    checkQuestions();
+});
 
 
 function checkReload(){
