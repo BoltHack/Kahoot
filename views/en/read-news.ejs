@@ -47,11 +47,18 @@
             <article class="news-card">
                 <h2 class="news-title"><%= readNews.updateTitle %></h2>
                 <div class="news-meta">
-                    <div class="news-author" style="margin-left: 55px;">
+                    <div class="news-author">
                         <img src="<%= authorImage %>">
                         <span><%= readNews.author.authorName %></span>
                     </div>
                     <span class="news-date">📅 <%= readNews.date %></span>
+                    <div class="tags">
+                        <% if (readNews.tags && readNews.tags.length > 0) {%>
+                            <% readNews.tags.forEach(tags => { %>
+                                <a class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Updates' : tags.tagName === 'AboutGame' ? 'About the game' : tags.tagName === 'BugsErrors' ? 'Bugs/Errors' : 'All news' %></a>
+                            <% }) %>
+                        <% } %>
+                    </div>
                 </div>
                 <% if (readNews.update && Array.isArray(readNews.update) && readNews.update.length > 0) { %>
                     <% readNews.update.forEach(updateNews => { %>
