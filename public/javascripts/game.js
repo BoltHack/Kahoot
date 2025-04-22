@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
                 const overlay = document.getElementById('overlay');
-                const modal = document.querySelector('.modal');
+                const leaderboard = document.querySelector('.leaderboard');
 
                  setTimeout(function (){
                      if (maxQuestions === dataNumber + 1) {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                          socket.on('openLeadersMenu', () => {
                              overlay.classList.add('active');
-                             modal.classList.add('active');
+                             leaderboard.classList.add('active');
                          })
 
                      } else {

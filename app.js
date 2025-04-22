@@ -164,7 +164,7 @@ io.on('connection', async (socket) => {
                 if (game.game_online.users.length === game.game_leaders.length) {
                     const updateLeaderBoard = await GamesModel.findById(gameId);
                     socket.emit('updateLeaderBoard', updateLeaderBoard.game_leaders);
-                    socket.emit('openLeadersMenu');
+                    io.emit('openLeadersMenu');
                 }
                 else {
                     console.log('ещё не все закончили')

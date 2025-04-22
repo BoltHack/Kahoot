@@ -173,7 +173,6 @@ class PostController {
             const checkGameLeaderId = await GamesModel.find({ _id: game_id });
 
             const leaderIds = checkGameLeaderId.map(leader => leader.game_leaders);
-            console.log('leaderIds', leaderIds);
 
             if (!leaderIds.includes(user.id)) {
                 await GamesModel.findOneAndUpdate(

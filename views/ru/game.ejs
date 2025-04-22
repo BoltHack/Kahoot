@@ -100,16 +100,31 @@
     </div>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
-        <div class="modal">
-            <h2>Таблица лидеров</h2>
-            <svg viewBox="25 25 50 50" id="loaderSvg">
-                <circle r="20" cy="50" cx="50"></circle>
-            </svg>
-            <div class="card">
-                <div id="leaderBoard" class="wrapper"></div>
-            </div>
-            <button onclick="window.location.replace('/');" class="redirect-button">Выйти из игры</button>
-        </div>
+<!--        <div class="modal">-->
+<!--            <h2>Таблица лидеров</h2>-->
+<!--            <svg viewBox="25 25 50 50" id="loaderSvg">-->
+<!--                <circle r="20" cy="50" cx="50"></circle>-->
+<!--            </svg>-->
+<!--            -->
+<!--            <button onclick="window.location.replace('/');" class="redirect-button">Выйти из игры</button>-->
+<!--        </div>-->
+            <table class="leaderboard">
+                <thead>
+                <tr>
+                    <th>Место</th>
+                    <th>Никнейм</th>
+                    <th>Ответы</th>
+                    <th>Время</th>
+                </tr>
+                </thead>
+                <tbody id="leaderBoard">
+                </tbody>
+<!--                <div class="leaderboard-info">-->
+<!--                    Данные обновляются каждую минуту. Следите за изменениями!-->
+<!--                </div>-->
+            </table>
+
+<!--        </div>-->
     </div>
 
     <div class="overlay" id="overlayFriendListMenu">

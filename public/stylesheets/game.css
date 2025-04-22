@@ -83,7 +83,7 @@ header{
     justify-content: center;
     align-items: center;
     border: none;
-    z-index: 2;
+    z-index: 5;
 }
 
 
@@ -302,58 +302,67 @@ header{
     /*text-transform: uppercase;*/
 }
 
-.black {
-    background: var(--black);
-    color: var(--ch-white);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+.leaderboard h1 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.eerie-black {
-    background: #2e2e2e;
-    color: var(--ch-white);
-    border: 1px solid #2e2e2e;
-    border-bottom: 1px solid white;
+.leaderboard {
+    width: 90%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    /*position: fixed;*/
+    /*top: 30%;*/
+    /*right: 50%;*/
+    /*left: 50%;*/
+    /*transform: translateX(-50%);*/
+    /*margin-top: 100px;*/
+    margin: auto;
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.chinese-black {
-    background: var(--eer-black);
-    color: var(--ch-white);
+.leaderboard.active {
+    /*transform: translateY(0);*/
+    opacity: 1;
 }
 
-.night-rider {
-    background: var(--night-rider);
-    color: var(--ch-white);
+.leaderboard th, .leaderboard td {
+    padding: 16px;
+    text-align: left;
 }
 
-.chinese-white {
-    background: var(--ch-white);
-    color: var(--night-rider);
+.leaderboard th {
+    background-color: #4a90e2;
+    color: white;
+    font-weight: bold;
+    /*text-transform: uppercase;*/
+    font-size: 14px;
 }
 
-.anti-flash-white {
-    background: var(--af-white);
-    color: var(--night-rider);
+.leaderboard tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-.white {
-    background: var(--white);
-    color: var(--night-rider);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+.leaderboard tr:hover {
+    background-color: #eef3fa;
 }
 
-.border {
-    color: var(--night-rider);
-    padding: 10px 10px;
-    text-align: center;
+.leaderboard-info {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
 }
 
-.border span {
-    border-radius: 5px;
-    color: var(--ch-white);
-    padding: 2px 4px;
-    background-color: var(--night-rider);
+@media (max-width: 600px) {
+    .leaderboard th, .leaderboard td {
+        padding: 10px;
+        font-size: 12px;
+    }
 }
 
 .players {
@@ -435,7 +444,6 @@ header{
     opacity: 0;
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
-
 .modal h2 {
     margin-top: 0;
     text-align: center;
@@ -465,6 +473,10 @@ header{
 }
 
 .modal.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+.show-leaderboard.active {
     transform: translateY(0);
     opacity: 1;
 }

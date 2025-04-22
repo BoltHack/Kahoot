@@ -99,17 +99,20 @@
     </div>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
-        <div class="modal">
-            <h2>Leaderboard</h2>
-            <svg viewBox="25 25 50 50" id="loaderSvg">
-                <circle r="20" cy="50" cx="50"></circle>
-            </svg>
-            <div class="card">
-                <div id="leaderBoard" class="wrapper"></div>
-            </div>
-            <button onclick="window.location.replace('/');" class="redirect-button">Leave the game</button>
-        </div>
+        <table class="leaderboard">
+            <thead>
+            <tr>
+                <th>Place</th>
+                <th>Nickname</th>
+                <th>Answers</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+            <tbody id="leaderBoard">
+            </tbody>
+        </table>
     </div>
+
     <div class="overlay" id="overlayFriendListMenu">
         <div id="friendListMenu">
             <h2 style="text-align: center">friends list</h2>
