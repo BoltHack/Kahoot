@@ -16,7 +16,6 @@ let userName = name;
     let isGameStart = false;
 
     const startCountdown = () => {
-        console.log('console', window);
         countdown = setInterval(() => {
             if (timeLeft <= 0) {
                 clearInterval(countdown);
@@ -46,14 +45,14 @@ let userName = name;
         const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
         const remainingTime = Math.max(gameTimer - elapsedTime, 0);
         const time = document.querySelector('.game-timer');
-        // console.log('elapsedTime:', elapsedTime | gameTimer);
-        // console.log('remainingTime:', remainingTime);
+        console.log('elapsedTime:', elapsedTime | gameTimer);
+        console.log('remainingTime:', remainingTime);
 
         if (elapsedTime >= gameTimer) {
             console.log('Таймер завершен');
             document.getElementById('gameTimer').innerHTML = '<p class="game-timer">0</p>';
             questions.hidden = true;
-            setInterval(function () {
+            setTimeout(function () {
                 socket.emit('requestLeadersCount');
             }, 500);
             stopSound();
@@ -63,9 +62,8 @@ let userName = name;
 
             const overlay = document.getElementById('overlay');
             const modal = document.querySelector('.modal');
-            overlay.classList.add('active');
-            modal.classList.add('active');
             requestSent = true;
+
             fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'}
@@ -77,6 +75,11 @@ let userName = name;
                 .catch(error => {
                     console.log('err', error);
                 })
+
+            socket.on('openLeadersMenu', () => {
+                overlay.classList.add('active');
+                modal.classList.add('active');
+            })
 
         }
 
