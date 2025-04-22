@@ -7,10 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error(`Socket or sendId is not defined.`);
                 Swal.fire({
-                    text: localeType === 'en' ? "There was an error with the site." : 'Возникла ошибка в работе сайта.',
+                    text: localeType === 'en' ? "There was an error in the site. Restoring..." : 'Возникла ошибка в работе сайта. Идёт восстановление...',
                     icon: "error",
                     position: "top-end",
-                    // timer: 4000,
                     showConfirmButton: false,
                     toast: true,
                     customClass: {
