@@ -34,7 +34,10 @@ class AuthController {
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', {locale});
+            else {
+                res.set('Cache-Control', 'no-store');
+                return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', {locale});
+            }
         } catch (e) {
             next(e)
         }
@@ -70,7 +73,10 @@ class AuthController {
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', {locale});
+            else {
+                res.set('Cache-Control', 'no-store');
+                return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', {locale});
+            }
         } catch (e) {
             next(e)
         }
@@ -198,15 +204,13 @@ class AuthController {
             const token = req.cookies['token'];
             const refreshToken = req.cookies['refreshToken'];
 
-            if (!req.cookies['locale']) {
-                res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
-            }
-
             if (token || refreshToken){
                 return res.redirect('/');
             }
-
-            return res.render(locale === 'en' ? 'en/auth/sessionExpired' : 'ru/auth/sessionExpired', { locale });
+            else {
+                res.set('Cache-Control', 'no-store');
+                return res.render(locale === 'en' ? 'en/auth/sessionExpired' : 'ru/auth/sessionExpired', { locale });
+            }
         }catch (err){
             next(err)
         }
@@ -217,13 +221,13 @@ class AuthController {
         try {
             let locale = req.cookies['locale'] || 'en';
 
-            if (!req.cookies['locale']) {
-                res.cookie('locale', locale, { httpOnly: true });
-            }
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
-            return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password');
+            else {
+                res.set('Cache-Control', 'no-store');
+                return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password');
+            }
         } catch (e) {
             next(e)
         }
@@ -294,10 +298,14 @@ class AuthController {
     static accountRecoveryView = async (req, res, next) => {
         try {
             let locale = req.cookies['locale'] || 'en';
-            if (req.cookies['token'] && req.cookies['refreshToken'] || !req.cookies['email']){
+            let email = req.cookies['email'];
+            if (req.cookies['token'] && req.cookies['refreshToken'] && !req.cookies['email']){
                 return res.redirect('/')
             }
-            return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery');
+            else {
+                res.set('Cache-Control', 'no-store');
+                return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery', {email});
+            }
         } catch (e) {
             next(e)
         }
