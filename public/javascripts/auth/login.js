@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function (){
                             else{
                                 localStorage.setItem('session', 'false');
                             }
-                            sessionStorage.setItem('requestReloadPage', 'true');
                             setTimeout(function () {
                                 window.location.href = `/`;
                                 setTimeout(function () {

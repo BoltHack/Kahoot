@@ -36,10 +36,6 @@ function acceptCookiesFunc(){
 }
 
 function checkCookie() {
-    if (sessionStorage.getItem('requestReloadPage')) {
-        sessionStorage.removeItem('requestReloadPage');
-        window.location.reload();
-    }
     if (!cookiesType || (cookiesType !== 'true' && cookiesType !== 'false')){
         acceptCookiesFooter.hidden = false;
     }
@@ -86,6 +82,7 @@ function authMenu() {
         barrier.hidden = true;
     })
 }
+
 
 // const body = document.body, html = document.documentElement;
 //
