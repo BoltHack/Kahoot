@@ -483,7 +483,12 @@ class PostController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            const {updateTitle, title0, content0, title1, content1, title2, content2, title3, content3, title4, content4} = req.body;
+            const {
+                title0, title1, title2, title3, title4,
+                content0, content1, content2, content3, content4,
+                updateTitle,
+                delImg0, delImg1, delImg2, delImg3, delImg4
+            } = req.body;
             const {updatesTag, aboutGameTag, bugsErrorsTag} = req.body;
 
             const updateFields = {};
@@ -506,7 +511,7 @@ class PostController {
             if (aboutGameTag) updateFields["tags"].push({ tagName: 'AboutGame' });
             if (bugsErrorsTag) updateFields["tags"].push({ tagName: 'BugsErrors' });
 
-            async function updateFilesProcess(title, content, imageKey, index) {
+            async function updateFilesProcess(title, content, imageKey, delImg, index) {
                 if (title) {
                     if (req.files && req.files[imageKey]) {
                         const imageFile = req.files[imageKey];
@@ -536,19 +541,30 @@ class PostController {
                         };
                     }
                     else {
-                        updateFields[`update.${index}`] = {
-                            title,
-                            content,
-                        };
+                        const imageIndex = await NewsModel.findById(news_id);
+                        if (delImg) {
+                            updateFields[`update.${index}`] = {
+                                title,
+                                image: '',
+                                content
+                            };
+                        } else {
+                            console.log('удаляем')
+                            updateFields[`update.${index}`] = {
+                                title,
+                                image: imageIndex.update[index].image,
+                                content,
+                            };
+                        }
                     }
                 }
             }
 
-            updateFilesProcess(title0, content0, 'image0', 0);
-            updateFilesProcess(title1, content1, 'image1', 1);
-            updateFilesProcess(title2, content2, 'image2', 2);
-            updateFilesProcess(title3, content3, 'image3', 3);
-            updateFilesProcess(title4, content4, 'image4', 4);
+            await updateFilesProcess(title0, content0, 'image0', delImg0, 0);
+            await updateFilesProcess(title1, content1, 'image1', delImg1, 1);
+            await updateFilesProcess(title2, content2, 'image2', delImg2, 2);
+            await updateFilesProcess(title3, content3, 'image3', delImg3, 3);
+            await updateFilesProcess(title4, content4, 'image4', delImg4, 4);
 
             console.log('news_id', news_id);
 
