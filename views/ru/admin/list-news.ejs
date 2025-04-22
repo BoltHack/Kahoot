@@ -112,10 +112,10 @@
                                 <p style="margin-top: 11.5px;"><%= news.views %></p>
                             </div>
                             <div style="display: flex; gap: 20px;">
-                                <a href="/admin/redaction-news/<%= news.id %>" class="news-edit">Редактировать</a>
+                                <a href="/admin/redaction-news/<%= news._id %>" class="news-edit">Редактировать</a>
                                 <button type="submit" class="news-delete" data-id="<%= news._id %>">Удалить</button>
                             </div>
-                            <form action="/viewNews/<%= news.id %>" method="POST">
+                            <form action="/viewNews/<%= news._id %>" method="POST">
                                 <button class="read-more">Читать полностью</button>
                             </form>
                         </div>

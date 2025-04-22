@@ -175,8 +175,7 @@ class ViewController {
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, locale});
+                return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', locale});
             }
         } catch (e) {
             next(e);
@@ -193,8 +192,7 @@ class ViewController {
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user, locale});
+                return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user: '', locale});
             }
         } catch (e) {
             next(e);
@@ -211,8 +209,7 @@ class ViewController {
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user, locale});
+                return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user: '', locale});
             }
         } catch (e) {
             next(e);
@@ -229,8 +226,7 @@ class ViewController {
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user, locale});
+                return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user: '', locale});
             }
         } catch (e) {
             next(e);
@@ -275,8 +271,7 @@ class ViewController {
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData});
+                return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user: '', ...renderData});
             }
         } catch (e) {
             next(e);
@@ -306,8 +301,7 @@ class ViewController {
                 });
             }
             else {
-                const user = '';
-                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale});
+                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, locale});
             }
         } catch (e) {
             next(e);
