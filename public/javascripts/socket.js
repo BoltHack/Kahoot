@@ -52,18 +52,16 @@ let userName = name;
             console.log('Таймер завершен');
             document.getElementById('gameTimer').innerHTML = '<p class="game-timer">0</p>';
             questions.hidden = true;
+            const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+
+            const overlay = document.getElementById('overlay');
+            const leaderboard = document.querySelector('.leaderboard');
+
             setTimeout(function () {
                 socket.emit('requestLeadersCount');
             }, 500);
             stopSound();
-            // redirectTimerStart();
-            // socket.emit('closeGame');
-            const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
-
-            const overlay = document.getElementById('overlay');
-            const modal = document.querySelector('.modal');
             requestSent = true;
-
             fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'}
@@ -78,7 +76,7 @@ let userName = name;
 
             socket.on('openLeadersMenu', () => {
                 overlay.classList.add('active');
-                modal.classList.add('active');
+                leaderboard.classList.add('active');
             })
 
         }
@@ -240,7 +238,7 @@ let userName = name;
 
         socket.on('updateLeaderBoard', (leaderBoard) => {
             const leaderB = document.getElementById('leaderBoard');
-            const loaderSvg = document.getElementById('loaderSvg');
+            // const loaderSvg = document.getElementById('loaderSvg');
 
             if (leaderBoard && leaderBoard.length > 0) {
                 leaderB.innerHTML = '';
@@ -249,20 +247,24 @@ let userName = name;
                 leaderBoard
                     .sort((a, b) => b.correct_answers - a.correct_answers)
                     .forEach((leader, index) => {
-                        const div = document.createElement('div');
-                        loaderSvg.style.display = 'none';
-                        div.innerHTML = `
-                    <div class="color eerie-black">
-                        #${index + 1} ${leader.name}
-                        <span class="hex">
-                    ${localeType === 'en' ?
-                            `|   Correct answers: ${leader.correct_answers}   |   Time: ${leader.time} sec.` :
-                            `|   Правильных ответов: ${leader.correct_answers}   |   Время: ${leader.time} сек.`
-                        }
-                        </span>
-                    </div>
+                        const tr = document.createElement('tr');
+                        // loaderSvg.style.display = 'none';
+                        tr.innerHTML = `
+                    
+                    
+             
+                    
+                    
+<!--                        <tr>-->
+                            <td>#${index + 1}</td>
+                            <td>${leader.name}</td>
+                            <td>${leader.correct_answers}</td>
+                            <td>${leader.time} ${localeType === 'en' ? 'Sec.' : 'Сек.'}</td>
+<!--                        </tr>-->
+                
+               
                 `;
-                        fragment.appendChild(div);
+                        fragment.appendChild(tr);
                     });
 
                 leaderB.appendChild(fragment);
