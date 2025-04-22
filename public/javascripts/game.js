@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cQuestion = document.querySelectorAll('.c-question');
-    // console.log('requestSent', requestSent);
     function checkQuestions() {
         const maxQuestions = Number(gameMaxQuestions);
         const questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  setTimeout(function (){
                      if (maxQuestions === dataNumber + 1) {
                          document.getElementById('questions').hidden = true;
-                         setTimeout(function (){
+                         setInterval(function (){
                              socket.emit('requestLeadersCount');
                              }, 500);
                          stopSound();

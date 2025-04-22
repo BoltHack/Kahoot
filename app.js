@@ -161,16 +161,14 @@ io.on('connection', async (socket) => {
                 console.log('game.game_online.users.length', game.game_online.users.length);
                 console.log('gameLeaders.game_leaders.length', game.game_leaders.length);
 
-                setTimeout(async function () {
-                    if (game.game_online.users.length === game.game_leaders.length) {
-                        const updateLeaderBoard = await GamesModel.findById(gameId);
-                        socket.emit('updateLeaderBoard', updateLeaderBoard.game_leaders);
-                        socket.emit('openLeadersMenu');
-                    }
-                    else {
-                        console.log('ещё не все закончили')
-                    }
-                }, 1000);
+                if (game.game_online.users.length === game.game_leaders.length) {
+                    const updateLeaderBoard = await GamesModel.findById(gameId);
+                    socket.emit('updateLeaderBoard', updateLeaderBoard.game_leaders);
+                    socket.emit('openLeadersMenu');
+                }
+                else {
+                    console.log('ещё не все закончили')
+                }
             });
 
             socket.on('requestBannedUsersCount', async () => {
