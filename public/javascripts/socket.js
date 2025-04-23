@@ -238,7 +238,6 @@ let userName = name;
 
         socket.on('updateLeaderBoard', (leaderBoard) => {
             const leaderB = document.getElementById('leaderBoard');
-            // const loaderSvg = document.getElementById('loaderSvg');
 
             if (leaderBoard && leaderBoard.length > 0) {
                 leaderB.innerHTML = '';
@@ -248,22 +247,12 @@ let userName = name;
                     .sort((a, b) => b.correct_answers - a.correct_answers)
                     .forEach((leader, index) => {
                         const tr = document.createElement('tr');
-                        // loaderSvg.style.display = 'none';
                         tr.innerHTML = `
-                    
-                    
-             
-                    
-                    
-<!--                        <tr>-->
                             <td>#${index + 1}</td>
                             <td>${leader.name}</td>
                             <td>${leader.correct_answers}</td>
                             <td>${leader.time} ${localeType === 'en' ? 'Sec.' : 'Сек.'}</td>
-<!--                        </tr>-->
-                
-               
-                `;
+                        `;
                         fragment.appendChild(tr);
                     });
 
