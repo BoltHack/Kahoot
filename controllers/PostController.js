@@ -88,7 +88,7 @@ class PostController {
                             fs.mkdirSync(uploadDir, { recursive: true });
                         }
 
-                        imageFile.mv(savePath, (err) => {
+                        await imageFile.mv(savePath, (err) => {
                             if (err) {
                                 console.error('Ошибка при сохранении файла:', err);
                                 return res.status(500).json({ error: 'Ошибка при сохранении файла' });
@@ -96,9 +96,20 @@ class PostController {
                         });
                     }
 
+                    const imageIndex = await GamesModel.findById(game_id);
+
+                    const imageValue = imageIndex.game_questions && imageIndex.game_questions[i]
+                        ? imageIndex.game_questions[i].question_image
+                        : '';
+
+                    console.log(`imageValue${i}`, imageValue);
+                    console.log(`delImg${i}`, req.body[`delImg${i}`]);
+
                     updateFields[`game_questions.${i}`] = {
                         question_title: questions[titleKey],
-                        question_image: imagePath,
+                        question_image: req.body[`delImg${i}`] === 'on'
+                            ? '/images/defaultQuestionImg.png'
+                            : imagePath || imageValue,
                         question_1: { title: questions[`${titleKey}_question_1`] },
                         question_2: { title: questions[`${titleKey}_question_2`] },
                         question_3: { title: questions[`${titleKey}_question_3`] },
