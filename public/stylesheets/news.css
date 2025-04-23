@@ -168,16 +168,20 @@ body {
     margin-top: 5px;
 }
 .read-more {
-    background: #007bff;
-    color: white;
-    border: none;
+    border: 1px solid #007bff;
+    color: #007bff;
+    background: #fff;
+    /*border: none;*/
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+    transition-duration: 0.2s;
 }
 .read-more:hover {
-    background: #0056b3;
+    /*background: #0056b3;*/
+    background: #007bff;
+    color: #fff;
 }
 
 .not-found {
