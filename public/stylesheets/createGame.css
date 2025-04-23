@@ -214,3 +214,17 @@ body{
 .not-found {
     display: block;
 }
+
+.input-image {
+    position: absolute;
+    /*top: 15%;*/
+    /*right: 2%;*/
+    margin-top: -16%;
+    /*margin-right: 2%;*/
+    margin-left: 72.5%;
+}
+.input-image img {
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+}

@@ -126,6 +126,11 @@
                         <br>
                     </div>
                     <div class="input">
+                        <% if (gamesInfo.game_questions[0] && gamesInfo.game_questions[0].question_image) {%>
+                            <div class="input-image">
+                                <img src="<%= gamesInfo.game_questions[0].question_image %>">
+                            </div>
+                        <% } %>
                         <label class="input__label">Choose an image for the question</label>
                         <br>
                         <input type="file" accept="image/*" name="question_image0">
@@ -175,6 +180,11 @@
                         <br>
                     </div>
                     <div class="input">
+                        <% if (gamesInfo.game_questions[1] && gamesInfo.game_questions[1].question_image) {%>
+                            <div class="input-image">
+                                <img src="<%= gamesInfo.game_questions[1].question_image %>">
+                            </div>
+                        <% } %>
                         <label class="input__label">Choose an image for the question</label>
                         <br>
                         <input type="file" accept="image/*" name="question_image1">
@@ -223,6 +233,11 @@
                         <br>
                     </div>
                     <div class="input">
+                        <% if (gamesInfo.game_questions[2] && gamesInfo.game_questions[2].question_image) {%>
+                            <div class="input-image">
+                                <img src="<%= gamesInfo.game_questions[2].question_image %>">
+                            </div>
+                        <% } %>
                         <label class="input__label">Choose an image for the question</label>
                         <br>
                         <input type="file" accept="image/*" name="question_image2">
@@ -271,6 +286,11 @@
                         <br>
                     </div>
                     <div class="input">
+                        <% if (gamesInfo.game_questions[3] && gamesInfo.game_questions[3].question_image) {%>
+                            <div class="input-image">
+                                <img src="<%= gamesInfo.game_questions[3].question_image %>">
+                            </div>
+                        <% } %>
                         <label class="input__label">Choose an image for the question</label>
                         <br>
                         <input type="file" accept="image/*" name="question_image3">
@@ -319,6 +339,11 @@
                         <br>
                     </div>
                     <div class="input">
+                        <% if (gamesInfo.game_questions[4] && gamesInfo.game_questions[4].question_image) {%>
+                            <div class="input-image">
+                                <img src="<%= gamesInfo.game_questions[4].question_image %>">
+                            </div>
+                        <% } %>
                         <label class="input__label">Choose an image for the question</label>
                         <br>
                         <input type="file" accept="image/*" name="question_image4">
