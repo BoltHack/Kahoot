@@ -9,6 +9,7 @@
 </head>
 <script>
     const editNews = `<%= newsInfo.updateTitle %>`;
+    const newsLength = `<%= newsInfo.update.length %>`;
 </script>
 <body>
 <%- include('admin-header.ejs') %>
@@ -29,11 +30,11 @@
                         <div class="input_container">
                             <p>Количество заголовков:</p>
                             <select name="max_news" class="type">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1" <%= newsInfo.update.length === 1 ? 'Selected' : '' %> >1</option>
+                                <option value="2" <%= newsInfo.update.length === 2 ? 'Selected' : '' %> >2</option>
+                                <option value="3" <%= newsInfo.update.length === 3 ? 'Selected' : '' %> >3</option>
+                                <option value="4" <%= newsInfo.update.length === 4 ? 'Selected' : '' %> >4</option>
+                                <option value="5" <%= newsInfo.update.length === 5 ? 'Selected' : '' %> >5</option>
                             </select>
                         </div>
                     </div>
@@ -215,10 +216,9 @@
     </form>
 </main>
 <script>
+    const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
+    const inputs = [...Array(5)].map((_, i) => document.querySelector(`input[name="title${i}"]`));
     document.querySelector('select[name="max_news"]').addEventListener('change', function () {
-        const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
-        const inputs = [...Array(5)].map((_, i) => document.querySelector(`input[name="title${i}"]`));
-
         const value = Number(this.value);
         console.log('value', value);
 
@@ -226,6 +226,13 @@
 
         inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const value = newsLength;
+        console.log('value 2', value);
+        modals.forEach((modal, i) => modal.hidden = i >= value);
+
+        inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
+    })
 
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', function (event) {
