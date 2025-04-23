@@ -8,8 +8,6 @@ const { v4: uuidv4 } = require('uuid');
 
 require('dotenv').config();
 
-const {default_question_image} = process.env;
-
 class PostController {
     static createGame = async (req, res, next) => {
         try {
@@ -100,7 +98,7 @@ class PostController {
 
                     const imageValue = imageIndex.game_questions && imageIndex.game_questions[i]
                         ? imageIndex.game_questions[i].question_image
-                        : '';
+                        : '/images/defaultQuestionImg.png';
 
                     console.log(`imageValue${i}`, imageValue);
                     console.log(`delImg${i}`, req.body[`delImg${i}`]);

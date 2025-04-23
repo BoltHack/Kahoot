@@ -158,8 +158,7 @@ io.on('connection', async (socket) => {
 
             socket.on('requestLeadersCount', async () => {
                 const game = await GamesModel.findById(gameId);
-                console.log('game.game_online.users.length', game.game_online.users.length);
-                console.log('gameLeaders.game_leaders.length', game.game_leaders.length);
+                console.log('users.length', game.game_online.users.length, ' | ', 'leaders.length', game.game_leaders.length);
 
                 if (game.game_online.users.length === game.game_leaders.length) {
                     const updateLeaderBoard = await GamesModel.findById(gameId);

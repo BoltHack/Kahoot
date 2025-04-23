@@ -57,7 +57,7 @@ let userName = name;
             const overlay = document.getElementById('overlay');
             const leaderboard = document.querySelector('.leaderboard');
 
-            setTimeout(function () {
+            setInterval(function () {
                 socket.emit('requestLeadersCount');
             }, 500);
             stopSound();
