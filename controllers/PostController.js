@@ -487,6 +487,7 @@ class PostController {
                 title0, title1, title2, title3, title4,
                 content0, content1, content2, content3, content4,
                 updateTitle,
+                max_news,
                 delImg0, delImg1, delImg2, delImg3, delImg4
             } = req.body;
             const {updatesTag, aboutGameTag, bugsErrorsTag} = req.body;
@@ -527,46 +528,71 @@ class PostController {
                             fs.mkdirSync(uploadDir, { recursive: true });
                         }
 
-                        imageFile.mv(savePath, (err) => {
-                            if (err) {
-                                console.error('Ошибка при сохранении файла:', err);
-                                return res.status(500).json({ error: 'Ошибка при сохранении файла' });
-                            }
+                        await new Promise((resolve, reject) => {
+                            imageFile.mv(savePath, (err) => {
+                                if (err) {
+                                    console.error('Ошибка при сохранении файла:', err);
+                                    return reject(new Error('Ошибка при сохранении файла'));
+                                }
+                                resolve();
+                            });
                         });
+
 
                         updateFields[`update.${index}`] = {
                             title,
-                            content,
-                            image: imagePath
+                            image: imagePath,
+                            content
                         };
                     }
                     else {
                         const imageIndex = await NewsModel.findById(news_id);
-                        if (delImg) {
-                            updateFields[`update.${index}`] = {
-                                title,
-                                image: '',
-                                content
-                            };
-                        } else {
-                            console.log('удаляем')
-                            updateFields[`update.${index}`] = {
-                                title,
-                                image: imageIndex.update[index].image,
-                                content,
-                            };
-                        }
+
+                        const imageValue = imageIndex.update && imageIndex.update[index]
+                            ? imageIndex.update[index].image
+                            : '';
+
+                        updateFields[`update.${index}`] = {
+                            title,
+                            image: delImg ? '' : imageValue,
+                            content,
+                        };
                     }
                 }
             }
 
-            await updateFilesProcess(title0, content0, 'image0', delImg0, 0);
-            await updateFilesProcess(title1, content1, 'image1', delImg1, 1);
-            await updateFilesProcess(title2, content2, 'image2', delImg2, 2);
-            await updateFilesProcess(title3, content3, 'image3', delImg3, 3);
-            await updateFilesProcess(title4, content4, 'image4', delImg4, 4);
+            const maxNews = parseInt(max_news, 10);
+            for (let i = 0; i < maxNews; i++) {
+                await updateFilesProcess(
+                    req.body[`title${i}`],
+                    req.body[`content${i}`],
+                    `image${i}`,
+                    req.body[`delImg${i}`],
+                    i
+                );
+                console.log('i', i);
+            }
 
-            console.log('news_id', news_id);
+            console.log('max_news', max_news);
+
+            // await updateFilesProcess(title0, content0, 'image0', delImg0, 0);
+            // await updateFilesProcess(title1, content1, 'image1', delImg1, 1);
+            // await updateFilesProcess(title2, content2, 'image2', delImg2, 2);
+            // await updateFilesProcess(title3, content3, 'image3', delImg3, 3);
+            // await updateFilesProcess(title4, content4, 'image4', delImg4, 4);
+
+            // const unsetFields = {};
+            //
+            // if (maxNews < 5) {
+            //     for (let j = maxNews; j < 5; j++) {
+            //         unsetFields[`update.${j}`] = "";
+            //     }
+            //
+            //     await NewsModel.updateOne(
+            //         { _id: news_id },
+            //         { $unset: unsetFields }
+            //     );
+            // }
 
             await NewsModel.findOneAndUpdate(
                 { _id: news_id },
