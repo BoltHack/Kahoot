@@ -203,44 +203,38 @@ io.on('connection', async (socket) => {
 
             socket.on('ban', async (userId) => {
                 const {gameId} = socket;
-                const checkPerms = await GamesModel.findById(gameId);
+                const getUserData = await UsersModel.findById(userId);
 
-                if (checkPerms.game_author.id === userId) {
-                    const getUserData = await UsersModel.findById(userId);
-
-                    if (!alreadyBannedUserIds.includes(userId)){
-                        alreadyBannedUserIds.push(userId);
-                        let updateBannedUsers = await GamesModel.findOneAndUpdate(
-                            { _id: gameId },
-                            {
-                                $push: {
-                                    "game_banned_users": {bannedId: userId, bannedName: getUserData.name, bannedImage: getUserData.image}
-                                }
-                            },
-                            {new: true}
-                        );
-                        console.log('ban', userId, 'from', gameId);
-                        io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
-                    }
-                    socket.emit('banBroadcast', userName);
+                if (!alreadyBannedUserIds.includes(userId)){
+                    alreadyBannedUserIds.push(userId);
+                    let updateBannedUsers = await GamesModel.findOneAndUpdate(
+                        { _id: gameId },
+                        {
+                            $push: {
+                                "game_banned_users": {bannedId: userId, bannedName: getUserData.name, bannedImage: getUserData.image}
+                            }
+                        },
+                        {new: true}
+                    );
+                    console.log('ban', userId, 'from', gameId);
+                    io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
+                    socket.emit('banBroadcast', {userName: getUserData.name});
                 }
             });
 
             socket.on('unban', async (userId) => {
                 const { gameId } = socket;
-                const checkPerms = await GamesModel.findById(gameId);
+                const getUserData = await UsersModel.findById(userId);
 
-                if (checkPerms.game_author.id === userId) {
-                    alreadyBannedUserIds.splice(userId);
-                    let updateBannedUsers = await GamesModel.updateOne(
-                        { _id: gameId },
-                        { $pull: { game_banned_users: { bannedId: { $in: userId } } } }
-                    );
+                alreadyBannedUserIds.splice(userId);
+                let updateBannedUsers = await GamesModel.updateOne(
+                    { _id: gameId },
+                    { $pull: { game_banned_users: { bannedId: { $in: userId } } } }
+                );
 
-                    console.log('unban', userId);
-                    io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
-                    socket.emit('unbanBroadcast', userId);
-                }
+                console.log('unban', userId);
+                io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
+                socket.emit('unbanBroadcast', {userName: getUserData.name});
             });
 
             socket.on('closeGame', async () => {

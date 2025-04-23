@@ -309,12 +309,12 @@ let userName = name;
             }
         })
 
-        socket.on('unbanBroadcast', (userId) => {
+        socket.on('unbanBroadcast', (data) => {
             setTimeout(function () {
                 socket.emit('requestBannedUsersCount');
             }, 500);
             Swal.fire({
-                text: localeType === 'en' ? `Player ${userId} has been unbanned!` : `Игрок ${userId} разбанен!`,
+                text: localeType === 'en' ? `Player ${data.userName} has been unbanned!` : `Игрок ${data.userName} разбанен!`,
                 icon: "success",
                 position: "top-end",
                 timer: 2000,
@@ -326,9 +326,9 @@ let userName = name;
             });
         });
 
-        socket.on('banBroadcast', (userId) => {
+        socket.on('banBroadcast', (data) => {
             Swal.fire({
-                text: localeType === 'en' ? `Player ${userId} banned!` : `Игрок ${userId} забанен!`,
+                text: localeType === 'en' ? `Player ${data.userName} banned!` : `Игрок ${data.userName} забанен!`,
                 icon: "success",
                 position: "top-end",
                 timer: 2000,
