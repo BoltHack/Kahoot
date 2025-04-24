@@ -45,7 +45,7 @@ let userName = name;
         const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
         const remainingTime = Math.max(gameTimer - elapsedTime, 0);
         const time = document.querySelector('.game-timer');
-        console.log('elapsedTime:', elapsedTime | gameTimer);
+        // console.log('elapsedTime:', elapsedTime | gameTimer);
         console.log('remainingTime:', remainingTime);
 
         if (elapsedTime >= gameTimer) {
