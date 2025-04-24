@@ -216,6 +216,23 @@ class ViewController {
         }
     }
 
+    static aboutDonatesView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user, locale});
+                });
+            }
+            else {
+                return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', locale});
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static supportView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';

@@ -9,7 +9,7 @@
 </head>
 <script>
     const editNews = `<%= newsInfo.updateTitle %>`;
-    const newsLength = `<%= newsInfo.update.length %>`;
+    const newsLength = `<%= newsInfo.update.length || 1 %>`;
 </script>
 <body>
 <%- include('admin-header.ejs') %>

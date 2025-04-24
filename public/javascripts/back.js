@@ -43,6 +43,11 @@ function pages(){
             <a class="between"> > </a>
             <a class="other-color">${localeType === 'en' ? 'About us' : 'О нас'}</a>`
     }
+    else if (page.startsWith('/about-donates')) {
+        pageName.innerHTML = `
+            <a class="between"> > </a>
+            <a class="other-color">${localeType === 'en' ? 'Assistance to the project' : 'Помощь проекту'}</a>`
+    }
     else if (page.startsWith('/news')) {
         pageName.innerHTML = `
             <a class="between"> > </a>

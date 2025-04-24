@@ -17,26 +17,28 @@
     <div class="sticky-container" id="stickyHeight">
         <div class="sticky">
             <div class="sticky-box">
-                <h3>Наши соц-сети</h3>
-                <div class="social-buttons">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=<%= readNews.url %>" target="_blank" class="social-btn facebook">
-                        <span class="icon">&#xf09a;</span> Facebook
-                    </a>
-                    <a href="https://twitter.com/intent/tweet?text=<%= readNews.title %>&url=<%= readNews.url %>" target="_blank" class="social-btn twitter">
-                        <span class="icon">&#xf099;</span> Twitter
-                    </a>
-                    <a href="https://vk.com/share.php?url=<%= readNews.url %>" target="_blank" class="social-btn vk">
-                        <span class="icon">&#xf189;</span> VK
-                    </a>
-                    <a href="https://www.pinterest.com/pin/create/button/?url=<%= readNews.url %>&media=<%= readNews.imageUrl %>&description=<%= readNews.title %>" target="_blank" class="social-btn pinterest">
-                        <span class="icon">&#xf0d2;</span> Pinterest
-                    </a>
-                    <a href="mailto:?subject=<%= readNews.title %>&body=<%= readNews.url %>" target="_blank" class="social-btn email">
-                        <span class="icon">&#xf0e0;</span> Email
-                    </a>
-                    <button id="copyLinkBtn" class="social-btn copy-link">
-                        <span class="icon">&#xf0c5;</span> Скопировать адрес страницы
-                    </button>
+                <div class="info-card" id="infoCard">
+                    <div class="info-image">
+                        <img src="/images/donates.png">
+                    </div>
+                    <div class="info-content">
+                        <a>
+                    <span class="info-title">
+                        Поддержите нас монеточкой :)
+                    </span>
+                        </a>
+
+                        <p class="info-desc">
+                            Ваши донаты помогают нам поддерживать проект, развивать его и делать доступным для
+                            всех абсолютно бесплатно. Любая сумма — это вклад в будущее проекта и наша мотивация
+                            продолжать!
+                        </p>
+
+                        <a class="info-action" href="/about-donates" target="_blank">
+                            Узнать больше
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,16 +87,7 @@
         </div>
     </div>
 </main>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div style="margin-bottom: 350px;"></div>
 <%- include('footer.ejs') %>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/readNews.js"></script>
