@@ -30,7 +30,6 @@
     </noscript>
 </head>
 <script>
-    const localeType = '<%= locale %>';
     const sendId = '<%= user.id %>';
 </script>
 <body>
@@ -68,31 +67,26 @@
 
     <div class="account-container">
 
-        <% if (user.role === 'Admin') {%>
-            <p class="ha" onclick="window.location.href = '/admin/admin-panel'">Админка</p>
-        <% } %>
-
-            <div id="account"></div>
-            <br>
+        <% if (user && user.name) { %>
             <div class="dropdown">
-                <p class="ha dropdown-title">Русский<span>❯</span></p>
-                <div class="dropdown-content" style="width: 80px;">
-                    <a onclick="changeLocaleEn();">English</a>
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                <div class="dropdown-content">
+                    <a onclick="logout();">Выйти</a>
+                    <% if (user.role === 'Admin') {%>
+                        <a href="/admin/admin-panel">Админка</a>
+                    <% } %>
                 </div>
             </div>
-
-<!--        <div id="language">-->
-<!--            <div class="dropdown locale">-->
-<!--                <span class="dropdown-title" style="background: none">-->
-<!--                    <img src="/images/russia-flag.png">-->
-<!--                </span>-->
-<!--                <div class="dropdown-content">-->
-<!--                    <span class="locale">-->
-<!--                        <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">-->
-<!--                    </span>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <% } else {%>
+            <p onclick="window.location.href = '/auth/login'" class="ha">Войти</p>
+        <% } %>
+        <br>
+        <div class="dropdown">
+            <p class="ha dropdown-title">Русский<span>❯</span></p>
+            <div class="dropdown-content" style="width: 80px;">
+                <a onclick="changeLocaleEn();">English</a>
+            </div>
+        </div>
 
     </div>
 

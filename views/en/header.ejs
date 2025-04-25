@@ -30,7 +30,6 @@
     </noscript>
 </head>
 <script>
-    const localeType = '<%= locale %>';
     const sendId = '<%= user.id %>';
 </script>
 <body>
@@ -67,11 +66,19 @@
 
     <div class="account-container">
 
-        <% if (user.role === 'Admin') {%>
-            <p class="ha" onclick="window.location.href = '/admin/admin-panel'">Admin panel</p>
+        <% if (user && user.name) { %>
+            <div class="dropdown">
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                <div class="dropdown-content">
+                    <a onclick="logout();">Sign out</a>
+                    <% if (user.role === 'Admin') {%>
+                        <a href="/admin/admin-panel">Admin panel</a>
+                    <% } %>
+                </div>
+            </div>
+        <% } else {%>
+            <p onclick="window.location.href = '/auth/login'" class="ha">Sign in</p>
         <% } %>
-
-            <div id="account"></div>
             <br>
             <div class="dropdown">
                 <p class="dropdown-title">English<span>❯</span></p>
