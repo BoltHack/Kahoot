@@ -40,7 +40,7 @@
 
         <div id="rules">
             <div class="dropdown">
-                <p class="ha dropdown-title">Admin panel</p>
+                <p class="ha dropdown-title">Admin panel<span>❯</span></p>
                 <div class="dropdown-content" style="width: 150px;">
                     <a href="/admin/user-contacts">Contact list</a>
                     <a href="/admin/admin-panel">list of players</a>
@@ -78,17 +78,20 @@
 <script src="/javascripts/locale.js"></script>
 <script>
     const dropdownContents = document.querySelectorAll('.dropdown-content');
+    const dropdownTitles = document.querySelectorAll('.dropdown-title');
     const dropdown = document.querySelectorAll('.dropdown');
 
     dropdown.forEach((title, index) => {
         title.addEventListener('mouseover', () => {
             dropdownContents[index].style.display = 'flex';
             dropdownContents[index].style.transform = 'scaleY(1)';
+            dropdownTitles[index].style.backgroundColor = '#303740';
         });
 
         title.addEventListener('mouseout', () => {
             dropdownContents[index].style.display = 'none';
             dropdownContents[index].style.transform = 'scaleY(0)';
+            dropdownTitles[index].style.backgroundColor = '#1C2025';
         });
     });
 </script>
