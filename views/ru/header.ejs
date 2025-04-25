@@ -43,7 +43,7 @@
 
         <div id="rules">
             <div class="dropdown">
-                <p class="ha dropdown-title">Правила</p>
+                <p class="ha dropdown-title">Правила<span>❯</span></p>
                 <div class="dropdown-content">
                     <a href="/privacyPolicy">Правила конфиденциальности</a>
                     <a href="/rules">Условия использования</a>
@@ -54,7 +54,7 @@
 
         <div id="news">
             <div class="dropdown">
-                <p class="ha dropdown-title">Новости</p>
+                <p class="ha dropdown-title">Новости<span>❯</span></p>
                 <div class="dropdown-content" style="width: 140px;">
                     <a href="/news?tag=Updates">Обновления</a>
                     <a href="/news?tag=AboutGame">Об игре</a>
@@ -69,23 +69,30 @@
     <div class="account-container">
 
         <% if (user.role === 'Admin') {%>
-            <p class="ha dropdown-title" onclick="window.location.href = '/admin/admin-panel'">Админка</p>
+            <p class="ha" onclick="window.location.href = '/admin/admin-panel'">Админка</p>
         <% } %>
 
-        <div id="account"></div>
-
-        <div id="language">
-            <div class="dropdown locale">
-                <span class="dropdown-title" style="background: none">
-                    <img src="/images/russia-flag.png">
-                </span>
-                <div class="dropdown-content">
-                    <span class="locale">
-                        <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">
-                    </span>
+            <div id="account"></div>
+            <br>
+            <div class="dropdown">
+                <p class="ha dropdown-title">Русский<span>❯</span></p>
+                <div class="dropdown-content" style="width: 80px;">
+                    <a onclick="changeLocaleEn();">English</a>
                 </div>
             </div>
-        </div>
+
+<!--        <div id="language">-->
+<!--            <div class="dropdown locale">-->
+<!--                <span class="dropdown-title" style="background: none">-->
+<!--                    <img src="/images/russia-flag.png">-->
+<!--                </span>-->
+<!--                <div class="dropdown-content">-->
+<!--                    <span class="locale">-->
+<!--                        <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">-->
+<!--                    </span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
 

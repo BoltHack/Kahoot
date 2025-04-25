@@ -42,7 +42,7 @@
     <div class="header-container">
         <div id="rules">
             <div class="dropdown">
-                <p class="ha dropdown-title">Rules</p>
+                <p class="ha dropdown-title">Rules<span>❯</span></p>
                 <div class="dropdown-content">
                     <a href="/privacyPolicy">Privacy Policy</a>
                     <a href="/rules">Terms of Use</a>
@@ -53,7 +53,7 @@
 
         <div id="news">
             <div class="dropdown">
-                <p class="ha dropdown-title">News</p>
+                <p class="ha dropdown-title">News<span>❯</span></p>
                 <div class="dropdown-content" style="width: 140px;">
                     <a href="/news?tag=Updates">Updates</a>
                     <a href="/news?tag=AboutGame">About the game</a>
@@ -68,23 +68,17 @@
     <div class="account-container">
 
         <% if (user.role === 'Admin') {%>
-            <p class="ha dropdown-title" onclick="window.location.href = '/admin/admin-panel'">Admin panel</p>
+            <p class="ha" onclick="window.location.href = '/admin/admin-panel'">Admin panel</p>
         <% } %>
 
-        <div id="account"></div>
-
-        <div id="language">
-            <div class="dropdown locale">
-            <span class="dropdown-title" style="background: none">
-                <img src="/images/english-flag.jpg">
-            </span>
-                <div class="dropdown-content">
-                <span class="locale">
-                    <img src="/images/russia-flag.png" onclick="changeLocaleRu();">
-                </span>
+            <div id="account"></div>
+            <br>
+            <div class="dropdown">
+                <p class="dropdown-title">English<span>❯</span></p>
+                <div class="dropdown-content" style="width: 80px;">
+                    <a onclick="changeLocaleRu();">Русский</a>
                 </div>
             </div>
-        </div>
 
     </div>
 

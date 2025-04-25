@@ -32,7 +32,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 if (myToken){
     account.innerHTML = `
 <div class="dropdown">
-    <p class="ha dropdown-title" style="color: #ced4da; background-color: #1C2025;">${userInfo.name}</p>
+    <p class="ha dropdown-title">${userInfo.name.length > 4 ? userInfo.name.slice(0, 4) + '...' : userInfo.name}<span>❯</span></p>
     <div class="dropdown-content">
         <a onclick="logout();">${localeType === 'en' ? 'Sign Out' : 'Выйти'}</a>
     </div>
@@ -40,7 +40,7 @@ if (myToken){
 `
 }
 else{
-    account.innerHTML = `<p class="ha dropdown-title" onclick="window.location.href = '/auth/login'">${localeType === 'en' ? 'Sign in' : 'Войти'}</p>`
+    account.innerHTML = `<p class="ha" onclick="window.location.href = '/auth/login'">${localeType === 'en' ? 'Sign in' : 'Войти'}</p>`
 }
 
 
@@ -76,16 +76,19 @@ function checkGamePath(){
 checkGamePath();
 
 const dropdownContents = document.querySelectorAll('.dropdown-content');
+const dropdownTitles = document.querySelectorAll('.dropdown-title');
 const dropdown = document.querySelectorAll('.dropdown');
 
 dropdown.forEach((title, index) => {
     title.addEventListener('mouseover', () => {
         dropdownContents[index].style.display = 'flex';
         dropdownContents[index].style.transform = 'scaleY(1)';
+        dropdownTitles[index].style.backgroundColor = '#303740';
     });
 
     title.addEventListener('mouseout', () => {
         dropdownContents[index].style.display = 'none';
         dropdownContents[index].style.transform = 'scaleY(0)';
+        dropdownTitles[index].style.backgroundColor = '#1C2025';
     });
 });
