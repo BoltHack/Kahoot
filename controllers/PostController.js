@@ -50,6 +50,7 @@ class PostController {
     static redaction = async (req, res, next) => {
         try {
             const { game_id } = req.params;
+            const gameId = await GamesModel.findById(game_id);
             const {
                 game_name, game_access, max_online, game_expiresInSeconds, game_max_questions, game_start_type,
                 ...questions
@@ -76,10 +77,10 @@ class PostController {
                         const imageFile = req.files[imageKey];
 
                         const fileExt = path.extname(imageFile.name);
-                        const safeFileName = `${uuidv4()}${fileExt}`;
-                        imagePath = `/gameUploads/${safeFileName}`;
+                        const safeFileName = `${gameId.id + '-' + uuidv4()}${fileExt}`;
+                        imagePath = `/uploads/gameImages/${safeFileName}`;
 
-                        const uploadDir = path.join(__dirname, '..', 'public', 'gameUploads');
+                        const uploadDir = path.join(__dirname, '..', 'public', 'uploads/gameImages');
                         const savePath = path.join(uploadDir, safeFileName);
 
                         if (!fs.existsSync(uploadDir)) {
@@ -238,7 +239,7 @@ class PostController {
 
     static changeAvatar = async (req, res, next)=> {
         try{
-            const {user_id} = req.params;
+            const user = req.user;
 
             let locale = req.cookies['locale'] || 'en';
 
@@ -257,10 +258,10 @@ class PostController {
             }
             const imageFile = req.files.image;
             const fileExt = path.extname(imageFile.name);
-            const safeFileName = `${uuidv4()}${fileExt}`;
-            const imagePath = `/uploads/${safeFileName}`;
+            const safeFileName = `${user.id + '-' + uuidv4()}${fileExt}`;
+            const imagePath = `/uploads/userImages/${safeFileName}`;
 
-            const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads/userImages');
             const savePath = path.join(uploadDir, safeFileName);
 
             if (!fs.existsSync(uploadDir)) {
@@ -274,7 +275,7 @@ class PostController {
                 }
             });
 
-            await UsersModel.findByIdAndUpdate(user_id, { $set: { image: imagePath } }
+            await UsersModel.findByIdAndUpdate(user.id, { $set: { image: imagePath } }
             );
 
             return res.status(200).json('Изменения успешно загружены' );
@@ -335,10 +336,10 @@ class PostController {
             }
             const imageFile = req.files.image;
             const fileExt = path.extname(imageFile.name);
-            const safeFileName = `${uuidv4()}${fileExt}`;
-            const imagePath = `/uploads/${safeFileName}`;
+            const safeFileName = `${user.id + '-' + uuidv4()}${fileExt}`;
+            const imagePath = `/uploads/profileImages/${safeFileName}`;
 
-            const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads/profileImages');
             const savePath = path.join(uploadDir, safeFileName);
 
             if (!fs.existsSync(uploadDir)) {
@@ -478,6 +479,7 @@ class PostController {
     static redactionNews = async (req, res, next) => {
         try {
             const {news_id} = req.params;
+            const newsId = await NewsModel.findById(news_id);
             const user = req.user;
             let locale = req.cookies['locale'] || 'en';
 
@@ -493,11 +495,9 @@ class PostController {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
             const {
-                title0, title1, title2, title3, title4,
-                content0, content1, content2, content3, content4,
                 updateTitle,
                 max_news,
-                delImg0, delImg1, delImg2, delImg3, delImg4
+                updateDate
             } = req.body;
             const {updatesTag, aboutGameTag, bugsErrorsTag} = req.body;
 
@@ -506,8 +506,8 @@ class PostController {
             const getData = await UsersModel.findById(user.id);
 
             if (updateTitle) updateFields.updateTitle = updateTitle;
-            if (updateTitle) updateFields.fullDate = new Date;
-            if (updateTitle) updateFields.date = dateOnly;
+            if (updateDate === 'on') updateFields.fullDate = new Date;
+            if (updateDate) updateFields.date = dateOnly;
             if (updateTitle) updateFields.author = {
                 authorName: getData.name,
                 authorId: getData.id
@@ -527,10 +527,10 @@ class PostController {
                         const imageFile = req.files[imageKey];
 
                         const fileExt = path.extname(imageFile.name);
-                        const safeFileName = `${uuidv4()}${fileExt}`;
-                        const imagePath = `/uploads/${safeFileName}`;
+                        const safeFileName = `${newsId.id + '-' + uuidv4()}${fileExt}`;
+                        const imagePath = `/uploads/newsImages/${safeFileName}`;
 
-                        const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+                        const uploadDir = path.join(__dirname, '..', 'public', 'uploads/newsImages');
                         const savePath = path.join(uploadDir, safeFileName);
 
                         if (!fs.existsSync(uploadDir)) {
@@ -583,25 +583,6 @@ class PostController {
             }
 
             console.log('max_news', max_news);
-
-            // await updateFilesProcess(title0, content0, 'image0', delImg0, 0);
-            // await updateFilesProcess(title1, content1, 'image1', delImg1, 1);
-            // await updateFilesProcess(title2, content2, 'image2', delImg2, 2);
-            // await updateFilesProcess(title3, content3, 'image3', delImg3, 3);
-            // await updateFilesProcess(title4, content4, 'image4', delImg4, 4);
-
-            // const unsetFields = {};
-            //
-            // if (maxNews < 5) {
-            //     for (let j = maxNews; j < 5; j++) {
-            //         unsetFields[`update.${j}`] = "";
-            //     }
-            //
-            //     await NewsModel.updateOne(
-            //         { _id: news_id },
-            //         { $unset: unsetFields }
-            //     );
-            // }
 
             await NewsModel.findOneAndUpdate(
                 { _id: news_id },
