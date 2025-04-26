@@ -14,8 +14,13 @@
         <div class="container">
             <h2>Свяжитесь с нами</h2>
             <form>
-                <input type="text" name="name" placeholder="Ваше имя" required>
-                <input type="email" name="email" placeholder="Ваш Эл. адрес" required>
+                <% if (user && user.id) {%>
+                    <input type="text" name="name" value="<%= user.name %>" readonly>
+                    <input type="email" name="email" value="<%= user.email %>" readonly>
+                <% } else { %>
+                        <input type="text" name="name" placeholder="Ваше имя" required>
+                        <input type="email" name="email" placeholder="Ваш Эл. адрес" required>
+                    <% } %>
                 <textarea name="message" placeholder="Ваше сообщение" rows="5" required></textarea>
                 <button type="submit">Отправить</button>
             </form>
