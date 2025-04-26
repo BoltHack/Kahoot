@@ -45,8 +45,8 @@ router.post('/deleteAllGames', authenticateJWT, deleteAllGames);
 router.post('/getData/:game_id', authenticateJWT, getData);
 router.post('/getUserData', authenticateJWT, getUserData);
 
-router.post('/changeAvatar/:user_id', authenticateJWT, changeAvatar);
-router.post('/deleteAvatar/:user_id', authenticateJWT, deleteImage);
+router.post('/changeAvatar', authenticateJWT, changeAvatar);
+router.post('/deleteAvatar', authenticateJWT, deleteImage);
 router.post('/changeBackgroundImage', authenticateJWT, changeBackgroundImage);
 router.post('/deleteBackgroundImage', authenticateJWT, deleteBackgroundImage);
 

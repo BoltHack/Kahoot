@@ -38,6 +38,7 @@ class AdminController{
     static redactionNewsViewAdmin = async (req, res, next) => {
         try {
             const { news_id } = req.params;
+            const user = req.user
             const newsInfo = await NewsModel.findById(news_id);
             const locale = req.cookies['locale'] || 'en';
 
@@ -49,7 +50,7 @@ class AdminController{
                 return res.redirect(`/admin/redaction-news/${news_id}`);
             }
 
-            return res.render(locale === 'en' ? 'en/admin/redaction-news' : 'ru/admin/redaction-news', { newsInfo, locale });
+            return res.render(locale === 'en' ? 'en/admin/redaction-news' : 'ru/admin/redaction-news', { newsInfo, user, locale });
         } catch (e) {
             next(e);
         }

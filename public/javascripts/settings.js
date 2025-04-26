@@ -60,10 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         const formData = new FormData();
+        console.log('formData', formData);
         const selectedFile = attachFile.files[0];
         formData.append('image', selectedFile);
 
-        fetch(`/changeAvatar/${settingId}`,{
+        fetch('/changeAvatar',{
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
@@ -89,6 +90,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         return response.json();
                     }, 1000);
                 } else {
+                    Swal.fire({
+                        text: localeType === 'en' ? 'No file selected.' : 'Файл не выбран.',
+                        icon: "error",
+                        position: "top-end",
+                        timer: 4000,
+                        showConfirmButton: false,
+                        toast: true,
+                        customClass: {
+                            popup: "small-alert"
+                        }
+                    });
                     console.log('Ошибка при загрузке изображения');
                 }
             })
@@ -98,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     deleteImageBtn.addEventListener('click', () => {
-        fetch(`/deleteAvatar/${settingId}`,{
+        fetch('/deleteAvatar',{
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
