@@ -56,7 +56,7 @@
             <div class="dropdown">
                 <p class="ha dropdown-title">Новости<span>❯</span></p>
                 <div class="dropdown-content" style="width: 140px;">
-                    <a href="/news?tag=Updates">Обновления</a>
+                    <a href="/news?tag=Updates">Обновление</a>
                     <a href="/news?tag=AboutGame">Об игре</a>
                     <a href="/news?tag=BugsErrors">Баги/Ошибки</a>
                     <a href="/news">Все новости</a>
@@ -72,10 +72,10 @@
             <div class="dropdown">
                 <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
                 <div class="dropdown-content">
-                    <a onclick="logout();">Выйти</a>
                     <% if (user.role === 'Admin') {%>
                         <a href="/admin/admin-panel">Админка</a>
                     <% } %>
+                        <a onclick="logout();">Выйти</a>
                 </div>
             </div>
         <% } else {%>

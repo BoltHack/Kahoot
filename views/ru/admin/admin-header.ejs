@@ -54,18 +54,19 @@
 
     <div class="account-container">
 
-        <div id="account"></div>
-
-        <div id="language">
-            <div class="dropdown locale">
-                <span class="dropdown-title" style="background: none">
-                    <img src="/images/russia-flag.png">
-                </span>
+        <% if (user && user.name) { %>
+            <div class="dropdown">
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
                 <div class="dropdown-content">
-                    <span class="locale">
-                        <img src="/images/english-flag.jpg" onclick="changeLocaleEn();">
-                    </span>
+                    <a onclick="logout();">Выйти</a>
                 </div>
+            </div>
+        <% } %>
+        <br>
+        <div class="dropdown">
+            <p class="ha dropdown-title">Русский<span>❯</span></p>
+            <div class="dropdown-content" style="width: 80px;">
+                <a onclick="changeLocaleEn();">English</a>
             </div>
         </div>
 

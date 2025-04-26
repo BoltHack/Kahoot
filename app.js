@@ -37,6 +37,7 @@ io.on('connection', async (socket) => {
 
         try {
             const userInfo = await UsersModel.findById(userId);
+            const gameInfo = await GamesModel.findById(gameId);
             const userImage = userInfo.image;
             const game = await GamesModel.findOneAndUpdate(
                 { _id: gameId },
@@ -47,7 +48,7 @@ io.on('connection', async (socket) => {
                 { new: true }
             );
 
-            if (game.game_online?.online <= 1){
+            if (game.game_online?.online <= 1 && gameInfo.game_leaders.length === 0 ){
                 await GamesModel.findOneAndUpdate(
                     { _id: gameId },
                     {

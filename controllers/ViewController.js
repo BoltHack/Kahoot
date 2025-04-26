@@ -13,7 +13,7 @@ class ViewController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            if (req.cookies['token']) {
+            if (req.cookies['refreshToken']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
                     const getData = await UsersModel.findById(user.id);
