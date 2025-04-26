@@ -61,7 +61,7 @@ class AdminController{
             const locale = req.cookies['locale'] || 'en';
             const user = req.user;
 
-            const listNews = await NewsModel.find({});
+            const listNews = await NewsModel.find({}).sort({fullDate: -1});
 
             const authorIds = listNews.map(news => news.author.authorId);
             const authors = await UsersModel.find({ _id: { $in: authorIds } });
