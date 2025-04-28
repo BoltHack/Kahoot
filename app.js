@@ -37,7 +37,6 @@ io.on('connection', async (socket) => {
 
         try {
             const userInfo = await UsersModel.findById(userId);
-            const gameInfo = await GamesModel.findById(gameId);
             const userImage = userInfo.image;
             const game = await GamesModel.findOneAndUpdate(
                 { _id: gameId },
@@ -48,18 +47,6 @@ io.on('connection', async (socket) => {
                 { new: true }
             );
 
-            if (game.game_online?.online <= 1 && gameInfo.game_leaders.length === 0 ){
-                await GamesModel.findOneAndUpdate(
-                    { _id: gameId },
-                    {
-                        $set: {
-                            'game_leaders': [],
-                            'game_type': 'Open'
-                        }
-                    },
-                    { new: true }
-                );
-            }
             if (game.game_online?.online === 0){
                 await GamesModel.findOneAndUpdate(
                     { _id: gameId },
@@ -69,16 +56,7 @@ io.on('connection', async (socket) => {
                             expiresAt: new Date(Date.now() + 60 * 60 * 1000),
                             createdAt: Date.now(),
                             'game_type': 'Open',
-                        }
-                    },
-                    { new: true }
-                );
-            }
-            if (game.game_online.users.length === 0){
-                await GamesModel.findOneAndUpdate(
-                    { _id: gameId },
-                    {
-                        $set: {
+                            'game_leaders': [],
                             'game_online.online': 0,
                         }
                     },
@@ -152,6 +130,16 @@ io.on('connection', async (socket) => {
             socket.emit('updateBannedUsers', checkUserBanned.game_banned_users);
             socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
 
+            socket.on('requestQuestionTimerStart', async () => {
+                const checkPerms = await GamesModel.findById(gameId);
+                if (checkPerms.game_author.id === userId) {
+                    socket.emit('questionTimerStart');
+                }
+                else {
+                    console.log('нет прав.');
+                }
+            });
+
             socket.on('requestAnswersCount', async () => {
                 const updateAnswers = await UsersModel.findById(userId);
                 socket.emit('updateAnswersCount', updateAnswers.game);
@@ -189,6 +177,14 @@ io.on('connection', async (socket) => {
                     console.log('нет прав.');
                 }
             });
+            socket.on('requestAutoStartGame', async () => {
+                const gameData = await GamesModel.findById(gameId);
+
+                if (gameData.game_start_type === 'Auto' && gameData.game_online.online >= 2 && gameData.game_type !== 'Close') {
+                    console.log('autoStart')
+                    io.emit('startGame');
+                }
+            })
 
             socket.on('requestGameAccessCount', async () => {
                 const updateGameAccessCount = await GamesModel.findById(gameId);
@@ -234,7 +230,11 @@ io.on('connection', async (socket) => {
                     alreadyBannedUserIds.splice(userId);
                     let updateBannedUsers = await GamesModel.updateOne(
                         {_id: gameId},
-                        {$pull: {game_banned_users: {bannedId: {$in: userId}}}}
+                        {
+                            $pull: {
+                                game_banned_users: {bannedId: {$in: userId}}
+                            }
+                        }
                     );
                     console.log('unban', userId);
                     io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
@@ -249,6 +249,7 @@ io.on('connection', async (socket) => {
                 );
                 console.log('the game is closed.');
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
+                socket.emit('questionTimerStart');
             })
 
             socket.on('openGame', async () => {
@@ -262,38 +263,63 @@ io.on('connection', async (socket) => {
             })
 
             socket.on('gameCheckAnswer', async (data) => {
-                const checkQuestion = await GamesModel.findById(gameId);
-                if (checkQuestion.game_questions[data.data.dataNumber].correct_question === data.data.dataName) {
-                    console.log('Событие получено для пользователя:', userId);
-                    const updatedUser = await UsersModel.findOneAndUpdate(
-                        { _id: userId },
-                        {
-                            $inc: {
-                                'game.0.game_answers': 1,
-                                'game.0.game_correct_answers': 1,
+                try {
+                    const checkQuestion = await GamesModel.findById(gameId);
+                    if (checkQuestion.game_questions[data.data.dataNumber].correct_question === data.data.dataName) {
+                        console.log('Событие получено для пользователя:', userId);
+                        const updatedUser = await UsersModel.findOneAndUpdate(
+                            { _id: userId },
+                            {
+                                $inc: {
+                                    'game.0.game_answers': 1,
+                                    'game.0.game_correct_answers': 1,
+                                },
                             },
-                        },
-                        { new: true }
-                    );
-                    socket.emit('gameCorrectAnswer');
-                    console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
-                }
-                else {
-                    console.log('Событие получено для пользователя:', userId);
-                    const updatedUser = await UsersModel.findOneAndUpdate(
-                        { _id: userId },
-                        {
-                            $inc: {
-                                'game.0.game_answers': 1,
+                            { new: true }
+                        );
+                        socket.emit('gameCorrectAnswer');
+                        setTimeout(function () {
+                            socket.emit('questionTimerStart');
+                        }, 4000);
+                        console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
+                    }
+                    else {
+                        console.log('Событие получено для пользователя:', userId);
+                        const updatedUser = await UsersModel.findOneAndUpdate(
+                            { _id: userId },
+                            {
+                                $inc: {
+                                    'game.0.game_answers': 1,
+                                },
                             },
-                        },
-                        { new: true }
-                    );
+                            { new: true }
+                        );
 
-                    console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
-                    socket.emit('gameWrongAnswer');
+                        console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
+                        socket.emit('gameWrongAnswer');
+                    }
+                } catch (error) {
+                    console.log('error', error);
                 }
             })
+
+            socket.on('skipQuestion', async () => {
+                console.log('skip');
+                console.log('Событие получено для пользователя:', userId);
+                const updatedUser = await UsersModel.findOneAndUpdate(
+                    { _id: userId },
+                    {
+                        $inc: {
+                            'game.0.game_answers': 1,
+                        },
+                    },
+                    { new: true }
+                );
+
+                console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
+                socket.emit('gameTimeIsUp');
+                socket.emit('questionTimerStart');
+            });
 
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);
@@ -318,83 +344,6 @@ io.on('connection', async (socket) => {
             console.error('Ошибка при обновлении данных игры:', err.message);
             io.to(gameId).emit('error', 'Ошибка при присоединении к игре');
         }
-    });
-
-    socket.on('leaveGame', async (gameId, userId, userName) => {
-        console.log(`Пользователь ${userId} покидает игру ${gameId}`);
-        console.log(`Получено событие leaveGame: gameId = ${gameId}, userId = ${userId}`);
-
-        if (!gameId || !userId) {
-            console.error('Ошибка: не переданы gameId или userId');
-            return;
-        }
-
-        if (gameUsers[gameId]) {
-            gameUsers[gameId] = gameUsers[gameId].filter(id => id !== userId);
-        }
-
-        console.log(`Пользователь ${userId}(${userName}) покинул игру ${gameId}.`);
-
-        try {
-            const userInfo = await UsersModel.findById(userId);
-            const userImage = userInfo.image;
-            const game = await GamesModel.findOne({ _id: gameId });
-
-            if (game) {
-                const newOnlineCount = Math.max(0, game.game_online.online - 1);
-
-                const updatedGame = await GamesModel.findOneAndUpdate(
-                    { _id: gameId },
-                    {
-                        $set: { 'game_online.online': newOnlineCount },
-                        $pull: { 'game_online.users': { userId, userName, userImage }, 'game_users': {userId} }
-                    },
-                    { new: true }
-                );
-
-                if (game.game_online?.online <= 1){
-                    await GamesModel.findOneAndUpdate(
-                        { _id: gameId },
-                        {
-                            $set: {
-                                'game_leaders': [],
-                                'game_type': 'Open'
-                            }
-                        },
-                        { new: true }
-                    );
-                }
-                if (game.game_online?.online === 0){
-                    await GamesModel.findOneAndUpdate(
-                        { _id: gameId },
-                        {
-                            $set: {
-                                expiresInMinutes: 60,
-                                expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-                                createdAt: Date.now(),
-                                'game_type': 'Open'
-                            }
-                        },
-                        { new: true }
-                    );
-                }
-
-                socket.emit('updateUserCount', updatedGame.game_online);
-
-                if (updatedGame) {
-                    console.log(`Отправка обновления для игры ${gameId}, онлайн3: ${updatedGame.game_online.online}`);
-                    io.to(gameId).emit('updateUserCount', updatedGame.game_online);
-                } else {
-                    console.error('Игра не найдена!');
-                }
-            } else {
-                console.error('Игра не найдена!');
-            }
-        } catch (err) {
-            console.error('Ошибка при обновлении данных игры:', err);
-        }
-
-        socket.leave(gameId);
     });
 });
 

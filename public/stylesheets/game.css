@@ -213,7 +213,9 @@ header{
     text-align: center;
     justify-content: center;
 }
-
+.main-timer {
+    display: none;
+}
 .game-correct-answers-count{
     position: absolute;
     top: 40%;
@@ -621,4 +623,53 @@ circle {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+}
+
+
+
+.answer-container {
+    z-index: 5;
+    background-color: #f0f2f5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.answer-message {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+}
+.answer-emoji-container {
+    text-align: center;
+    animation: shake 0.8s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.answer-emoji img {
+    width: 50px;
+    height: 50px;
+    mix-blend-mode: multiply;
+    /*background-color: #f0f2f5;*/
+}
+.answer-emoji {
+    font-size: 5rem;
+    margin-top: 20px;
+    animation: pulse 1.5s infinite;
+    /*mix-blend-mode: multiply;*/
+    background-color: #f0f2f5;
+}
+@keyframes pulse {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(1.2); }
+}
+@keyframes shake {
+    0% { transform: translateX(0) translate(-50%, -50%) }
+    25% { transform: translateX(-10px) translate(-50%, -50%) }
+    50% { transform: translateX(10px) translate(-50%, -50%) }
+    75% { transform: translateX(-10px) translate(-50%, -50%) }
+    100% { transform: translateX(0) translate(-50%, -50%) }
 }

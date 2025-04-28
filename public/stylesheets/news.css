@@ -309,6 +309,7 @@ body {
 
 .info-action span {
     transition: .3s ease;
+    margin-top: -1px;
 }
 
 .info-action:hover span {

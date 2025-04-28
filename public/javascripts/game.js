@@ -1,78 +1,141 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let gameTimerCooldown;
+    let gameTimer = Number(gamesExpiresInSeconds);
+    let gameStartTime;
+
+    let currentQuestionIndex = 0;
+
     const cQuestion = document.querySelectorAll('.c-question');
+    let questions = [];
+
+    const time = document.querySelector('.main-timer');
     function checkQuestions() {
         const maxQuestions = Number(gameMaxQuestions);
-        const questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
+        questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
         questions[0].hidden = false;
         if (questions.some(question => question === null)) {
             console.error("Некоторые элементы вопросов не найдены!");
             return;
         }
 
+        socket.on('questionTimerStart', () => {
+            const questionTimerStart = () => {
+                gameStartTime = Date.now();
+                if (gameTimerCooldown) {
+                    clearTimeout(gameTimerCooldown);
+                }
+                questionTimer();
+            };
+            questionTimerStart();
+        });
+
+        const questionTimer = () => {
+            gameTimerCooldown = setTimeout(questionTimer, 1000);
+            const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
+            const remainingTime = Math.max(gameTimer - elapsedTime, 0);
+
+            // console.log('elapsedTime:', elapsedTime);
+            // console.log('remainingTime:', remainingTime);
+
+            if (elapsedTime >= gameTimer) {
+                console.log('Таймер завершен');
+                clearTimeout(gameTimerCooldown);
+                socket.emit('skipQuestion');
+            }
+
+            document.getElementById('gameTimer').innerHTML = `<p class="game-timer">${remainingTime}</p>`;
+        };
+
         cQuestion.forEach(button => {
             button.addEventListener('click', function () {
-                 const dataNumber = Number(this.getAttribute('data-number'));
-                 const dataName = this.getAttribute('data-name');
-                 const question = document.getElementById('question-'+dataNumber);
-                 const time = document.querySelector('.game-timer');
+                const dataNumber = Number(this.getAttribute('data-number'));
+                const dataName = this.getAttribute('data-name');
+                currentQuestionIndex = dataNumber;
 
-                 setTimeout(function (){
-                     socket.emit('requestAnswersCount');
-                     }, 500);
+                socket.emit('gameCheckAnswer', {
+                    data: {
+                        dataNumber: dataNumber,
+                        dataName: dataName,
+                    }
+                });
+            })
+        });
 
-                 if (dataNumber < questions.length - 1) {
-                     setTimeout(function () {
-                         questions[dataNumber + 1].hidden = false;
-                         }, 500);
-                 }
+        const wrongAnswerContainer = document.getElementById('wrongAnswerContainer');
+        const correctAnswerContainer = document.getElementById('correctAnswerContainer');
+        const timeIsUp = document.getElementById('timeIsUp');
 
-                 question.hidden = true;
-                 socket.emit('gameCheckAnswer', {
-                     data: {
-                         dataNumber: dataNumber,
-                         dataName: dataName,
-                     }
-                 });
-                 socket.on('gameCorrectAnswer', () => {
-                     successMenu(localeType === 'en' ? 'Correct answer!' : 'Правильный ответ!');
-                 });
-                 socket.on('gameWrongAnswer', () => {
-                     wrongMenu(localeType === 'en' ? 'Wrong answer!' : 'Неверный ответ!');
-                 });
+        function nextQuestion(currentIndex) {
+            userLeader(currentIndex);
+            setTimeout(function (){
+                socket.emit('requestAnswersCount');
+            }, 500);
+            questions[currentIndex].hidden = true;
+            if (currentIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                setTimeout(function () {
+                    questions[currentIndex + 1].hidden = false;
+                    wrongAnswerContainer.hidden = true;
+                    correctAnswerContainer.hidden = true;
+                    timeIsUp.hidden = true;
+                }, 4000);
+            }
+        }
 
-                const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+        function userLeader (currentIndex) {
+            if (maxQuestions === currentIndex + 1) {
+                setTimeout(function () {
+                    wrongAnswerContainer.hidden = true;
+                    correctAnswerContainer.hidden = true;
+                    timeIsUp.hidden = true;
+                }, 3000);
+                const leaderGameTime = Number(time.textContent);
                 const overlay = document.getElementById('overlay');
                 const leaderboard = document.querySelector('.leaderboard');
+                setTimeout(function () {
+                    document.getElementById('questions').hidden = true;
+                    setInterval(function () {
+                        socket.emit('requestLeadersCount');
+                    }, 500);
+                    stopSound();
+                    clearTimeout(gameTimerCooldown);
+                    fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                        .then(response => {
+                            if (response.ok)
+                                console.log('ok');
+                        })
+                        .catch(error => {
+                            console.log('err', error);
+                        })
 
-                 setTimeout(function (){
-                     if (maxQuestions === dataNumber + 1) {
-                         document.getElementById('questions').hidden = true;
-                         setInterval(function (){
-                             socket.emit('requestLeadersCount');
-                             }, 500);
-                         stopSound();
-                         requestSent = true;
-                         fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
-                             method: 'POST',
-                             headers: { 'Content-Type': 'application/json' }
-                         })
-                             .then(response => {
-                                 if (response.ok)
-                                     console.log('ok');
-                             })
-                             .catch(error => {
-                                 console.log('err', error);
-                             })
+                    socket.on('openLeadersMenu', () => {
+                        overlay.classList.add('active');
+                        leaderboard.classList.add('active');
+                    })
 
-                         socket.on('openLeadersMenu', () => {
-                             overlay.classList.add('active');
-                             leaderboard.classList.add('active');
-                         })
+                }, 500);
+            }
+            else {
+                console.log('пока победы нет', currentIndex + 1);
+            }
+        }
 
-                     } else {
-                         console.log('пока победы нет', dataNumber + 1);
-                     }}, 500);
-            })
+        socket.on('gameCorrectAnswer', () => {
+            correctAnswerContainer.hidden = false;
+            nextQuestion(currentQuestionIndex);
+        });
+
+        socket.on('gameWrongAnswer', () => {
+            wrongAnswerContainer.hidden = false;
+            nextQuestion(currentQuestionIndex);
+        });
+
+        socket.on('gameTimeIsUp', () => {
+            timeIsUp.hidden = false;
+            nextQuestion(currentQuestionIndex);
         });
     }
     checkQuestions();

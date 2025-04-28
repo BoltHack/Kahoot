@@ -23,6 +23,14 @@
                                 <a class="text-link">Код игры: <%= games.id %></a>
                                 <a class="text-link">Название: <%= games.game_name %></a>
                                 <a class="text-link">Онлайн: <%= games.game_online.online %> / <%= games.game_online.max_online %></a>
+                                <% if (games.expiresAt) { %>
+                                    <a class="text-link">Время удаления:
+                                        <%= (() => {
+                                            const d = games.expiresAt;
+                                            return `${String(d.getHours() + 1).padStart(2, '0')}:${d.getMinutes()}`;
+                                        })() %>
+                                    </a>
+                                <% } %>
                             </div>
                             <div class="button-wrap">
                                 <% if (games.game_questions.length > 0) {%>

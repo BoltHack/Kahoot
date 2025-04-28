@@ -25,11 +25,12 @@ let userName = name;
                 refresh.style.display = 'none';
                 bc.style.top = '11%';
                 checkReload();
-                gameTimerStart();
+                startUpdateTimer();
                 soundTrackAuto();
-                setTimeout(function () {
-                    socket.emit('closeGame');
-                }, 500);
+                socket.emit('closeGame');
+                // setTimeout(function () {
+                //     socket.emit('requestQuestionTimerStart');
+                // }, 500);
             } else {
                 document.getElementById('timer').innerHTML = `<span class="timer">${localeType === 'en' ? `<p class="beforeStart">Before the game starts</p><p class="timerLeft">${timeLeft}</p>` : `<p class="beforeStart">До начала игры</p><p class="timerLeft">${timeLeft}</p>`}</span>`;
                 timeLeft--;
@@ -37,63 +38,26 @@ let userName = name;
         }, 1000);
     };
 
-    let gameTimerCooldown;
-    let gameTimer = Number(gamesExpiresInSeconds);
-    let gameStartTime;
+    let gameStartTime = Date.now();
 
     const updateTimer = () => {
         const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
-        const remainingTime = Math.max(gameTimer - elapsedTime, 0);
-        const time = document.querySelector('.game-timer');
-        // console.log('elapsedTime:', elapsedTime | gameTimer);
-        console.log('remainingTime:', remainingTime);
 
-        if (elapsedTime >= gameTimer) {
-            console.log('Таймер завершен');
-            document.getElementById('gameTimer').innerHTML = '<p class="game-timer">0</p>';
-            questions.hidden = true;
-            const leaderGameTime = gamesExpiresInSeconds - Number(time.textContent);
+        // console.log('elapsedTime', elapsedTime, '|', 'requestSent', requestSent);
 
-            const overlay = document.getElementById('overlay');
-            const leaderboard = document.querySelector('.leaderboard');
-
-            setInterval(function () {
-                socket.emit('requestLeadersCount');
-            }, 500);
-            stopSound();
-            requestSent = true;
-            fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'}
-            })
-                .then(response => {
-                    if (response.ok)
-                        console.log('ok');
-                })
-                .catch(error => {
-                    console.log('err', error);
-                })
-
-            socket.on('openLeadersMenu', () => {
-                overlay.classList.add('active');
-                leaderboard.classList.add('active');
-            })
-
-        }
-
-        document.getElementById('gameTimer').innerHTML = `<p class="game-timer">${remainingTime}</p>`;
+        document.getElementById('mainTimer').textContent = elapsedTime;
 
         if (requestSent === false) {
-            gameTimerCooldown = setTimeout(updateTimer, 1000);
+            setTimeout(updateTimer, 1000);
         } else {
             console.log('таймер остановлен');
         }
     };
 
-    const gameTimerStart = () => {
+    const startUpdateTimer = () => {
         gameStartTime = Date.now();
         updateTimer();
-    };
+    }
 
 
     socket.on('updateUserCount', (onlineCount) => {
@@ -157,12 +121,7 @@ let userName = name;
                     let {gameType} = data;
                     if (gameType === 'Open') {
                         if (gameStartType === 'Auto') {
-                            // isGameStart = true
-                            // clearInterval(countdown);
-                            // timeLeft = 10;
-                            // startCountdown();
-                            // console.log('Поехали!');
-                            socket.emit('requestStartGame');
+                            socket.emit('requestAutoStartGame');
                         }
                         else {
                             document.getElementById('timer').innerHTML = `
