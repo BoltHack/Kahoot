@@ -82,6 +82,7 @@
             <% }) %>
         <% } %>
             <div id="gameTimer"></div>
+            <span id="mainTimer" class="main-timer"></span>
             <div id="correctAnswersCount" class="game-correct-answers-count"></div>
             <div id="answersCount" class="answers-count"></div>
     </div>
@@ -100,14 +101,6 @@
     </div>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
-<!--        <div class="modal">-->
-<!--            <h2>Таблица лидеров</h2>-->
-<!--            <svg viewBox="25 25 50 50" id="loaderSvg">-->
-<!--                <circle r="20" cy="50" cx="50"></circle>-->
-<!--            </svg>-->
-<!--            -->
-<!--            <button onclick="window.location.replace('/');" class="redirect-button">Выйти из игры</button>-->
-<!--        </div>-->
             <table class="leaderboard">
                 <thead>
                 <tr>
@@ -119,12 +112,7 @@
                 </thead>
                 <tbody id="leaderBoard">
                 </tbody>
-<!--                <div class="leaderboard-info">-->
-<!--                    Данные обновляются каждую минуту. Следите за изменениями!-->
-<!--                </div>-->
             </table>
-
-<!--        </div>-->
     </div>
 
     <div class="overlay" id="overlayFriendListMenu">
@@ -163,10 +151,31 @@
             <p style="font-weight: 600"><%= gameId._id%></p>
         </span>
     </div>
+
+    <div class="answer-container" id="wrongAnswerContainer" hidden>
+        <div class="answer-emoji-container">
+            <div class="answer-message">Неправильный ответ!</div>
+            <div class="answer-emoji"><img src="/images/wrongIcon.png"></div>
+        </div>
+    </div>
+
+    <div class="answer-container" id="timeIsUp" hidden>
+        <div class="answer-emoji-container">
+            <div class="answer-message">Время истекло!</div>
+            <div class="answer-emoji"><img src="/images/timeIsUpIcon.png"></div>
+        </div>
+    </div>
+
+    <div class="answer-container" id="correctAnswerContainer" hidden>
+        <div class="answer-emoji-container">
+            <div class="answer-message">Правильный ответ!</div>
+            <div class="answer-emoji"><img src="/images/correctIcon.png"></div>
+        </div>
+    </div>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-<script src="/javascripts/game.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/game.js"></script>
 <script src="/javascripts/socket.js"></script>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/friends.js"></script>

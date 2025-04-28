@@ -12,6 +12,7 @@
 .between{
     color: #586f7c;
     z-index: 1;
+    margin-top: -2.5px;
 }
 .color-btn{
     /*color: #adb5bd;*/
