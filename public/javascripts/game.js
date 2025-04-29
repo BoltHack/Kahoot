@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const remainingTime = Math.max(gameTimer - elapsedTime, 0);
 
             // console.log('elapsedTime:', elapsedTime);
-            // console.log('remainingTime:', remainingTime);
+            console.log('remainingTime:', remainingTime);
 
             if (elapsedTime >= gameTimer) {
                 console.log('Таймер завершен');
@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeIsUp = document.getElementById('timeIsUp');
 
         function nextQuestion(currentIndex) {
+            clearTimeout(gameTimerCooldown);
             userLeader(currentIndex);
             setTimeout(function (){
                 socket.emit('requestAnswersCount');
@@ -84,39 +85,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function userLeader (currentIndex) {
             if (maxQuestions === currentIndex + 1) {
+                const leaderGameTime = Number(time.textContent);
+                const overlay = document.getElementById('overlay');
+                const questions = document.getElementById('questions');
+                const leaderboard = document.querySelector('.leaderboard');
+
+                stopSound();
+                // clearTimeout(gameTimerCooldown);
+
                 setTimeout(function () {
                     wrongAnswerContainer.hidden = true;
                     correctAnswerContainer.hidden = true;
                     timeIsUp.hidden = true;
                 }, 3000);
-                const leaderGameTime = Number(time.textContent);
-                const overlay = document.getElementById('overlay');
-                const leaderboard = document.querySelector('.leaderboard');
+
                 setTimeout(function () {
-                    document.getElementById('questions').hidden = true;
+                    questions.hidden = true;
                     setInterval(function () {
                         socket.emit('requestLeadersCount');
                     }, 500);
-                    stopSound();
+
+                    socket.emit('userLeader', {
+                        leaderData: {
+                            gamesId: gamesId,
+                            leaderGameTime: leaderGameTime
+                        }
+                    });
+                })
+                //     fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
+                //         method: 'POST',
+                //         headers: {'Content-Type': 'application/json'}
+                //     })
+                //         .then(response => {
+                //             if (response.ok)
+                //                 console.log('ok');
+                //         })
+                //         .catch(error => {
+                //             console.log('err', error);
+                //         })
+                //
+                socket.on('openLeadersMenu', () => {
+                    overlay.classList.add('active');
+                    leaderboard.classList.add('active');
+                });
+
+                socket.on('stopTimer', () => {
                     clearTimeout(gameTimerCooldown);
-                    fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'}
-                    })
-                        .then(response => {
-                            if (response.ok)
-                                console.log('ok');
-                        })
-                        .catch(error => {
-                            console.log('err', error);
-                        })
-
-                    socket.on('openLeadersMenu', () => {
-                        overlay.classList.add('active');
-                        leaderboard.classList.add('active');
-                    })
-
-                }, 500);
+                });
+                //
+                // }, 500);
             }
             else {
                 console.log('пока победы нет', currentIndex + 1);

@@ -5,6 +5,7 @@ const {NewsModel} = require("../models/NewsModel");
 const path = require("path");
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
+const geoip = require('geoip-lite');
 
 require('dotenv').config();
 
@@ -653,6 +654,24 @@ class PostController {
             const token = req.cookies['token'];
 
             res.json({token});
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static languageConfirmation = async (req, res, next) => {
+        try {
+            const ip = req.cookies['ip'];
+            const geo = geoip.lookup(ip);
+            const country = geo.country;
+
+            if (country === 'AM' || country === 'RU') {
+                res.status(200).json({ message: 'Язык изменён на русский.' });
+            } else {
+                res.status(201).json({ message: 'Язык изменён на английский.' });
+            }
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });
