@@ -147,7 +147,11 @@ io.on('connection', async (socket) => {
 
             socket.on('requestLeadersCount', async () => {
                 const game = await GamesModel.findById(gameId);
-                console.log('users.length', game.game_online.users.length, ' | ', 'leaders.length', game.game_leaders.length);
+                console.log(
+                    'gameId', game.id, '\n',
+                    'users.length', game.game_online.users.length, '|',
+                    'leaders.length', game.game_leaders.length
+                );
 
                 if (game.game_online.users.length === game.game_leaders.length) {
                     const updateLeaderBoard = await GamesModel.findById(gameId);
@@ -280,7 +284,7 @@ io.on('connection', async (socket) => {
                         socket.emit('gameCorrectAnswer');
                         socket.emit('stopTimer');
                         setTimeout(function () {
-                            socket.emit('questionTimerStart');
+                            socket.emit('questionTimerStart', updatedUser.game[0].game_answers);
                         }, 4000);
                         console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
                     }
@@ -300,7 +304,7 @@ io.on('connection', async (socket) => {
                         socket.emit('gameWrongAnswer');
                         socket.emit('stopTimer');
                         setTimeout(function () {
-                            socket.emit('questionTimerStart');
+                            socket.emit('questionTimerStart', updatedUser.game[0].game_answers);
                         }, 4000);
                     }
                 } catch (error) {
@@ -312,6 +316,7 @@ io.on('connection', async (socket) => {
 
             socket.on('skipQuestion', async () => {
                 if (skipUser.includes(userId)) {
+                    socket.emit('stopTimer');
                     socket.emit('openLeadersMenu');
                 }
                 else {
@@ -331,7 +336,7 @@ io.on('connection', async (socket) => {
                     socket.emit('gameTimeIsUp');
                     socket.emit('stopTimer');
                     setTimeout(function () {
-                        socket.emit('questionTimerStart');
+                        socket.emit('questionTimerStart', updatedUser.game[0].game_answers);
                     }, 4000);
                 }
             });
