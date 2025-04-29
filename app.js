@@ -311,8 +311,10 @@ io.on('connection', async (socket) => {
             let skipUser = [];
 
             socket.on('skipQuestion', async () => {
-                if (!skipUser.includes(userId)) {
-                    skipUser.push(userId)
+                if (skipUser.includes(userId)) {
+                    socket.emit('openLeadersMenu');
+                }
+                else {
                     console.log('skip');
                     console.log('Событие получено для пользователя:', userId);
                     const updatedUser = await UsersModel.findOneAndUpdate(
