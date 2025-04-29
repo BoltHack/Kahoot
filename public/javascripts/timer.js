@@ -40,15 +40,11 @@ function storedTime(tokenType) {
     }
     if (!Number(storedEndTime)){
         console.log('Значение токена было изменено. Выдаю новый токен...');
-        // setTimeout(function () {
             tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
-        // }, 500);
     }
     else if (localStorage.getItem('token') && !storedEndTime){
         console.log('Выдаю токен');
-        // setTimeout(function () {
             tokenType === 'accessTokenEndTime' ? getAccessTokens() : getRefreshTokens();
-        // }, 500);
     }
 }
 

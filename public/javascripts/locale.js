@@ -1,3 +1,9 @@
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    const cookie = cookies.find(row => row.startsWith(`${name}=`));
+    return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+}
+
 function changeLocaleRu() {
     document.body.style.cursor = 'wait';
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -53,3 +59,35 @@ function changeLocaleEn() {
             console.log("Произошла ошибка при отправке запроса: " + error.message);
         });
 }
+
+function languageConfirmation () {
+    const lc = getCookie('lc');
+    if (!lc || lc !== 'true'){
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ip = data.ip;
+                document.cookie = `ip=${ip}; max-age=${10 * 24 * 60 * 60}; path=/;`;
+            })
+        setTimeout(async function () {
+            let response = await fetch('/languageConfirmation', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            })
+
+            if (response.ok) {
+                console.log('response', response);
+                if(response.status === 200) {
+                    changeLocaleRu();
+                    document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
+                } else {
+                    changeLocaleEn()
+                    document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
+                }
+            } else {
+                console.log('Ошибка:', response.status);
+            }
+        }, 500);
+    }
+}
+languageConfirmation();

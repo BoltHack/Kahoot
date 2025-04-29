@@ -27,7 +27,7 @@
                                     <a class="text-link">Время удаления:
                                         <%= (() => {
                                             const d = games.expiresAt;
-                                            return `${String(d.getHours() + 1).padStart(2, '0')}:${d.getMinutes()}`;
+                                            return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
                                         })() %>
                                     </a>
                                 <% } %>

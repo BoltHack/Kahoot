@@ -278,6 +278,7 @@ io.on('connection', async (socket) => {
                             { new: true }
                         );
                         socket.emit('gameCorrectAnswer');
+                        socket.emit('stopTimer');
                         setTimeout(function () {
                             socket.emit('questionTimerStart');
                         }, 4000);
@@ -297,29 +298,65 @@ io.on('connection', async (socket) => {
 
                         console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
                         socket.emit('gameWrongAnswer');
+                        socket.emit('stopTimer');
+                        setTimeout(function () {
+                            socket.emit('questionTimerStart');
+                        }, 4000);
                     }
                 } catch (error) {
                     console.log('error', error);
                 }
             })
 
-            socket.on('skipQuestion', async () => {
-                console.log('skip');
-                console.log('Событие получено для пользователя:', userId);
-                const updatedUser = await UsersModel.findOneAndUpdate(
-                    { _id: userId },
-                    {
-                        $inc: {
-                            'game.0.game_answers': 1,
-                        },
-                    },
-                    { new: true }
-                );
+            let skipUser = [];
 
-                console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
-                socket.emit('gameTimeIsUp');
-                socket.emit('questionTimerStart');
+            socket.on('skipQuestion', async () => {
+                if (!skipUser.includes(userId)) {
+                    skipUser.push(userId)
+                    console.log('skip');
+                    console.log('Событие получено для пользователя:', userId);
+                    const updatedUser = await UsersModel.findOneAndUpdate(
+                        { _id: userId },
+                        {
+                            $inc: {
+                                'game.0.game_answers': 1,
+                            },
+                        },
+                        { new: true }
+                    );
+
+                    console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
+                    socket.emit('gameTimeIsUp');
+                    socket.emit('stopTimer');
+                    setTimeout(function () {
+                        socket.emit('questionTimerStart');
+                    }, 4000);
+                }
             });
+
+            socket.on('userLeader', async (data) => {
+                const user = await UsersModel.findById(userId);
+                skipUser.push(user.id);
+                console.log('answers', user.game[0].game_answers);
+                console.log('correct_answers', user.game[0].game_correct_answers);
+
+                const checkGameLeaderId = await GamesModel.find({ _id: gameId });
+
+                const leaderIds = checkGameLeaderId.map(leader => leader.game_leaders);
+
+                if (!leaderIds.includes(user.id)) {
+                    await GamesModel.findOneAndUpdate(
+                        { _id: gameId },
+                        {
+                            $push: {
+                                game_leaders: { id: user.id, name: user.name, correct_answers: user.game[0].game_correct_answers, time: data.leaderData.leaderGameTime }
+                            },
+                        },
+                        { new: true }
+                    )
+                    socket.emit('stopTimer');
+                }
+            })
 
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);
