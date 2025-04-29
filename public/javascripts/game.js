@@ -18,13 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        socket.on('questionTimerStart', () => {
+        socket.on('questionTimerStart', (updatedUser) => {
+            console.log('updatedUser', updatedUser)
             const questionTimerStart = () => {
                 gameStartTime = Date.now();
                 if (gameTimerCooldown) {
                     clearTimeout(gameTimerCooldown);
                 }
-                questionTimer();
+                console.log('maxQuestions !== updatedUser', maxQuestions,  updatedUser)
+                if (maxQuestions !== updatedUser) {
+                    questionTimer();
+                }
             };
             questionTimerStart();
         });
@@ -91,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const leaderboard = document.querySelector('.leaderboard');
 
                 stopSound();
-                // clearTimeout(gameTimerCooldown);
+                setTimeout(function () {
+                    clearTimeout(gameTimerCooldown);
+                }, 500)
 
                 setTimeout(function () {
                     wrongAnswerContainer.hidden = true;
@@ -103,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     questions.hidden = true;
                     setInterval(function () {
                         socket.emit('requestLeadersCount');
-                    }, 500);
+                    }, 1000);
 
                     socket.emit('userLeader', {
                         leaderData: {
@@ -112,18 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 })
-                //     fetch(`/user-leader/${gamesId}/${leaderGameTime}`, {
-                //         method: 'POST',
-                //         headers: {'Content-Type': 'application/json'}
-                //     })
-                //         .then(response => {
-                //             if (response.ok)
-                //                 console.log('ok');
-                //         })
-                //         .catch(error => {
-                //             console.log('err', error);
-                //         })
-                //
                 socket.on('openLeadersMenu', () => {
                     overlay.classList.add('active');
                     leaderboard.classList.add('active');
@@ -132,8 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.on('stopTimer', () => {
                     clearTimeout(gameTimerCooldown);
                 });
-                //
-                // }, 500);
             }
             else {
                 console.log('пока победы нет', currentIndex + 1);

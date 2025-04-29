@@ -7,7 +7,7 @@ const {
     rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView
 } = require('../controllers/ViewController');
 const {
-    createGame, redaction, deleteGame, deleteAllGames, userLeader, getData, getUserData, changeAvatar, deleteImage,
+    createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteImage,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
     languageConfirmation, deleteBackgroundImage
 } = require('../controllers/PostController');
@@ -39,7 +39,6 @@ router.post('/create-game', authenticateJWT, createGame);
 router.post('/delete-game/:game_id', authenticateJWT, deleteGame);
 router.post('/redaction/:game_id', authenticateJWT, redaction);
 
-router.post('/user-leader/:game_id/:game_time', authenticateJWT, userLeader);
 router.post('/deleteAllGames', authenticateJWT, deleteAllGames);
 
 router.post('/getData/:game_id', authenticateJWT, getData);

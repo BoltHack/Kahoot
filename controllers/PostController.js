@@ -173,36 +173,6 @@ class PostController {
         }
     }
 
-    static userLeader = async (req, res, next) => {
-        try {
-            const {game_id, game_time} = req.params;
-            const user = req.user;
-            const userId = await UsersModel.findById(user.id);
-            console.log('answers', userId.game[0].game_answers);
-            console.log('correct_answers', userId.game[0].game_correct_answers);
-
-            const checkGameLeaderId = await GamesModel.find({ _id: game_id });
-
-            const leaderIds = checkGameLeaderId.map(leader => leader.game_leaders);
-
-            if (!leaderIds.includes(user.id)) {
-                await GamesModel.findOneAndUpdate(
-                    { _id: game_id },
-                    {
-                        $push: {
-                            game_leaders: { id: user.id, name: user.name, correct_answers: userId.game[0].game_correct_answers, time: game_time }
-                        },
-                    },
-                    { new: true }
-                )
-            }
-        }catch (err){
-            console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    }
-
     static getData = async (req, res, next) => {
         try {
             if (req.cookies['token']) {
