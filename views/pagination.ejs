@@ -46,7 +46,7 @@
 
 <div class="pagination">
     <% if (currentPage > 1) { %>
-        <a id="previousPage"> < </a>
+        <a id="previousPage" onclick="previousPage()"> < </a>
     <% } else { %>
         <a class="disabled"> < </a>
     <% } %>
@@ -79,7 +79,7 @@
     <% } %>
 
     <% if (currentPage < totalPages) { %>
-        <a id="nextPage"> > </a>
+        <a id="nextPage" onclick="nextPage()"> > </a>
     <% } else { %>
         <a class="disabled"> > </a>
     <% } %>
@@ -88,31 +88,22 @@
 <script>
     const params = new URLSearchParams(window.location.search);
     const tag = params.get('tag');
-    document.getElementById('nextPage').addEventListener('click', () => {
+    function nextPage() {
         if (tag) {
             window.location.href = `?page=<%= currentPage + 1%>&tag=${tag}`;
         }
         else {
             window.location.href = `?page=<%= currentPage + 1%>`;
         }
-    });
-    document.getElementById('previousPage').addEventListener('click', () => {
+    }
+   function previousPage() {
         if (tag) {
             window.location.href = `?page=<%= currentPage - 1%>&tag=${tag}`;
         }
         else {
             window.location.href = `?page=<%= currentPage - 1%>`;
         }
-    });
-    document.getElementById('totalPages').addEventListener('click', () => {
-        if (tag) {
-            console.log('test');
-            window.location.href = `?page=<%= totalPages %>&tag=${tag}`;
-        }
-        else {
-            window.location.href = `?page=<%= totalPages %>`;
-        }
-    })
+    }
 
     function listPages(i) {
         if (tag) {
