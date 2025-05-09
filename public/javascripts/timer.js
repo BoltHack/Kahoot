@@ -5,7 +5,7 @@ function getCookie(name) {
 }
 
 const ACCESS_TIMER_DURATION = 900000;
-const REFRESH_TIMER_DURATION = 864000000;
+const REFRESH_TIMER_DURATION = 777600000;
 function startTokenTimer (duration, tokenType) {
     const startTime = Date.now();
     const endTime = startTime + duration;
