@@ -14,55 +14,31 @@ const validateRegister = async (req, res, next) => {
 
         const existingUser = await UsersModel.findOne({ email });
 
-        if (locale === 'en') {
-            if (existingUser) {
-                return res.status(400).json({ error: 'Email address is already registered.' });
-            }
-
-            let Schema = Joi.object({
-                name: Joi.string().min(3).max(20).required().pattern(new RegExp('^[^~!@#$%^&*()+{}|?<>!"№;%:?*()]*$')).message('Name contains forbidden characters.'),
-                email: Joi.string().min(5).max(50).required().pattern(new RegExp('^[^~!#$%^&*()+{}|?<>!"№;%:?*()]*$')).message('Email address contains forbidden characters.').email(),
-                password: Joi.string().min(6).max(50).required(),
-                confirmPassword: Joi.string().valid(Joi.ref('password')).required()
-            }).messages({
-                'any.required': 'Please fill in all input fields.',
-                'string.empty': 'Please provide your name.',
-                'string.email': 'Please enter a valid email address.',
-                'any.only': 'Passwords do not match.',
-                'string.min': 'Password must be at least 6 characters long.',
-                'string.pattern.base': 'Field contains forbidden characters.'
-            });
-            let { error } = Schema.validate(req.body);
-            console.log('validation error', error);
-            if (error) {
-                return res.json({ error: error.message });
-            }
-            next();
-        } else {
-            if (existingUser) {
-                return res.status(400).json({ error: 'Адрес электронной почты уже зарегистрирован.' });
-            }
-
-            let Schema = Joi.object({
-                name: Joi.string().min(3).max(20).required().pattern(new RegExp('^[^~!@#$%^&*()+{}|?<>!"№;%:?*()]*$')).message('Имя содержит запрещенные символы.'),
-                email: Joi.string().min(5).max(50).required().pattern(new RegExp('^[^~!#$%^&*()+{}|?<>!"№;%:?*()]*$')).message('Адрес содержит запрещенные символы.').email(),
-                password: Joi.string().min(6).max(50).required(),
-                confirmPassword: Joi.string().valid(Joi.ref('password')).required()
-            }).messages({
-                'any.required': 'Пожалуйста, заполните все поля ввода.',
-                'string.empty': 'Пожалуйста, укажите ваше имя.',
-                'string.email': 'Пожалуйста, введите корректный адрес электронной почты.',
-                'any.only': 'Пароли не совпадают.',
-                'string.min': 'Пароль должен содержать как минимум 6 символов.',
-                'string.pattern.base': 'Поле содержит запрещенные символы.'
-            });
-            let { error } = Schema.validate(req.body);
-            console.log('validation error', error);
-            if (error) {
-                return res.json({ error: error.message });
-            }
-            next();
+        if (existingUser) {
+            const errorMsg = locale === 'en' ? 'Email address is already registered.' : 'Адрес электронной почты уже зарегистрирован.';
+            return res.status(400).json({ error: errorMsg });
         }
+
+        let Schema = Joi.object({
+            name: Joi.string().min(3).max(20).required().pattern(new RegExp('^[^~!@#$%^&*()+{}|?<>!"№;%:?*()/]*$')).message(locale === 'en' ? 'Nickname contains forbidden characters.' : 'Никнейм содержит запрещённые символы.'),
+            email: Joi.string().min(5).max(50).required().pattern(new RegExp('^[^~!#$%^&*()+{}|?<>!"№;%:?*()/]*$')).message(locale === 'en' ? 'Email address contains forbidden characters.' : 'Адрес электронной почты содержит запрещённые символы.').email(),
+            password: Joi.string().min(6).max(50).required(),
+            confirmPassword: Joi.string().valid(Joi.ref('password')).required()
+        }).messages({
+            'any.required': locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.',
+            'string.empty': locale === 'en' ? 'Please provide your name.' : 'Пожалуйста, укажите ваше имя.',
+            'string.email': locale === 'en' ? 'Please enter a valid email address.' : 'Пожалуйста, введите корректный адрес электронной почты.',
+            'any.only': locale === 'en' ? 'Passwords do not match.' : 'Пароли не совпадают.',
+            'string.min': locale === 'en' ? 'Password must be at least 6 characters long.' : 'Пароль должен содержать как минимум 6 символов.',
+            'string.pattern.base': locale === 'en' ? 'Field contains forbidden characters.' : 'Поле содержит запрещенные символы.'
+        });
+        let { error } = Schema.validate(req.body);
+        console.log('validation error', error);
+        if (error) {
+            return res.json({ error: error.message });
+        }
+
+        next();
     } catch (e) {
         next(e);
         return res.json({ error: e.message });
