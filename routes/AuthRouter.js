@@ -3,12 +3,11 @@ const {registerView, registerNewUser, loginView, loginUser, sessionExpiredView, 
     accountRecoveryView, accountRecovery, logout, changePassword,
 } = require('../controllers/AuthController')
 const {validateRegister, validateLogin} =require('../middlewares/validate')
-const {checkEmail} = require("../middlewares/checkEmail");
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const router = express.Router();
 
 router.get('/register', registerView );
-router.post(`/register/:ip`, validateRegister, checkEmail, registerNewUser);
+router.post(`/register/:ip`, validateRegister, registerNewUser);
 
 router.get('/login', loginView);
 router.post('/login/:ip',  validateLogin, loginUser);
