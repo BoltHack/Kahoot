@@ -24,7 +24,7 @@
                                 <a class="text-link">Title: <%= games.game_name %></a>
                                 <a class="text-link">Online: <%= games.game_online.online %> / <%= games.game_online.max_online %></a>
                                 <% if (games.expiresAt) { %>
-                                    <a class="text-link">Removal time :
+                                    <a class="text-link">Will retire at:
                                         <%= (() => {
                                             const d = games.expiresAt;
                                             return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
