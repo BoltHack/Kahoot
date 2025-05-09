@@ -2,7 +2,8 @@ if (effects === 'on') {
     function createSymbolTop() {
         const symbol = document.createElement("div");
         // symbol.innerHTML = "❄";
-        symbol.innerHTML = "|";
+        const randomSymbol = Math.floor(Math.random() * 2);
+        symbol.innerHTML = randomSymbol === 0 ? '|' : ',';
         symbol.classList.add("symbolTop");
 
         const size = Math.random() * 10 + 10 + "px";
@@ -25,7 +26,8 @@ if (effects === 'on') {
     function createSymbolBottom() {
         const symbol = document.createElement("div");
         // symbol.innerHTML = "❄";
-        symbol.innerHTML = "|";
+        const randomSymbol = Math.floor(Math.random() * 2);
+        symbol.innerHTML = randomSymbol === 0 ? '|' : ',';
         symbol.classList.add("symbolBottom");
 
         const size = Math.random() * 10 + 10 + "px";

@@ -58,7 +58,7 @@ async function refreshToken(req, res, next) {
             await res.cookie('token', newAccessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });
             await res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('10d') });
 
-            return res.json({ token: newAccessToken });
+            return res.json({ token: newAccessToken, newRefreshToken });
         });
     } catch (err) {
         next(err);
