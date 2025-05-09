@@ -46,7 +46,7 @@
 
 <div class="pagination">
     <% if (currentPage > 1) { %>
-        <a id="previousPage" onclick="previousPage()"> < </a>
+        <a onclick="previousPage()"> < </a>
     <% } else { %>
         <a class="disabled"> < </a>
     <% } %>
@@ -79,7 +79,7 @@
     <% } %>
 
     <% if (currentPage < totalPages) { %>
-        <a id="nextPage" onclick="nextPage()"> > </a>
+        <a onclick="nextPage()"> > </a>
     <% } else { %>
         <a class="disabled"> > </a>
     <% } %>
