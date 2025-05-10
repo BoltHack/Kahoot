@@ -26,24 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// const account = document.getElementById('account');
-// const myToken = localStorage.getItem('token');
-// const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-// if (myToken){
-//     account.innerHTML = `
-// <div class="dropdown">
-//     <p class="ha dropdown-title">${userInfo.name.length > 4 ? userInfo.name.slice(0, 4) + '...' : userInfo.name}<span>❯</span></p>
-//     <div class="dropdown-content">
-//         <a onclick="logout();">${localeType === 'en' ? 'Sign Out' : 'Выйти'}</a>
-//     </div>
-// </div>
-// `
-// }
-// else{
-//     account.innerHTML = `<p class="ha" onclick="window.location.href = '/auth/login'">${localeType === 'en' ? 'Sign in' : 'Войти'}</p>`
-// }
-
-
 function logout() {
     fetch('/auth/logout', {
         method: 'POST',
@@ -53,6 +35,7 @@ function logout() {
     }).then(res => res.json()).then((res) => {
         const {status, error} = res;
         if (error) {
+            console.log('Ошибка выхода', error);
             return;
         }
 
