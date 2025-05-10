@@ -74,7 +74,6 @@
 
 const jwt = require("jsonwebtoken");
 const HttpErrors = require("http-errors");
-const { UsersModel } = require("../models/UsersModel");
 const { JWTSecret, refreshTokenSecret } = process.env;
 
 function parseMaxAge(duration) {

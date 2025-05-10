@@ -45,12 +45,26 @@ footer p {
 .footer-our-company{
     width: 350px;
     flex-wrap: wrap;
+    display: grid;
+}
+.footer-our-company div {
+    display: flex;
+    margin-left: -3.5px;
+}
+.footer-our-company h3 {
+    margin: 6px;
+}
+.footer-our-company p {
+    color: #e5e5e5;
 }
 .footer-info{
     display: grid;
     gap: 10px;
     margin-left: 50px;
     margin-top: -14.5px;
+}
+.footer-info a {
+    color: #e5e5e5;
 }
 .footer-contacts{
     display: grid;
@@ -71,7 +85,7 @@ footer p {
 }
 .company-name{
     margin-left: 200px;
-    color: white;
+    color: #e5e5e5;
 }
 .contact-us{
     display: grid;
