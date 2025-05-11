@@ -92,9 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const leaderGameTime = Number(time.textContent);
                 const overlay = document.getElementById('overlay');
                 const questions = document.getElementById('questions');
+                const waitAllPlayer = document.getElementById('waitAllPlayer');
                 const leaderboard = document.querySelector('.leaderboard');
 
                 stopSound();
+                waitAllPlayer.hidden = false;
                 setTimeout(function () {
                     clearTimeout(gameTimerCooldown);
                 }, 500)
@@ -121,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.on('openLeadersMenu', () => {
                     overlay.classList.add('active');
                     leaderboard.classList.add('active');
+                    waitAllPlayer.hidden = true;
                 });
 
                 socket.on('stopTimer', () => {
