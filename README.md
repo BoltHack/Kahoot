@@ -106,3 +106,4 @@ PASS='lknghiutynoliunf'
 
 7. После этого заново авторизуйтесь в систему и у вас будут права администратора и доступ к админ-панели.
 ![Снимок экрана 2025-05-12 143639](https://github.com/user-attachments/assets/390a095c-7878-44f8-a116-f2ba87072db5)
+![Снимок экрана 2025-05-12 144106](https://github.com/user-attachments/assets/4b025def-a870-497a-955c-95a529c04a71)
