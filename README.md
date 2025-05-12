@@ -88,7 +88,7 @@ PASS='lknghiutynoliunf'
 ```
 {
 
-  "email": "ваш_емейл@example.com"
+  "email": "yourEmail@example.com"
 
 }
 ```
