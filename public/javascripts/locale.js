@@ -78,12 +78,15 @@ function languageConfirmation () {
             if (response.ok) {
                 console.log('response', response);
                 if(response.status === 200) {
-                    changeLocaleRu();
-                    document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
+                    setTimeout(function () {
+                        changeLocaleRu();
+                    }, 500);
                 } else {
-                    changeLocaleEn()
-                    document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
+                    setTimeout(function () {
+                        changeLocaleEn()
+                    }, 500);
                 }
+                document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
             } else {
                 console.log('Ошибка:', response.status);
             }

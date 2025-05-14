@@ -76,6 +76,7 @@ h1 {
     color: #c1121f;
     font-size: 14px;
     cursor: pointer;
+    height: 15px;
 }
 .friend-delete-a:hover {
     text-decoration: underline;
@@ -86,6 +87,7 @@ h1 {
     font-size: 14px;
     cursor: pointer;
     margin-left: 10px;
+    height: 15px;
 }
 .friend-invite-a:hover {
     text-decoration: underline;
