@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 const validateRegister = async (req, res, next) => {
     try {
-        const { email } = req.body;
+        const { email, name } = req.body;
 
         let locale = req.cookies['locale'] || 'en';
 
@@ -13,9 +13,15 @@ const validateRegister = async (req, res, next) => {
         }
 
         const existingUser = await UsersModel.findOne({ email });
+        const existingUsername = await UsersModel.findOne({ name });
 
         if (existingUser) {
-            const errorMsg = locale === 'en' ? 'Email address is already registered.' : 'Адрес электронной почты уже зарегистрирован.';
+            const errorMsg = locale === 'en' ? 'This Email address is already registered.' : 'Этот адрес электронной почты уже зарегистрирован.';
+            return res.status(400).json({ error: errorMsg });
+        }
+
+        if (existingUsername) {
+            const errorMsg = locale === 'en' ? 'The nickname is already taken.' : 'Никнейм уже занят.';
             return res.status(400).json({ error: errorMsg });
         }
 
