@@ -637,7 +637,11 @@ class PostController {
             const geo = geoip.lookup(ip);
             const country = geo.country;
 
-            if (country === 'AM' || country === 'RU') {
+            if (
+                country === 'RU' || country === 'BY' || country === 'KZ' || country === 'KG' || country === 'MD' ||
+                country === 'TJ' || country === 'TM' || country === 'UZ' || country === 'AM' || country === 'AZ' ||
+                country === 'GE' || country === 'UA'
+            ) {
                 res.status(200).json({ message: 'Язык изменён на русский.' });
             } else {
                 res.status(201).json({ message: 'Язык изменён на английский.' });
