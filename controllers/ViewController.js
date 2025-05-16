@@ -16,9 +16,11 @@ class ViewController {
             if (req.cookies['refreshToken']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    const getData = await UsersModel.findById(user.id);
-                    const mainBackgroundImage = getData.mainBackgroundImage;
-                    return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies, mainBackgroundImage});
+                    if (user && user.id) {
+                        const getData = await UsersModel.findById(user.id);
+                        const mainBackgroundImage = getData.mainBackgroundImage;
+                        return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies, mainBackgroundImage});
+                    }
                 });
             }
             else {
