@@ -19,11 +19,16 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.card__a a {
+.card__a i {
     text-decoration: none;
     color: black;
     font-weight: 700;
-    font-size: 35px;
+    font-size: 20px;
+    margin-top: 16px;
+    transition-duration: 0.4s;
+}
+.card__a i:hover {
+    transform: translateY(-3px);
 }
 
 .card__title {
@@ -34,6 +39,7 @@ body {
     position: relative;
     overflow: hidden;
     margin-top: 10px;
+    margin-left: 15px;
 }
 
 .card__title::after {
@@ -57,7 +63,7 @@ body {
     line-height: 1.4;
     color: #000;
     margin-bottom: 20px;
-    text-align: center;
+    /*text-align: center;*/
     font-family: Comic Sans MS, Comic Sans, cursive;
 }
 
