@@ -62,7 +62,7 @@
                 <% if (news.update && news.update.length > 0) { %>
                     <li class="news-container">
                         <article class="news-card">
-                            <h2 class="news-title"><%= news.updateTitle %></h2>
+                            <h2 class="news-title"><%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 50) + '...' : news.updateTitle %></h2>
                             <div class="news-meta">
                                 <div class="news-author">
                                     <span>Автор</span>

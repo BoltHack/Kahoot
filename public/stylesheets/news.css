@@ -99,6 +99,7 @@ body {
 .news-title {
     font-size: 24px;
     font-weight: bold;
+    word-break: break-word;
 }
 .news-author {
     margin-top: -10px;

@@ -60,6 +60,7 @@ body{
 .modal__title {
     font-weight: 700;
     font-size: 1.25rem;
+    word-break: break-word;
 }
 
 .button {

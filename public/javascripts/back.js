@@ -58,7 +58,7 @@ function pages(){
             <a class="between"> ❯ </a>
             <a href="/news" class="color-btn">${localeType === 'en' ? 'News' : 'Новости'}</a>
             <a class="between"> ❯ </a>
-            <a class="other-color">${newsTitle}</a>`
+            <a class="other-color">${newsTitle.length > 50 ? newsTitle.slice(0, 50) + '...' : newsTitle}</a>`
     }
     else if (page.startsWith('/admin/admin-panel')) {
         pageName.innerHTML = `
@@ -91,7 +91,7 @@ function pages(){
             <a class="between"> ❯ </a>
             <a href="/admin/list-news" class="color-btn">${localeType === 'en' ? 'List news' : 'Список новостей'}</a>
             <a class="between"> ❯ </a>
-            <a class="other-color">${localeType === 'en' ? `Edit ${editNews}` : `Редактирование ${editNews}`}</a>`
+            <a class="other-color">${localeType === 'en' ? `Edit ${editNews.length > 50 ? editNews.slice(0, 50) + '...' : editNews}` : `Редактирование ${editNews.length > 50 ? editNews.slice(0, 50) + '...' : editNews}`}</a>`
     }
     else if (page === '/') {
         document.getElementById('back').style.display = 'none';
