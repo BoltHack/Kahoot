@@ -16,12 +16,17 @@
 <%- include('header.ejs') %>
 <main>
     <div class="home-container">
-        <a class="btn" onclick="redirectPage('/create-game')">📜 Создать игру</a>
-        <a class="btn" onclick="findGame()">🔎 Найти игру</a>
-        <a class="btn" onclick="redirectPage('/my-games')">🎮 Мои игры</a>
-        <a class="btn" onclick="redirectPage('/friends')">👥 Друзья</a>
-        <a class="btn" onclick="redirectPage('/settings')">⚙ Настройки</a>
-        <a class="btn support-btn" href="/support">📩 Поддержка</a>
+        <% if (user && user.id) { %>
+            <a class="btn" onclick="redirectPage('/create-game')">📜 Создать игру</a>
+            <a class="btn" onclick="findGame()">🔎 Найти игру</a>
+            <a class="btn" onclick="redirectPage('/my-games')">🎮 Мои игры</a>
+            <a class="btn" onclick="redirectPage('/friends')">👥 Друзья</a>
+            <a class="btn" onclick="redirectPage('/settings')">⚙ Настройки</a>
+            <a class="btn support-btn" href="/support">📩 Поддержка</a>
+        <% } else { %>
+                <a class="btn" href="/auth/login">👤 Войти в аккаунт</a>
+                <a class="btn support-btn" href="/support">📩 Поддержка</a>
+        <% } %>
     </div>
 
     <div class="new-border" id="border" hidden>
@@ -62,7 +67,6 @@
 
     <div class="new-barrier" id="barrier" hidden></div>
 </main>
-
 
 <footer id="acceptCookiesFooter">
     <p>

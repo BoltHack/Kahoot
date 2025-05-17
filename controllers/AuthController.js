@@ -87,6 +87,7 @@ class AuthController {
             const { email, password } = req.body;
             const {ip} = req.params;
             const user = await UsersModel.findOne({ email });
+            const userId = await UsersModel.findById(user._id);
 
             let locale = req.cookies['locale'] || 'en';
 
@@ -131,9 +132,9 @@ class AuthController {
             res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('10d') });
             res.cookie('acceptCookies', 'true', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            !req.cookies['notifications'] ? res.cookie('notifications', 'on', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            !req.cookies['soundTrack'] ? res.cookie('soundTrack', 'on', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            !req.cookies['mainEffects'] ? res.cookie('mainEffects', 'on', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            !req.cookies['notifications'] ? res.cookie('notifications', userId.settings.notifications, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            !req.cookies['soundTrack'] ? res.cookie('soundTrack', userId.settings.soundTrack, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            !req.cookies['mainEffects'] ? res.cookie('mainEffects', userId.settings.mainEffects, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
 
             return res.json({ token: accessToken, refreshToken, user, locale });
         } catch (e) {

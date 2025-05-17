@@ -49,11 +49,9 @@ router.post('/changeAvatar', authenticateJWT, changeAvatar);
 router.post('/deleteAvatar', authenticateJWT, deleteImage);
 router.post('/changeBackgroundImage', authenticateJWT, changeBackgroundImage);
 router.post('/deleteBackgroundImage', authenticateJWT, deleteBackgroundImage);
-
 router.post('/changeLocal/:locale', changeLocal);
 router.post('/changeLocalAuth/:id/:locale', changeLocalAuth);
-
-router.post('/changeSettings/:user_id', changeSettings);
+router.post('/changeSettings', authenticateJWT, changeSettings);
 
 router.post('/sendContacts', sendContacts);
 
