@@ -91,6 +91,20 @@ const UsersSchema = new Schema({
     },
     onlineMod: {
         type: String
+    },
+    settings: {
+        notifications: {
+            type: String,
+            default: 'on'
+        },
+        soundTrack: {
+            type: String,
+            default: 'on'
+        },
+        mainEffects: {
+            type: String,
+            default: 'on'
+        },
     }
 });
 

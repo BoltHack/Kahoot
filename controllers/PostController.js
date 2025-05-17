@@ -391,10 +391,21 @@ class PostController {
     static changeSettings = async (req, res, next) => {
         try {
             const {notifications, soundTrack, mainEffects} = req.body;
+            const user = req.user;
 
             res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('mainEffects', mainEffects ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+
+            await UsersModel.findByIdAndUpdate(user.id, {
+                $set: {
+                    settings: {
+                        notifications: notifications ? 'on' : 'off',
+                        soundTrack: soundTrack ? 'on' : 'off',
+                        mainEffects: mainEffects ? 'on' : 'off'
+                    }
+                }
+            });
 
             setTimeout(function () {
                 return res.redirect('/settings');

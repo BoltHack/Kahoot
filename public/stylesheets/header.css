@@ -161,23 +161,6 @@ html.lightTheme {
     border-radius: var(--border-radius);
 }
 
-.settings-menu {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 4;
-}
-.setting {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
-}
 .toggle {
     width: 40px;
     height: 20px;
@@ -186,61 +169,9 @@ html.lightTheme {
     position: relative;
     cursor: pointer;
 }
-.toggle::before {
-    content: "";
-    width: 18px;
-    height: 18px;
-    background: white;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    border-radius: 50%;
-    transition: 0.3s;
-}
-.settings-menu input:checked + .toggle {
-    background: #4caf50;
-}
-.settings-menu input:checked + .toggle::before {
-    left: 21px;
-}
-.settings-menu input {
-    display: none;
-}
-.account{
-    border: 1px solid black;
-    padding: 5px;
-    background-color: #003049;
-    color: white;
-    cursor: pointer;
-}
-.profile {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.profile img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #4caf50;
-}
-.profile h3 {
-    margin: 10px 0 5px;
-    font-size: 20px;
-}
-.profile p {
-    margin: 0;
-    color: #666;
-    font-size: 14px;
-}
 
 .locale {
     margin-top: 18px;
-}
-.locale img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
 }
 
 .header-container {

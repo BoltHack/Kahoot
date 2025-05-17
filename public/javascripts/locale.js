@@ -68,29 +68,31 @@ function languageConfirmation () {
             .then(data => {
                 const ip = data.ip;
                 document.cookie = `ip=${ip}; max-age=${10 * 24 * 60 * 60}; path=/;`;
-            })
-        setTimeout(async function () {
-            let response = await fetch('/languageConfirmation', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'}
-            })
+                if (ip) {
+                    setTimeout(async function () {
+                        let response = await fetch('/languageConfirmation', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'}
+                        })
 
-            if (response.ok) {
-                console.log('response', response);
-                if(response.status === 200) {
-                    setTimeout(function () {
-                        changeLocaleRu();
-                    }, 500);
-                } else {
-                    setTimeout(function () {
-                        changeLocaleEn()
+                        if (response.ok) {
+                            console.log('response', response);
+                            if(response.status === 200) {
+                                setTimeout(function () {
+                                    changeLocaleRu();
+                                }, 500);
+                            } else {
+                                setTimeout(function () {
+                                    changeLocaleEn()
+                                }, 500);
+                            }
+                            document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
+                        } else {
+                            console.log('Ошибка:', response.status);
+                        }
                     }, 500);
                 }
-                document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
-            } else {
-                console.log('Ошибка:', response.status);
-            }
-        }, 500);
+            })
     }
 }
 languageConfirmation();
