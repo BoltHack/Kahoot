@@ -13,6 +13,7 @@
     const settingImage = "<%= userId.image %>";
     const localeType = '<%= locale %>';
     const mainImage = '<%= userId.mainBackgroundImage %>';
+    const banner = '<%= userId.bannerImage %>';
 </script>
 <body>
 <header>
@@ -25,7 +26,10 @@
         <div class="profile">
             <img src="<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
             <div class="profile-info">
-                <h3><%= userId.name %></h3>
+                <div style="display: flex; gap: 10px;">
+                    <h3><%= userId.name %></h3>
+                    <a href="/user-profile/<%= userId.id %>" target="_blank" style="align-items: center">Стастика</a>
+                </div>
                 <p><%= userId.email %></p>
                 <p>ID: <%= userId.id %></p>
             </div>
@@ -128,6 +132,17 @@
     <div class="edit-buttons">
         <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
         <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
+    </div>
+</section>
+
+<section id="editBannerMenu" hidden>
+    <label>
+        <img src="" class="banner-pic-edit" id="bannerView" title="Нажми, чтобы изменить баннер">
+        <input type="file" name="file" id="bannerFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Сохранить" id="saveBannerBtn">
+        <input type="button" value="Сбросить" id="deleteBannerBtn">
     </div>
 </section>
 

@@ -157,8 +157,6 @@ const editMainMenu = document.getElementById('editMainMenu');
 const barrier = document.getElementById('barrier');
 const mainBackgroundView = document.getElementById('mainBackgroundView');
 const backgroundFile = document.getElementById('backgroundFile');
-const defaultBackground = document.getElementById('defaultBackground');
-const settings = JSON.parse(localStorage.getItem('settings') || '{}');
 editMainBackgroundBtn.addEventListener('click', () => {
     editMainMenu.hidden = false;
     barrier.hidden = false;
@@ -245,11 +243,10 @@ editMainBackgroundBtn.addEventListener('click', () => {
     });
 });
 
-function viewMainBackground(){
+function viewImages(){
     mainBackgroundView.src = mainImage;
 }
-viewMainBackground();
-
+viewImages();
 
 const changeLocale = document.getElementById('changeLocale');
 changeLocale.addEventListener('change', () => {

@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 setTimeout(function () {
                     questions.hidden = true;
-                    setInterval(function () {
+                    setTimeout(function () {
                         socket.emit('requestLeadersCount');
                     }, 1000);
 
@@ -151,15 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     checkQuestions();
-});
 
+    socket.on('challengeComplete1', async () => {
+        console.log('challengeComplete1');
+        setTimeout(showAchievement, 500)
+    });
+});
 
 function checkReload(){
     window.addEventListener("beforeunload", (event) => {
         sessionStorage.setItem("redirectAfterReload", "true");
         event.preventDefault();
     });
-
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -172,6 +175,12 @@ window.addEventListener("DOMContentLoaded", function () {
 
 const music = new Howl({
     src: ['/soundtracks/lobby-classic-game.mp3'],
+    loop: true,
+    volume: 0.5
+});
+
+const challengeMusic = new Howl({
+    src: ['/soundtracks/challenge_complete.mp3'],
     loop: true,
     volume: 0.5
 });
@@ -231,4 +240,4 @@ document.getElementById('openFriendListMenu').addEventListener('click', () => {
 document.getElementById('closeFriendsMenu').addEventListener('click', () => {
     overlayFriendListMenu.classList.remove('active');
     friendListMenu.classList.remove('active');
-})
+});

@@ -4,12 +4,12 @@ const AdminRouter = require('./AdminRouter');
 
 const {
     mainView, createGameView, gameView, redactionView, myGamesView, friendsView, settingsView, returnMenuView, privacyPolicyView,
-    rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView
+    rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView, userProfileView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteImage,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
-    languageConfirmation, deleteBackgroundImage
+    languageConfirmation, deleteBackgroundImage,
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -33,6 +33,7 @@ router.get('/about-donates', aboutDonatesView);
 router.get('/support', supportView);
 router.get('/news', newsView);
 router.get('/read-news/:news_id', readNewsView);
+router.get('/user-profile/:user_id', userProfileView);
 
 
 router.post('/create-game', authenticateJWT, createGame);

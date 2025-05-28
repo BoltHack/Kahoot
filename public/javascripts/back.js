@@ -93,6 +93,11 @@ function pages(){
             <a class="between"> ❯ </a>
             <a class="other-color">${editNews.length > 50 ? editNews.slice(0, 50) + '...' : editNews}</a>`
     }
+    else if (page.startsWith('/user-profile/')) {
+        pageName.innerHTML = `
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? `Profile ${userName}` : `Профиль ${userName}`}</a>`
+    }
     else if (page === '/') {
         document.getElementById('back').style.display = 'none';
     }

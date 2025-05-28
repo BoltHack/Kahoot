@@ -128,6 +128,7 @@ const GamesSchema = new Schema({
     game_leaders: {
         type: [LeadersSchema]
     },
+    winnerSet: [],
     game_banned_users: {
         type: [BannedUsersSchema]
     },

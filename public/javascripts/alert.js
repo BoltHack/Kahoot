@@ -363,3 +363,32 @@ function inviteFriendMenu(data) {
         })
     })
 }
+
+
+
+
+function showAchievement() {
+    challengeMusic.play();
+    setTimeout(function () {
+        challengeMusic.stop();
+    }, 6000);
+
+    const alert = document.createElement('div');
+    alert.innerHTML = `
+    <div id="achievement" class="achievement-popup">
+        <span class="close" onclick="hideAchievement()">×</span>
+        <div class="achievement-title">${localeType === 'en' ? 'Achieved achievement' : 'Получено достижение'} 🏆</div>
+        <div class="achievement-description">${localeType === 'en' ? 'Achievement: Reached level 5' : 'Ачивка: Получи 5-й уровень'}</div>
+    </div>
+
+`
+    document.body.appendChild(alert);
+
+    setTimeout(() => {
+        const achievementCard = document.getElementById('achievement');
+        achievementCard.classList.add('show');
+    }, 500);
+}
+function hideAchievement() {
+    document.getElementById('achievement').classList.remove('show');
+}

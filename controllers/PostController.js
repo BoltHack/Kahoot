@@ -663,7 +663,6 @@ class PostController {
             next(err);
         }
     };
-
 }
 
 module.exports = PostController;
