@@ -248,6 +248,109 @@ function viewImages(){
 }
 viewImages();
 
+
+const editStatusBtn = document.getElementById('editStatusBtn');
+const editStatusMenu = document.getElementById('editStatusMenu');
+
+editStatusBtn.addEventListener('click', () => {
+    editStatusMenu.hidden = false;
+    barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
+
+    barrier.addEventListener('click', () => {
+        editStatusMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
+});
+
+document.getElementById('changeStatusBtn').addEventListener('click', () => {
+    const status = document.getElementById('status');
+
+    if (status.value) {
+        fetch('/changeStatus',{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded'
+            },
+            body: `status=${encodeURIComponent(status.value)}`
+        })
+            .then(response => {
+                if(response.ok){
+                    console.log('Статус успешно изменён!')
+                    Swal.fire({
+                        text: localeType === 'en' ? 'The status has been successfully changed!' : 'Статус успешно изменён!',
+                        icon: "success",
+                        position: "top-end",
+                        timer: 4000,
+                        showConfirmButton: false,
+                        toast: true,
+                        customClass: {
+                            popup: "small-alert"
+                        }
+                    });
+                    setTimeout(function () {
+                        window.location.href = '/settings';
+                        return response.json();
+                    }, 1000);
+                } else {
+                    console.log('Ошибка при загрузке изображения');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    } else {
+        Swal.fire({
+            text: localeType === 'en' ? 'Please fill in the input fieldю' : 'Пожалуйста, заполните поле ввода.',
+            icon: "warning",
+            position: "top-end",
+            timer: 4000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
+    }
+});
+
+document.getElementById('deleteStatusBtn').addEventListener('click', () => {
+
+    fetch('/changeStatus',{
+        method: "POST",
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
+        body: `status=`
+    })
+        .then(response => {
+            if(response.ok){
+                console.log('Статус успешно изменён!')
+                Swal.fire({
+                    text: localeType === 'en' ? 'The status has been successfully deleted!' : 'Статус успешно удалён!',
+                    icon: "success",
+                    position: "top-end",
+                    timer: 4000,
+                    showConfirmButton: false,
+                    toast: true,
+                    customClass: {
+                        popup: "small-alert"
+                    }
+                });
+                setTimeout(function () {
+                    window.location.href = '/settings';
+                    return response.json();
+                }, 1000);
+            } else {
+                console.log('Ошибка при загрузке изображения');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+});
+
 const changeLocale = document.getElementById('changeLocale');
 changeLocale.addEventListener('change', () => {
     changeLocale.value === 'en' ? changeLocaleEn() : changeLocaleRu();

@@ -89,6 +89,11 @@
                 <h3>Main menu background</h3>
                 <p>If you wish, you can change the background of the game's main menu.</p>
             </div>
+
+            <div class="extra-setting" id="editStatusBtn">
+                <h3>Profile Status</h3>
+                <p>Create a cool status for yourself for other players to see!</p>
+            </div>
         </div>
     </section>
 
@@ -133,6 +138,19 @@
     <div class="edit-buttons">
         <input type="button" value="Save" id="saveMainBackgroundBtn">
         <input type="button" value="Reset" id="deleteMainBackgroundBtn">
+    </div>
+</section>
+
+<section id="editStatusMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Change profile status</p>
+        <input type="text" name="status" id="status" placeholder="Enter the desired status" required>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Change" id="changeStatusBtn">
+            <input type="button" value="Delete" id="deleteStatusBtn">
+        </div>
     </div>
 </section>
 

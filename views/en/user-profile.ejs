@@ -19,7 +19,9 @@
         <div class="player-banner">
             <div class="banner-info">
                 <h1><%= userInfo.name %></h1>
-                <p>💬 "Побеждай с умом!"</p>
+                <% if (userInfo.settings && userInfo.settings.status && userInfo.settings.status.length) { %>
+                    <p>💬 "<%= userInfo.settings.status %>"</p>
+                <% } %>
             </div>
         </div>
 
@@ -35,12 +37,15 @@
                 </div>
 
                 <p class="status">🔥 Winner of the Week!</p>
-                <button class="btn">✉️ Message</button>
                 <input value="<%= userInfo.id %>" id="friendId" hidden>
-                <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
-                    <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Remove Friend</button>
-                <% } else { %>
-                    <button class="btn" id="addFriend" onclick="addFriend()">➕ Add Friend</button>
+                <% if (userInfo.id !== myInfo.id) { %>
+                    <button class="btn">✉️ Message</button>
+                    <input value="<%= userInfo.id %>" id="friendId" hidden>
+                    <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
+                        <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Remove Friend</button>
+                    <% } else { %>
+                        <button class="btn" id="addFriend" onclick="addFriend()">➕ Add Friend</button>
+                    <% } %>
                 <% } %>
             </div>
 

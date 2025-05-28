@@ -397,19 +397,47 @@ class PostController {
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('mainEffects', mainEffects ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            await UsersModel.findByIdAndUpdate(user.id, {
-                $set: {
-                    settings: {
-                        notifications: notifications ? 'on' : 'off',
-                        soundTrack: soundTrack ? 'on' : 'off',
-                        mainEffects: mainEffects ? 'on' : 'off'
+            await UsersModel.findByIdAndUpdate(
+                user.id,
+                {
+                    $set: {
+                        'settings.notifications': notifications ? 'on' : 'off',
+                        'settings.soundTrack': soundTrack ? 'on' : 'off',
+                        'settings.mainEffects': mainEffects ? 'on' : 'off'
                     }
-                }
-            });
+                },
+                { new: true }
+            );
 
             setTimeout(function () {
                 return res.redirect('/settings');
             }, 1000);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
+    static changeStatus = async (req, res, next) => {
+        try {
+            const user = req.user;
+            const {status} = req.body;
+
+            await UsersModel.findByIdAndUpdate(
+                user.id,
+                {
+                    $set: {
+                        'settings.status': status
+                    }
+                },
+                { new: true }
+            );
+
+            setTimeout(function () {
+                return res.redirect('/settings');
+            }, 1000);
+
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });

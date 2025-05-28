@@ -114,6 +114,9 @@ const UsersSchema = new Schema({
             type: String,
             default: 'on'
         },
+        status: {
+            type: String
+        }
     },
     games_info: {
         lvl: {

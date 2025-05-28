@@ -89,6 +89,11 @@
                 <h3>Фон главного меню</h3>
                 <p>При желании вы можете сменить фон главного меню игры.</p>
             </div>
+
+            <div class="extra-setting" id="editStatusBtn">
+                <h3>Статус профиля</h3>
+                <p>Создайте себе крутой статус, чтобы другие игроки могли увидеть!</p>
+            </div>
         </div>
     </section>
 
@@ -135,14 +140,16 @@
     </div>
 </section>
 
-<section id="editBannerMenu" hidden>
-    <label>
-        <img src="" class="banner-pic-edit" id="bannerView" title="Нажми, чтобы изменить баннер">
-        <input type="file" name="file" id="bannerFile" style="display: none">
-    </label>
-    <div class="edit-buttons">
-        <input type="button" value="Сохранить" id="saveBannerBtn">
-        <input type="button" value="Сбросить" id="deleteBannerBtn">
+<section id="editStatusMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Сменить статус профиля</p>
+        <input type="text" name="status" id="status" placeholder="Введите желаемый статус" required>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Изменить" id="changeStatusBtn">
+            <input type="button" value="Удалить" id="deleteStatusBtn">
+        </div>
     </div>
 </section>
 
