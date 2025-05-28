@@ -326,6 +326,36 @@ class ViewController {
             next(e);
         }
     }
+
+    static userProfileView = async (req, res, next) => {
+        try {
+            const {user_id} = req.params;
+
+            if (!mongoose.Types.ObjectId.isValid(user_id)) {
+                const errorMsg = locale === 'en' ? 'Player not found.' : 'Игрок не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const locale = req.cookies['locale'] || 'en';
+
+            const userInfo = await UsersModel.findById(user_id);
+            console.log('userInfo', userInfo.bannerImage)
+            if (req.cookies['refreshToken']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    const myInfo = await UsersModel.findById(user.id);
+                    if (user && user.id) {
+                        return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user, userInfo, myInfo, locale,});
+                    }
+                });
+            }
+            else {
+                return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, locale});
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = ViewController;

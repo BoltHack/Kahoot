@@ -17,6 +17,8 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 let gameUsers = {};
+let challengeCompleted = {};
+
 io.on('connection', async (socket) => {
     console.log('Новый пользователь подключился');
 
@@ -47,7 +49,7 @@ io.on('connection', async (socket) => {
                 { new: true }
             );
 
-            if (game.game_online?.online === 0){
+            if (game.game_online?.users.length === 0){
                 await GamesModel.findOneAndUpdate(
                     { _id: gameId },
                     {
@@ -58,6 +60,7 @@ io.on('connection', async (socket) => {
                             'game_type': 'Open',
                             'game_leaders': [],
                             'game_online.online': 0,
+                            'winnerSet': []
                         }
                     },
                     { new: true }
@@ -146,22 +149,99 @@ io.on('connection', async (socket) => {
             });
 
             socket.on('requestLeadersCount', async () => {
-                const game = await GamesModel.findById(gameId);
-                console.log(
-                    'gameId', game.id, '\n',
-                    'users.length', game.game_online.users.length, '|',
-                    'leaders.length', game.game_leaders.length
-                );
+                try {
+                    const game = await GamesModel.findById(gameId);
+                    console.log(
+                        'gameId', game.id,
+                        'users.length', game.game_online.users.length, '|',
+                        'leaders.length', game.game_leaders.length
+                    );
 
-                if (game.game_online.users.length === game.game_leaders.length) {
-                    const updateLeaderBoard = await GamesModel.findById(gameId);
-                    socket.emit('updateLeaderBoard', updateLeaderBoard.game_leaders);
-                    io.emit('openLeadersMenu');
-                }
-                else {
-                    console.log('ещё не все закончили')
+                    if (game.game_online.users.length === game.game_leaders.length) {
+                        game.game_leaders.sort((a, b) => b.correct_answers - a.correct_answers);
+
+                        for (let index = 0; index < game.game_leaders.length; index++) {
+                            console.log('Подчёты...');
+                            const leader = game.game_leaders[index];
+                            const user = await UsersModel.findById(leader.id);
+
+                            if (!game.winnerSet.includes(user.id)) {
+                                await GamesModel.findByIdAndUpdate(gameId, { $push: { winnerSet: user.id } }, {new: true});
+                                console.log('Победил:', user.id, '|', user.name, index);
+
+                                const lvlUpPrize = index === 0 ? 1 : index === 1 ? 0.5 : index === 2 ? 0.2 : 0;
+
+                                let updated = await UsersModel.findOneAndUpdate(
+                                    { _id: user.id },
+                                    {
+                                        $inc: { 'games_info.lvlUp': lvlUpPrize },
+                                    },
+                                    { new: true }
+                                );
+
+                                console.log('lvlUp после обновления:', updated.games_info.lvlUp);
+
+                                if (updated.games_info.lvlUp >= 5) {
+                                    await UsersModel.findOneAndUpdate(
+                                        { _id: user.id },
+                                        {
+                                            $set: { 'games_info.lvlUp': 0 },
+                                            $inc: { 'games_info.lvl': 1 },
+                                        },
+                                        { new: true }
+                                    );
+                                }
+                                if (index === 0) {
+                                    await UsersModel.findOneAndUpdate(
+                                        { _id: user.id },
+                                        {
+                                            $inc: { 'games_info.wins': 1 },
+                                        },
+                                        { new: true }
+                                    );
+                                }
+
+                                setTimeout(async () => {
+                                    const updatedUser = await UsersModel.findById(updated.id);
+
+                                    if (
+                                        updatedUser.games_info.lvl >= 5 &&
+                                        !updatedUser.games_info.achievements?.some(a => a.aName === 'achievement1')
+                                    ) {
+                                        console.log(updatedUser.name, 'Получил Достяжение!');
+
+                                        challengeCompleted[updatedUser.id] = socket.id;
+                                        console.log('updatedUser', updatedUser.id);
+
+                                        await UsersModel.findOneAndUpdate(
+                                            {_id: updatedUser.id },
+                                            {
+                                                $push: {
+                                                    'games_info.achievements': {aName: 'achievement1', aImage: '/gameAchievements/achievement1.png'},
+                                                }
+                                            },
+                                            { new: true }
+                                        );
+                                        const winnerId = challengeCompleted[updatedUser.id];
+                                        console.log('winner SocketId', winnerId);
+                                        if (winnerId) {
+                                            io.to(winnerId).emit('challengeComplete1');
+                                        }
+                                    }
+                                }, 1000);
+                            }
+                        }
+
+                        io.emit('updateLeaderBoard', game.game_leaders);
+                        io.emit('openLeadersMenu');
+                    } else {
+                        console.log('ещё не все закончили');
+                    }
+                } catch (error) {
+                    console.log('error', error);
                 }
             });
+
 
             socket.on('requestBannedUsersCount', async () => {
                 const updateBannedUsersCount = await GamesModel.findById(gameId);
@@ -264,7 +344,7 @@ io.on('connection', async (socket) => {
 
                 console.log('the game is open.');
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
-            })
+            });
 
             socket.on('gameCheckAnswer', async (data) => {
                 try {
@@ -310,7 +390,7 @@ io.on('connection', async (socket) => {
                 } catch (error) {
                     console.log('error', error);
                 }
-            })
+            });
 
             let skipUser = [];
 
@@ -501,7 +581,7 @@ io.on('connection', async (socket) => {
                 io.emit('updatePage');
 
                 io.to(senderSocketId).emit('broadcastUpdateMyFriends', updateMyFriendsCount.myFriends);
-
+                io.emit('reloadOtherPage');
                 console.log('send to', senderSocketId + ' | ' + acceptData.acceptData.senderId);
             }
         } catch (error) {
@@ -531,6 +611,7 @@ io.on('connection', async (socket) => {
                 { new: true }
             );
             io.emit('updatePage');
+            socket.emit('reloadOtherPage');
         } catch (error) {
             console.log('error', error);
         }

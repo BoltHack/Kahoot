@@ -22,10 +22,14 @@
 <div class="container">
     <section class="section" id="profile">
         <h2>Profile</h2>
+
         <div class="profile">
             <img src="<%= userId.image %>" alt="User Avatar" id="editImageBtn" title="Change Avatar" />
             <div class="profile-info">
-                <h3><%= userId.name %></h3>
+                <div style="display: flex; gap: 10px;">
+                    <h3><%= userId.name %></h3>
+                    <a href="/user-profile/<%= userId.id %>" target="_blank" style="align-items: center">Statistics</a>
+                </div>
                 <p><%= userId.email %></p>
                 <p>ID: <%= userId.id %></p>
             </div>

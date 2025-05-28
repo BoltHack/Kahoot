@@ -33,6 +33,15 @@ const GameSchema = new Schema({
     }
 });
 
+const AchievementsSchema = new Schema({
+    aName: {
+        type: String
+    },
+    aImage: {
+        type: String
+    }
+});
+
 const UsersSchema = new Schema({
     name: {
         type: String,
@@ -105,6 +114,23 @@ const UsersSchema = new Schema({
             type: String,
             default: 'on'
         },
+    },
+    games_info: {
+        lvl: {
+            type: Number,
+            default: 0
+        },
+        lvlUp: {
+            type: Number,
+            default: 0
+        },
+        wins: {
+            type: Number,
+            default: 0
+        },
+        achievements: {
+            type: [AchievementsSchema]
+        }
     }
 });
 

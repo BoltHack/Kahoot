@@ -77,8 +77,8 @@ let userName = name;
             users.innerHTML = onlineCount.users
                 .map(user => `
 <br>
-<div class="userImage checkUser" data-id="${user.userId}">
-    <img src="${user.userImage}" onmouseover="showUserName(event);">
+<div class="userImage checkUser" data-id="${user.userId}" >
+    <img src="${user.userImage}" onmouseover="showUserName(event);" onclick="window.open('/user-profile/${user.userId}', '_blank');" title="Посмотреть профиль">
     <div id="userName-${user.userId}" class="userName" hidden>
         <span>
   ${user.userId === id
@@ -213,6 +213,9 @@ let userName = name;
                             <td>${leader.time} ${localeType === 'en' ? 'Sec.' : 'Сек.'}</td>
                         `;
                         fragment.appendChild(tr);
+                        if (index + 1 === 1) {
+                            console.log('Первое место', leader.name);
+                        }
                     });
 
                 leaderB.appendChild(fragment);
