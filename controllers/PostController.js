@@ -649,9 +649,9 @@ class PostController {
             const country = geo.country;
 
             if (
-                country === 'RU' || country === 'BY' || country === 'KZ' || country === 'KG' || country === 'MD' ||
-                country === 'TJ' || country === 'TM' || country === 'UZ' || country === 'AM' || country === 'AZ' ||
-                country === 'GE' || country === 'UA'
+                country === 'RU' || country === 'BY' || country === 'KZ' || country === 'KG' ||
+                country === 'MD' || country === 'TJ' || country === 'TM' || country === 'UZ' ||
+                country === 'AM' || country === 'AZ' || country === 'GE' || country === 'UA'
             ) {
                 res.status(200).json({ message: 'Язык изменён на русский.' });
             } else {

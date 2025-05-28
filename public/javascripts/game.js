@@ -126,9 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     waitAllPlayer.hidden = true;
                 });
 
-                socket.on('stopTimer', () => {
-                    clearTimeout(gameTimerCooldown);
-                });
             }
             else {
                 console.log('пока победы нет', currentIndex + 1);
@@ -155,6 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('challengeComplete1', async () => {
         console.log('challengeComplete1');
         setTimeout(showAchievement, 500)
+    });
+
+    socket.on('earlyCall-requestLeadersCount', async () => {
+        socket.emit('requestLeadersCount');
+    });
+
+    socket.on('stopTimer', async () => {
+        console.log('stopTimer');
+        clearTimeout(gameTimerCooldown);
     });
 });
 
