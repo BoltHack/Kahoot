@@ -38,13 +38,17 @@ io.on('connection', async (socket) => {
         console.log(`Пользователь ${userId}(${userName}) покинул игру ${gameId}.`);
 
         try {
-            const userInfo = await UsersModel.findById(userId);
-            const userImage = userInfo.image;
+            const gameInfo = await GamesModel.findById(gameId);
+
             const game = await GamesModel.findOneAndUpdate(
                 { _id: gameId },
                 {
                     $inc: { 'game_online.online': -1 },
-                    $pull: { 'game_online.users': { userId, userName, userImage }, 'game_users': {userId} },
+                    $pull: {
+                        'game_online.users': { userId },
+                        'game_users': { userId: userId },
+                        'game_leaders': { id: userId }
+                    },
                 },
                 { new: true }
             );
@@ -68,6 +72,32 @@ io.on('connection', async (socket) => {
             }
 
             socket.emit('updateUserCount', game.game_online);
+
+            if (gameInfo.game_leaders.length === 0) {
+                setTimeout(function () {
+                    io.emit('stopTimer');
+                }, 500);
+                await GamesModel.findOneAndUpdate(
+                    { _id: gameId },
+                    {
+                        $set: {
+                            'game_type': 'Open',
+                        }
+                    },
+                    { new: true }
+                );
+            }
+            if (gameInfo.game_leaders.length > 0 && gameInfo.game_online.users.length !== 1) {
+                setTimeout(function () {
+                    io.emit('stopTimer');
+                }, 500);
+                io.emit('earlyCall-requestLeadersCount');
+            }
+            else {
+                setTimeout(function () {
+                    io.emit('stopTimer');
+                }, 500);
+            }
 
             if (game) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн1: ${game.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);

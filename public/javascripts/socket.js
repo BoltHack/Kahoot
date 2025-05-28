@@ -95,6 +95,7 @@ let userName = name;
         }
 
         if (onlineCount.online < 2) {
+            clearTimeout(100);
             questions.hidden = true;
             requestSent = true;
             console.log('Онлайна мало');
