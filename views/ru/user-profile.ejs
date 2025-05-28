@@ -19,7 +19,9 @@
         <div class="player-banner">
             <div class="banner-info">
                 <h1><%= userInfo.name %></h1>
-                <p>💬 "Побеждай с умом!"</p>
+                <% if (userInfo.settings && userInfo.settings.status && userInfo.settings.status.length) { %>
+                    <p>💬 "<%= userInfo.settings.status %>"</p>
+                <% } %>
             </div>
         </div>
 
