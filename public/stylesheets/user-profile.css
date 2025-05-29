@@ -57,6 +57,7 @@ body {
 .banner-info p {
     margin: 5px 0 0;
     color: #facc15;
+    word-break: break-word;
     /*font-style: italic;*/
 }
 

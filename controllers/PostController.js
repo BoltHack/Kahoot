@@ -428,7 +428,7 @@ class PostController {
                 user.id,
                 {
                     $set: {
-                        'settings.status': status
+                        'settings.status': status.slice(0, 95)
                     }
                 },
                 { new: true }
