@@ -115,7 +115,8 @@ const UsersSchema = new Schema({
             default: 'on'
         },
         status: {
-            type: String
+            type: String,
+            maxLength: 95
         }
     },
     games_info: {
