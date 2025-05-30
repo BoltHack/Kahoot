@@ -278,17 +278,7 @@ document.getElementById('changeStatusBtn').addEventListener('click', () => {
             .then(response => {
                 if(response.ok){
                     console.log('Статус успешно изменён!')
-                    Swal.fire({
-                        text: localeType === 'en' ? 'The status has been successfully changed!' : 'Статус успешно изменён!',
-                        icon: "success",
-                        position: "top-end",
-                        timer: 4000,
-                        showConfirmButton: false,
-                        toast: true,
-                        customClass: {
-                            popup: "small-alert"
-                        }
-                    });
+                    changeSettings();
                     setTimeout(function () {
                         window.location.href = '/settings';
                         return response.json();
@@ -327,17 +317,7 @@ document.getElementById('deleteStatusBtn').addEventListener('click', () => {
         .then(response => {
             if(response.ok){
                 console.log('Статус успешно изменён!')
-                Swal.fire({
-                    text: localeType === 'en' ? 'The status has been successfully deleted!' : 'Статус успешно удалён!',
-                    icon: "success",
-                    position: "top-end",
-                    timer: 4000,
-                    showConfirmButton: false,
-                    toast: true,
-                    customClass: {
-                        popup: "small-alert"
-                    }
-                });
+                changeSettings();
                 setTimeout(function () {
                     window.location.href = '/settings';
                     return response.json();
@@ -351,9 +331,112 @@ document.getElementById('deleteStatusBtn').addEventListener('click', () => {
         });
 });
 
+const editAboutMeBtn = document.getElementById('editAboutMeBtn');
+const editAboutMeMenu = document.getElementById('editAboutMeMenu');
+editAboutMeBtn.addEventListener('click', () => {
+    editAboutMeMenu.hidden = false;
+    barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
+
+    barrier.addEventListener('click', () => {
+        editAboutMeMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
+});
+document.getElementById('changeAboutMeBtn').addEventListener('click', () => {
+    const aboutMe = document.getElementById('aboutMe');
+
+    if (aboutMe.value) {
+        fetch('/changeAboutMe',{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded'
+            },
+            body: `aboutMe=${encodeURIComponent(aboutMe.value)}`
+        })
+            .then(response => {
+                if(response.ok){
+                    changeSettings();
+                    setTimeout(function () {
+                        window.location.href = '/settings';
+                        return response.json();
+                    }, 1000);
+                } else {
+                    console.log('Ошибка при загрузке изображения');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    } else {
+        Swal.fire({
+            text: localeType === 'en' ? 'Please fill in the input field.' : 'Пожалуйста, заполните поле ввода.',
+            icon: "warning",
+            position: "top-end",
+            timer: 4000,
+            showConfirmButton: false,
+            toast: true,
+            customClass: {
+                popup: "small-alert"
+            }
+        });
+    }
+});
+
+document.getElementById('deleteAboutMeBtn').addEventListener('click', () => {
+    fetch('/changeAboutMe',{
+        method: "POST",
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
+        body: `aboutMe=`
+    })
+        .then(response => {
+            if(response.ok){
+                changeSettings();
+                setTimeout(function () {
+                    window.location.href = '/settings';
+                    return response.json();
+                }, 1000);
+            } else {
+                console.log('Ошибка при загрузке изображения');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+});
+
+const status = document.getElementById('status');
+const maxStatusLength = document.getElementById('maxStatusLength');
+status.addEventListener('input', () => {
+    maxStatusLength.textContent = `${status.value.length}/90`;
+});
+
+const aboutMe = document.getElementById('aboutMe');
+const maxAboutMeLength = document.getElementById('maxAboutMeLength');
+aboutMe.addEventListener('input', () => {
+    maxAboutMeLength.textContent = `${aboutMe.value.length}/200`;
+});
+
 const changeLocale = document.getElementById('changeLocale');
 changeLocale.addEventListener('change', () => {
     changeLocale.value === 'en' ? changeLocaleEn() : changeLocaleRu();
 })
+
+function changeSettings() {
+    Swal.fire({
+        text: localeType === 'en' ? 'Settings changed successfully!' : 'Настройки успешно изменены!',
+        icon: "success",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+}
 
 const socket = io();

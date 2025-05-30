@@ -287,10 +287,9 @@ input:checked + .slider::before {
     cursor: pointer;
 }
 
-#editStatusMenu {
+#editStatusMenu, #editAboutMeMenu {
     padding: 20px;
     width: 400px;
-    height: 220px;
     margin-right: 10px;
     background-color: #2c3e50;
     color: #fff;
@@ -303,15 +302,22 @@ input:checked + .slider::before {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-#editStatusMenu input {
-    width: 100%;
+#editStatusMenu textarea, #editAboutMeMenu textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 150px;
+    max-height: 150px;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
-#editStatusMenu p {
+#editStatusMenu p, #editAboutMeMenu p {
     text-align: center;
+}
+#editStatusMenu a, #editAboutMeMenu a {
+    position: absolute;
+    top: 60%;
+    right: 8%;
+    color: black;
 }

@@ -36,7 +36,6 @@
                     </div>
                 </div>
 
-                <p class="status">🔥 Winner of the Week!</p>
                 <input value="<%= userInfo.id %>" id="friendId" hidden>
                 <% if (userInfo.id !== myInfo.id) { %>
                     <button class="btn">✉️ Message</button>
@@ -58,6 +57,13 @@
                         <li>Wins: <strong><%= userInfo.games_info.wins %></strong></li>
                     </ul>
                 </div>
+
+                <% if (userInfo.settings && userInfo.settings.aboutMe) { %>
+                    <div class="aboutMe-box">
+                        <h3>📝 About me</h3>
+                        <p><%= userInfo.settings.aboutMe %></p>
+                    </div>
+                <% } %>
 
                 <div class="achievements">
                     <h3>🏆 Achievements</h3>

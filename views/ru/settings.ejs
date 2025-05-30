@@ -12,8 +12,7 @@
     const settingId = "<%= userId.id %>";
     const settingImage = "<%= userId.image %>";
     const localeType = '<%= locale %>';
-    const mainImage = '<%= userId.mainBackgroundImage %>';
-    const banner = '<%= userId.bannerImage %>';
+    const mainImage = '<%= userId.settings.mainBackgroundImage %>';
 </script>
 <body>
 <header>
@@ -94,6 +93,11 @@
                 <h3>Статус профиля</h3>
                 <p>Создайте себе крутой статус, чтобы другие игроки могли увидеть!</p>
             </div>
+
+            <div class="extra-setting" id="editAboutMeBtn">
+                <h3>Обо мне</h3>
+                <p>Напишите что-нибудь о себе. Можно использовать ссылки.</p>
+            </div>
         </div>
     </section>
 
@@ -143,12 +147,27 @@
 <section id="editStatusMenu" hidden>
     <div style="display: block; margin-top: -15px;">
         <p>Сменить статус профиля</p>
-        <input type="text" name="status" id="status" placeholder="Введите желаемый статус" required>
+        <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required></textarea>
+        <a id="maxStatusLength">0/90</a>
         <br>
         <br>
         <div class="edit-buttons">
             <input type="button" value="Изменить" id="changeStatusBtn">
             <input type="button" value="Удалить" id="deleteStatusBtn">
+        </div>
+    </div>
+</section>
+
+<section id="editAboutMeMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Напишите что-нибудь о себе</p>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required></textarea>
+        <a id="maxAboutMeLength">0/200</a>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Сохранить" id="changeAboutMeBtn">
+            <input type="button" value="Удалить" id="deleteAboutMeBtn">
         </div>
     </div>
 </section>
