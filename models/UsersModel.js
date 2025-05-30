@@ -12,6 +12,10 @@ const MyGamesSchema = new Schema({
     gameId: { type: String },
 });
 
+const MyChannelsSchema = new Schema({
+    channelId: { type: String },
+});
+
 const MyFriendsSchema = new Schema({
     id: { type: String },
     name: { type: String },
@@ -139,7 +143,11 @@ const UsersSchema = new Schema({
         achievements: {
             type: [AchievementsSchema]
         }
-    }
+    },
+    myChannels: {
+        type: [MyChannelsSchema],
+        default: []
+    },
 });
 
 const UsersModel = model('user', UsersSchema);

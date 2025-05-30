@@ -38,13 +38,17 @@
 
                 <input value="<%= userInfo.id %>" id="friendId" hidden>
                 <% if (userInfo.id !== myInfo.id) { %>
-                    <button class="btn">✉️ Message</button>
+                <div style="display: flex">
+                    <form action="/checkChannel/<%= userInfo.id %>" method="POST">
+                        <button type="submit" class="btn">✉️ Message</button>
+                    </form>
                     <input value="<%= userInfo.id %>" id="friendId" hidden>
                     <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
                         <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Remove Friend</button>
                     <% } else { %>
                         <button class="btn" id="addFriend" onclick="addFriend()">➕ Add Friend</button>
                     <% } %>
+                </div>
                 <% } %>
             </div>
 

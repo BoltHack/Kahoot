@@ -10,6 +10,7 @@
 </head>
 <script>
     const userName = `<%= userInfo.name %>`;
+    const userId = `<%= userInfo.id %>`;
 </script>
 <body>
 <%- include('header.ejs') %>
@@ -35,15 +36,20 @@
                     </div>
                 </div>
 
-<!--                <p class="status">🔥 Победитель недели!</p>-->
                 <% if (userInfo.id !== myInfo.id) { %>
-                    <button class="btn">✉️ Написать</button>
+                <div style="display: flex">
+                    <div>
+                        <form action="/checkChannel/<%= userInfo.id %>" method="POST">
+                            <button type="submit" class="btn">✉️ Написать</button>
+                        </form>
+                    </div>
                     <input value="<%= userInfo.id %>" id="friendId" hidden>
                     <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
                         <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Удалить из друзей</button>
                     <% } else { %>
                         <button class="btn" id="addFriend" onclick="addFriend()">➕ Добавить в друзья</button>
                     <% } %>
+                </div>
                 <% } %>
             </div>
 
