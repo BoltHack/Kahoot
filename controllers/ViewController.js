@@ -18,7 +18,7 @@ class ViewController {
                     const user = req.user;
                     if (user && user.id) {
                         const getData = await UsersModel.findById(user.id);
-                        const mainBackgroundImage = getData.mainBackgroundImage;
+                        const mainBackgroundImage = getData.settings.mainBackgroundImage;
                         return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, mainEffects, acceptCookies, mainBackgroundImage});
                     }
                 });

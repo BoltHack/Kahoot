@@ -324,7 +324,14 @@ class PostController {
                 }
             });
 
-            await UsersModel.findByIdAndUpdate(user.id, { $set: { mainBackgroundImage: imagePath } }
+            await UsersModel.findByIdAndUpdate(
+                user.id,
+                {
+                    $set: {
+                        'settings.mainBackgroundImage': imagePath
+                    }
+                },
+                { new: true }
             );
 
             return res.status(200).json('Изменения успешно загружены' );
@@ -344,7 +351,15 @@ class PostController {
                 return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
             }
 
-            await UsersModel.findByIdAndUpdate(user.id, { $set: { mainBackgroundImage: "/images/kahoot2.png" } });
+            await UsersModel.findByIdAndUpdate(
+                user.id,
+                {
+                    $set: {
+                        'settings.mainBackgroundImage': "/images/kahoot2.png"
+                    }
+                },
+                { new: true }
+            );
 
             return res.status(200).json('Картинка успешно удалена');
         } catch (err) {
@@ -428,7 +443,33 @@ class PostController {
                 user.id,
                 {
                     $set: {
-                        'settings.status': status.slice(0, 95)
+                        'settings.status': status.slice(0, 90)
+                    }
+                },
+                { new: true }
+            );
+
+            setTimeout(function () {
+                return res.redirect('/settings');
+            }, 1000);
+
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
+    static changeAboutMe = async (req, res, next) => {
+        try {
+            const user = req.user;
+            const {aboutMe} = req.body;
+
+            await UsersModel.findByIdAndUpdate(
+                user.id,
+                {
+                    $set: {
+                        'settings.aboutMe': aboutMe.slice(0, 200)
                     }
                 },
                 { new: true }

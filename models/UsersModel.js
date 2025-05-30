@@ -63,10 +63,6 @@ const UsersSchema = new Schema({
         type: String,
         default: ("/images/defaultUser.png")
     },
-    mainBackgroundImage: {
-        type: String,
-        default: ("/images/kahoot2.png")
-    },
     registerDate: {
         type: String,
         default: dateOnly
@@ -116,8 +112,16 @@ const UsersSchema = new Schema({
         },
         status: {
             type: String,
-            maxLength: 95
-        }
+            maxLength: 90
+        },
+        aboutMe: {
+            type: String,
+            maxLength: 200
+        },
+        mainBackgroundImage: {
+            type: String,
+            default: ("/images/kahoot2.png")
+        },
     },
     games_info: {
         lvl: {

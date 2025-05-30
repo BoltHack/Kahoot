@@ -12,7 +12,7 @@
     const settingId = "<%= userId.id %>";
     const settingImage = "<%= userId.image %>";
     const localeType = '<%= locale %>';
-    const mainImage = '<%= userId.mainBackgroundImage %>';
+    const mainImage = '<%= userId.settings.mainBackgroundImage %>';
 </script>
 <body>
 <header>
@@ -94,6 +94,11 @@
                 <h3>Profile Status</h3>
                 <p>Create a cool status for yourself for other players to see!</p>
             </div>
+
+            <div class="extra-setting" id="editAboutMeBtn">
+                <h3>About me</h3>
+                <p>Write something about yourself. You can use links.</p>
+            </div>
         </div>
     </section>
 
@@ -144,12 +149,27 @@
 <section id="editStatusMenu" hidden>
     <div style="display: block; margin-top: -15px;">
         <p>Change profile status</p>
-        <input type="text" name="status" id="status" placeholder="Enter the desired status" required>
+        <textarea name="status" id="status" placeholder="Enter the desired status" maxlength="90" required></textarea>
+        <a id="maxStatusLength">0/90</a>
         <br>
         <br>
         <div class="edit-buttons">
             <input type="button" value="Change" id="changeStatusBtn">
             <input type="button" value="Delete" id="deleteStatusBtn">
+        </div>
+    </div>
+</section>
+
+<section id="editAboutMeMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Write something about yourself</p>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Enter the desired text" maxlength="200" required></textarea>
+        <a id="maxAboutMeLength">0/200</a>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Change" id="changeAboutMeBtn">
+            <input type="button" value="Delete" id="deleteAboutMeBtn">
         </div>
     </div>
 </section>
