@@ -3,6 +3,7 @@ const {UsersModel} = require('../models/UsersModel')
 const {GamesModel} = require("../models/GamesModel");
 const {NewsModel} = require("../models/NewsModel");
 const {authenticateJWT} = require('../middlewares/jwtAuth');
+const {ChannelsModel} = require("../models/ChannelsModel");
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
@@ -352,6 +353,29 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, locale});
             }
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static channelsView = async (req, res, next) => {
+        try {
+            const {channel_id} = req.params;
+
+            if (!mongoose.Types.ObjectId.isValid(channel_id)) {
+                const errorMsg = locale === 'en' ? 'Chat not found.' : 'Чат не найден.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const locale = req.cookies['locale'] || 'en';
+            const user = req.user;
+            const channel = await ChannelsModel.findById(channel_id);
+
+            const user1 = await UsersModel.findById(channel.channelUsers[0].id);
+            const user2 = await UsersModel.findById(channel.channelUsers[1].id);
+
+            return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { user, channel, locale, user1, user2 });
+
         } catch (e) {
             next(e);
         }

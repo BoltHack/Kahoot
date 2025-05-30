@@ -10,6 +10,7 @@ const http = require("http");
 const socketIo = require('socket.io');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
+const { ChannelsModel } = require('./models/ChannelsModel');
 const mongoose = require("mongoose");
 
 const app = express();
@@ -742,6 +743,58 @@ io.on('connection', async (socket) => {
             console.log('error', error);
         }
     });
+
+    socket.on('sendMessage', async (messageData) => {
+        try {
+            console.log('data', messageData);
+
+            await ChannelsModel.findOneAndUpdate(
+                { _id: messageData.channelId },
+                {
+                    $push: {
+                        messages: {
+                            id: messageData.id,
+                            name: messageData.name,
+                            message: messageData.message
+                        }
+                    }
+                },
+                { new: true }
+            );
+
+            const userInfo = await UsersModel.findById(messageData.id);
+            const userImage = userInfo.image;
+
+            io.emit('showMessages', {
+                name: messageData.name,
+                message: messageData.message,
+                image: userImage,
+                date: new Date
+            })
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+
+    socket.on('checkOnline', async (userData) => {
+        const channel = await ChannelsModel.findById(userData.channelId);
+
+        if (channel.channelUsers[0].id !== userData.sendId) {
+            const user = await UsersModel.findById(channel.channelUsers[0].id);
+            const userOnline = user.onlineMod;
+            socket.emit('onlineMod', {
+                userOnline
+            });
+        }
+        else {
+            const user = await UsersModel.findById(channel.channelUsers[1].id);
+            const userOnline = user.onlineMod;
+            socket.emit('onlineMod', {
+                userOnline
+            });
+        }
+    });
+
 });
 
 

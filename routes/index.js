@@ -4,12 +4,12 @@ const AdminRouter = require('./AdminRouter');
 
 const {
     mainView, createGameView, gameView, redactionView, myGamesView, friendsView, settingsView, returnMenuView, privacyPolicyView,
-    rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView, userProfileView
+    rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView, userProfileView, channelsView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteImage,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
-    languageConfirmation, deleteBackgroundImage, changeStatus, changeAboutMe
+    languageConfirmation, deleteBackgroundImage, changeStatus, changeAboutMe, checkChannel
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -35,6 +35,8 @@ router.get('/news', newsView);
 router.get('/read-news/:news_id', readNewsView);
 router.get('/user-profile/:user_id', userProfileView);
 
+router.get('/channels/@me/:channel_id', authenticateJWT, channelsView);
+
 
 router.post('/create-game', authenticateJWT, createGame);
 router.post('/delete-game/:game_id', authenticateJWT, deleteGame);
@@ -59,6 +61,8 @@ router.post('/changeAboutMe', authenticateJWT, changeAboutMe);
 router.post('/sendContacts', sendContacts);
 
 router.post('/viewNews/:news_id', viewNews);
+
+router.post('/checkChannel/:user_id', authenticateJWT, checkChannel);
 
 router.post('/accessToken', accessToken);
 router.post('/refreshToken', refreshToken);

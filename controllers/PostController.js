@@ -2,6 +2,7 @@ const {GamesModel} = require('../models/GamesModel')
 const {UsersModel} = require("../models/UsersModel");
 const {AdminUserContactsModel} = require("../models/AdminUserContactsModel");
 const {NewsModel} = require("../models/NewsModel");
+const {ChannelsModel} = require("../models/ChannelsModel");
 const path = require("path");
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
@@ -725,6 +726,40 @@ class PostController {
                 res.status(200).json({ message: 'Язык изменён на русский.' });
             } else {
                 res.status(201).json({ message: 'Язык изменён на английский.' });
+            }
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static checkChannel = async (req, res, next) => {
+        try {
+            const {user_id} = req.params;
+            const user = req.user;
+
+            const userInfo = await UsersModel.findById(user_id);
+
+            if (!userInfo) return res.status(404).json({ error: 'Пользователь не найден' });
+
+            const channel = await ChannelsModel.findOne({
+                'channelUsers.id': { $all: [user.id, userInfo.id] }
+            });
+
+            if (channel) {
+                return res.redirect('/channels/@me/' + channel._id);
+            } else {
+                const newChannel = new ChannelsModel({
+                    channelUsers: [
+                        { id: user.id, name: user.name },
+                        { id: userInfo.id, name: userInfo.name }
+                    ],
+                });
+
+                await newChannel.save();
+
+                return res.redirect('/channels/@me/' + newChannel._id);
             }
         } catch (err) {
             console.error('Ошибка:', err);
