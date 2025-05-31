@@ -756,7 +756,6 @@ class PostController {
             });
 
             if (channel && user.id !== userInfo.id) {
-                // return res.redirect('/channels/@me/' + channel._id);
                 return res.json({channelId: channel._id});
             } else {
                 const newChannel = new ChannelsModel({
@@ -768,12 +767,12 @@ class PostController {
 
                 await newChannel.save();
 
-                userId.myChannels.push({channelId: newChannel._id});
+                userId.myChannels.push({channelId: newChannel._id, companionId: userInfo.id, companionName: userInfo.name});
                 await userId.save();
-                userInfo.myChannels.push({channelId: newChannel._id});
+
+                userInfo.myChannels.push({channelId: newChannel._id, companionId: user.id, companionName: user.name});
                 await userInfo.save();
 
-                // return res.redirect('/channels/@me/' + newChannel._id);
                 return res.json({channelId: newChannel._id});
             }
         } catch (err) {

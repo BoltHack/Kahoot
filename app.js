@@ -763,8 +763,6 @@ io.on('connection', async (socket) => {
 
     socket.on('sendMessage', async (messageData) => {
         try {
-            console.log('data', messageData);
-
             const linkedMessage = linkify(messageData.message);
 
             await ChannelsModel.findOneAndUpdate(
