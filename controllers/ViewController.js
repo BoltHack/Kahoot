@@ -375,7 +375,6 @@ class ViewController {
             const myChannels = myData.myChannels;
             const match = myChannels.find(c => c.channelId === channel_id);
             const companionId = match ? match.companionId : null;
-
             const companion = await UsersModel.findById(companionId);
 
             return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, companion, myChannels });
