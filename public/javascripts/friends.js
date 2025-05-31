@@ -105,7 +105,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
         
         <p>${friends.name}</p>
         <div class="friend-interaction"></div>
-        <a class="profile-a" href="/user-profile/${friends.id}" target="_blank">${localeType === 'en' ? 'Profile' : 'Профиль'}</a>
+        <a class="chat-a" onclick="checksChannel('${friends.id}')" target="_blank">${localeType === 'en' ? 'Message' : 'Написать'}</a>
         ${window.location.pathname.startsWith('/game/') ?
                     `<a onClick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>`
                     : ''}
@@ -126,6 +126,22 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
         }
     }
 });
+
+function checksChannel(friendId) {
+    console.log('friendId', friendId);
+    fetch(`/checkChannel/${friendId}`,{
+        method: "POST",
+    })
+        .then(function (response) {
+            response.json().then(function (data) {
+                console.log('data', data);
+                window.open(`/channels/@me/${data.channelId}`, '_blank')
+            })
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
 
 socket.on('broadcastUpdateMyFriends', async () => {
     Swal.fire({

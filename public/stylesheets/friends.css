@@ -93,15 +93,16 @@ h1 {
     text-decoration: underline;
     text-decoration-color: black;
 }
-.profile-a {
+.chat-a {
+
     color: #023047;
     font-size: 14px;
     cursor: pointer;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     height: 15px;
     text-decoration: none;
 }
-.profile-a:hover {
+.chat-a:hover {
     text-decoration: underline;
     text-decoration-color: black;
 }
