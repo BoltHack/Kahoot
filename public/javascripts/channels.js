@@ -41,7 +41,33 @@ socket.on('showMessages', async (showMessagesData) => {
             <div class="message-content">
                 <div class="message-header">
                     <span class="username">${showMessagesData.name}</span>
-                    <span class="timestamp">${showMessagesData.date}</span>
+                    <span class="timestamp">${ (() => {
+        const d = new Date(showMessagesData.date);
+        const now = new Date();
+
+        const isSameDay = (d1, d2) =>
+            d1.getDate() === d2.getDate() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getFullYear() === d2.getFullYear();
+
+        const yesterday = new Date(now);
+        yesterday.setDate(now.getDate() - 1);
+
+        if (isSameDay(d, now)) {
+            return 'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+        } else if (isSameDay(d, yesterday)) {
+            return 'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+        } else {
+            return d.toLocaleString('ru-RU', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+    })() }</span>
                 </div>
                 <div class="text">${showMessagesData.message}</div>
             </div>

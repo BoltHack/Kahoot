@@ -738,6 +738,7 @@ class PostController {
         try {
             const {user_id} = req.params;
             const user = req.user;
+            const userId = await UsersModel.findById(user.id);
 
             const userInfo = await UsersModel.findById(user_id);
 
@@ -758,6 +759,11 @@ class PostController {
                 });
 
                 await newChannel.save();
+
+                userId.myChannels.push({channelId: newChannel._id});
+                await userId.save();
+                userInfo.myChannels.push({channelId: newChannel._id});
+                await userInfo.save();
 
                 return res.redirect('/channels/@me/' + newChannel._id);
             }
