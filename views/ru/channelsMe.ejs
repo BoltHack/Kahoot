@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kahoot | Доступные чаты</title>
+    <link rel="stylesheet" href="/stylesheets/channels.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const localeType = `<%= locale %>`;
+</script>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-header">Личные сообщения</div>
+        <% if (myChannels && myChannels.length) { %>
+            <ul class="chat-list">
+                <% myChannels.forEach(channels => { %>
+                    <li>
+                        <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                            <%= channels.companionName %>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-position">
+                <span class="chat-name" style="text-decoration: none; cursor: default;">Доступные чаты</span>
+                <span id="onlineMod"></span>
+            </div>
+            <a class="home" href="/">На главную</a>
+        </div>
+
+        <div class="chat-messages" id="messages">
+            <h3 style="text-align: center; transform: translateY(1000%)">Найдите себе собеседника</h3>
+        </div>
+    </div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/channels.js"></script>
+<script src="/javascripts/friends.js"></script>
+</body>
+</html>

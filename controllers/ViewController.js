@@ -361,13 +361,13 @@ class ViewController {
     static channelsView = async (req, res, next) => {
         try {
             const {channel_id} = req.params;
+            const locale = req.cookies['locale'] || 'en';
 
             if (!mongoose.Types.ObjectId.isValid(channel_id)) {
                 const errorMsg = locale === 'en' ? 'Chat not found.' : 'Чат не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            const locale = req.cookies['locale'] || 'en';
             const user = req.user;
             const channel = await ChannelsModel.findById(channel_id);
 
@@ -377,7 +377,27 @@ class ViewController {
             const companionId = match ? match.companionId : null;
             const companion = await UsersModel.findById(companionId);
 
+            if (!match) {
+                const errorMsg = locale === 'en' ? 'Chat not found.' : 'Чат не найден.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
             return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, companion, myChannels });
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static channelsMeView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            const user = req.user;
+
+            const myData = await UsersModel.findById(user.id);
+            const myChannels = myData.myChannels;
+
+            return res.render(locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, locale, myChannels });
 
         } catch (e) {
             next(e);
