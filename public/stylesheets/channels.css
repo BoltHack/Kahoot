@@ -63,7 +63,28 @@ body {
     box-shadow: 0 0 8px #4aa9a5cc;
     flex-shrink: 0;
 }
-
+.header-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #5bbfba, #39767a);
+    box-shadow: 0 0 8px #4aa9a5cc;
+    flex-shrink: 0;
+}
+.chat-position {
+    margin-left: 20px;
+    display: flex;
+    gap: 10px;
+}
+.chat-name {
+    color: #adb5bd;
+    /*position: absolute;*/
+    /*left: 20.5%;*/
+}
+#onlineMod {
+    /*position: absolute;*/
+    /*left: 25%;*/
+}
 .message-content {
     max-width: 80%;
 }
@@ -154,7 +175,7 @@ body {
 
 .home {
     position: absolute;
-    /*top: 0;*/
+    top: 2%;
     right: 5%;
     font-size: 15px;
     text-decoration: none;
@@ -164,7 +185,6 @@ body {
     background-color: #1C2025;
     padding: 8px;
     border-radius: 8px;
-    /*margin-right: 15px;*/
 }
 .home:hover {
     background-color: #303740;

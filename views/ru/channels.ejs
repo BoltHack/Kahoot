@@ -38,10 +38,11 @@
 
     <div class="chat-container">
         <div class="chat-header">
-            <span style="color: #adb5bd">
-                # <%= companion.name %>
-            </span>
-            <span style="margin-left: 20px;" id="onlineMod"></span>
+            <div class="chat-position">
+                <img class="avatar header-avatar" src="<%= companion.image %>">
+                <span class="chat-name"><%= companion.name %></span>
+                <span id="onlineMod"></span>
+            </div>
             <a class="home" href="/">На главную</a>
         </div>
 
