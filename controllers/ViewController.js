@@ -371,10 +371,14 @@ class ViewController {
             const user = req.user;
             const channel = await ChannelsModel.findById(channel_id);
 
-            const user1 = await UsersModel.findById(channel.channelUsers[0].id);
-            const user2 = await UsersModel.findById(channel.channelUsers[1].id);
+            const myData = await UsersModel.findById(user.id);
+            const myChannels = myData.myChannels;
+            const match = myChannels.find(c => c.channelId === channel_id);
+            const companionId = match ? match.companionId : null;
 
-            return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { user, channel, locale, user1, user2 });
+            const companion = await UsersModel.findById(companionId);
+
+            return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, companion, myChannels });
 
         } catch (e) {
             next(e);

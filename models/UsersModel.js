@@ -14,6 +14,8 @@ const MyGamesSchema = new Schema({
 
 const MyChannelsSchema = new Schema({
     channelId: { type: String },
+    companionId: { type: String },
+    companionName: { type: String },
 });
 
 const MyFriendsSchema = new Schema({
