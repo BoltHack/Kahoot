@@ -744,9 +744,18 @@ io.on('connection', async (socket) => {
         }
     });
 
+    function linkify(text) {
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlRegex, function(url) {
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+        });
+    }
+
     socket.on('sendMessage', async (messageData) => {
         try {
             console.log('data', messageData);
+
+            const linkedMessage = linkify(messageData.message);
 
             await ChannelsModel.findOneAndUpdate(
                 { _id: messageData.channelId },
@@ -755,7 +764,7 @@ io.on('connection', async (socket) => {
                         messages: {
                             id: messageData.id,
                             name: messageData.name,
-                            message: messageData.message
+                            message: linkedMessage
                         }
                     }
                 },
@@ -767,7 +776,7 @@ io.on('connection', async (socket) => {
 
             io.emit('showMessages', {
                 name: messageData.name,
-                message: messageData.message,
+                message: linkedMessage,
                 image: userImage,
                 date: new Date
             })

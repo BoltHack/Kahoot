@@ -168,3 +168,18 @@ body {
 .home:hover {
     background-color: #303740;
 }
+
+.a-link {
+    color: #00d3e0;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px dashed #007bff;
+    transition: all 0.3s ease;
+    word-break: break-all;
+}
+
+.a-link:hover {
+    color: #00a7ef;
+    border-bottom: 1px solid #0056b3;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
