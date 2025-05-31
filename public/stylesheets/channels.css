@@ -70,6 +70,7 @@ body {
     background: linear-gradient(135deg, #5bbfba, #39767a);
     box-shadow: 0 0 8px #4aa9a5cc;
     flex-shrink: 0;
+    cursor: pointer;
 }
 .chat-position {
     margin-left: 20px;
@@ -78,12 +79,10 @@ body {
 }
 .chat-name {
     color: #adb5bd;
-    /*position: absolute;*/
-    /*left: 20.5%;*/
+    cursor: pointer;
 }
-#onlineMod {
-    /*position: absolute;*/
-    /*left: 25%;*/
+.chat-name:hover {
+    text-decoration: underline;
 }
 .message-content {
     max-width: 80%;
