@@ -744,6 +744,16 @@ io.on('connection', async (socket) => {
         }
     });
 
+    socket.on('joinRoom', (channelId) => {
+        console.log(socket.id, 'зашёл в чат', channelId);
+        socket.join(channelId);
+    });
+
+    socket.on('leaveRoom', (channelId) => {
+        console.log(socket.id, 'покинул чат', channelId);
+        socket.leave(channelId);
+    });
+
     function linkify(text) {
         const urlRegex = /(https?:\/\/[^\s]+)/g;
         return text.replace(urlRegex, function(url) {
@@ -774,7 +784,7 @@ io.on('connection', async (socket) => {
             const userInfo = await UsersModel.findById(messageData.id);
             const userImage = userInfo.image;
 
-            io.emit('showMessages', {
+            io.to(messageData.channelId).emit('showMessages', {
                 name: messageData.name,
                 message: linkedMessage,
                 image: userImage,

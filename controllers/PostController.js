@@ -10,6 +10,13 @@ const geoip = require('geoip-lite');
 
 require('dotenv').config();
 
+function linkify(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+    });
+}
+
 class PostController {
     static createGame = async (req, res, next) => {
         try {
@@ -470,7 +477,7 @@ class PostController {
                 user.id,
                 {
                     $set: {
-                        'settings.aboutMe': aboutMe.slice(0, 200)
+                        'settings.aboutMe': linkify(aboutMe.slice(0, 200))
                     }
                 },
                 { new: true }
@@ -748,8 +755,9 @@ class PostController {
                 'channelUsers.id': { $all: [user.id, userInfo.id] }
             });
 
-            if (channel) {
-                return res.redirect('/channels/@me/' + channel._id);
+            if (channel && user.id !== userInfo.id) {
+                // return res.redirect('/channels/@me/' + channel._id);
+                return res.json({channelId: channel._id});
             } else {
                 const newChannel = new ChannelsModel({
                     channelUsers: [
@@ -765,7 +773,8 @@ class PostController {
                 userInfo.myChannels.push({channelId: newChannel._id});
                 await userInfo.save();
 
-                return res.redirect('/channels/@me/' + newChannel._id);
+                // return res.redirect('/channels/@me/' + newChannel._id);
+                return res.json({channelId: newChannel._id});
             }
         } catch (err) {
             console.error('Ошибка:', err);

@@ -93,4 +93,11 @@ socket.on('onlineMod', async (data) => {
     document.getElementById('onlineMod').innerText =
         data.userOnline === 'Online' ? localeType === 'en' ? 'Online' :
             'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети';
-})
+});
+
+if (window.location.pathname.startsWith('/channels/')) {
+    socket.emit('joinRoom', channelId);
+}
+else {
+    socket.emit('leaveRoom', channelId);
+}
