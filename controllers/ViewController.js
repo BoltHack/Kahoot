@@ -132,16 +132,6 @@ class ViewController {
         }
     }
 
-    static friendsView = async (req, res, next) => {
-        try {
-            const user = req.user;
-            const locale = req.cookies['locale'] || 'en';
-            return res.render(locale === 'en' ? 'en/friends' : 'ru/friends', {user, locale});
-        } catch (e) {
-            next(e);
-        }
-    }
-
     static settingsView = async (req, res, next) => {
         try {
             const user = req.user;
@@ -364,7 +354,7 @@ class ViewController {
             const locale = req.cookies['locale'] || 'en';
 
             if (!mongoose.Types.ObjectId.isValid(channel_id)) {
-                const errorMsg = locale === 'en' ? 'Chat not found.' : 'Чат не найден.';
+                const errorMsg = locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -378,7 +368,7 @@ class ViewController {
             const companion = await UsersModel.findById(companionId);
 
             if (!match) {
-                const errorMsg = locale === 'en' ? 'Chat not found.' : 'Чат не найден.';
+                const errorMsg = locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 

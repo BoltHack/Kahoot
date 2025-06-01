@@ -16,6 +16,15 @@
 <body>
 <div class="layout">
     <div class="sidebar">
+        <ul class="chat-tools">
+            <li>
+                <a class="chat-tool" id="friendsContainerBtn">Friends</a>
+                <a class="chat-tool" id="addFriendBtn">Add friend</a>
+            </li>
+        </ul>
+        <br>
+        <div class="sidebar-line"></div>
+        <br>
         <div class="sidebar-header">Direct Messages</div>
         <% if (myChannels && myChannels.length) { %>
             <ul class="chat-list">
@@ -100,7 +109,12 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/channels.js"></script>
+<script>
+    const socket = io();
+</script>
 <script src="/javascripts/friends.js"></script>
+<script src="/javascripts/timer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/javascripts/alert.js"></script>
 </body>
 </html>

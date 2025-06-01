@@ -3,7 +3,7 @@ const AuthRouter = require('./AuthRouter');
 const AdminRouter = require('./AdminRouter');
 
 const {
-    mainView, createGameView, gameView, redactionView, myGamesView, friendsView, settingsView, returnMenuView,
+    mainView, createGameView, gameView, redactionView, myGamesView, settingsView, returnMenuView,
     privacyPolicyView, rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView,
     userProfileView, channelsView, channelsMeView
 } = require('../controllers/ViewController');
@@ -22,7 +22,6 @@ router.get('/create-game', authenticateJWT, createGameView);
 router.get('/game/:game_id', authenticateJWT, gameView);
 router.get('/redaction/:game_id', authenticateJWT, redactionView);
 router.get('/my-games', authenticateJWT, myGamesView);
-router.get('/friends', authenticateJWT, friendsView);
 router.get('/settings', authenticateJWT, settingsView);
 router.get('/return-menu', returnMenuView);
 
