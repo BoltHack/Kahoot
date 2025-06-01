@@ -1,4 +1,3 @@
-const socket = io();
 function sendMessage() {
     const message = document.getElementById('message');
     console.log('message', message.value);
