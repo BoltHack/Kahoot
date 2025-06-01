@@ -47,7 +47,14 @@ checkCookie();
 
 
 function redirectPage(page){
+    const menus = JSON.parse(localStorage.getItem('menus') || '{}');
     if (localStorage.getItem('token')) {
+        window.location.href = page;
+    }
+    if (page === '/channels/@me') {
+        menus.friendsContainerMenu = 'true';
+        menus.addFriendMenu = 'false';
+        localStorage.setItem('menus', JSON.stringify(menus));
         window.location.href = page;
     }
     else {
