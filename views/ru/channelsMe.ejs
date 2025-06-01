@@ -16,6 +16,7 @@
 <body>
 <div class="layout">
     <div class="sidebar">
+        <div class="sidebar-header">Опции</div>
         <ul class="chat-tools">
             <li>
                 <a class="chat-tool" id="friendsContainerBtn">Друзья</a>
@@ -36,6 +37,8 @@
                     </li>
                 <% }) %>
             </ul>
+        <% } else { %>
+            <a>Начните диалог</a>
         <% } %>
     </div>
 
