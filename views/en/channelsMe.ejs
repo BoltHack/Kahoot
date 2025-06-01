@@ -3,16 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kahoot | Available chats</title>
+    <title>Kahoot | Available Chats</title>
     <link rel="stylesheet" href="/stylesheets/channels.css">
+    <link rel="stylesheet" href="/stylesheets/friends.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <script>
+    const sendId = `<%= myData.id %>`;
     const localeType = `<%= locale %>`;
 </script>
 <body>
 <div class="layout">
     <div class="sidebar">
+        <ul class="chat-tools">
+            <li>
+                <a class="chat-tool" id="friendsContainerBtn">Friends</a>
+                <a class="chat-tool" id="addFriendBtn">Add friend</a>
+            </li>
+        </ul>
+        <br>
+        <div class="sidebar-line"></div>
+        <br>
         <div class="sidebar-header">Direct Messages</div>
         <% if (myChannels && myChannels.length) { %>
             <ul class="chat-list">
@@ -30,21 +42,56 @@
     <div class="chat-container">
         <div class="chat-header">
             <div class="chat-position">
-                <span class="chat-name" style="text-decoration: none; cursor: default;">Available chats</span>
+                <span class="chat-name" style="text-decoration: none; cursor: default;">Friends</span>
                 <span id="onlineMod"></span>
             </div>
-            <a class="home" href="/">На главную</a>
+            <a class="home" href="/">Home</a>
         </div>
 
-        <div class="chat-messages" id="messages">
-            <h3 style="text-align: center; transform: translateY(1000%)">Find yourself an interlocutor</h3>
+        <div class="chat-messages">
+            <div class="friends-container" id="friendsContainerMenu">
+                <div class="friends-list">
+                    <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
+                        <circle r="20" cy="50" cx="50"></circle>
+                    </svg>
+                    <div id="myFriendsCount"></div>
+                </div>
+            </div>
+
+            <div class="add-friend" id="addFriendMenu" hidden>
+                <div class="add-friend-container">
+                    <input type="text" placeholder="Enter player ID to send a friend request" id="friendId" required>
+                    <button onclick="addFriend()" class="add-friend-btn">Send</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-
+<div class="new-barrier" id="barrier" hidden></div>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/channels.js"></script>
+<script>
+    const socket = io();
+
+    function checkMenusState() {
+        if (menus.addFriendMenu === 'true') {
+            addFriendMenuOpen();
+            friendsContainerMenuClose();
+        }
+        else {
+            addFriendMenuClose();
+            friendsContainerMenuOpen();
+        }
+    }
+    window.addEventListener('load', () => {
+        setTimeout(function () {
+            checkMenusState();
+        }, 500);
+    });
+</script>
 <script src="/javascripts/friends.js"></script>
+<script src="/javascripts/timer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/javascripts/alert.js"></script>
 </body>
 </html>

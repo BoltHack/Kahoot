@@ -38,26 +38,22 @@ function addFriend() {
                         }
                     });
                 }
+                if (getId.includes(friendId)) {
+                    Swal.fire({
+                        text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
+                        icon: "error",
+                        position: "top-end",
+                        timer: 4000,
+                        showConfirmButton: false,
+                        toast: true,
+                        customClass: {
+                            popup: "small-alert"
+                        }
+                    });
+                }
                 else {
-                    if (friendId !== '') {
-                        if (getId.includes(friendId)) {
-                            Swal.fire({
-                                text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
-                                icon: "error",
-                                position: "top-end",
-                                timer: 4000,
-                                showConfirmButton: false,
-                                toast: true,
-                                customClass: {
-                                    popup: "small-alert"
-                                }
-                            });
-                        }
-                        else {
-                            socket.emit('addFriend', {senderData: { senderId: sendId, friendId: friendId } });
-                            console.log('friendId', friendId);
-                        }
-                    }
+                    socket.emit('addFriend', {senderData: { senderId: sendId, friendId: friendId } });
+                    console.log('friendId', friendId);
                 }
             })
 
@@ -86,7 +82,7 @@ socket.on('friendRequest', async (requestData) => {
 })
 
 socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
-    if (window.location.pathname.startsWith('/friends') || window.location.pathname.startsWith('/game')) {
+    if (window.location.pathname.startsWith('/game') || window.location.pathname === '/channels/@me') {
         const friendsLoaderSvg = document.getElementById('friendsLoaderSvg');
 
         const myFriendsCount = document.getElementById('myFriendsCount');
@@ -94,28 +90,21 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
             friendsLoaderSvg.style.display = 'none';
             myFriendsCount.innerHTML = updateMyFriendsCount
                 .map(friends => `
-<br>
 <div class="friend-container">
-    <div style="display: flex; gap: 10px;">
-
-    <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}" onclick="window.open('/user-profile/${friends.id}', '_blank')">
-        <img src="${friends.image}" alt="Avatar" class="avatar">
-        <span class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></span>
-    </div>
-        
-        <p>${friends.name}</p>
-        <div class="friend-interaction"></div>
-        <a class="chat-a" onclick="checksChannel('${friends.id}')" target="_blank">${localeType === 'en' ? 'Message' : 'Написать'}</a>
+    <div class="friend-info-row">
+        <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}" onclick="window.open('/user-profile/${friends.id}', '_blank')">
+            <img src="${friends.image}" alt="Avatar" class="friend-avatar">
+            <div class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></div>
+        </div>
+        <div class="friend-name">${friends.name}</div>
+        ${window.location.pathname === '/channels/@me' ? 
+                    `<a class="friend-btn" onclick="checksChannel('${friends.id}')">${localeType === 'en' ? 'Message' : 'Написать'}</a>` : ''}
         ${window.location.pathname.startsWith('/game/') ?
-                    `<a onClick="inviteFriend('${friends.id}')" class="friend-invite-a">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>`
-                    : ''}
-        <a onclick="deleteFriend('${friends.id}')" class="friend-delete-a">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
+                    `<a class="friend-btn" onclick="inviteFriend('${friends.id}')">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>` : ''}
+        <a class="friend-btn delete" onclick="deleteFriend('${friends.id}')">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
     </div>
-    <br>
 </div>
-   
-`)
-                .join('');
+`).join('');
         }
         else {
             friendsLoaderSvg.style.display = 'none';
@@ -135,7 +124,7 @@ function checksChannel(friendId) {
         .then(function (response) {
             response.json().then(function (data) {
                 console.log('data', data);
-                window.open(`/channels/@me/${data.channelId}`, '_blank')
+                window.location.href = `/channels/@me/${data.channelId}`;
             })
         })
         .catch(error => {
@@ -276,14 +265,71 @@ socket.on('broadcastFriendRequest', async () => {
 })
 
 socket.on('updatePage', async () => {
-    if (window.location.pathname ==='/friends') {
+    if (window.location.pathname === '/channels/@me') {
         window.location.reload();
     }
 })
 
-if (window.location.pathname.startsWith('/friends') && localStorage.getItem('token')) {
+if (window.location.pathname.startsWith('/friends') || window.location.pathname === '/channels/@me') {
+    setTimeout(function () {
+        socket.emit('requestMyFriendsCount', sendId);
+    }, 500);
     setInterval(function () {
         console.log('online mod');
         socket.emit('requestMyFriendsCount', sendId);
-    }, 20000);
+    }, 5000);
 }
+
+const addFriendBtn = document.getElementById('addFriendBtn');
+const friendsContainerBtn = document.getElementById('friendsContainerBtn');
+
+const friendsContainerMenu = document.getElementById('friendsContainerMenu');
+const addFriendMenu = document.getElementById('addFriendMenu');
+
+const menus = JSON.parse(localStorage.getItem('menus') || '{}');
+
+addFriendBtn.addEventListener('click', () => {
+    console.log('addFriendBtn');
+    window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
+    addFriendMenuOpen();
+    friendsContainerMenuClose();
+});
+
+friendsContainerBtn.addEventListener('click', () => {
+    console.log('friendsContainerBtn');
+    window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
+    addFriendMenuClose();
+    friendsContainerMenuOpen();
+});
+
+function addFriendMenuOpen() {
+    menus.addFriendMenu = 'true';
+    localStorage.setItem('menus', JSON.stringify(menus));
+
+    addFriendMenu.style.display = 'block';
+    addFriendBtn.style.background = '#3b464f';
+}
+function addFriendMenuClose() {
+    menus.addFriendMenu = 'false';
+    localStorage.setItem('menus', JSON.stringify(menus));
+
+    addFriendMenu.style.display = 'none';
+    addFriendBtn.style.background = 'none';
+}
+
+
+function friendsContainerMenuOpen() {
+    friendsContainerMenu.style.display = 'block';
+    friendsContainerBtn.style.background = '#3b464f';
+
+    menus.friendsContainerMenu = 'true';
+    localStorage.setItem('menus', JSON.stringify(menus));
+}
+function friendsContainerMenuClose() {
+    friendsContainerMenu.style.display = 'none';
+    friendsContainerBtn.style.background = 'none';
+
+    menus.friendsContainerMenu = 'false';
+    localStorage.setItem('menus', JSON.stringify(menus));
+}
+

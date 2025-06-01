@@ -58,6 +58,13 @@ header {
     margin: 5px 0 0;
     color: #777;
 }
+.profile-info a {
+    text-decoration: none;
+    color: #126782;
+}
+.profile-info a:hover {
+    text-decoration: underline;
+}
 .setting {
     display: flex;
     justify-content: space-between;
