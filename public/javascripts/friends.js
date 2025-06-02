@@ -340,16 +340,18 @@ if (window.location.pathname.startsWith('/friends') || window.location.pathname 
     }, 5000);
 
 }
-searchInput.addEventListener('input', function() {
-    const searchValue = this.value.trim().toLowerCase();
-    const userList = document.getElementById('myFriendsCount');
-    const users = userList.getElementsByTagName('span');
+if (window.location.pathname === '/channels/@me') {
+    searchInput.addEventListener('input', function() {
+        const searchValue = this.value.trim().toLowerCase();
+        const userList = document.getElementById('myFriendsCount');
+        const users = userList.getElementsByTagName('span');
 
-    Array.from(users).forEach(user => {
-        const userNameElement = user.querySelector('.user-name');
+        Array.from(users).forEach(user => {
+            const userNameElement = user.querySelector('.user-name');
 
-        const userName = userNameElement ? userNameElement.textContent.toLowerCase() : '';
+            const userName = userNameElement ? userNameElement.textContent.toLowerCase() : '';
 
-        user.style.display = (userName.includes(searchValue)) ? '' : 'none';
+            user.style.display = (userName.includes(searchValue)) ? '' : 'none';
+        });
     });
-});
+}
