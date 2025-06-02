@@ -51,7 +51,7 @@ function redirectPage(page){
     if (localStorage.getItem('token')) {
         window.location.href = page;
     }
-    if (page === '/channels/@me') {
+    else if (page === '/channels/@me') {
         menus.friendsContainerMenu = 'true';
         menus.addFriendMenu = 'false';
         localStorage.setItem('menus', JSON.stringify(menus));
