@@ -8,6 +8,7 @@ const start = require('./services/db');
 const indexRouter = require('./routes/index');
 const http = require("http");
 const socketIo = require('socket.io');
+const sanitizeHtml = require("sanitize-html");
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
 const { ChannelsModel } = require('./models/ChannelsModel');
@@ -763,31 +764,36 @@ io.on('connection', async (socket) => {
 
     socket.on('sendMessage', async (messageData) => {
         try {
-            const linkedMessage = linkify(messageData.message);
+            const cleanBeforeLink = sanitizeHtml(messageData.message, {
+                allowedTags: ['b', 'i', 'em', 'strong', 'br'],
+            });
 
-            await ChannelsModel.findOneAndUpdate(
-                { _id: messageData.channelId },
-                {
-                    $push: {
-                        messages: {
-                            id: messageData.id,
-                            name: messageData.name,
-                            message: linkedMessage
+            const cleanMessage = linkify(cleanBeforeLink);
+
+            if (cleanMessage.length !== 0) {
+                await ChannelsModel.findOneAndUpdate(
+                    { _id: messageData.channelId },
+                    {
+                        $push: {
+                            messages: {
+                                id: messageData.id,
+                                name: messageData.name,
+                                message: cleanMessage
+                            }
                         }
-                    }
-                },
-                { new: true }
-            );
+                    },
+                    { new: true }
+                );
+                const userInfo = await UsersModel.findById(messageData.id);
+                const userImage = userInfo.image;
 
-            const userInfo = await UsersModel.findById(messageData.id);
-            const userImage = userInfo.image;
-
-            io.to(messageData.channelId).emit('showMessages', {
-                name: messageData.name,
-                message: linkedMessage,
-                image: userImage,
-                date: new Date
-            })
+                io.to(messageData.channelId).emit('showMessages', {
+                    name: messageData.name,
+                    message: cleanMessage,
+                    image: userImage,
+                    date: new Date
+                })
+            }
         } catch (error) {
             console.log('error', error);
         }
