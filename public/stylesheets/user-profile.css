@@ -125,6 +125,7 @@ body {
 .aboutMe-box p {
     margin-bottom: 8px;
     font-size: 1.1em;
+    word-break: break-word;
 }
 
 .achievements {

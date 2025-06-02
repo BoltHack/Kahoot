@@ -7,6 +7,7 @@ const path = require("path");
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
 const geoip = require('geoip-lite');
+const sanitizeHtml = require("sanitize-html");
 
 require('dotenv').config();
 
@@ -473,11 +474,17 @@ class PostController {
             const user = req.user;
             const {aboutMe} = req.body;
 
+            const cleanBeforeLink = sanitizeHtml(aboutMe, {
+                allowedTags: ['b', 'i', 'em', 'strong', 'br'],
+            });
+
+            const cleanMessage = linkify(cleanBeforeLink);
+
             await UsersModel.findByIdAndUpdate(
                 user.id,
                 {
                     $set: {
-                        'settings.aboutMe': linkify(aboutMe.slice(0, 200))
+                        'settings.aboutMe': cleanMessage.slice(0, 200)
                     }
                 },
                 { new: true }
