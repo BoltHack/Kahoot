@@ -11,58 +11,43 @@ socket.on('connect', () => {
 });
 
 function addFriend() {
-    const friendId = document.getElementById('friendId').value;
-    if (typeof socket !== 'undefined' && friendId.length > 0) {
-
-        fetch(`/getUserData`, {
-            method: 'post',
-            headers: {
-                'Content-type': 'application/json'
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                let {myFriends} = data;
-                const getId = myFriends.map(doc => doc.id);
-
-                if (friendId === sendId){
-                    Swal.fire({
-                        text: localeType === 'en' ? "You can't be friends with yourself!" : 'Вы не можете подружиться с самим собой!',
-                        icon: "error",
-                        position: "top-end",
-                        timer: 4000,
-                        showConfirmButton: false,
-                        toast: true,
-                        customClass: {
-                            popup: "small-alert"
-                        }
-                    });
-                    return;
-                }
-                if (getId.includes(friendId)) {
-                    Swal.fire({
-                        text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
-                        icon: "error",
-                        position: "top-end",
-                        timer: 4000,
-                        showConfirmButton: false,
-                        toast: true,
-                        customClass: {
-                            popup: "small-alert"
-                        }
-                    });
-                    return;
-                }
-                else {
-                    socket.emit('addFriend', {senderData: { senderId: sendId, friendId: friendId } });
-                    console.log('friendId', friendId);
-                }
-            })
+    const friendName = document.getElementById('friendId').value;
+    if (typeof socket !== 'undefined' && friendName.length > 0) {
+        socket.emit('addFriend', { senderId: sendId, friendName: friendName });
+        console.log('friendId', friendName);
         document.getElementById('friendId').value = '';
     } else {
         console.error("Игрок не найден.");
     }
 }
+
+socket.on('broadcastFriendIdSenderId', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? "You can't be friends with yourself!" : 'Вы не можете подружиться с самим собой!',
+        icon: "error",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
+
+socket.on('broadcastAlreadyFriend', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
+        icon: "error",
+        position: "top-end",
+        timer: 4000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+})
 
 socket.on('broadcastFriendNotFound', async () => {
     Swal.fire({

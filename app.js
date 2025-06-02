@@ -555,10 +555,21 @@ io.on('connection', async (socket) => {
 
     socket.on('addFriend', async (senderData) => {
         try {
-            const friendSocketId = clients[senderData.senderData.friendId];
-            const friendOnlineMod = await UsersModel.findById(senderData.senderData.friendId);
-            const data = await UsersModel.findById(senderData.senderData.senderId);
+            const name = senderData.friendName;
+            const friendName = await UsersModel.findOne({ name });
 
+            const friendSocketId = clients[friendName.id];
+            const friendOnlineMod = await UsersModel.findById(friendName.id);
+            const data = await UsersModel.findById(senderData.senderId);
+
+            if (friendName.id.toString() === senderData.senderId.toString()) {
+                socket.emit('broadcastFriendIdSenderId');
+                return;
+            }
+            if (data.myFriends.some(friend => friend.id === friendName.id)) {
+                socket.emit('broadcastAlreadyFriend');
+                return;
+            }
             if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
                 socket.emit('broadcastFriendRequest');
                 io.to(friendSocketId).emit('friendRequest', {
@@ -566,11 +577,11 @@ io.on('connection', async (socket) => {
                         senderName: data.name,
                         senderId: data.id,
                         senderImage: data.image,
-                        friendId: senderData.senderData.friendId,
+                        friendId: friendName.id,
                     }});
-                console.log(`Запрос в друзья отправлен пользователю ${senderData.senderData.friendId}`);
+                console.log(`Запрос в друзья отправлен пользователю ${friendName.id}`);
             } else {
-                console.log(`Пользователь ${senderData.senderData.friendId} не в сети`);
+                console.log(`Пользователь ${friendName.id} не в сети`);
                 socket.emit('playerIsOffline');
             }
         } catch (error) {
