@@ -12,7 +12,7 @@ socket.on('connect', () => {
 
 function addFriend() {
     const friendId = document.getElementById('friendId').value;
-    if (typeof socket !== 'undefined') {
+    if (typeof socket !== 'undefined' && friendId.length > 0) {
 
         fetch(`/getUserData`, {
             method: 'post',
@@ -37,6 +37,7 @@ function addFriend() {
                             popup: "small-alert"
                         }
                     });
+                    return;
                 }
                 if (getId.includes(friendId)) {
                     Swal.fire({
@@ -50,6 +51,7 @@ function addFriend() {
                             popup: "small-alert"
                         }
                     });
+                    return;
                 }
                 else {
                     socket.emit('addFriend', {senderData: { senderId: sendId, friendId: friendId } });
@@ -90,25 +92,27 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
             friendsLoaderSvg.style.display = 'none';
             myFriendsCount.innerHTML = updateMyFriendsCount
                 .map(friends => `
-<div class="friend-container">
+<span>
+<div class="friend-container" id="friend-container">
     <div class="friend-info-row">
         <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}" onclick="window.open('/user-profile/${friends.id}', '_blank')">
             <img src="${friends.image}" alt="Avatar" class="friend-avatar">
             <div class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></div>
         </div>
-        <div class="friend-name">${friends.name}</div>
-        ${window.location.pathname === '/channels/@me' ? 
+        <div class="friend-name user-name">${friends.name}</div>
+        ${window.location.pathname === '/channels/@me' ?
                     `<a class="friend-btn" onclick="checksChannel('${friends.id}')">${localeType === 'en' ? 'Message' : 'Написать'}</a>` : ''}
         ${window.location.pathname.startsWith('/game/') ?
                     `<a class="friend-btn" onclick="inviteFriend('${friends.id}')">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>` : ''}
         <a class="friend-btn delete" onclick="deleteFriend('${friends.id}')">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
     </div>
 </div>
+</span>
 `).join('');
         }
         else {
             friendsLoaderSvg.style.display = 'none';
-            myFriendsCount.innerHTML = `<p style="position: absolute; left: 50%; transform: translate(-50%); font-size: 16px;">${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>
+            myFriendsCount.innerHTML = `<p>${localeType === 'en' ? 'you have no friends :(' : 'У вас нет друзей :('}</p>
 <br>
 <br>
 `;
@@ -265,21 +269,12 @@ socket.on('updatePage', async () => {
     }
 })
 
-if (window.location.pathname.startsWith('/friends') || window.location.pathname === '/channels/@me') {
-    setTimeout(function () {
-        socket.emit('requestMyFriendsCount', sendId);
-    }, 500);
-    setInterval(function () {
-        console.log('online mod');
-        socket.emit('requestMyFriendsCount', sendId);
-    }, 5000);
-}
-
 const addFriendBtn = document.getElementById('addFriendBtn');
 const friendsContainerBtn = document.getElementById('friendsContainerBtn');
 
 const friendsContainerMenu = document.getElementById('friendsContainerMenu');
 const addFriendMenu = document.getElementById('addFriendMenu');
+const chatName = document.getElementById('chatName');
 
 const menus = JSON.parse(localStorage.getItem('menus') || '{}');
 
@@ -303,6 +298,7 @@ function addFriendMenuOpen() {
 
     addFriendMenu.style.display = 'block';
     addFriendBtn.style.background = '#3b464f';
+    chatName.innerText = localeType === 'en' ? 'Add as friend' : 'Добавить в друзья';
 }
 function addFriendMenuClose() {
     menus.addFriendMenu = 'false';
@@ -314,17 +310,46 @@ function addFriendMenuClose() {
 
 
 function friendsContainerMenuOpen() {
-    friendsContainerMenu.style.display = 'block';
-    friendsContainerBtn.style.background = '#3b464f';
-
     menus.friendsContainerMenu = 'true';
     localStorage.setItem('menus', JSON.stringify(menus));
+
+    friendsContainerMenu.style.display = 'block';
+    friendsContainerBtn.style.background = '#3b464f';
+    chatName.innerText = localeType === 'en' ? 'Friends' : 'Друзья';
 }
 function friendsContainerMenuClose() {
-    friendsContainerMenu.style.display = 'none';
-    friendsContainerBtn.style.background = 'none';
-
     menus.friendsContainerMenu = 'false';
     localStorage.setItem('menus', JSON.stringify(menus));
-}
 
+    friendsContainerMenu.style.display = 'none';
+    friendsContainerBtn.style.background = 'none';
+}
+const searchInput = document.getElementById('searchInput');
+if (window.location.pathname.startsWith('/friends') || window.location.pathname === '/channels/@me') {
+    window.addEventListener('load', () => {
+        setTimeout(function () {
+            socket.emit('requestMyFriendsCount', sendId);
+        }, 500);
+    });
+
+    setInterval(function () {
+        if (searchInput.value.length === 0) {
+            console.log('online mod');
+            socket.emit('requestMyFriendsCount', sendId);
+        }
+    }, 5000);
+
+}
+searchInput.addEventListener('input', function() {
+    const searchValue = this.value.trim().toLowerCase();
+    const userList = document.getElementById('myFriendsCount');
+    const users = userList.getElementsByTagName('span');
+
+    Array.from(users).forEach(user => {
+        const userNameElement = user.querySelector('.user-name');
+
+        const userName = userNameElement ? userNameElement.textContent.toLowerCase() : '';
+
+        user.style.display = (userName.includes(searchValue)) ? '' : 'none';
+    });
+});

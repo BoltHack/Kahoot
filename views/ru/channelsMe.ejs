@@ -45,7 +45,7 @@
     <div class="chat-container">
         <div class="chat-header">
             <div class="chat-position">
-                <span class="chat-name" style="text-decoration: none; cursor: default;">Друзья</span>
+                <span class="chat-name" style="text-decoration: none; cursor: default;" id="chatName"></span>
                 <span id="onlineMod"></span>
             </div>
             <a class="home" href="/">На главную</a>
@@ -53,6 +53,9 @@
 
         <div class="chat-messages">
             <div class="friends-container" id="friendsContainerMenu">
+                <div class="search-friend">
+                    <input type="text" id="searchInput" placeholder="Поиск">
+                </div>
                 <div class="friends-list">
                     <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
                         <circle r="20" cy="50" cx="50"></circle>
@@ -62,9 +65,12 @@
             </div>
 
             <div class="add-friend" id="addFriendMenu" hidden>
+                <span>Вы можете добавить друзей по ID идентификатору игрока.</span>
+                <br>
+                <br>
                 <div class="add-friend-container">
                     <input type="text" placeholder="Введите ID игрока, чтобы отправить ему заявку в друзья" id="friendId" autocomplete="off" required>
-                    <button onclick="addFriend()" class="add-friend-btn">Отправить</button>
+                    <button onclick="addFriend()">Отправить</button>
                 </div>
             </div>
         </div>

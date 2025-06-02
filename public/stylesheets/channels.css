@@ -296,20 +296,20 @@ body {
 }
 .add-friend-container {
     display: flex;
-    gap: 30px;
+    gap: 20px;
 }
 .add-friend-container input {
     background-color: #121518;
     padding: 10px 0;
     text-indent: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid grey;
     border-radius: 5px;
     width: 100%;
     color: white;
 }
 .add-friend-container button {
-    padding: 10px 15px;
+    padding: 10px 40px;
     height: 100%;
     border: none;
     background: #007bff;
@@ -317,4 +317,20 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
+}
+
+.search-friend input {
+    background-color: #121518;
+    padding: 10px 0;
+    text-indent: 10px;
+    margin-bottom: 15px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 100%;
+    color: white;
+}
+
+ul {
+    text-decoration: none;
+    list-style-type: none;
 }
