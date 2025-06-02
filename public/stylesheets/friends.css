@@ -141,3 +141,51 @@
         stroke-dashoffset: -125px;
     }
 }
+
+.new-barrier{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.6;
+    z-index: 4;
+}
+.delete-border {
+    width: 400px;
+    /*width: 100%;*/
+    height: 150px;
+    background-color: #1f242b;
+    border-radius: 10px;
+    z-index: 5;
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*bottom: 0;*/
+    border: 1px solid black;
+}
+.delete-modal {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.delete-modal button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #023047;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#requestDeleteFriend {
+    background-color: #cc0000;
+}
+.delete-modal button:hover {
+    opacity: 0.8;
+}

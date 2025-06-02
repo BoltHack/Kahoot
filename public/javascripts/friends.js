@@ -56,7 +56,7 @@ function addFriend() {
                     console.log('friendId', friendId);
                 }
             })
-
+        document.getElementById('friendId').value = '';
     } else {
         console.error("Игрок не найден.");
     }
@@ -149,13 +149,12 @@ socket.on('broadcastUpdateMyFriends', async () => {
 let alreadyFriendAdd = [];
 
 function deleteFriend(deleteId){
-    if (!window.location.pathname.startsWith('/game/')) {
-        document.getElementById('barrier').hidden = false;
-    }
+    document.getElementById('barrier').hidden = false;
+
     const deleteBorder = document.createElement('div');
     deleteBorder.innerHTML = `
     <div class="delete-border">
-        <h4 style="text-align: center">${localeType === 'en' ? `Remove this player from friends?` : `Удалить данного игрока из друзей?`}</h4>
+        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Remove this player from friends?` : `Удалить данного игрока из друзей?`}</h4>
         <div class="delete-modal">
             <button id="requestDeleteFriend">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
             <button id="closeDeleteBorder">${localeType === 'en' ? 'Cancel' : 'Отмена'}</button>
@@ -164,9 +163,7 @@ function deleteFriend(deleteId){
     document.body.appendChild(deleteBorder);
     document.getElementById('closeDeleteBorder').addEventListener('click', () => {
         document.body.removeChild(deleteBorder);
-        if (!window.location.pathname.startsWith('/game/')) {
-            document.getElementById('barrier').hidden = true;
-        }
+        document.getElementById('barrier').hidden = true;
     })
 
     document.getElementById('requestDeleteFriend').addEventListener('click', () => {
@@ -174,9 +171,7 @@ function deleteFriend(deleteId){
         console.log('delete', deleteId);
         socket.emit('delete-friend', {deleteData: {deleteId: deleteId, myId: sendId} });
         document.body.removeChild(deleteBorder);
-        if (!window.location.pathname.startsWith('/game/')) {
         document.getElementById('barrier').hidden = true;
-    }
     })
 }
 
