@@ -288,19 +288,19 @@ const addFriendMenu = document.getElementById('addFriendMenu');
 
 const menus = JSON.parse(localStorage.getItem('menus') || '{}');
 
-addFriendBtn.addEventListener('click', () => {
+function addFriendFunc() {
     console.log('addFriendBtn');
     window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
     addFriendMenuOpen();
     friendsContainerMenuClose();
-});
+}
 
-friendsContainerBtn.addEventListener('click', () => {
+function friendsContainerFunc() {
     console.log('friendsContainerBtn');
     window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
     addFriendMenuClose();
     friendsContainerMenuOpen();
-});
+}
 
 function addFriendMenuOpen() {
     menus.addFriendMenu = 'true';
