@@ -81,9 +81,10 @@
                 </div>
             <% }) %>
         <% } %>
-        <div id="gameTimer"></div>
-        <div id="correctAnswersCount" class="game-correct-answers-count"></div>
-        <div id="answersCount" class="answers-count"></div>
+            <div id="gameTimer"></div>
+            <span id="mainTimer" class="main-timer"></span>
+            <div id="correctAnswersCount" class="game-correct-answers-count"></div>
+            <div id="answersCount" class="answers-count"></div>
     </div>
     <div class="user-info">
         <% if (gameId.game_author.id === user.id) {%>
