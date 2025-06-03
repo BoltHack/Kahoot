@@ -162,13 +162,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('stopTimer');
         clearTimeout(gameTimerCooldown);
     });
+
+
+    socket.on('updateBannedUsers', (bannedUsers) => {
+        const getId = bannedUsers.map(doc => doc.bannedId);
+        if (getId.includes(id)) {
+            window.removeEventListener("beforeunload", handler);
+            const kickMsg = localeType === 'en' ? 'You have been banned by the admin.' : 'Вы были забанены администатором.';
+            window.location.assign(`/error?message=${encodeURIComponent(kickMsg)}`);
+        }
+    });
 });
 
+let handler;
+
 function checkReload(){
-    window.addEventListener("beforeunload", (event) => {
+    handler = (event) => {
         sessionStorage.setItem("redirectAfterReload", "true");
         event.preventDefault();
-    });
+        event.returnValue = '';
+    };
+
+    window.addEventListener("beforeunload", handler);
 }
 
 window.addEventListener("DOMContentLoaded", function () {

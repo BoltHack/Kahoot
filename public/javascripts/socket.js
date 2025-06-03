@@ -223,14 +223,6 @@ let userName = name;
             }
         });
 
-        socket.on('updateBannedUsers', (bannedUsers) => {
-            const getId = bannedUsers.map(doc => doc.bannedId);
-            if (getId.includes(id)) {
-                const kickMsg = localeType === 'en' ? 'You have been banned by the admin.' : 'Вы были забанены администатором.';
-                window.location.assign(`/error?message=${encodeURIComponent(kickMsg)}`);
-            }
-        });
-
         socket.on('updateBannedUsersCount', (bannedUsersCount) => {
             const users = document.getElementById('bannedUsersCount');
             const banLoaderSvg = document.getElementById('banLoaderSvg');
