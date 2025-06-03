@@ -51,7 +51,7 @@ socket.on('broadcastAlreadyFriend', async () => {
 
 socket.on('broadcastFriendNotFound', async () => {
     Swal.fire({
-        text: localeType === 'en' ? 'unknown ID.' : 'неизвестный ID.',
+        text: localeType === 'en' ? 'Nickname not found.' : 'Никнейм не найден.',
         icon: "error",
         position: "top-end",
         timer: 4000,
