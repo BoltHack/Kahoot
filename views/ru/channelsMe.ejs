@@ -33,6 +33,7 @@
                     <li>
                         <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
                             <%= channels.companionName %>
+                            <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                         </a>
                     </li>
                 <% }) %>
@@ -102,5 +103,6 @@
 <script src="/javascripts/timer.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/javascripts/alert.js"></script>
+<script src="/javascripts/channelTools.js"></script>
 </body>
 </html>

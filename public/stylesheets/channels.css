@@ -252,11 +252,21 @@ body {
     transition: background-color 0.3s ease;
     word-break: break-word;
 }
-
 .chat-link:hover {
     background-color: #3b464f;
     color: #5bbfba;
 }
+
+.chat-link span {
+    position: absolute;
+    color: grey;
+    left: 200px;
+    cursor: pointer;
+}
+.chat-link span:hover {
+    color: white;
+}
+
 .chat-selected {
     background-color: #3b464f;
     color: #5bbfba;

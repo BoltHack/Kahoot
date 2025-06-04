@@ -350,10 +350,11 @@ class ViewController {
 
     static channelsView = async (req, res, next) => {
         try {
+            console.log('test 0');
             const {channel_id} = req.params;
             const locale = req.cookies['locale'] || 'en';
 
-            if (!mongoose.Types.ObjectId.isValid(channel_id)) {
+            if (!channel_id || !mongoose.Types.ObjectId.isValid(channel_id)) {
                 const errorMsg = locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
@@ -373,7 +374,6 @@ class ViewController {
             }
 
             return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, companion, myChannels });
-
         } catch (e) {
             next(e);
         }

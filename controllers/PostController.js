@@ -762,9 +762,21 @@ class PostController {
                 'channelUsers.id': { $all: [user.id, userInfo.id] }
             });
 
+
             if (channel && user.id !== userInfo.id) {
+                const channelUserHas = channel.channelUsers.map(c => c.id.toString() === user.id.toString());
+                const userChannelHas = userId.myChannels.map(c => c.channelId.toString() === channel._id.toString());
+
+                console.log(' channelUserHas', channelUserHas, '\n', 'userChannelHas', userChannelHas);
+                if (channelUserHas.includes(true) && !userChannelHas.includes(true)){
+                    console.log('test 1');
+                    userId.myChannels.push({channelId: channel._id, companionId: userInfo.id, companionName: userInfo.name});
+                    await userId.save();
+                    return res.json({channelId: channel._id});
+                }
                 return res.json({channelId: channel._id});
-            } else {
+            }
+            else {
                 const newChannel = new ChannelsModel({
                     channelUsers: [
                         { id: user.id, name: user.name },
@@ -788,6 +800,28 @@ class PostController {
             next(err);
         }
     };
+
+    static deleteMyChannel = async (req, res, next) => {
+        try {
+            const {channel_id} = req.params;
+            const user = req.user;
+
+            await UsersModel.findOneAndUpdate(
+                { _id: user.id },
+                {
+                    $pull: {
+                        'myChannels': {channelId: channel_id}
+                    },
+                },
+                { new: true }
+            )
+            return res.status(200).json('Канал успешно удалён!');
+        } catch (err){
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
 }
 
 module.exports = PostController;
