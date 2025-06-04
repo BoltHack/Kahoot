@@ -219,9 +219,21 @@
 }
 @keyframes showMissedMsg {
     to {
-        transform: translatey(-10%);
+        transform: translateY(-10%);
     }
 }
+.hideMissedMsg {
+    animation: hideMissed 0.5s forwards;
+}
+@keyframes hideMissed {
+    from {
+        opacity: 1;
+=    }
+    to {
+        opacity: 0;
+=    }
+}
+
 .message-popup-close {
     position: absolute;
     top: 1px;

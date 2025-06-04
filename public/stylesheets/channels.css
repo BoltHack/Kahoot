@@ -19,6 +19,7 @@ body {
     color: #a3d2ca;
     text-shadow: 0 1px 4px #193e3a;
     gap: 50px;
+    min-height: 30px;
 }
 .status-indicator {
     font-size: 14px;

@@ -381,7 +381,10 @@ socket.on('sendMissedMessage', async (msgData) => {
         document.getElementById(closeId).addEventListener('click', () => {
             const messagePopup = document.getElementById(popupId);
             if (messagePopup) {
-                messagePopup.style.display = 'none';
+                alert.classList.add('hideMissedMsg');
+                setTimeout(() => {
+                    messagePopup.style.display = 'none';
+                }, 1000);
             }
         });
     }
