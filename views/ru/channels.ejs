@@ -12,6 +12,7 @@
     const sendName = `<%= myData.name %>`;
     const channelId = `<%= channel._id %>`;
     const localeType = `<%= locale %>`;
+    const companionId = `<%= companion.id %>`;
 </script>
 <body>
 <div class="layout">
@@ -33,11 +34,13 @@
                     <li>
                         <% if (channel._id.toString() === channels.channelId.toString()) { %>
                             <a class="chat-link chat-selected">
+                                💬
                                 <%= channels.companionName %>
                                 <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                             </a>
                         <% } else { %>
                                 <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                    💬
                                     <%= channels.companionName %>
                                     <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                                 </a>

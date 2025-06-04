@@ -6,6 +6,7 @@ function sendMessage() {
             channelId: channelId,
             id: sendId,
             name: sendName,
+            companionId: companionId,
             message: message.value
         });
         message.value = '';

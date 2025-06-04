@@ -87,7 +87,6 @@ body {
 .message-content {
     max-width: 80%;
 }
-
 .message-header {
     display: flex;
     align-items: center;
@@ -261,7 +260,9 @@ body {
     position: absolute;
     color: grey;
     left: 200px;
+    margin-top: -2.5px;
     cursor: pointer;
+    font-size: 17px;
 }
 .chat-link span:hover {
     color: white;

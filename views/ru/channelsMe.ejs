@@ -32,6 +32,7 @@
                 <% myChannels.forEach(channels => { %>
                     <li>
                         <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                            💬
                             <%= channels.companionName %>
                             <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                         </a>
@@ -84,6 +85,7 @@
     const socket = io();
 
     function checkMenusState() {
+        console.log('checkMenus');
         if (menus.addFriendMenu === 'true') {
             addFriendMenuOpen();
             friendsContainerMenuClose();

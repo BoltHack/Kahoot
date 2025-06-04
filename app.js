@@ -775,6 +775,7 @@ io.on('connection', async (socket) => {
 
     socket.on('sendMessage', async (messageData) => {
         try {
+            const companionSocketId = clients[messageData.companionId]
             const cleanBeforeLink = sanitizeHtml(messageData.message, {
                 allowedTags: ['b', 'i', 'em', 'strong', 'br'],
             });
@@ -804,6 +805,12 @@ io.on('connection', async (socket) => {
                     image: userImage,
                     date: new Date
                 })
+                io.to(companionSocketId).emit('sendMissedMessage', {
+                    name: messageData.name,
+                    message: cleanMessage,
+                    image: userImage,
+                    channelId: messageData.channelId
+                });
             }
         } catch (error) {
             console.log('error', error);

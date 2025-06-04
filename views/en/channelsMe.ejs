@@ -32,6 +32,7 @@
                 <% myChannels.forEach(channels => { %>
                     <li>
                         <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                            💬
                             <%= channels.companionName %>
                             <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                         </a>

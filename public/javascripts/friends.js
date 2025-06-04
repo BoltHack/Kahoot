@@ -309,8 +309,10 @@ function friendsContainerMenuClose() {
     friendsContainerMenu.style.display = 'none';
     friendsContainerBtn.style.background = 'none';
 }
+
+
 const searchInput = document.getElementById('searchInput');
-if (window.location.pathname.startsWith('/friends') || window.location.pathname === '/channels/@me') {
+if (window.location.pathname === '/channels/@me') {
     window.addEventListener('load', () => {
         setTimeout(function () {
             socket.emit('requestMyFriendsCount', sendId);
@@ -340,3 +342,47 @@ if (window.location.pathname === '/channels/@me') {
         });
     });
 }
+
+socket.on('sendMissedMessage', async (msgData) => {
+    function generateRandomNumber() {
+        const min = 10000;
+        const max = 99999;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    if (typeof channelId === "undefined") {
+        console.log('Вы пропустили сообщение');
+
+        const alert = document.createElement('div');
+        const randomNumbers = generateRandomNumber();
+        const popupId = `messagePopup-${randomNumbers}`;
+        const closeId = `closePopup-${randomNumbers}`;
+
+        alert.innerHTML = `
+      <div class="message-popup" id="${popupId}">
+        <span class="message-popup-close" id="${closeId}">x</span>
+        <img class="avatar" src="${msgData.image}" alt="Аватарка пользователя" />
+        <div class="message-popup-content">
+          <div style="display: flex; gap: 5px;">
+            <h4>${msgData.name}</h4>
+            <span onclick="window.location.href = '/channels/@me/${msgData.channelId}'">${localeType === 'en' ? 'Reply' : 'Ответить'}</span>
+          </div>
+          <p>${msgData.message.length > 20 ? msgData.message.slice(0, 20) + '...' : msgData.message}</p>
+        </div>
+      </div>
+    `;
+
+        document.body.appendChild(alert);
+
+        setTimeout(() => {
+            alert.classList.add('showMissedMsg');
+        }, 500);
+
+        document.getElementById(closeId).addEventListener('click', () => {
+            const messagePopup = document.getElementById(popupId);
+            if (messagePopup) {
+                messagePopup.style.display = 'none';
+            }
+        });
+    }
+});

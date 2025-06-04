@@ -21,7 +21,6 @@
 @keyframes show {
     to {
         transform: translateX(-100%);
-        cursor: pointer;
     }
 }
 
@@ -198,4 +197,63 @@
 }
 #closeSuccessMenu:hover {
     text-decoration: underline;
+}
+
+
+
+.message-popup {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: transform 0.5s ease-in-out;
+    animation: showMissedMsg 0.7s forwards;
+    width: 300px;
+    background-color: #fff;
+    border-left: 6px solid #4CAF50;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    padding: 16px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+@keyframes showMissedMsg {
+    to {
+        transform: translatey(-10%);
+    }
+}
+.message-popup-close {
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+}
+.message-popup img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 2px solid #4CAF50;
+    flex-shrink: 0;
+}
+.message-popup-content span {
+    font-size: 13px;
+    margin-top: -2px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: black;
+}
+.message-popup-content h4 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: #333;
+}
+
+.message-popup-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
 }
