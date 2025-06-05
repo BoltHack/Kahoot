@@ -1,3 +1,9 @@
+.friends-container {
+    padding: 20px;
+}
+.add-friend {
+    padding: 20px;
+}
 .friend-container {
     background: #1f242b;
     border-radius: 10px;
