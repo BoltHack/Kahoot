@@ -32,11 +32,11 @@ window.addEventListener('load', () => {
 });
 
 socket.on('showMessages', async (showMessagesData) => {
-    console.log('showMessagesData', showMessagesData);
+    console.log('showMessagesData', showMessagesData.id);
     const messages = document.getElementById('messages');
     const newMessage = document.createElement('div');
     newMessage.innerHTML = `
-        <div class="message">
+        <div class="message" data-id="${showMessagesData._id}" id="message-${showMessagesData._id}" onmouseover="showTools({msgId: '${showMessagesData._id}', myId: '${showMessagesData.id}'});">
             <img class="avatar" src="${showMessagesData.image}">
             <div class="message-content">
                 <div class="message-header">
@@ -87,11 +87,69 @@ socket.on('showMessages', async (showMessagesData) => {
                 </div>
                 <div class="text">${showMessagesData.message}</div>
             </div>
-        </div>`
+            
+            <div class="tools" onclick="openToolsMenu('${showMessagesData._id}')" id="tools-${showMessagesData._id}">
+                <div class="menu-trigger">⋯</div>
+                    <div class="dropdown-menu">
+                        <button style="color: #cc0000" onclick="socket.emit('deleteMsg', { channelId: channelId, msgId: '${showMessagesData._id}'})">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
+                    </div>
+                </div>
+            </div>`
     messages.appendChild(newMessage);
     scrollToBottom();
 });
 
+function showTools(msgData) {
+    if (msgData.myId === sendId) {
+        const message = document.getElementById('message-'+msgData.msgId);
+        const toolsId = document.getElementById('tools-'+msgData.msgId);
+
+        toolsId.style.display = 'inline-block';
+
+        message.addEventListener('mouseout', () => {
+            if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
+                message.style.backgroundColor = '#212429';
+                toolsId.style.display = 'inline-block';
+                toolsId.querySelector('.menu-trigger').style.backgroundColor = '#2a2f37';
+            }
+            else {
+                message.style.backgroundColor = '';
+                toolsId.style.display = 'none';
+                toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+            }
+        });
+    }
+}
+function openToolsMenu(msgId) {
+    const message = document.getElementById('message-'+msgId);
+    const toolsId = document.getElementById('tools-'+msgId);
+
+    if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
+        console.log('close')
+        toolsId.querySelector('.dropdown-menu').style.display = 'none';
+        message.style.backgroundColor = '';
+        toolsId.style.display = 'none';
+        toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+    } else {
+        console.log('open')
+        setTimeout(function () {
+            toolsId.style.display = 'inline-block';
+            toolsId.querySelector('.dropdown-menu').style.display = 'flex';
+        }, 100);
+    }
+
+    message.addEventListener('click', () => {
+        setTimeout(() => toolsId.style.display = 'inline-block', 1);
+    });
+
+    document.addEventListener('click', () => {
+        toolsId.querySelector('.dropdown-menu').style.display = 'none';
+        message.style.backgroundColor = '';
+        toolsId.style.display = 'none';
+        toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+    })
+
+}
 setInterval(function () {
     checkOnline();
 }, 10000);
@@ -102,7 +160,6 @@ function checkOnline() {
         channelId
     });
 }
-
 
 socket.on('onlineMod', async (data) => {
     console.log('userOnline', data.userOnline);
@@ -117,3 +174,29 @@ if (window.location.pathname.startsWith('/channels/')) {
 else {
     socket.emit('leaveRoom', channelId);
 }
+socket.on('deleteMessage', async (deleteMessage) => {
+    console.log('deleteMessage', deleteMessage);
+    const messages = document.getElementById('messages');
+    const oldMessage = document.getElementById('message-'+deleteMessage.msgId);
+    if (oldMessage && oldMessage.parentNode) {
+        oldMessage.parentNode.removeChild(oldMessage);
+    }
+    else {
+        messages.removeChild(oldMessage);
+    }
+    scrollToBottom();
+});
+
+socket.on('broadcastDeleteMsg', async () => {
+    Swal.fire({
+        text: localeType === 'en' ? 'message deleted!' : 'Сообщение удалено!',
+        icon: "success",
+        position: "top-end",
+        timer: 3000,
+        showConfirmButton: false,
+        toast: true,
+        customClass: {
+            popup: "small-alert"
+        }
+    });
+});

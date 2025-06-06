@@ -783,23 +783,25 @@ io.on('connection', async (socket) => {
             const cleanMessage = linkify(cleanBeforeLink);
 
             if (cleanMessage.length !== 0) {
+                const newMessage = {
+                    _id: new mongoose.Types.ObjectId(),
+                    id: messageData.id,
+                    name: messageData.name,
+                    message: cleanMessage
+                };
                 await ChannelsModel.findOneAndUpdate(
                     { _id: messageData.channelId },
-                    {
-                        $push: {
-                            messages: {
-                                id: messageData.id,
-                                name: messageData.name,
-                                message: cleanMessage
-                            }
-                        }
-                    },
+                    { $push: { messages: newMessage } },
                     { new: true }
                 );
                 const userInfo = await UsersModel.findById(messageData.id);
                 const userImage = userInfo.image;
 
+                console.log('newMessage._id', newMessage._id);
+
                 io.to(messageData.channelId).emit('showMessages', {
+                    _id: newMessage._id,
+                    id: messageData.id,
                     name: messageData.name,
                     message: cleanMessage,
                     image: userImage,
@@ -811,6 +813,38 @@ io.on('connection', async (socket) => {
                     image: userImage,
                     channelId: messageData.channelId
                 });
+            }
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+
+    socket.on('deleteMsg', async (msgData) => {
+        try {
+            console.log('msgData', msgData);
+
+            const findChannel = await ChannelsModel.findById(msgData.channelId);
+
+            const findDeleteMsg = findChannel.messages.find(m => m._id.toString() === msgData.msgId.toString());
+
+            console.log('findDelete_id', findDeleteMsg._id);
+            console.log(findDeleteMsg.id.toString(), '|', socket.userId.toString());
+
+            if (findDeleteMsg.id.toString() === socket.userId.toString()) {
+                io.to(msgData.channelId).emit('deleteMessage', {
+                    msgId: findDeleteMsg._id
+                })
+                await ChannelsModel.findOneAndUpdate(
+                    { _id: msgData.channelId },
+                    {
+                        $pull: {
+                            'messages': {_id: findDeleteMsg._id}
+                        },
+                    },
+                    { new: true }
+                )
+                console.log('Сообщение удалено!');
+                socket.emit('broadcastDeleteMsg');
             }
         } catch (error) {
             console.log('error', error);

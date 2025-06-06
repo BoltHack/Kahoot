@@ -65,7 +65,7 @@
         <div class="chat-messages" id="messages">
             <% if (channel.messages && channel.messages.length) { %>
                 <% channel.messages.forEach(msg => { %>
-                    <div class="message" data-id="<%= msg._id %>">
+                    <div class="message" data-id="<%= msg._id %>" id="message-<%= msg._id %>" onmouseover="showTools({msgId: '<%= msg._id %>', myId: '<%= msg.id %>'});">
                         <img class="avatar" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
                         <div class="message-content">
                             <div class="message-header">
@@ -102,6 +102,12 @@
                             </div>
 
                             <div class="text"><%- msg.message %></div>
+                        </div>
+                        <div class="tools" onclick="openToolsMenu('<%= msg._id %>')" id="tools-<%= msg._id %>">
+                            <div class="menu-trigger">⋯</div>
+                            <div class="dropdown-menu">
+                                <button style="color: #cc0000" onclick="socket.emit('deleteMsg', {channelId: '<%= channel._id %>', msgId: '<%= msg._id %>' })">Delete</button>
+                            </div>
                         </div>
                     </div>
                 <% }) %>

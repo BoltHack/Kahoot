@@ -8,7 +8,7 @@ function deleteMyChannel(channelId) {
     })
         .then(response => {
             if (response.ok) {
-                window.location.href = '/channels/@me';
+                console.log('сообщение удалено!');
             }
         })
         .catch(error => {
