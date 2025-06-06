@@ -365,7 +365,7 @@ socket.on('sendMissedMessage', async (msgData) => {
         <div class="message-popup-content">
           <div style="display: flex; gap: 5px;">
             <h4>${msgData.name}</h4>
-            <span onclick="window.location.href = '/channels/@me/${msgData.channelId}'">${localeType === 'en' ? 'Reply' : 'Ответить'}</span>
+            <span onclick="checksChannel('${msgData.id}')">${localeType === 'en' ? 'Reply' : 'Ответить'}</span>
           </div>
           <p>${msgData.message.length > 20 ? msgData.message.slice(0, 20) + '...' : msgData.message}</p>
         </div>

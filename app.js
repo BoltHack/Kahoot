@@ -808,6 +808,7 @@ io.on('connection', async (socket) => {
                     date: new Date
                 })
                 io.to(companionSocketId).emit('sendMissedMessage', {
+                    id: messageData.id,
                     name: messageData.name,
                     message: cleanMessage,
                     image: userImage,
