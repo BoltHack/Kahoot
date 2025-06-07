@@ -414,7 +414,6 @@ ul {
     padding: 10px;
     border-radius: 10px;
     background-color: #2a2f37;
-    gap: 5px;
     opacity: 0;
 }
 .show {
@@ -427,10 +426,12 @@ ul {
     }
 }
 .positionWarning button {
-    background-color: #0077b6;
+    background-color: #479c97;
     border-radius: 5px;
     border: none;
     color: #fff;
     padding: 5px;
     cursor: pointer;
+    margin-left: 5px;
+    font-weight: 600;
 }

@@ -897,19 +897,23 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    try {
+        res.locals.message = err.message;
+        res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  res.status(err.status || 500);
-  const message = req.query.message || err.message;
+        res.status(err.status || 500);
+        const message = req.query.message || err.message;
 
-  let locale = req.cookies['locale'] || 'en';
+        let locale = req.cookies['locale'] || 'en';
 
-  if (!req.cookies['locale']) {
-    res.cookie('locale', locale, { httpOnly: true });
-  }
+        if (!req.cookies['locale']) {
+            res.cookie('locale', locale, { httpOnly: true });
+        }
 
-  res.render(locale === 'en' ? 'en/error' : 'ru/error', { message });
+        res.render(locale === 'en' ? 'en/error' : 'ru/error', { message });
+    } catch (error) {
+        console.log('app Error', error);
+    }
 });
 
 server.listen(3000, async () => {
