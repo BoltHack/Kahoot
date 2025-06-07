@@ -23,6 +23,7 @@ input.addEventListener('keydown', function(event) {
 function scrollToBottom() {
     const messagesDiv = document.getElementById('messages');
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    checkPageHeight();
 }
 
 window.addEventListener('load', () => {
@@ -197,3 +198,18 @@ socket.on('broadcastDeleteMsg', async () => {
         }
     });
 });
+
+
+function checkPageHeight() {
+    const messagesDiv = document.getElementById('messages');
+    const positionWarning = document.getElementById('positionWarning');
+    const messageDivScroll = messagesDiv.scrollTop;
+    messagesDiv.addEventListener('scroll', function() {
+        if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
+            positionWarning.classList.add('show');
+        }
+        else {
+            positionWarning.classList.remove('show');
+        }
+    })
+}

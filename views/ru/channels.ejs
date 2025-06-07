@@ -114,6 +114,11 @@
             <% } %>
         </div>
 
+        <div class="positionWarning" id="positionWarning">
+            <span>Вы пересматриваете старые сообщения</span>
+            <button onclick="scrollToBottom()">Перейди к последним сообщениям</button>
+        </div>
+
         <div class="chat-input">
             <input type="text" placeholder="Написать сообщение..." id="message" autocomplete="off" />
             <button onclick="sendMessage()">Отправить</button>
