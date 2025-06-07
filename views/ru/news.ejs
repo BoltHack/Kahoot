@@ -64,7 +64,7 @@
                         <article class="news-card">
                             <h2 class="news-title"><%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 50) + '...' : news.updateTitle %></h2>
                             <div class="news-meta">
-                                <div class="news-author">
+                                <div class="news-author" onclick="window.open('/user-profile/<%= news.author.authorId %>', '_blank')">
                                     <span>Автор</span>
                                     <img src="<%= news.authorImage %>">
                                     <span><%= news.author.authorName %></span>

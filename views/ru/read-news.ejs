@@ -49,7 +49,7 @@
             <article class="news-card">
                 <h2 class="news-title"><%= readNews.updateTitle %></h2>
                 <div class="news-meta">
-                    <div class="news-author">
+                    <div class="news-author" onclick="window.open('/user-profile/<%= readNews.author.authorId %>', '_blank')">
                         <img src="<%= authorImage %>">
                         <span><%= readNews.author.authorName %></span>
                     </div>
