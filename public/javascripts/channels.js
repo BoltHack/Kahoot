@@ -1,6 +1,5 @@
 function sendMessage() {
     const message = document.getElementById('message');
-    console.log('message', message.value);
     if (message.value.length > 0) {
         socket.emit('sendMessage', {
             channelId: channelId,
@@ -32,7 +31,6 @@ window.addEventListener('load', () => {
 });
 
 socket.on('showMessages', async (showMessagesData) => {
-    console.log('showMessagesData', showMessagesData.id);
     const messages = document.getElementById('messages');
     const newMessage = document.createElement('div');
     newMessage.innerHTML = `
@@ -123,18 +121,17 @@ function showTools(msgData) {
 function openToolsMenu(msgId) {
     const message = document.getElementById('message-'+msgId);
     const toolsId = document.getElementById('tools-'+msgId);
+    const dropdownMenu = toolsId.querySelector('.dropdown-menu');
 
-    if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
-        console.log('close')
-        toolsId.querySelector('.dropdown-menu').style.display = 'none';
+    if (dropdownMenu.style.display === 'flex') {
+        dropdownMenu.style.display = 'none';
         message.style.backgroundColor = '';
         toolsId.style.display = 'none';
         toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
     } else {
-        console.log('open')
         setTimeout(function () {
             toolsId.style.display = 'inline-block';
-            toolsId.querySelector('.dropdown-menu').style.display = 'flex';
+            dropdownMenu.style.display = 'flex';
         }, 100);
     }
 

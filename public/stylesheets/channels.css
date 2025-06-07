@@ -355,6 +355,7 @@ ul {
 
 
 .tools {
+    user-select: none;
     position: relative;
     margin-left: auto;
     /*display: inline-block;*/
