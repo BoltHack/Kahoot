@@ -795,6 +795,7 @@ io.on('connection', async (socket) => {
                     { new: true }
                 );
                 const userInfo = await UsersModel.findById(messageData.id);
+                const companionInfo = await UsersModel.findById(messageData.companionId);
                 const userImage = userInfo.image;
 
                 console.log('newMessage._id', newMessage._id);
@@ -807,13 +808,26 @@ io.on('connection', async (socket) => {
                     image: userImage,
                     date: new Date
                 })
-                io.to(companionSocketId).emit('sendMissedMessage', {
-                    id: messageData.id,
-                    name: messageData.name,
-                    message: cleanMessage,
-                    image: userImage,
-                    channelId: messageData.channelId
-                });
+                if (companionSocketId && userInfo.onlineMod === 'Online') {
+                    io.to(companionSocketId).emit('sendMissedMessage', {
+                        id: messageData.id,
+                        name: messageData.name,
+                        message: cleanMessage,
+                        image: userImage,
+                        channelId: messageData.channelId
+                    });
+                } else {
+                    await UsersModel.findOneAndUpdate(
+                        { _id: companionInfo.id },
+                        {
+                            $push: {
+                                'notifications': {
+                                    id: userInfo.id,
+                                }
+                            },
+                        }
+                    )
+                }
             }
         } catch (error) {
             console.log('error', error);

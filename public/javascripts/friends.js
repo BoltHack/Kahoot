@@ -350,7 +350,7 @@ socket.on('sendMissedMessage', async (msgData) => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    if (window.location.pathname !== `/channels/@me/${msgData.channelId}`) {
+    if (window.location.pathname !== `/channels/@me/${msgData.channelId}` && pushNotifications === 'on') {
         console.log('Вы пропустили сообщение');
 
         const alert = document.createElement('div');

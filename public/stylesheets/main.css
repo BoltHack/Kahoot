@@ -389,3 +389,17 @@ footer button {
     transform: translate(5px, 5px);
     box-shadow: none;
 }
+
+.home-friends {
+    display: flex;
+}
+.home-friends span {
+    position: relative;
+    padding: 5px 8px;
+    border-radius: 50%;
+    text-align: center;
+    background: red;
+    color: white;
+    top: -100%;
+    left: 60%;
+}

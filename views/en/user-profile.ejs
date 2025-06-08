@@ -10,6 +10,7 @@
 </head>
 <script>
     const userName = `<%= userInfo.name %>`;
+    const userId = `<%= userInfo.id %>`;
 </script>
 <body>
 <%- include('header.ejs') %>
@@ -84,6 +85,7 @@
     </div>
 </main>
 <div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/timer.js"></script>
 <script>
     socket.on('reloadOtherPage', async () => {
         console.log('reload');

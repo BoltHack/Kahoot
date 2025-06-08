@@ -91,9 +91,3 @@ function authMenu() {
         barrier.hidden = true;
     })
 }
-
-
-// const body = document.body, html = document.documentElement;
-//
-// const height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
-// console.log('height', height);
