@@ -283,7 +283,8 @@ class ViewController {
                 currentPage: page,
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
-                locale
+                locale,
+                notifications
             }
 
             if (req.cookies['token']) {
