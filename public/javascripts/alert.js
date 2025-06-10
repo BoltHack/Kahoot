@@ -1,3 +1,9 @@
+function generateRandomNumber() {
+    const min = 10000;
+    const max = 99999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function successMenu(text) {
     const success = localeType === 'ru' ? 'Выполнено!' : 'Success!';
     const alert = document.createElement('div');
@@ -125,73 +131,17 @@ function errorMenu(text) {
 }
 
 
-
-
-
-function wrongMenu(text) {
-    const error = localeType === 'ru' ? 'Неверный ответ!' : 'Wrong!';
+function requestFriendMenu(requestData) {
     const alert = document.createElement('div');
+    const randomNumbers = generateRandomNumber();
+    const popupId = `successCard-${randomNumbers}`;
+    const acceptAcceptId = `acceptRequest-${randomNumbers}`;
+    const closeId = `closeMenu-${randomNumbers}`;
+    const dataSenderId = requestData.senderId;
+    const dataFriendId = requestData.friendId;
+
     alert.innerHTML = `
-<div class="error-card" id="errorCard">
-  <svg class="error-wave" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M0,256L11.4,240C22.9,224,46,192,69,192C91.4,192,114,224,137,234.7C160,245,183,235,206,213.3C228.6,192,251,160,274,149.3C297.1,139,320,149,343,181.3C365.7,213,389,267,411,282.7C434.3,299,457,277,480,250.7C502.9,224,526,192,549,181.3C571.4,171,594,181,617,208C640,235,663,277,686,256C708.6,235,731,149,754,122.7C777.1,96,800,128,823,165.3C845.7,203,869,245,891,224C914.3,203,937,117,960,112C982.9,107,1006,181,1029,197.3C1051.4,213,1074,171,1097,144C1120,117,1143,107,1166,133.3C1188.6,160,1211,224,1234,218.7C1257.1,213,1280,139,1303,133.3C1325.7,128,1349,192,1371,192C1394.3,192,1417,128,1429,96L1440,64L1440,320L1428.6,320C1417.1,320,1394,320,1371,320C1348.6,320,1326,320,1303,320C1280,320,1257,320,1234,320C1211.4,320,1189,320,1166,320C1142.9,320,1120,320,1097,320C1074.3,320,1051,320,1029,320C1005.7,320,983,320,960,320C937.1,320,914,320,891,320C868.6,320,846,320,823,320C800,320,777,320,754,320C731.4,320,709,320,686,320C662.9,320,640,320,617,320C594.3,320,571,320,549,320C525.7,320,503,320,480,320C457.1,320,434,320,411,320C388.6,320,366,320,343,320C320,320,297,320,274,320C251.4,320,229,320,206,320C182.9,320,160,320,137,320C114.3,320,91,320,69,320C45.7,320,23,320,11,320L0,320Z"
-      fill-opacity="1"
-    ></path>
-  </svg>
-
-  <div class="error-icon-container">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
-      stroke-width="0"
-      fill="currentColor"
-      stroke="currentColor"
-      class="error-icon"
-    >
-      <path
-        d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"
-      ></path>
-    </svg>
-  </div>
-  <div class="error-message-text-container">
-    <p class="error-message-text">${error}</p>
-    <p class="error-sub-text">${text}</p>
-  </div>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 15 15"
-    stroke-width="0"
-    fill="none"
-    stroke="currentColor"
-    class="error-cross-icon"
-  >
-    <path
-      fill="currentColor"
-      d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-      clip-rule="evenodd"
-      fill-rule="evenodd"
-    ></path>
-  </svg>
-</div>
-
-`
-    document.body.appendChild(alert);
-
-    setTimeout(() => {
-        const errorCard = document.getElementById('errorCard');
-        errorCard.classList.add('back-show');
-    }, 2000);
-    setTimeout(() => {
-        document.body.removeChild(alert);
-    }, 4000);
-}
-
-
-function requestFriendMenu(text) {
-    const alert = document.createElement('div');
-    alert.innerHTML = `
-<div class="success-card" id="successCard">
+<div class="success-card" id="${popupId}">
   <svg class="success-wave" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M0,256L11.4,240C22.9,224,46,192,69,192C91.4,192,114,224,137,234.7C160,245,183,235,206,213.3C228.6,192,251,160,274,149.3C297.1,139,320,149,343,181.3C365.7,213,389,267,411,282.7C434.3,299,457,277,480,250.7C502.9,224,526,192,549,181.3C571.4,171,594,181,617,208C640,235,663,277,686,256C708.6,235,731,149,754,122.7C777.1,96,800,128,823,165.3C845.7,203,869,245,891,224C914.3,203,937,117,960,112C982.9,107,1006,181,1029,197.3C1051.4,213,1074,171,1097,144C1120,117,1143,107,1166,133.3C1188.6,160,1211,224,1234,218.7C1257.1,213,1280,139,1303,133.3C1325.7,128,1349,192,1371,192C1394.3,192,1417,128,1429,96L1440,64L1440,320L1428.6,320C1417.1,320,1394,320,1371,320C1348.6,320,1326,320,1303,320C1280,320,1257,320,1234,320C1211.4,320,1189,320,1166,320C1142.9,320,1120,320,1097,320C1074.3,320,1051,320,1029,320C1005.7,320,983,320,960,320C937.1,320,914,320,891,320C868.6,320,846,320,823,320C800,320,777,320,754,320C731.4,320,709,320,686,320C662.9,320,640,320,617,320C594.3,320,571,320,549,320C525.7,320,503,320,480,320C457.1,320,434,320,411,320C388.6,320,366,320,343,320C320,320,297,320,274,320C251.4,320,229,320,206,320C182.9,320,160,320,137,320C114.3,320,91,320,69,320C45.7,320,23,320,11,320L0,320Z"
@@ -200,14 +150,14 @@ function requestFriendMenu(text) {
   </svg>
 
   <div>
-    <img class="success-icon-container" src="${text.requestData.senderImage}">
+    <img class="success-icon-container" src="${requestData.senderImage}">
   </div>
   <div class="success-message-text-container">
-    <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `Friend request from ${text.requestData.senderName }` : `Запрос на дружбу от ${text.requestData.senderName }`}</p>
+    <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `Friend request from ${requestData.senderName}` : `Запрос на дружбу от ${requestData.senderName}`}</p>
     <br>
     <span class="success-message-request">
-        <a class="accept-request" data-id="${text.requestData.friendId}" data-senderId="${text.requestData.senderId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
-        <a id="closeSuccessMenu">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
+        <a id="${acceptAcceptId}" class="accept-request" data-id="${requestData.friendId}" data-senderId="${requestData.senderId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
+        <a id="${closeId}" class="close-menu">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
     </span>
   </div>
 </div>
@@ -215,68 +165,80 @@ function requestFriendMenu(text) {
 
     document.body.appendChild(alert);
 
-    const successCard = document.getElementById('successCard');
+    const successCard = document.getElementById(popupId);
+    const closeSuccessMenu = document.getElementById(closeId);
 
-    document.getElementById('closeSuccessMenu').addEventListener('click', () => {
+    closeSuccessMenu.addEventListener('click', () => {
+        alreadyFriendAdd.splice(dataFriendId);
         successCard.classList.add('back-show');
         setTimeout(() => {
-            document.body.removeChild(alert);
+            if (closeSuccessMenu && closeSuccessMenu.parentNode) {
+                document.parentNode.removeChild(alert);
+            }
+            else {
+                document.body.removeChild(closeSuccessMenu);
+            }
         }, 2000);
     })
 
-    const acceptRequest = document.querySelectorAll('.accept-request');
+    const acceptRequest = document.getElementById(acceptAcceptId);
 
-    acceptRequest.forEach(button => {
-        button.addEventListener('click', function () {
-            const dataId = this.getAttribute('data-id');
-            const dataSenderId = this.getAttribute('data-senderId');
-            socket.emit('requestMyFriendsCount', dataId);
+    acceptRequest.addEventListener('click', () => {
+        socket.emit('requestMyFriendsCount', dataSenderId);
 
-            if (alreadyFriendAdd.includes(dataSenderId)) {
-                Swal.fire({
-                    text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже есть в вашем списке друзей.',
-                    icon: "error",
-                    position: "top-end",
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    customClass: {
-                        popup: "small-alert"
-                    }
-                });
-                successCard.classList.add('back-show');
-                setTimeout(() => {
+        if (alreadyFriendAdd.includes(dataSenderId)) {
+            Swal.fire({
+                text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже есть в вашем списке друзей.',
+                icon: "error",
+                position: "top-end",
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                customClass: {
+                    popup: "small-alert"
+                }
+            });
+            successCard.classList.add('back-show');
+            setTimeout(() => {
+                if (alert && alert.parentNode) {
+                    document.parentNode.removeChild(alert);
+                }
+                else {
                     document.body.removeChild(alert);
-                }, 2000);
-            }
-            else {
-                alreadyFriendAdd.push(dataSenderId)
-                console.log('acceptId', dataId);
-                socket.emit('acceptFriendRequest', { acceptData: { dataId: dataId, senderId: dataSenderId } });
+                }
+            }, 2000);
+        }
+        else {
+            alreadyFriendAdd.push(dataSenderId)
+            console.log('acceptId', dataFriendId);
+            socket.emit('acceptFriendRequest', { acceptData: { dataId: dataFriendId, senderId: dataSenderId } });
 
-                const sendId = dataId
-                setTimeout(function () {
-                    socket.emit('requestMyFriendsCount', sendId);
-                }, 500);
+            setTimeout(function () {
+                socket.emit('requestMyFriendsCount', dataSenderId);
+            }, 500);
 
-                successCard.classList.add('back-show');
-                setTimeout(() => {
+            successCard.classList.add('back-show');
+            setTimeout(() => {
+                if (alert && alert.parentNode) {
+                    document.parentNode.removeChild(alert);
+                }
+                else {
                     document.body.removeChild(alert);
-                }, 2000);
+                }
+            }, 2000);
 
-                Swal.fire({
-                    text: localeType === 'en' ? 'Friend request accepted!' : 'Запрос на дружбу принят!',
-                    icon: "success",
-                    position: "top-end",
-                    timer: 4000,
-                    showConfirmButton: false,
-                    toast: true,
-                    customClass: {
-                        popup: "small-alert"
-                    }
-                });
-            }
-        })
+            Swal.fire({
+                text: localeType === 'en' ? 'Friend request accepted!' : 'Запрос на дружбу принят!',
+                icon: "success",
+                position: "top-end",
+                timer: 4000,
+                showConfirmButton: false,
+                toast: true,
+                customClass: {
+                    popup: "small-alert"
+                }
+            });
+        }
     })
 }
 
@@ -284,8 +246,12 @@ function requestFriendMenu(text) {
 
 function inviteFriendMenu(data) {
     const alert = document.createElement('div');
+    const randomNumbers = generateRandomNumber();
+    const popupId = `successCard-${randomNumbers}`;
+    const closeId = `closeMenu-${randomNumbers}`;
+
     alert.innerHTML = `
-<div class="success-card" id="successCard">
+<div class="success-card" id="${popupId}">
   <svg class="success-wave" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M0,256L11.4,240C22.9,224,46,192,69,192C91.4,192,114,224,137,234.7C160,245,183,235,206,213.3C228.6,192,251,160,274,149.3C297.1,139,320,149,343,181.3C365.7,213,389,267,411,282.7C434.3,299,457,277,480,250.7C502.9,224,526,192,549,181.3C571.4,171,594,181,617,208C640,235,663,277,686,256C708.6,235,731,149,754,122.7C777.1,96,800,128,823,165.3C845.7,203,869,245,891,224C914.3,203,937,117,960,112C982.9,107,1006,181,1029,197.3C1051.4,213,1074,171,1097,144C1120,117,1143,107,1166,133.3C1188.6,160,1211,224,1234,218.7C1257.1,213,1280,139,1303,133.3C1325.7,128,1349,192,1371,192C1394.3,192,1417,128,1429,96L1440,64L1440,320L1428.6,320C1417.1,320,1394,320,1371,320C1348.6,320,1326,320,1303,320C1280,320,1257,320,1234,320C1211.4,320,1189,320,1166,320C1142.9,320,1120,320,1097,320C1074.3,320,1051,320,1029,320C1005.7,320,983,320,960,320C937.1,320,914,320,891,320C868.6,320,846,320,823,320C800,320,777,320,754,320C731.4,320,709,320,686,320C662.9,320,640,320,617,320C594.3,320,571,320,549,320C525.7,320,503,320,480,320C457.1,320,434,320,411,320C388.6,320,366,320,343,320C320,320,297,320,274,320C251.4,320,229,320,206,320C182.9,320,160,320,137,320C114.3,320,91,320,69,320C45.7,320,23,320,11,320L0,320Z"
@@ -301,7 +267,7 @@ function inviteFriendMenu(data) {
     <br>
     <span class="success-message-request">
         <a class="accept-request" data-gameId="${data.requestData.gameId}" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
-        <a id="closeSuccessMenu" class="reject-request" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
+        <a id="${closeId}" class="reject-request" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
     </span>
   </div>
 </div>
@@ -314,7 +280,12 @@ function inviteFriendMenu(data) {
     document.getElementById('closeSuccessMenu').addEventListener('click', () => {
         successCard.classList.add('back-show');
         setTimeout(() => {
-            document.body.removeChild(alert);
+            if (alert && alert.parentNode) {
+                document.parentNode.removeChild(alert);
+            }
+        else {
+                document.body.removeChild(alert);
+            }
         }, 2000);
     })
 
@@ -337,7 +308,12 @@ function inviteFriendMenu(data) {
 
             successCard.classList.add('back-show');
             setTimeout(() => {
-                document.body.removeChild(alert);
+                if (alert && alert.parentNode) {
+                    document.parentNode.removeChild(alert);
+                }
+                else {
+                    document.body.removeChild(alert);
+                }
                 }, 2000);
         })
     })
@@ -358,7 +334,12 @@ function inviteFriendMenu(data) {
 
             successCard.classList.add('back-show');
             setTimeout(() => {
-                document.body.removeChild(alert);
+                if (alert && alert.parentNode) {
+                    document.parentNode.removeChild(alert);
+                }
+                else {
+                    document.body.removeChild(alert);
+                }
             }, 2000);
         })
     })

@@ -61,7 +61,7 @@
                     </ul>
                 </div>
 
-                <% if (userInfo.settings && userInfo.settings.aboutMe) { %>
+                <% if (userInfo.settings.aboutMe && userInfo.settings.aboutMe.length) { %>
                     <div class="aboutMe-box">
                         <h3>📝 About me</h3>
                         <p><%- userInfo.settings.aboutMe %></p>

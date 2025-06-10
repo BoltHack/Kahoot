@@ -157,8 +157,7 @@ class ViewController {
     static returnMenuView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
-            const notifications = req.cookies['notifications'] || 'on';
-            return res.render(locale === 'en' ? 'en/return-menu' : 'ru/return-menu', {locale, notifications});
+            return res.render(locale === 'en' ? 'en/return-menu' : 'ru/return-menu');
         } catch (e) {
             next(e);
         }

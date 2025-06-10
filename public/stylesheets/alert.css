@@ -192,10 +192,11 @@
     text-decoration: underline;
 }
 
-#closeSuccessMenu {
+.close-menu {
     color: #c1121f;
+    text-decoration: none;
 }
-#closeSuccessMenu:hover {
+.close-menu:hover {
     text-decoration: underline;
 }
 

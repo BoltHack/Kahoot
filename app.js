@@ -573,12 +573,11 @@ io.on('connection', async (socket) => {
             if (friendSocketId && friendOnlineMod.onlineMod === 'Online') {
                 socket.emit('broadcastFriendRequest');
                 io.to(friendSocketId).emit('friendRequest', {
-                    requestData: {
                         senderName: data.name,
                         senderId: data.id,
                         senderImage: data.image,
                         friendId: friendName.id,
-                    }});
+                    });
                 console.log(`Запрос в друзья отправлен пользователю ${friendName.id}`);
             } else {
                 console.log(`Пользователь ${friendName.id} не в сети`);
