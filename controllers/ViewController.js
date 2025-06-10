@@ -113,7 +113,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, locale });
+            return res.render(locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, locale, notifications });
         } catch (e) {
             next(e);
         }
