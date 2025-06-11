@@ -151,13 +151,12 @@
 <section id="editStatusMenu" hidden>
     <div style="display: block; margin-top: -15px;">
         <p>Change profile status</p>
-        <textarea name="status" id="status" placeholder="Enter the desired status" maxlength="90" required></textarea>
+        <textarea name="status" id="status" placeholder="Enter the desired status" maxlength="90" required><%= userId.settings.status %></textarea>
         <a id="maxStatusLength">0/90</a>
         <br>
         <br>
         <div class="edit-buttons">
             <input type="button" value="Change" id="changeStatusBtn">
-            <input type="button" value="Delete" id="deleteStatusBtn">
         </div>
     </div>
 </section>
@@ -165,13 +164,12 @@
 <section id="editAboutMeMenu" hidden>
     <div style="display: block; margin-top: -15px;">
         <p>Write something about yourself</p>
-        <textarea name="aboutMe" id="aboutMe" placeholder="Enter the desired text" maxlength="200" required></textarea>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Enter the desired text" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
         <a id="maxAboutMeLength">0/200</a>
         <br>
         <br>
         <div class="edit-buttons">
             <input type="button" value="Change" id="changeAboutMeBtn">
-            <input type="button" value="Delete" id="deleteAboutMeBtn">
         </div>
     </div>
 </section>

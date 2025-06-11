@@ -149,13 +149,12 @@
 <section id="editStatusMenu" hidden>
     <div style="display: block; margin-top: -15px;">
         <p>Сменить статус профиля</p>
-        <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required></textarea>
+        <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
         <a id="maxStatusLength">0/90</a>
         <br>
         <br>
         <div class="edit-buttons">
             <input type="button" value="Изменить" id="changeStatusBtn">
-            <input type="button" value="Удалить" id="deleteStatusBtn">
         </div>
     </div>
 </section>
@@ -163,13 +162,12 @@
 <section id="editAboutMeMenu" hidden>
     <div style="display: block; margin-top: -15px;">
         <p>Напишите что-нибудь о себе</p>
-        <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required></textarea>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
         <a id="maxAboutMeLength">0/200</a>
         <br>
         <br>
         <div class="edit-buttons">
             <input type="button" value="Сохранить" id="changeAboutMeBtn">
-            <input type="button" value="Удалить" id="deleteAboutMeBtn">
         </div>
     </div>
 </section>

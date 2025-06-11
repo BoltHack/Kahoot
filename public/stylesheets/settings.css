@@ -159,13 +159,16 @@ input:checked + .slider::before {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
+    /*display: block;*/
 }
 .extra-setting {
+    /*width: 100%;*/
     padding: 15px;
     background: #f7f7f7;
     border-radius: 10px;
     transition: background 0.3s ease;
     cursor: pointer;
+    margin-top: 20px;
 }
 .extra-setting:hover {
     background: #eaeaea;
@@ -178,6 +181,7 @@ input:checked + .slider::before {
 .extra-setting p {
     font-size: 14px;
     color: #555;
+    word-break: break-word;
 }
 .text {
     margin-top: 3px;

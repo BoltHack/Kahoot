@@ -266,53 +266,12 @@ editStatusBtn.addEventListener('click', () => {
 
 document.getElementById('changeStatusBtn').addEventListener('click', () => {
     const status = document.getElementById('status');
-
-    if (status.value) {
-        fetch('/changeStatus',{
-            method: "POST",
-            headers: {
-                'Content-type': 'application/x-www-form-urlencoded'
-            },
-            body: `status=${encodeURIComponent(status.value)}`
-        })
-            .then(response => {
-                if(response.ok){
-                    console.log('Статус успешно изменён!')
-                    changeSettings();
-                    setTimeout(function () {
-                        window.location.href = '/settings';
-                        return response.json();
-                    }, 1000);
-                } else {
-                    console.log('Ошибка при загрузке изображения');
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
-    } else {
-        Swal.fire({
-            text: localeType === 'en' ? 'Please fill in the input fieldю' : 'Пожалуйста, заполните поле ввода.',
-            icon: "warning",
-            position: "top-end",
-            timer: 4000,
-            showConfirmButton: false,
-            toast: true,
-            customClass: {
-                popup: "small-alert"
-            }
-        });
-    }
-});
-
-document.getElementById('deleteStatusBtn').addEventListener('click', () => {
-
     fetch('/changeStatus',{
         method: "POST",
         headers: {
             'Content-type': 'application/x-www-form-urlencoded'
         },
-        body: `status=`
+        body: `status=${encodeURIComponent(status.value)}`
     })
         .then(response => {
             if(response.ok){
@@ -346,51 +305,12 @@ editAboutMeBtn.addEventListener('click', () => {
 });
 document.getElementById('changeAboutMeBtn').addEventListener('click', () => {
     const aboutMe = document.getElementById('aboutMe');
-
-    if (aboutMe.value) {
-        fetch('/changeAboutMe',{
-            method: "POST",
-            headers: {
-                'Content-type': 'application/x-www-form-urlencoded'
-            },
-            body: `aboutMe=${encodeURIComponent(aboutMe.value)}`
-        })
-            .then(response => {
-                if(response.ok){
-                    changeSettings();
-                    setTimeout(function () {
-                        window.location.href = '/settings';
-                        return response.json();
-                    }, 1000);
-                } else {
-                    console.log('Ошибка при загрузке изображения');
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
-    } else {
-        Swal.fire({
-            text: localeType === 'en' ? 'Please fill in the input field.' : 'Пожалуйста, заполните поле ввода.',
-            icon: "warning",
-            position: "top-end",
-            timer: 4000,
-            showConfirmButton: false,
-            toast: true,
-            customClass: {
-                popup: "small-alert"
-            }
-        });
-    }
-});
-
-document.getElementById('deleteAboutMeBtn').addEventListener('click', () => {
     fetch('/changeAboutMe',{
         method: "POST",
         headers: {
             'Content-type': 'application/x-www-form-urlencoded'
         },
-        body: `aboutMe=`
+        body: `aboutMe=${encodeURIComponent(aboutMe.value)}`
     })
         .then(response => {
             if(response.ok){
@@ -407,6 +327,7 @@ document.getElementById('deleteAboutMeBtn').addEventListener('click', () => {
             console.error('Ошибка:', error);
         });
 });
+
 
 const status = document.getElementById('status');
 const maxStatusLength = document.getElementById('maxStatusLength');
