@@ -249,7 +249,8 @@ body {
 }
 
 .chat-link {
-    color: #ced4da;
+    /*color: #ced4da;*/
+    color: #adb5bd;
     text-decoration: none;
     padding: 10px 12px;
     display: block;
@@ -260,7 +261,7 @@ body {
 }
 .chat-link:hover {
     background-color: #3b464f;
-    color: #5bbfba;
+    color: #ced4da;
 }
 
 .chat-link span {
@@ -277,7 +278,8 @@ body {
 
 .chat-selected {
     background-color: #3b464f;
-    color: #5bbfba;
+    /*color: #5bbfba;*/
+    color: #ced4da;
 }
 .chat-container {
     flex: 1;
