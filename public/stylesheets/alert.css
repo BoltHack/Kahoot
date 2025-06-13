@@ -192,11 +192,11 @@
     text-decoration: underline;
 }
 
-.close-menu {
+.close-menu, .reject-request {
     color: #c1121f;
     text-decoration: none;
 }
-.close-menu:hover {
+.close-menu:hover, .reject-request:hover {
     text-decoration: underline;
 }
 

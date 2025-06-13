@@ -247,8 +247,9 @@ function requestFriendMenu(requestData) {
 function inviteFriendMenu(data) {
     const alert = document.createElement('div');
     const randomNumbers = generateRandomNumber();
-    const popupId = `successCard-${randomNumbers}`;
+    const popupId = `inviteMenu-${randomNumbers}`;
     const closeId = `closeMenu-${randomNumbers}`;
+    const acceptId = `acceptRequest-${randomNumbers}`;
 
     alert.innerHTML = `
 <div class="success-card" id="${popupId}">
@@ -266,7 +267,7 @@ function inviteFriendMenu(data) {
     <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `${data.requestData.senderName } invites you to the game.` : `${data.requestData.senderName } приглашает вас в игру.`}</p>
     <br>
     <span class="success-message-request">
-        <a class="accept-request" data-gameId="${data.requestData.gameId}" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
+        <a id="${acceptId}" class="accept-request" data-gameId="${data.requestData.gameId}" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Accept' : 'Принять'}</a>
         <a id="${closeId}" class="reject-request" data-senderId="${data.requestData.senderId}" data-myId="${data.requestData.friendId}">${localeType === 'en' ? 'Reject' : 'Отклонить'}</a>
     </span>
   </div>
@@ -275,73 +276,51 @@ function inviteFriendMenu(data) {
 
     document.body.appendChild(alert);
 
-    const successCard = document.getElementById('successCard');
+    const successCard = document.getElementById(popupId);
 
-    document.getElementById('closeSuccessMenu').addEventListener('click', () => {
+    const acceptRequest = document.getElementById(acceptId);
+
+    acceptRequest.addEventListener('click',  () => {
+        socket.emit('requestAcceptInvite', {
+            requestData: {
+                senderId: data.requestData.senderId,
+                friendId: data.requestData.friendId
+            }});
+
+        window.location.href = `/game/${data.requestData.gameId}`;
+        sessionStorage.setItem('gamePage', 'false');
+
         successCard.classList.add('back-show');
         setTimeout(() => {
             if (alert && alert.parentNode) {
                 document.parentNode.removeChild(alert);
             }
-        else {
+            else {
                 document.body.removeChild(alert);
             }
         }, 2000);
     })
 
-    const acceptRequest = document.querySelectorAll('.accept-request');
 
-    acceptRequest.forEach(button => {
-        button.addEventListener('click', function () {
-            const dataGameId = this.getAttribute('data-gameId');
-            const dataSenderId = this.getAttribute('data-senderId');
-            const dataMyId = this.getAttribute('data-myId');
+    const rejectRequest = document.getElementById(closeId);
 
-            socket.emit('requestAcceptInvite', {
-                requestData: {
-                    senderId: dataSenderId,
-                    friendId: dataMyId
-                }});
+    rejectRequest.addEventListener('click', () => {
 
-            window.location.href = `/game/${dataGameId}`;
-            sessionStorage.setItem('gamePage', 'false');
+        socket.emit('requestRejectInvite', {
+            requestData: {
+                senderId: data.requestData.senderId,
+                friendId: data.requestData.friendId
+            }});
 
-            successCard.classList.add('back-show');
-            setTimeout(() => {
-                if (alert && alert.parentNode) {
-                    document.parentNode.removeChild(alert);
-                }
-                else {
-                    document.body.removeChild(alert);
-                }
-                }, 2000);
-        })
-    })
-
-
-    const rejectRequest = document.querySelectorAll('.reject-request');
-
-    rejectRequest.forEach(button => {
-        button.addEventListener('click', function () {
-            const dataSenderId = this.getAttribute('data-senderId');
-            const dataMyId = this.getAttribute('data-myId');
-
-            socket.emit('requestRejectInvite', {
-                requestData: {
-                    senderId: dataSenderId,
-                    friendId: dataMyId
-                }});
-
-            successCard.classList.add('back-show');
-            setTimeout(() => {
-                if (alert && alert.parentNode) {
-                    document.parentNode.removeChild(alert);
-                }
-                else {
-                    document.body.removeChild(alert);
-                }
-            }, 2000);
-        })
+        successCard.classList.add('back-show');
+        setTimeout(() => {
+            if (alert && alert.parentNode) {
+                document.parentNode.removeChild(alert);
+            }
+            else {
+                document.body.removeChild(alert);
+            }
+        }, 2000);
     })
 }
 
