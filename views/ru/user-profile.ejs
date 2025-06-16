@@ -36,6 +36,14 @@
                     </div>
                 </div>
 
+                <div style="text-align: start; margin-left: 22px;">
+                    <span>В числе участников с</span>
+                    <br/>
+                    <span><%= userInfo.registerDate %></span>
+                    <br/>
+                    <br/>
+                </div>
+
                 <% if (userInfo.id !== myInfo.id) { %>
                 <div style="display: flex">
                     <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Написать</button>

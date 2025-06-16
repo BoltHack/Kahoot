@@ -34,6 +34,7 @@ input, textarea {
 textarea {
     max-width: 600px;
     min-width: 600px;
+    min-height: 150px;
 }
 button {
     background: #007bff;

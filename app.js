@@ -865,6 +865,39 @@ io.on('connection', async (socket) => {
         }
     });
 
+    socket.on('editMsg', async (msgData) => {
+        const findChannel = await ChannelsModel.findById(msgData.channelId);
+
+        const findEditMsg = findChannel.messages.find(m => m._id.toString() === msgData.msgId.toString());
+
+        const cleanBeforeLink = sanitizeHtml(msgData.newMsg, {
+            allowedTags: ['b', 'i', 'em', 'strong', 'br'],
+        });
+
+        const cleanMessage = linkify(cleanBeforeLink);
+
+        if (findEditMsg.id.toString() === socket.userId.toString() && cleanMessage.length !== 0) {
+            console.log('msgData', msgData.newMsg);
+            await ChannelsModel.findOneAndUpdate(
+                { _id: msgData.channelId },
+                {
+                    $set: {
+                        'messages.$[elem].message': msgData.newMsg,
+                        'messages.$[elem].edited': true
+                    }
+                },
+                {
+                    arrayFilters: [{ 'elem._id': msgData.msgId }],
+                    new: true
+                }
+            );
+            io.to(msgData.channelId).emit('editedMsg', {
+                msgId: msgData.msgId,
+                editMessage: cleanMessage,
+            })
+        }
+    });
+
     socket.on('checkOnline', async (userData) => {
         const channel = await ChannelsModel.findById(userData.channelId);
 

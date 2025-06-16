@@ -84,12 +84,17 @@ socket.on('showMessages', async (showMessagesData) => {
         }
     })() }</span>
                 </div>
-                <div class="text">${showMessagesData.message}</div>
+                <div class="msg-content">
+                    <div class="text" id="msg-${showMessagesData._id}">${showMessagesData.message}</div>
+                    <span class="edited-msg" id="edited-${showMessagesData._id}"></span>
+                </div>
             </div>
             
             <div class="tools" onclick="openToolsMenu('${showMessagesData._id}')" id="tools-${showMessagesData._id}">
                 <div class="menu-trigger">⋯</div>
                     <div class="dropdown-menu">
+                        <button onclick="msgRedactionMenu('${showMessagesData._id}')">${localeType === 'en' ? 'Edit' : 'Редактировать'}</button>
+                        <div class="tools-line"></div>
                         <button style="color: #cc0000" onclick="socket.emit('deleteMsg', { channelId: channelId, msgId: '${showMessagesData._id}'})">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
                     </div>
                 </div>
@@ -206,10 +211,59 @@ function checkPageHeight() {
     const messageDivScroll = messagesDiv.scrollTop;
     messagesDiv.addEventListener('scroll', function() {
         if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
+            positionWarning.style.display = 'flex';
             positionWarning.classList.add('show');
         }
         else {
+            positionWarning.style.display = 'none';
             positionWarning.classList.remove('show');
         }
     })
 }
+
+function msgRedactionMenu(msgId) {
+    const message = document.getElementById('msg-'+msgId);
+    const editInput = document.createElement('input');
+    const text = document.querySelectorAll('.edit-input');
+
+    editInput.type = 'text';
+    editInput.value = message.textContent;
+    editInput.className = 'edit-input';
+
+    text.forEach(menu => {
+        const originalText = menu.value;
+        const div = document.createElement('div');
+        div.className = 'text';
+        div.textContent = originalText;
+        menu.replaceWith(div);
+    })
+    message.replaceWith(editInput);
+    editInput.focus();
+
+    editInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const newText = editInput.value.trim();
+            if (newText !== '') {
+                const value = editInput.value;
+                console.log('Введённый текст:', value);
+                socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
+                editInput.replaceWith(message);
+            }
+        }
+        else if (event.key === 'Escape') {
+            editInput.replaceWith(message);
+        }
+    });
+
+    return editInput;
+}
+
+
+socket.on('editedMsg', async (editMsg) => {
+    const message = document.getElementById('msg-'+editMsg.msgId);
+    const edited = document.getElementById('edited-'+editMsg.msgId);
+
+    message.textContent = editMsg.editMessage;
+    edited.textContent = localeType === 'en' ? 'Edited' : '(Изменено)';
+
+});

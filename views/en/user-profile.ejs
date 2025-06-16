@@ -26,7 +26,6 @@
             </div>
         </div>
 
-
         <div class="profile-card">
             <div class="avatar-section">
                 <div class="profile-info">
@@ -35,6 +34,14 @@
                         <h1><%= userInfo.name %></h1>
                         <p><%= userInfo.onlineMod === 'Online' ? 'Online' : 'Offline' %></p>
                     </div>
+                </div>
+
+                <div style="text-align: start; margin-left: 22px;">
+                    <span>Among the participants from</span>
+                    <br/>
+                    <span><%= userInfo.registerDate %></span>
+                    <br/>
+                    <br/>
                 </div>
 
                 <input value="<%= userInfo.id %>" id="friendId" hidden>

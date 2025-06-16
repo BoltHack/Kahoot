@@ -102,11 +102,16 @@
                                 </span>
                             </div>
 
-                            <div class="text"><%- msg.message %></div>
+                            <div class="msg-content">
+                                <div class="text" id="msg-<%= msg._id %>"><%= msg.message %></div>
+                                <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Edited)' : '' %></span>
+                            </div>
                         </div>
                         <div class="tools" onclick="openToolsMenu('<%= msg._id %>')" id="tools-<%= msg._id %>">
                             <div class="menu-trigger">⋯</div>
                             <div class="dropdown-menu">
+                                <button onclick="msgRedactionMenu('<%= msg._id %>')">Edit</button>
+                                <div class="tools-line"></div>
                                 <button style="color: #cc0000" onclick="socket.emit('deleteMsg', {channelId: '<%= channel._id %>', msgId: '<%= msg._id %>' })">Delete</button>
                             </div>
                         </div>

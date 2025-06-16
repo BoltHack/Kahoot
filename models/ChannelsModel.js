@@ -12,6 +12,9 @@ const messagesSchema = new Schema({
     message: {
         type: String
     },
+    edited: {
+        type: Boolean
+    },
     date: {
         type: String,
         default: currentDate

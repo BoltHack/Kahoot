@@ -17,7 +17,8 @@ body {
 }
 
 .card {
-    width: 350px;
+    min-width: 350px;
+    max-width: 800px;
     border: 1px solid black;
     background: linear-gradient(to bottom, white, #e5e5e5, #cccccc);
     padding: 20px;
@@ -49,6 +50,7 @@ body {
 .message {
     margin-top: 20px;
     color: black;
+    word-break: break-word;
 }
 .position {
     font-weight: bold;
