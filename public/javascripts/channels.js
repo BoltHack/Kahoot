@@ -220,23 +220,30 @@ function checkPageHeight() {
         }
     })
 }
-
 function msgRedactionMenu(msgId) {
     const message = document.getElementById('msg-'+msgId);
-    const editInput = document.createElement('input');
-    const text = document.querySelectorAll('.edit-input');
+    const editInput = document.createElement('textarea');
+    const messageWidth = document.querySelector('.chat-messages');
 
-    editInput.type = 'text';
     editInput.value = message.textContent;
+    editInput.id = 'msg-' + msgId;
     editInput.className = 'edit-input';
 
+    console.log('message-content', message.offsetWidth)
+
+    const text = document.querySelectorAll('.edit-input');
     text.forEach(menu => {
         const originalText = menu.value;
         const div = document.createElement('div');
+        div.id = menu.id;
         div.className = 'text';
         div.textContent = originalText;
         menu.replaceWith(div);
     })
+
+    editInput.style.width = `${message.clientWidth < 500 ? + 500 : message.clientWidth}px`;
+    editInput.style.height = `${message.offsetHeight}px`;
+
     message.replaceWith(editInput);
     editInput.focus();
 
@@ -257,7 +264,6 @@ function msgRedactionMenu(msgId) {
 
     return editInput;
 }
-
 
 socket.on('editedMsg', async (editMsg) => {
     const message = document.getElementById('msg-'+editMsg.msgId);
