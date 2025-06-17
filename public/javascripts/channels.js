@@ -270,6 +270,6 @@ socket.on('editedMsg', async (editMsg) => {
     const edited = document.getElementById('edited-'+editMsg.msgId);
 
     message.textContent = editMsg.editMessage;
-    edited.textContent = localeType === 'en' ? 'Edited' : '(Изменено)';
+    edited.textContent = localeType === 'en' ? '(Edited)' : '(Изменено)';
 
 });
