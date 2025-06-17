@@ -256,6 +256,7 @@ editStatusBtn.addEventListener('click', () => {
     editStatusMenu.hidden = false;
     barrier.hidden = false;
     document.body.style.overflowY = 'hidden';
+    maxStatusLength.textContent = `${status.value.length}/90`;
 
     barrier.addEventListener('click', () => {
         editStatusMenu.hidden = true;
@@ -296,6 +297,7 @@ editAboutMeBtn.addEventListener('click', () => {
     editAboutMeMenu.hidden = false;
     barrier.hidden = false;
     document.body.style.overflowY = 'hidden';
+    maxAboutMeLength.textContent = `${aboutMe.value.length}/200`;
 
     barrier.addEventListener('click', () => {
         editAboutMeMenu.hidden = true;
