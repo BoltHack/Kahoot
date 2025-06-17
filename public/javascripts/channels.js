@@ -9,6 +9,7 @@ function sendMessage() {
             message: message.value
         });
         message.value = '';
+        message.focus();
     }
 }
 const input = document.getElementById('message');
@@ -223,7 +224,6 @@ function checkPageHeight() {
 function msgRedactionMenu(msgId) {
     const message = document.getElementById('msg-'+msgId);
     const editInput = document.createElement('textarea');
-    const messageWidth = document.querySelector('.chat-messages');
 
     editInput.value = message.textContent;
     editInput.id = 'msg-' + msgId;
@@ -250,7 +250,7 @@ function msgRedactionMenu(msgId) {
     editInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             const newText = editInput.value.trim();
-            if (newText !== '') {
+            if (newText !== '' && newText !== message.textContent) {
                 const value = editInput.value;
                 console.log('Введённый текст:', value);
                 socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
