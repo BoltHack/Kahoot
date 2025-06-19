@@ -66,12 +66,22 @@
         <div class="chat-messages" id="messages">
             <% if (channel.messages && channel.messages.length) { %>
                 <% channel.messages.forEach(msg => { %>
-                    <div class="message" data-id="<%= msg._id %>" id="message-<%= msg._id %>" onmouseover="showTools({msgId: '<%= msg._id %>', myId: '<%= msg.id %>'});">
-                        <img class="avatar" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
-                        <div class="message-content">
-                            <div class="message-header">
-                                <span class="username"><%= msg.name %></span>
-                                <span class="timestamp">
+                    <div class="message <%= msg.reply && msg.reply.length > 0 ? 'reply' : '' %>" data-id="<%= msg._id %>" id="message-<%= msg._id %>" onmouseover="showTools({msgId: '<%= msg._id %>', myId: '<%= msg.id %>'});">
+                        <div class="message-container">
+                            <img class="avatar <%= msg.reply && msg.reply.length > 0 ? 'reply-avatarTop' : '' %>" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
+                            <div class="message-content">
+                                <% if (msg.reply && msg.reply.length > 0) { %>
+                                    <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                        <img class="reply-avatar" src="<%= msg.reply[0].id === msg.reply[0].toWho ? myData.image : companion.image %>">
+                                        <div class="reply-text-container">
+                                            <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
+                                            <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
+                                        </div>
+                                    </a>
+                                <% } %>
+                                <div class="message-header">
+                                    <span class="username"><%= msg.name %></span>
+                                    <span class="timestamp">
                                     <%= (() => {
                                         const d = new Date(msg.date);
                                         const now = new Date();
@@ -100,19 +110,23 @@
                                         }
                                     })() %>
                                 </span>
-                            </div>
+                                </div>
 
-                            <div class="msg-content">
-                                <div class="text" id="msg-<%= msg._id %>"><%= msg.message %></div>
-                                <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Edited)' : '' %></span>
+                                <div class="msg-content">
+                                    <div class="text" id="msg-<%= msg._id %>"><%= msg.message %></div>
+                                    <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Edited)' : '' %></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="tools" onclick="openToolsMenu('<%= msg._id %>')" id="tools-<%= msg._id %>">
-                            <div class="menu-trigger">⋯</div>
-                            <div class="dropdown-menu">
-                                <button onclick="msgRedactionMenu('<%= msg._id %>')">Edit</button>
-                                <div class="tools-line"></div>
-                                <button style="color: #cc0000" onclick="socket.emit('deleteMsg', {channelId: '<%= channel._id %>', msgId: '<%= msg._id %>' })">Delete</button>
+                            <div class="tools" onclick="openToolsMenu('<%= msg._id %>')" id="tools-<%= msg._id %>">
+                                <div class="menu-trigger">⋯</div>
+                                <div class="dropdown-menu">
+                                    <button onclick="msgReplyMenu('<%= msg._id %>', '<%= msg.name %>')">Reply</button>
+                                    <% if (msg.id === myData.id) { %>
+                                        <button onclick="msgRedactionMenu('<%= msg._id %>')">Edit</button>
+                                        <div class="tools-line"></div>
+                                        <button style="color: #cc0000" onclick="socket.emit('deleteMsg', {channelId: '<%= channel._id %>', msgId: '<%= msg._id %>' })">Delete</button>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,8 +140,11 @@
         </div>
 
         <div class="chat-input">
-            <input type="text" placeholder="Type a message..." id="message" autocomplete="off" />
-            <button onclick="sendMessage()">Send</button>
+            <div id="chatInput"></div>
+            <div class="chat-input-message">
+                <input type="text" placeholder="Type a message..." id="message" autocomplete="off" />
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
     </div>
 </div>

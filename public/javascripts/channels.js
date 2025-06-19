@@ -1,15 +1,26 @@
 function sendMessage() {
+    const chatReply = document.querySelector('.chat-reply');
     const message = document.getElementById('message');
+
+    const replyId = chatReply ? chatReply.getAttribute('data-id') : null;
+
+    const chatInput = document.getElementById('chatInput');
+    const allReply = chatInput.querySelectorAll('.chat-reply');
+
     if (message.value.length > 0) {
         socket.emit('sendMessage', {
             channelId: channelId,
             id: sendId,
             name: sendName,
             companionId: companionId,
-            message: message.value
+            message: message.value,
+            replyId: replyId
         });
         message.value = '';
         message.focus();
+        allReply.forEach(reply => {
+            reply.remove();
+        });
     }
 }
 const input = document.getElementById('message');
@@ -33,12 +44,23 @@ window.addEventListener('load', () => {
 });
 
 socket.on('showMessages', async (showMessagesData) => {
+    console.log('showMessagesData', showMessagesData);
     const messages = document.getElementById('messages');
     const newMessage = document.createElement('div');
     newMessage.innerHTML = `
-        <div class="message" data-id="${showMessagesData._id}" id="message-${showMessagesData._id}" onmouseover="showTools({msgId: '${showMessagesData._id}', myId: '${showMessagesData.id}'});">
-            <img class="avatar" src="${showMessagesData.image}">
+        <div class="message ${showMessagesData.reply.id ? 'reply' : ''}" data-id="${showMessagesData._id}" id="message-${showMessagesData._id}" onmouseover="showTools({msgId: '${showMessagesData._id}', myId: '${showMessagesData.id}'});">
+            <div class="message-container">
+                <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}"" src="${showMessagesData.image}">
             <div class="message-content">
+            ${showMessagesData.reply.id ? `
+            <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
+                <img class="reply-avatar" src="${showMessagesData.reply.image}">
+                <div class="reply-text-container">
+                    <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
+                <div class="reply-text">${showMessagesData.reply.message.length > 50 ? showMessagesData.reply.message.slice(0, 50) + '...' : showMessagesData.reply.message}</div>
+                </div>
+            </a>
+            ` : ''}
                 <div class="message-header">
                     <span class="username">${showMessagesData.name}</span>
                     <span class="timestamp">${ (() => {
@@ -56,12 +78,12 @@ socket.on('showMessages', async (showMessagesData) => {
         if (isSameDay(d, now)) {
             return localeType === 'en' ?
                 'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
-                : 
+                :
                 'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
         } else if (isSameDay(d, yesterday)) {
-            return localeType === 'en' ? 
+            return localeType === 'en' ?
                 'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
-                : 
+                :
                 'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
         } else {
             return localeType === 'en' ?
@@ -94,18 +116,20 @@ socket.on('showMessages', async (showMessagesData) => {
             <div class="tools" onclick="openToolsMenu('${showMessagesData._id}')" id="tools-${showMessagesData._id}">
                 <div class="menu-trigger">⋯</div>
                     <div class="dropdown-menu">
+                        <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">${localeType === 'en' ? 'Reply' : 'Ответить'}</button>
                         <button onclick="msgRedactionMenu('${showMessagesData._id}')">${localeType === 'en' ? 'Edit' : 'Редактировать'}</button>
                         <div class="tools-line"></div>
                         <button style="color: #cc0000" onclick="socket.emit('deleteMsg', { channelId: channelId, msgId: '${showMessagesData._id}'})">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
                     </div>
                 </div>
-            </div>`
+            </div>
+        </div>`
     messages.appendChild(newMessage);
     scrollToBottom();
 });
 
 function showTools(msgData) {
-    if (msgData.myId === sendId) {
+    // if (msgData.myId === sendId) {
         const message = document.getElementById('message-'+msgData.msgId);
         const toolsId = document.getElementById('tools-'+msgData.msgId);
 
@@ -123,7 +147,7 @@ function showTools(msgData) {
                 toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
             }
         });
-    }
+    // }
 }
 function openToolsMenu(msgId) {
     const message = document.getElementById('message-'+msgId);
@@ -271,5 +295,46 @@ socket.on('editedMsg', async (editMsg) => {
 
     message.textContent = editMsg.editMessage;
     edited.textContent = localeType === 'en' ? '(Edited)' : '(Изменено)';
-
 });
+
+
+function msgReplyMenu(msgId, msgName) {
+    const chatInput = document.getElementById('chatInput');
+    const allReply = chatInput.querySelectorAll('.chat-reply');
+    const chatReply = document.createElement('div');
+
+    allReply.forEach(reply => {
+        reply.remove();
+    })
+
+    console.log('msgId', msgId, '|', 'msgName', msgName);
+
+    chatReply.innerHTML = `
+        <div class="chat-reply" data-id="${msgId}">
+            <span>${localeType === 'en' ? 'Reply ' + msgName : 'Ответить ' + msgName}</span>
+            <a id="closeReplyMenu">X</a>
+        </div>
+`;
+
+    document.getElementById('message').focus();
+    chatInput.appendChild(chatReply);
+
+    document.getElementById('closeReplyMenu').addEventListener('click', () => {
+        chatReply.remove();
+    });
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            chatReply.remove();
+        }
+    })
+}
+
+function findReplyMsg(msgId) {
+    const message = document.querySelectorAll('.message');
+    const msg = document.getElementById('message-'+msgId);
+
+    message.forEach(msgs => {
+        msgs.style.backgroundColor = '';
+    })
+    setTimeout(() => msg.style.backgroundColor = '#363a53', 100);
+}

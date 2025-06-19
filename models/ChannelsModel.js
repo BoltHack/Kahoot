@@ -15,6 +15,25 @@ const messagesSchema = new Schema({
     edited: {
         type: Boolean
     },
+    reply: [
+        {
+            msgId: {
+                type: String,
+            },
+            toWho: {
+                type: String
+            },
+            id: {
+                type: String
+            },
+            name: {
+                type: String,
+            },
+            message: {
+                type: String,
+            }
+        }
+    ],
     date: {
         type: String,
         default: currentDate

@@ -47,12 +47,12 @@ checkCookie();
 
 
 function redirectPage(page){
-    const menus = JSON.parse(localStorage.getItem('menus') || '{}');
+    const menus = JSON.parse(sessionStorage.getItem('menus') || '{}');
     if (localStorage.getItem('token')) {
         if (page === '/channels/@me') {
             menus.friendsContainerMenu = 'true';
             menus.addFriendMenu = 'false';
-            localStorage.setItem('menus', JSON.stringify(menus));
+            sessionStorage.setItem('menus', JSON.stringify(menus));
             window.location.href = page;
         }
         else {

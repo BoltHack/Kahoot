@@ -781,21 +781,44 @@ io.on('connection', async (socket) => {
 
             const cleanMessage = linkify(cleanBeforeLink);
 
-            if (cleanMessage.length !== 0) {
-                const newMessage = {
-                    _id: new mongoose.Types.ObjectId(),
-                    id: messageData.id,
-                    name: messageData.name,
-                    message: cleanMessage
-                };
+            const replyData = await ChannelsModel.findById(messageData.channelId);
+            const messages = replyData.messages;
+
+            if (cleanMessage.length !== 0 || cleanMessage.length !== 0 && messageData.replyId) {
+                let newMessage;
+                const replyId = messages.find(r => r._id.toString() === messageData.replyId);
+                let replyInfo;
+
+                if (replyId !== undefined) {
+                    replyInfo = await UsersModel.findById(replyId.id);
+                    newMessage = {
+                        _id: new mongoose.Types.ObjectId(),
+                        id: messageData.id,
+                        name: messageData.name,
+                        message: cleanMessage,
+                        reply: {
+                            msgId: replyId._id,
+                            toWho: replyId.id,
+                            id: messageData.id,
+                            name: replyId.name,
+                            message: replyId.message
+                        }
+                    };
+                } else {
+                    newMessage = {
+                        _id: new mongoose.Types.ObjectId(),
+                        id: messageData.id,
+                        name: messageData.name,
+                        message: cleanMessage,
+                    };
+                }
+
                 await ChannelsModel.findOneAndUpdate(
                     { _id: messageData.channelId },
                     { $push: { messages: newMessage } },
                     { new: true }
                 );
                 const userInfo = await UsersModel.findById(messageData.id);
-                const companionInfo = await UsersModel.findById(messageData.companionId);
-                const userImage = userInfo.image;
 
                 console.log('newMessage._id', newMessage._id);
 
@@ -804,29 +827,23 @@ io.on('connection', async (socket) => {
                     id: messageData.id,
                     name: messageData.name,
                     message: cleanMessage,
-                    image: userImage,
+                    image: userInfo.image,
+                    reply: {
+                        msgId: replyId ? replyId._id : null,
+                        id: replyId ? messageData.id : null,
+                        name: replyId ? replyId.name : null,
+                        image: replyId ? replyInfo.image : null,
+                        message: replyId ? replyId.message : null
+                    },
                     date: new Date
                 })
-                if (companionSocketId && userInfo.onlineMod === 'Online') {
-                    io.to(companionSocketId).emit('sendMissedMessage', {
-                        id: messageData.id,
-                        name: messageData.name,
-                        message: cleanMessage,
-                        image: userImage,
-                        channelId: messageData.channelId
-                    });
-                } else {
-                    await UsersModel.findOneAndUpdate(
-                        { _id: companionInfo.id },
-                        {
-                            $push: {
-                                'notifications': {
-                                    id: userInfo.id,
-                                }
-                            },
-                        }
-                    )
-                }
+                io.to(companionSocketId).emit('sendMissedMessage', {
+                    id: messageData.id,
+                    name: messageData.name,
+                    message: cleanMessage,
+                    image: userInfo.image,
+                    channelId: messageData.channelId
+                });
             }
         } catch (error) {
             console.log('error', error);

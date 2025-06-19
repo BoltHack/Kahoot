@@ -261,7 +261,7 @@ const friendsContainerMenu = document.getElementById('friendsContainerMenu');
 const addFriendMenu = document.getElementById('addFriendMenu');
 const chatName = document.getElementById('chatName');
 
-const menus = JSON.parse(localStorage.getItem('menus') || '{}');
+const menus = JSON.parse(sessionStorage.getItem('menus') || '{}');
 
 function addFriendFunc() {
     console.log('addFriendBtn');
@@ -279,7 +279,7 @@ function friendsContainerFunc() {
 
 function addFriendMenuOpen() {
     menus.addFriendMenu = 'true';
-    localStorage.setItem('menus', JSON.stringify(menus));
+    sessionStorage.setItem('menus', JSON.stringify(menus));
 
     addFriendMenu.style.display = 'block';
     addFriendBtn.style.background = '#3b464f';
@@ -287,7 +287,7 @@ function addFriendMenuOpen() {
 }
 function addFriendMenuClose() {
     menus.addFriendMenu = 'false';
-    localStorage.setItem('menus', JSON.stringify(menus));
+    sessionStorage.setItem('menus', JSON.stringify(menus));
 
     addFriendMenu.style.display = 'none';
     addFriendBtn.style.background = 'none';
@@ -296,7 +296,7 @@ function addFriendMenuClose() {
 
 function friendsContainerMenuOpen() {
     menus.friendsContainerMenu = 'true';
-    localStorage.setItem('menus', JSON.stringify(menus));
+    sessionStorage.setItem('menus', JSON.stringify(menus));
 
     friendsContainerMenu.style.display = 'block';
     friendsContainerBtn.style.background = '#3b464f';
@@ -304,7 +304,7 @@ function friendsContainerMenuOpen() {
 }
 function friendsContainerMenuClose() {
     menus.friendsContainerMenu = 'false';
-    localStorage.setItem('menus', JSON.stringify(menus));
+    sessionStorage.setItem('menus', JSON.stringify(menus));
 
     friendsContainerMenu.style.display = 'none';
     friendsContainerBtn.style.background = 'none';

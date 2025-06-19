@@ -45,17 +45,20 @@ body {
 }
 
 .message {
-    display: flex;
-    gap: 15px;
     /*margin-bottom: 18px;*/
     animation: fadeIn 0.4s ease;
     padding: 10px 20px 10px;
     /*border-radius: 5px;*/
+    /*transition-duration: 0.3s;*/
+
 }
 .message:hover {
     background-color: #212429;
 }
-
+.message-container {
+    display: flex;
+    gap: 15px;
+}
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -121,13 +124,29 @@ body {
 }
 
 .chat-input {
+    display: block;
+}
+.chat-input-message {
     background: #1f2228;
     padding: 15px 20px;
     border-top: 1px solid #2a2f37;
     display: flex;
     gap: 10px;
 }
-
+.chat-reply {
+    background: #2a2f37;
+    padding: 10px 10px;
+    font-size: 14px;
+    text-decoration: none;
+}
+.chat-reply span {
+    margin-left: 20px;
+}
+.chat-reply a {
+    position: absolute;
+    right: 25px;
+    cursor: pointer;
+}
 .chat-input input {
     flex: 1;
     padding: 12px 15px;
@@ -473,4 +492,57 @@ ul {
     /*margin-left: 5px;*/
     margin-top: auto;
     color: grey;
+}
+.reply-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding-left: 5px;
+    border-left: 3px solid #5bbfba;
+    background-color: #22272e;
+    border-radius: 6px 0 0 6px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.reply-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    box-shadow: 0 0 6px #4aa9a5cc;
+    flex-shrink: 0;
+}
+
+.reply-text-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 5px;
+}
+
+.reply-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: #82c0b8;
+    margin-bottom: 3px;
+}
+
+.reply-text {
+    font-size: 14px;
+    color: #a3c9c4;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.reply-avatarTop {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #5bbfba, #39767a);
+    box-shadow: 0 0 8px #4aa9a5cc;
+    flex-shrink: 0;
+    margin-top: auto;
 }
