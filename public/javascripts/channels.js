@@ -54,7 +54,10 @@ socket.on('showMessages', async (showMessagesData) => {
             <div class="message-content">
             ${showMessagesData.reply.id ? `
             <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
-                <img class="reply-avatar" src="${showMessagesData.reply.image}">
+                <div class="reply-line-wrapper">
+                    <div class="reply-line"></div>
+                    <img class="reply-avatar" src="${showMessagesData.reply.image}">
+                </div>
                 <div class="reply-text-container">
                     <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
                 <div class="reply-text">${showMessagesData.reply.message.length > 50 ? showMessagesData.reply.message.slice(0, 50) + '...' : showMessagesData.reply.message}</div>
@@ -129,25 +132,23 @@ socket.on('showMessages', async (showMessagesData) => {
 });
 
 function showTools(msgData) {
-    // if (msgData.myId === sendId) {
-        const message = document.getElementById('message-'+msgData.msgId);
-        const toolsId = document.getElementById('tools-'+msgData.msgId);
+    const message = document.getElementById('message-'+msgData.msgId);
+    const toolsId = document.getElementById('tools-'+msgData.msgId);
 
-        toolsId.style.display = 'inline-block';
+    toolsId.style.display = 'inline-block';
 
-        message.addEventListener('mouseout', () => {
-            if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
-                message.style.backgroundColor = '#212429';
-                toolsId.style.display = 'inline-block';
-                toolsId.querySelector('.menu-trigger').style.backgroundColor = '#2a2f37';
-            }
-            else {
-                message.style.backgroundColor = '';
-                toolsId.style.display = 'none';
-                toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
-            }
-        });
-    // }
+    message.addEventListener('mouseout', () => {
+        if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
+            message.style.backgroundColor = '#212429';
+            toolsId.style.display = 'inline-block';
+            toolsId.querySelector('.menu-trigger').style.backgroundColor = '#2a2f37';
+        }
+        else {
+            message.style.backgroundColor = '';
+            toolsId.style.display = 'none';
+            toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+        }
+    });
 }
 function openToolsMenu(msgId) {
     const message = document.getElementById('message-'+msgId);

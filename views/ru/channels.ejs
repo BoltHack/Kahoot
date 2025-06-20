@@ -72,7 +72,10 @@
                             <div class="message-content">
                                 <% if (msg.reply && msg.reply.length > 0) { %>
                                     <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
-                                        <img class="reply-avatar" src="<%= msg.reply[0].id === msg.reply[0].toWho ? myData.image : companion.image %>">
+                                        <div class="reply-line-wrapper">
+                                            <div class="reply-line"></div>
+                                            <img class="reply-avatar" src="<%= msg.reply[0].id === msg.reply[0].toWho ? myData.image : companion.image %>">
+                                        </div>
                                         <div class="reply-text-container">
                                             <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
                                             <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
