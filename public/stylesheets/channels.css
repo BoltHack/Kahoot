@@ -398,8 +398,8 @@ ul {
 
 .dropdown-menu {
     position: absolute;
-    /*top: 120%;*/
-    right: 0;
+    top: 0;
+    right: 30px;
     background-color: #1f2228;
     border: 1px solid #2a2f37;
     border-radius: 10px;
