@@ -440,6 +440,7 @@ ul {
     background-color: #2a2f37;
     opacity: 0;
     display: none;
+    align-items: center;
 }
 .show {
     animation: positionWarningShow 0.7s forwards;
