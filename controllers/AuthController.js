@@ -52,6 +52,7 @@ class AuthController {
 
             const newUser = await new UsersModel({
                 name,
+                friendName: name.toLowerCase(),
                 email,
                 password: hashPassword,
                 confirmPassword: hashPassword,

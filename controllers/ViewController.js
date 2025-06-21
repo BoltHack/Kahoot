@@ -382,7 +382,22 @@ class ViewController {
             const companionId = match ? match.companionId : null;
             const companion = await UsersModel.findById(companionId);
 
-            if (!match) {
+            if (match && !companion) {
+                await ChannelsModel.findByIdAndDelete(channel_id);
+                await UsersModel.findOneAndUpdate(
+                    { _id: user.id },
+                    {
+                        $pull: {
+                            'myChannels': {channelId: channel_id}
+                        },
+                    },
+                    { new: true }
+                )
+                const errorMsg = locale === 'en' ? 'this channel has been deleted.' : 'Этот канал был удалён.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            if (!match || !companion) {
                 const errorMsg = locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }

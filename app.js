@@ -555,18 +555,18 @@ io.on('connection', async (socket) => {
 
     socket.on('addFriend', async (senderData) => {
         try {
-            const name = senderData.friendName;
-            const friendName = await UsersModel.findOne({ name });
+            const friendName = senderData.friendName;
+            const friendData = await UsersModel.findOne({ friendName });
 
-            const friendSocketId = clients[friendName.id];
-            const friendOnlineMod = await UsersModel.findById(friendName.id);
+            const friendSocketId = clients[friendData.id];
+            const friendOnlineMod = await UsersModel.findById(friendData.id);
             const data = await UsersModel.findById(senderData.senderId);
 
-            if (friendName.id.toString() === senderData.senderId.toString()) {
+            if (friendData.id.toString() === senderData.senderId.toString()) {
                 socket.emit('broadcastFriendIdSenderId');
                 return;
             }
-            if (data.myFriends.some(friend => friend.id === friendName.id)) {
+            if (data.myFriends.some(friend => friend.id === friendData.id)) {
                 socket.emit('broadcastAlreadyFriend');
                 return;
             }
@@ -576,11 +576,11 @@ io.on('connection', async (socket) => {
                         senderName: data.name,
                         senderId: data.id,
                         senderImage: data.image,
-                        friendId: friendName.id,
+                        friendId: friendData.id,
                     });
-                console.log(`Запрос в друзья отправлен пользователю ${friendName.id}`);
+                console.log(`Запрос в друзья отправлен пользователю ${friendData.id}`);
             } else {
-                console.log(`Пользователь ${friendName.id} не в сети`);
+                console.log(`Пользователь ${friendData.id} не в сети`);
                 socket.emit('playerIsOffline');
             }
         } catch (error) {

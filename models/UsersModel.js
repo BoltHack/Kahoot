@@ -53,6 +53,10 @@ const UsersSchema = new Schema({
         type: String,
         required: true
     },
+    friendName: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
