@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahoot | Редактор вопроса #<%= questionInfo.question_number %></title>
+    <title>Kahoot | Редактор вопроса #<%= questionInfo.question_number + 1 %></title>
     <link rel="icon" type="image/png" href="/images/icon.png">
     <link rel="stylesheet" href="/stylesheets/createGame.css">
 </head>
@@ -19,7 +19,7 @@
             <div class="modal questions-modal" style="left: 50%; transform: translateX(-50%)">
                 <div class="modal__body" id="modal0">
                     <div class="input">
-                        <label class="input__label">Вопрос #<%= questionInfo.question_number %></label>
+                        <label class="input__label">Вопрос #<%= questionInfo.question_number + 1 %></label>
                         <input class="input__field" type="text" name="question_title" value="<%= questionInfo.question_title %>" placeholder="Введите вопрос" required>
                     </div>
                     <div class="input">

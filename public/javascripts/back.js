@@ -27,7 +27,7 @@ function pages(){
             <a class="between"> ❯ </a>
             <a href="/redaction/${roomId}" class="color-btn">${localeType === 'en' ? 'Editor' : 'Редактор'}</a>
             <a class="between"> ❯ </a>
-            <a class="other-color">${localeType === 'en' ? `Question #${questionNumber}` : `Вопрос #${questionNumber}`}</a>`
+            <a class="other-color">${localeType === 'en' ? `Question #${Number(questionNumber) + 1}` : `Вопрос #${Number(questionNumber) + 1}`}</a>`
     }
     else if (page.startsWith('/my-games')) {
         pageName.innerHTML = `
