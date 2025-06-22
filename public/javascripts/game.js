@@ -9,10 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let questions = [];
 
     const time = document.querySelector('.main-timer');
+
     function checkQuestions() {
         const maxQuestions = Number(gameMaxQuestions);
         questions = Array.from({ length: maxQuestions }, (_, i) => document.getElementById(`question-${i}`));
-        questions[0].hidden = false;
+        const validIndexes = questions
+            .map((q, i) => q !== null ? i : Infinity);
+
+        const minValidIndex = Math.min(...validIndexes);
+
+        console.log('minValidIndex', minValidIndex);
+
+        if (minValidIndex !== Infinity) {
+            questions[minValidIndex].hidden = false;
+        } else {
+            console.error("Нет доступных вопросов");
+        }
         if (questions.some(question => question === null)) {
             console.error("Некоторые элементы вопросов не найдены!");
             return;

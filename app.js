@@ -95,6 +95,9 @@ io.on('connection', async (socket) => {
                 }, 500);
                 io.emit('earlyCall-requestLeadersCount');
             }
+            if (gameInfo.game_users.length < 2) {
+                socket.emit('stopTimer');
+            }
             else {
                 setTimeout(function () {
                     io.emit('stopTimer');

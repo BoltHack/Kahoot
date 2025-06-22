@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,21 +18,21 @@
             <div class="container" style="left: 60%;">
                 <div class="modal">
                     <div class="modal__header">
-                        <span class="modal__title">Editing Game: <%= gamesInfo.game_name %></span>
+                        <span class="modal__title">Edit game: <%= gamesInfo.game_name %></span>
                     </div>
                     <div class="modal__body" style="border-bottom: none;">
                         <div class="input">
-                            <label class="input__label">Room Name</label>
+                            <label class="input__label">Room name</label>
                             <input class="input__field" type="text" name="game_name" placeholder="Enter room name" value="<%= gamesInfo.game_name %>" maxlength="10" required>
-                            <p class="input__description">The name should be up to 10 characters.</p>
+                            <p class="input__description">The name must be no more than 10 characters long.</p>
                         </div>
                         <div style="display: flex; gap: 20px;">
                             <div class="input">
                                 <div class="input_container">
                                     <p>Type:</p>
                                     <select name="game_access" class="type" style="width: 170px;" required>
-                                        <option value="General" <%= gamesInfo.game_access === 'General' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'General' ? 'General (Current)' : 'General'%></option>
-                                        <option value="Private" <%= gamesInfo.game_access === 'Private' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'Private' ? 'Private (Current)' : 'Private'%></option>
+                                        <option value="General" <%= gamesInfo.game_access === 'General' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'General' ? 'Public (Current)' : 'Public' %></option>
+                                        <option value="Private" <%= gamesInfo.game_access === 'Private' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'Private' ? 'Private (Current)' : 'Private' %></option>
                                     </select>
                                 </div>
                             </div>
@@ -41,38 +41,26 @@
                             <div class="input_container">
                                 <p>Max online:</p>
                                 <select name="max_online" class="type" style="width: 200px;" required>
-                                    <option value="2" <%= gamesInfo.game_online.max_online === 2 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 2 ? '2 people (Current)' : '2 people'%></option>
-                                    <option value="3" <%= gamesInfo.game_online.max_online === 3 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 3 ? '3 people (Current)' : '3 people'%></option>
-                                    <option value="4" <%= gamesInfo.game_online.max_online === 4 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 4 ? '4 people (Current)' : '4 people'%></option>
-                                    <option value="5" <%= gamesInfo.game_online.max_online === 5 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 5 ? '5 people (Current)' : '5 people'%></option>
+                                    <option value="2" <%= gamesInfo.game_online.max_online === 2 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 2 ? '2 players (Current)' : '2 players' %></option>
+                                    <option value="3" <%= gamesInfo.game_online.max_online === 3 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 3 ? '3 players (Current)' : '3 players' %></option>
+                                    <option value="4" <%= gamesInfo.game_online.max_online === 4 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 4 ? '4 players (Current)' : '4 players' %></option>
+                                    <option value="5" <%= gamesInfo.game_online.max_online === 5 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 5 ? '5 players (Current)' : '5 players' %></option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="input">
-                            <div class="input_container">
-                                <p>Number of Questions:</p>
-                                <select name="game_max_questions" class="type" required>
-                                    <option value="2" <%= gamesInfo.game_max_questions === 2 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 2 ? '2 questions (Current)' : '2 questions'%></option>
-                                    <option value="3" <%= gamesInfo.game_max_questions === 3 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 3 ? '3 questions (Current)' : '3 questions'%></option>
-                                    <option value="4" <%= gamesInfo.game_max_questions === 4 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 4 ? '4 questions (Current)' : '4 questions'%></option>
-                                    <option value="5" <%= gamesInfo.game_max_questions === 5 ? 'selected' : '' %> ><%= gamesInfo.game_max_questions === 5 ? '5 questions (Current)' : '5 questions'%></option>
-                                </select>
-                                <div id="questions_container" style="color: red"></div>
                             </div>
                         </div>
                         <div class="input">
                             <div class="input_container">
                                 <p>Game start:</p>
                                 <select name="game_start_type" class="type" style="width: 200px;" required>
-                                    <option value="Auto" <%= gamesInfo.game_start_type === 'Auto' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Auto' ? 'Auto (Current)' : 'Auto' %></option>
-                                    <option value="Manually" <%= gamesInfo.game_start_type === 'Manually' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Manually' ? 'Manually (Current)' : 'Manually' %></option>
+                                    <option value="Auto" <%= gamesInfo.game_start_type === 'Auto' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Auto' ? 'Automatic (Current)' : 'Automatic' %></option>
+                                    <option value="Manually" <%= gamesInfo.game_start_type === 'Manually' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Manually' ? 'Manual (Current)' : 'Manual' %></option>
                                 </select>
                                 <div id="questions_container" style="color: red"></div>
                             </div>
                         </div>
                         <div class="input">
                             <div class="input_container">
-                                <p>Game Timer Time:</p>
+                                <p>Game timer duration:</p>
                                 <input type="number" class="type" style="width: 200px;" name="game_expiresInSeconds" placeholder="Enter time (in seconds)" value="<%= gamesInfo.game_expiresInSeconds %>" max="100" required>
                             </div>
                         </div>
@@ -84,285 +72,51 @@
                         <div class="modal__footer">
                             <a class="button button--primary" href="/my-games" style="text-decoration: none">My Games</a>
                         </div>
+                        <div class="modal__footer">
+                            <a class="button button--primary" href="/create-questions/<%= gamesInfo._id %>" style="text-decoration: none">New Question</a>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="modal questions-modal">
-                <div class="modal__body" id="modal0">
-                    <div class="input">
-                        <label class="input__label">Come up with your first question</label>
-                        <input class="input__field" type="text" name="question_title0" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_title : '' %>" placeholder="Введите вопрос" required>
-                    </div>
-                    <div class="input">
-                        <br>
-                        <label class="input__label" style="font-weight: 450">Answer Options</label>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field" type="text" name="question_title0_question_1" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 1" required>
-                            <input class="input__field" type="text" name="question_title0_question_2" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 2" required>
-                        </div>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field" type="text" name="question_title0_question_3" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 3" required>
-                            <input class="input__field" type="text" name="question_title0_question_4" value="<%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 4" required>
-                        </div>
-                        <div class="input_container">
-                            <p>Correct answer:</p>
-                            <select name="question_title0_correct_question" class="type" style="width: 100px;">
-                                <option value="question_1" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_1' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_1' ? '1 (Current)' : '1' : '1' %>
-                                </option>
-                                <option value="question_2" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_2' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_2' ? '2 (Current)' : '2' : '2' %>
-                                </option>
-                                <option value="question_3" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_3' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_3' ? '3 (Current)' : '3' : '3' %>
-
-                                </option>
-                                <option value="question_4" <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_4' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[0] ? gamesInfo.game_questions[0].correct_question === 'question_4' ? '4 (Current)' : '4' : '4' %>
-                                </option>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="input">
-                        <% if (gamesInfo.game_questions[0] && gamesInfo.game_questions[0].question_image) {%>
-                            <div class="input-image">
-                                <img src="<%= gamesInfo.game_questions[0].question_image %>">
+                <% if (gamesInfo.game_questions && gamesInfo.game_questions.length) { %>
+                    <div class="game-questions">
+                        <% gamesInfo.game_questions.forEach(quest => { %>
+                            <div class="card">
+                                <div class="card__corner"></div>
+                                <div class="card__img">
+                                    <img src="<%= quest.question_image %>">
+                                    <div class="card__span">
+                                        <div class="card__span-tools">
+                                            <span>Вопрос #<%= quest.question_number %></span>
+                                            <div class="card-edit">
+                                                <a href="/edit-question/<%= gamesInfo._id %>/<%= quest._id %>">Edit</a>
+                                            </div>
+                                            <div class="card-delete">
+                                                <a onclick="deleteQuestionMenu('<%= gamesInfo._id %>', '<%= quest._id %>', '<%= quest.question_number %>')">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-int">
+                                    <p class="card-int__title"><%= quest.question_title %></p>
+                                    <p class="excerpt">1. <%= quest.question_1.title %></p>
+                                    <p class="excerpt">2. <%= quest.question_2.title %></p>
+                                    <p class="excerpt">3. <%= quest.question_3.title %></p>
+                                    <p class="excerpt">4. <%= quest.question_4.title %></p>
+                                    <p class="excerpt">Correct answer: <%= quest.correct_question.slice(9) %></p>
+                                    <br/>
+                                </div>
                             </div>
-                        <% } %>
-                        <label class="input__label">Choose an image for the question</label>
-                        <br>
-                        <input type="file" accept="image/*" name="question_image0">
-                        <br>
-                        <div class="input">
-                            <div class="input_container">
-                                <input type="checkbox" id="delImg0" name="delImg0">
-                                <label for="delImg0">Delete image</label>
-                            </div>
-                        </div>
+                        <% }) %>
                     </div>
-                </div>
-
-                <div class="modal__body" id="modal1">
-                    <div class="input">
-                        <label class="input__label">Come up with a second question</label>
-                        <input class="input__field" type="text" name="question_title1" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1]. question_title: '' %>" placeholder="Enter question" required>
-                    </div>
-                    <div class="input">
-                        <br>
-                        <label class="input__label" style="font-weight: 450">Answer options</label>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field" type="text" name="question_title1_question_1" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 1" required>
-                            <input class="input__field" type="text" name="question_title1_question_2" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 2" required>
-                        </div>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field" type="text" name="question_title1_question_3" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 3" required>
-                            <input class="input__field" type="text" name="question_title1_question_4" value="<%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 4" required>
-                        </div>
-                        <div class="input_container">
-                            <p>Correct answer:</p>
-                            <select name="question_title1_correct_question" class="type" style="width: 100px;" required>
-                                <option value="question_1" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_1' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_1' ? '1 (Current)' : '1' : '1' %>
-                                </option>
-                                <option value="question_2" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_2' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_2' ? '2 (Current)' : '2' : '2' %>
-                                </option>
-                                <option value="question_3" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_3' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_3' ? '3 (Current)' : '3' : '3' %>
-                                </option>
-                                <option value="question_4" <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_4' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[1] ? gamesInfo.game_questions[1].correct_question === 'question_4' ? '4 (Current)' : '4' : '4' %>
-                                </option>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="input">
-                        <% if (gamesInfo.game_questions[1] && gamesInfo.game_questions[1].question_image) {%>
-                            <div class="input-image">
-                                <img src="<%= gamesInfo.game_questions[1].question_image %>">
-                            </div>
-                        <% } %>
-                        <label class="input__label">Choose an image for the question</label>
-                        <br>
-                        <input type="file" accept="image/*" name="question_image1">
-                            <br>
-                        <div class="input">
-                            <div class="input_container">
-                                <input type="checkbox" id="delImg1" name="delImg1">
-                                <label for="delImg1">Delete image</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal__body" id="modal2" hidden>
-                    <div class="input">
-                        <label class="input__label">Come up with a third question</label>
-                        <input class="input__field" type="text" name="question_title2" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_title : '' %>" placeholder="Введите вопрос" id="modal_input2">
-                    </div>
-                    <div class="input">
-                        <br>
-                        <label class="input__label" style="font-weight: 450">Answer options</label>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field question_2" type="text" name="question_title2_question_1" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 1">
-                            <input class="input__field question_2" type="text" name="question_title2_question_2" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 2">
-                        </div>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field question_2" type="text" name="question_title2_question_3" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 3">
-                            <input class="input__field question_2" type="text" name="question_title2_question_4" value="<%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 4">
-                        </div>
-                        <div class="input_container">
-                            <p>Correct answer:</p>
-                            <select name="question_title2_correct_question" class="type" style="width: 100px;">
-                                <option value="question_1" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_1' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_1' ? '1 (Current)' : '1' : '1' %>
-                                </option>
-                                <option value="question_2" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_2' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_2' ? '2 (Current)' : '2' : '2' %>
-                                </option>
-                                <option value="question_3" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_3' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_3' ? '3 (Current)' : '3' : '3' %>
-                                </option>
-                                <option value="question_4" <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_4' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[2] ? gamesInfo.game_questions[2].correct_question === 'question_4' ? '4 (Current)' : '4' : '4' %>
-                                </option>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="input">
-                        <% if (gamesInfo.game_questions[2] && gamesInfo.game_questions[2].question_image) {%>
-                            <div class="input-image">
-                                <img src="<%= gamesInfo.game_questions[2].question_image %>">
-                            </div>
-                        <% } %>
-                        <label class="input__label">Choose an image for the question</label>
-                        <br>
-                        <input type="file" accept="image/*" name="question_image2">
-                            <br>
-                        <div class="input">
-                            <div class="input_container">
-                                <input type="checkbox" id="delImg2" name="delImg2">
-                                <label for="delImg2">Delete image</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal__body" id="modal3" hidden>
-                    <div class="input">
-                        <label class="input__label">Come up with a fourth question</label>
-                        <input class="input__field" type="text" name="question_title3" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_title : '' %>" placeholder="Введите вопрос" id="modal_input3">
-                    </div>
-                    <div class="input">
-                        <br>
-                        <label class="input__label" style="font-weight: 450">Answer options</label>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field question_3" type="text" name="question_title3_question_1" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 1">
-                            <input class="input__field question_3" type="text" name="question_title3_question_2" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 2">
-                        </div>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field question_3" type="text" name="question_title3_question_3" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 3">
-                            <input class="input__field question_3" type="text" name="question_title3_question_4" value="<%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 4">
-                        </div>
-                        <div class="input_container">
-                            <p>Correct answer:</p>
-                            <select name="question_title3_correct_question" class="type" style="width: 100px;">
-                                <option value="question_1" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_1' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_1' ? '1 (Current)' : '1' : '1' %>
-                                </option>
-                                <option value="question_2" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_2' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_2' ? '2 (Current)' : '2' : '2' %>
-                                </option>
-                                <option value="question_3" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_3' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_3' ? '3 (Current)' : '3' : '3' %>
-                                </option>
-                                <option value="question_4" <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_4' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[3] ? gamesInfo.game_questions[3].correct_question === 'question_4' ? '4 (Current)' : '4' : '4' %>
-                                </option>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="input">
-                        <% if (gamesInfo.game_questions[3] && gamesInfo.game_questions[3].question_image) {%>
-                            <div class="input-image">
-                                <img src="<%= gamesInfo.game_questions[3].question_image %>">
-                            </div>
-                        <% } %>
-                        <label class="input__label">Choose an image for the question</label>
-                        <br>
-                        <input type="file" accept="image/*" name="question_image3">
-                            <br>
-                        <div class="input">
-                            <div class="input_container">
-                                <input type="checkbox" id="delImg3" name="delImg3">
-                                <label for="delImg3">Delete image</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal__body" id="modal4" hidden>
-                    <div class="input">
-                        <label class="input__label">Come up with a fifth question</label>
-                        <input class="input__field" type="text" name="question_title4" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_title : '' %>" placeholder="Введите вопрос" id="modal_input4">
-                    </div>
-                    <div class="input">
-                        <br>
-                        <label class="input__label" style="font-weight: 450">Answer options</label>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field question_4" type="text" name="question_title4_question_1" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_1.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 1">
-                            <input class="input__field question_4" type="text" name="question_title4_question_2" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_2.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 2">
-                        </div>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field question_4" type="text" name="question_title4_question_3" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_3.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 3">
-                            <input class="input__field question_4" type="text" name="question_title4_question_4" value="<%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].question_4.title : '' %>" style="width: 200px; height: 5px;" placeholder="Question 4">
-                        </div>
-                        <div class="input_container">
-                            <p>Correct answer:</p>
-                            <select name="question_title4_correct_question" class="type" style="width: 100px;" required>
-                                <option value="question_1" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_1' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_1' ? '1 (Current)' : '1' : '1' %>
-                                </option>
-                                <option value="question_2" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_2' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_2' ? '2 (Current)' : '2' : '2' %>
-                                </option>
-                                <option value="question_3" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_3' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_3' ? '3 (Current)' : '3' : '3' %>
-                                </option>
-                                <option value="question_4" <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_4' ? 'selected' : '' : '' %> >
-                                    <%= gamesInfo.game_questions[4] ? gamesInfo.game_questions[4].correct_question === 'question_4' ? '4 (Current)' : '4' : '4' %>
-                                </option>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="input">
-                        <% if (gamesInfo.game_questions[4] && gamesInfo.game_questions[4].question_image) {%>
-                            <div class="input-image">
-                                <img src="<%= gamesInfo.game_questions[4].question_image %>">
-                            </div>
-                        <% } %>
-                        <label class="input__label">Choose an image for the question</label>
-                        <br>
-                        <input type="file" accept="image/*" name="question_image4">
-                            <br>
-                        <div class="input">
-                            <div class="input_container">
-                                <input type="checkbox" id="delImg4" name="delImg4">
-                                <label for="delImg4">Delete image</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </form>
     </div>
 </main>
+<div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/redaction.js"></script>
 <script src="/javascripts/timer.js"></script>
 </body>

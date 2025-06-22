@@ -12,6 +12,22 @@ function pages(){
             <a href="/my-games" class="color-btn">${localeType === 'en' ? 'My games' : 'Мои игры'}</a>
             <a class="between"> ❯ </a>
             <a class="other-color">${localeType === 'en' ? 'Editor' : 'Редактор'}</a>`
+    } else if (page.startsWith('/create-questions')) {
+        pageName.innerHTML = `
+            <a class="between"> ❯ </a>
+            <a href="/my-games" class="color-btn">${localeType === 'en' ? 'My games' : 'Мои игры'}</a>
+            <a class="between"> ❯ </a>
+            <a href="/redaction/${roomId}" class="color-btn">${localeType === 'en' ? 'Editor' : 'Редактор'}</a>
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? 'New question' : 'Новый вопрос'}</a>`
+    } else if (page.startsWith('/edit-question')) {
+        pageName.innerHTML = `
+            <a class="between"> ❯ </a>
+            <a href="/my-games" class="color-btn">${localeType === 'en' ? 'My games' : 'Мои игры'}</a>
+            <a class="between"> ❯ </a>
+            <a href="/redaction/${roomId}" class="color-btn">${localeType === 'en' ? 'Editor' : 'Редактор'}</a>
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? `Question #${questionNumber}` : `Вопрос #${questionNumber}`}</a>`
     }
     else if (page.startsWith('/my-games')) {
         pageName.innerHTML = `

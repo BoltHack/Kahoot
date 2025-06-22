@@ -1,38 +1,51 @@
-const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
-const inputs = [...Array(3)].map((_, i) => document.getElementById(`modal_input${i + 2}`));
-const questions = [...Array(3)].map((_, i) => document.querySelector(`.question_${i + 2}`));
-document.querySelector('select[name="game_max_questions"]').addEventListener('change', function () {
-    const value = Number(this.value);
-    console.log('value', value);
-
-    modals.forEach((modal, i) => modal.hidden = i >= value);
-
-    inputs.forEach((input, i) => input.required = i + 2 <= value && !modals[i + 2].hidden);
-    questions.forEach((question, i) => question.required = i + 2 <= value && !modals[i + 2].hidden);
+document.querySelectorAll('form').forEach(function(form) {
+    form.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const value = maxQuestions;
+function deleteQuestionMenu(gameId, questionId, questionNumber){
+    document.getElementById('barrier').hidden = false;
 
-    modals.forEach((modal, i) => modal.hidden = i >= value);
+    const deleteBorder = document.createElement('div');
+    deleteBorder.innerHTML = `
+    <div class="delete-border">
+        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Delete question #${questionNumber}?` : `Удалить вопрос #${questionNumber} ?`}</h4>
+        <div class="delete-modal">
+            <button id="deleteQuestion">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
+            <button id="loading" hidden>${localeType === 'en' ? 'Loading...' : 'Загрузка...'}</button>
+            <button id="closeDeleteBorder">${localeType === 'en' ? 'Cancel' : 'Отмена'}</button>
+        </div>
+    </div>`
+    document.body.appendChild(deleteBorder);
+    document.getElementById('closeDeleteBorder').addEventListener('click', () => {
+        document.body.removeChild(deleteBorder);
+        document.getElementById('barrier').hidden = true;
+    });
 
-    inputs.forEach((input, i) => input.required = i + 2 <= value && !modals[i + 2].hidden);
-    questions.forEach((question, i) => question.required = i + 2 <= value && !modals[i + 2].hidden);
-})
-
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function (event) {
-        document.querySelectorAll('input[required]').forEach(input => {
-            if (input.hidden || input.offsetParent === null) {
-                input.required = false;
+    document.getElementById('deleteQuestion').addEventListener('click', () => {
+        fetch(`/delete-question/${gameId}/${questionId}`,{
+            method: "POST",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        });
+        })
+            .then(response => {
+                document.getElementById('deleteQuestion').hidden = true;
+                document.getElementById('loading').hidden = false;
+                if(response.ok){
+                    setTimeout(function () {
+                        window.location.reload();
+                        return response.json();
+                    }, 1000);
+                } else {
+                    console.log('Ошибка при загрузке.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
     });
-});
-
-
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('keydown', event => {
-        if (event.key === 'Enter') event.preventDefault();
-    });
-});
+}

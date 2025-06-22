@@ -40,7 +40,6 @@ class PostController {
                     max_online: 2,
                     online: 0,
                 },
-                game_max_questions: 2,
                 game_type: 'Open',
                 game_start_type: 'Auto'
             })
@@ -60,10 +59,8 @@ class PostController {
     static redaction = async (req, res, next) => {
         try {
             const { game_id } = req.params;
-            const gameId = await GamesModel.findById(game_id);
             const {
-                game_name, game_access, max_online, game_expiresInSeconds, game_max_questions, game_start_type,
-                ...questions
+                game_name, game_access, max_online, game_expiresInSeconds, game_start_type,
             } = req.body;
 
             const updateFields = {};
@@ -75,59 +72,7 @@ class PostController {
             }
             if (max_online) updateFields["game_online.max_online"] = max_online;
             if (game_expiresInSeconds) updateFields.game_expiresInSeconds = game_expiresInSeconds;
-            if (game_max_questions) updateFields.game_max_questions = game_max_questions;
             if (game_start_type) updateFields.game_start_type = game_start_type;
-
-            for (let i = 0; i < 5; i++) {
-                const titleKey = `question_title${i}`;
-                if (questions[titleKey]) {
-                    let imagePath;
-                    const imageKey = `question_image${i}`;
-                    if (req.files && req.files[imageKey]) {
-                        const imageFile = req.files[imageKey];
-
-                        const fileExt = path.extname(imageFile.name);
-                        const safeFileName = `${gameId.id + '-' + uuidv4()}${fileExt}`;
-                        imagePath = `/uploads/gameImages/${safeFileName}`;
-
-                        const uploadDir = path.join(__dirname, '..', 'public', 'uploads/gameImages');
-                        const savePath = path.join(uploadDir, safeFileName);
-
-                        if (!fs.existsSync(uploadDir)) {
-                            fs.mkdirSync(uploadDir, { recursive: true });
-                        }
-
-                        await imageFile.mv(savePath, (err) => {
-                            if (err) {
-                                console.error('Ошибка при сохранении файла:', err);
-                                return res.status(500).json({ error: 'Ошибка при сохранении файла' });
-                            }
-                        });
-                    }
-
-                    const imageIndex = await GamesModel.findById(game_id);
-
-                    const imageValue = imageIndex.game_questions && imageIndex.game_questions[i]
-                        ? imageIndex.game_questions[i].question_image
-                        : '/images/defaultQuestionImg.png';
-
-                    console.log(`imageValue${i}`, imageValue);
-                    console.log(`delImg${i}`, req.body[`delImg${i}`]);
-
-                    updateFields[`game_questions.${i}`] = {
-                        question_title: questions[titleKey],
-                        question_image: req.body[`delImg${i}`] === 'on'
-                            ? '/images/defaultQuestionImg.png'
-                            : imagePath || imageValue,
-                        question_1: { title: questions[`${titleKey}_question_1`] },
-                        question_2: { title: questions[`${titleKey}_question_2`] },
-                        question_3: { title: questions[`${titleKey}_question_3`] },
-                        question_4: { title: questions[`${titleKey}_question_4`] },
-                        correct_question: questions[`${titleKey}_correct_question`],
-                        question_number: i
-                    };
-                }
-            }
 
             if (Object.keys(updateFields).length > 0) {
                 await GamesModel.findOneAndUpdate(
@@ -145,6 +90,195 @@ class PostController {
         }
     };
 
+    static createQuestion = async (req, res, next) => {
+        try {
+            const { game_id } = req.params;
+            const gameId = await GamesModel.findById(game_id);
+            const {
+                question_title, question_title_correct_question,
+                question_title_question_1, question_title_question_2, question_title_question_3, question_title_question_4,
+                delImg
+            } = req.body;
+
+            const updateFields = {};
+
+            let imagePath;
+            if (req.files && req.files.question_image) {
+                const imageFile = req.files.question_image;
+
+                const fileExt = path.extname(imageFile.name);
+                const safeFileName = `${gameId.id + '-' + uuidv4()}${fileExt}`;
+                imagePath = `/uploads/gameImages/${safeFileName}`;
+
+                const uploadDir = path.join(__dirname, '..', 'public', 'uploads/gameImages');
+                const savePath = path.join(uploadDir, safeFileName);
+
+                if (!fs.existsSync(uploadDir)) {
+                    fs.mkdirSync(uploadDir, { recursive: true });
+                }
+
+                await imageFile.mv(savePath, (err) => {
+                    if (err) {
+                        console.error('Ошибка при сохранении файла:', err);
+                        return res.status(500).json({ error: 'Ошибка при сохранении файла' });
+                    }
+                });
+            }
+
+            const imageIndex = await GamesModel.findById(game_id);
+
+            const imageValue = imageIndex.game_questions && imageIndex.game_questions
+                ? imageIndex.game_questions.question_image
+                : '/images/defaultQuestionImg.png';
+
+            updateFields[`game_questions`] = {
+                question_title: question_title,
+                question_image: req.body[delImg] === 'on'
+                    ? '/images/defaultQuestionImg.png'
+                    : imagePath || imageValue,
+                question_1: {title: question_title_question_1},
+                question_2: {title: question_title_question_2},
+                question_3: {title: question_title_question_3},
+                question_4: {title: question_title_question_4},
+                correct_question: question_title_correct_question,
+                question_number: imageIndex.game_questions.length
+            };
+
+            await GamesModel.findOneAndUpdate(
+                { _id: game_id },
+                { $push: updateFields },
+                { new: true }
+            );
+
+            return res.redirect(`/create-questions/${game_id}`);
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static editQuestion = async (req, res, next) => {
+        try {
+            const { game_id, question_id } = req.params;
+            const gameId = await GamesModel.findById(game_id);
+            const {
+                question_title, question_title_correct_question,
+                question_title_question_1, question_title_question_2, question_title_question_3, question_title_question_4,
+                delImg
+            } = req.body;
+
+            let updateFields = {};
+
+            let imagePath;
+            if (req.files && req.files.question_image) {
+                const imageFile = req.files.question_image;
+
+                const fileExt = path.extname(imageFile.name);
+                const safeFileName = `${gameId.id + '-' + uuidv4()}${fileExt}`;
+                imagePath = `/uploads/gameImages/${safeFileName}`;
+
+                const uploadDir = path.join(__dirname, '..', 'public', 'uploads/gameImages');
+                const savePath = path.join(uploadDir, safeFileName);
+
+                if (!fs.existsSync(uploadDir)) {
+                    fs.mkdirSync(uploadDir, { recursive: true });
+                }
+
+                await imageFile.mv(savePath, (err) => {
+                    if (err) {
+                        console.error('Ошибка при сохранении файла:', err);
+                        return res.status(500).json({ error: 'Ошибка при сохранении файла' });
+                    }
+                });
+            }
+
+            const imageIndex = gameId.game_questions.find(q => q.id.toString() === question_id.toString());
+
+            console.log('imageIndex', imageIndex);
+
+            const imageValue = imageIndex && imageIndex.question_image
+                ? imageIndex.question_image
+                : '/images/defaultQuestionImg.png';
+
+            updateFields = {
+                question_title: question_title,
+                question_image: delImg === 'on'
+                    ? '/images/defaultQuestionImg.png'
+                    : imagePath || imageValue,
+                question_1: {title: question_title_question_1},
+                question_2: {title: question_title_question_2},
+                question_3: {title: question_title_question_3},
+                question_4: {title: question_title_question_4},
+                correct_question: question_title_correct_question,
+                question_number: imageIndex.question_number,
+                _id: imageIndex._id
+            };
+
+            await GamesModel.findOneAndUpdate(
+                { _id: game_id },
+                {
+                    $set: {
+                        'game_questions.$[elem]': updateFields
+                    }
+                },
+                {
+                    arrayFilters: [{ 'elem._id': question_id }],
+                    new: true
+                }
+            );
+
+            return res.redirect(`/edit-question/${game_id}/${question_id}`);
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
+
+    static deleteQuestion = async (req, res, next) => {
+        try {
+            const { game_id, question_id } = req.params;
+            const locale = req.cookies['locale'] || 'en';
+            const game = await GamesModel.findById(game_id);
+
+            if (game.game_online.online > 0){
+                const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+            const user = req.user;
+
+            const getUserInfo = await UsersModel.findById(user.id);
+            const myGamesInfo = getUserInfo.myGames.map(games => games.gameId.toString());
+            if (!myGamesInfo.includes(game_id)) {
+                const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const questionId = game.game_questions.find(q => q.id.toString() === question_id.toString());
+            if (!questionId) {
+                const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            await GamesModel.findOneAndUpdate(
+                { _id: game_id },
+                {
+                    $pull: {
+                        'game_questions': {_id: question_id}
+                    },
+                },
+                { new: true }
+            )
+            return res.status(200).json('Изменения успешно загружены' );
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    };
 
     static deleteGame = async (req, res, next) => {
         try {

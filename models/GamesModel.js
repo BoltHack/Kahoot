@@ -113,9 +113,6 @@ const GamesSchema = new Schema({
     game_author: {
         type: Object
     },
-    game_max_questions: {
-        type: Number
-    },
     game_type: {
         type: String,
     },

@@ -84,25 +84,20 @@ class ViewController {
     static redactionView = async (req, res, next) => {
         try {
             const { game_id } = req.params;
-            const game = await GamesModel.findById(game_id);
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
 
+            const game = await GamesModel.findById(game_id);
             if (game.game_online.online > 0){
                 const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
-
             const user = req.user;
 
-            const getUserId = await UsersModel.findById(user.id);
-            if (!getUserId) {
-                const errorMsg = locale === 'en' ? 'Player not found.' : 'Игрок не найден.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
-            }
-            const myGamesId = getUserId.myGames.map(games => games.gameId.toString());
+            const getUserInfo = await UsersModel.findById(user.id);
+            const myGamesInfo = getUserInfo.myGames.map(games => games.gameId.toString());
 
-            if (!myGamesId.includes(game_id)) {
+            if (!myGamesInfo.includes(game_id)) {
                 const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
@@ -118,6 +113,85 @@ class ViewController {
             next(e);
         }
     }
+
+    static createQuestionView = async (req, res, next) => {
+        try {
+            const {game_id} = req.params;
+            const locale = req.cookies['locale'] || 'en';
+
+            const game = await GamesModel.findById(game_id);
+            if (game.game_online.online > 0){
+                const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+            const user = req.user;
+
+            const getUserInfo = await UsersModel.findById(user.id);
+            const myGamesInfo = getUserInfo.myGames.map(games => games.gameId.toString());
+
+            if (!myGamesInfo.includes(game_id)) {
+                const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const gamesInfo = await GamesModel.findById(game_id);
+
+            const notifications = req.cookies['notifications'] || 'on';
+
+            return res.render(locale === 'en' ? 'en/create-questions' : 'ru/create-questions', {user, gamesInfo, locale, notifications});
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static editQuestionView = async (req, res, next) => {
+        try {
+            const {game_id, question_id} = req.params;
+
+            const locale = req.cookies['locale'] || 'en';
+            const notifications = req.cookies['notifications'] || 'on';
+
+            const game = await GamesModel.findById(game_id);
+            if (!game) {
+                const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+            if (game.game_online.online > 0) {
+                const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игроки.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const user = req.user;
+            const userData = await UsersModel.findById(user.id);
+            if (!userData) {
+                const errorMsg = locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const myGamesId = userData.myGames.find(g => g.gameId.toString() === game_id.toString());
+            if (!myGamesId) {
+                const errorMsg = locale === 'en' ? 'You do not have access to this game.' : 'У вас нет доступа к этой игре.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const gamesInfo = await GamesModel.findById(myGamesId.gameId);
+            if (!gamesInfo) {
+                const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            const questionInfo = gamesInfo.game_questions.find(q => q.id.toString() === question_id.toString());
+            if (!questionInfo) {
+                const errorMsg = locale === 'en' ? 'Question not found.' : 'Вопрос не найден.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            return res.render(locale === 'en' ? `en/edit-question` : `ru/edit-question`, {user, game_id, questionInfo, locale, notifications});
+        } catch (e) {
+            next(e);
+        }
+    }
+
 
     static myGamesView = async (req, res, next) => {
         try {
