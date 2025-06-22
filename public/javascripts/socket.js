@@ -249,7 +249,7 @@ let userName = name;
             }
             if (!bannedUsersCount || !bannedUsersCount.length) {
                 banLoaderSvg.style.display = 'none';
-                users.innerHTML = `<p class="not-found">Нет забаненных игроков.</p>`;
+                users.innerHTML = `<p class="not-found">${localeType === 'en' ? 'No banned players.' : 'Нет забаненных игроков.'}</p>`;
             }
         })
 
@@ -290,7 +290,7 @@ let userName = name;
                 if (getId.includes(String(authorId)) || authorId === id) {
                     console.log('пропуск', id);
                 } else {
-                    const privateKickMsg = localeType === 'en' ? 'Access to this game is restricted! You must be on the room creator\'s friends list to participate.' : 'Доступ к этой игре ограничен! Вам необходимо быть в списке друзей создателя комнаты, чтобы принять участие.';
+                    const privateKickMsg = localeType === 'en' ? "Access to this game is restricted! You must be on the room creator's friends list to participate." : "Доступ к этой игре ограничен! Вам необходимо быть в списке друзей создателя комнаты, чтобы принять участие.";
                     window.location.assign(`/error?message=${encodeURIComponent(privateKickMsg)}`);
                 }
             }
