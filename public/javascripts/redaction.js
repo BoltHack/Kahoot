@@ -12,7 +12,7 @@ function deleteQuestionMenu(gameId, questionId, questionNumber){
     const deleteBorder = document.createElement('div');
     deleteBorder.innerHTML = `
     <div class="delete-border">
-        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Delete question #${questionNumber}?` : `Удалить вопрос #${questionNumber} ?`}</h4>
+        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Delete question #${Number(questionNumber) + 1}?` : `Удалить вопрос #${Number(questionNumber) + 1} ?`}</h4>
         <div class="delete-modal">
             <button id="deleteQuestion">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
             <button id="loading" hidden>${localeType === 'en' ? 'Loading...' : 'Загрузка...'}</button>
