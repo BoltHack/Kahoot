@@ -116,7 +116,7 @@
                                 </div>
 
                                 <div class="msg-content">
-                                    <div class="text" id="msg-<%= msg._id %>"><%= msg.message %></div>
+                                    <div class="text" id="msg-<%= msg._id %>"><%- msg.message %></div>
                                     <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Edited)' : '' %></span>
                                 </div>
                             </div>
