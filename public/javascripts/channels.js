@@ -1,6 +1,7 @@
 function sendMessage() {
     const chatReply = document.querySelector('.chat-reply');
     const message = document.getElementById('message');
+    const messages = document.querySelectorAll('.message');
 
     const replyId = chatReply ? chatReply.getAttribute('data-id') : null;
 
@@ -20,6 +21,9 @@ function sendMessage() {
         message.focus();
         allReply.forEach(reply => {
             reply.remove();
+        });
+        messages.forEach(msg => {
+            msg.classList.remove('reply-message');
         });
     }
 }
@@ -303,10 +307,16 @@ function msgReplyMenu(msgId, msgName) {
     const chatInput = document.getElementById('chatInput');
     const allReply = chatInput.querySelectorAll('.chat-reply');
     const chatReply = document.createElement('div');
+    const message = document.getElementById('message-'+msgId);
+    const messages = document.querySelectorAll('.message');
 
+    messages.forEach(msg => {
+        msg.classList.remove('reply-message');
+    });
     allReply.forEach(reply => {
         reply.remove();
-    })
+    });
+    message.classList.add('reply-message');
 
     console.log('msgId', msgId, '|', 'msgName', msgName);
 
@@ -322,10 +332,12 @@ function msgReplyMenu(msgId, msgName) {
 
     document.getElementById('closeReplyMenu').addEventListener('click', () => {
         chatReply.remove();
+        message.classList.remove('reply-message');
     });
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             chatReply.remove();
+            message.classList.remove('reply-message');
         }
     })
 }
