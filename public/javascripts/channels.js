@@ -48,7 +48,6 @@ window.addEventListener('load', () => {
 });
 
 socket.on('showMessages', async (showMessagesData) => {
-    console.log('showMessagesData', showMessagesData);
     const messages = document.getElementById('messages');
     const newMessage = document.createElement('div');
     newMessage.innerHTML = `

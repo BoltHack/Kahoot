@@ -221,6 +221,7 @@ body {
     border-bottom: 1px dashed #007bff;
     transition: all 0.3s ease;
     word-break: break-all;
+    cursor: pointer;
 }
 
 .a-link:hover {
