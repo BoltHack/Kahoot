@@ -321,8 +321,8 @@ function msgReplyMenu(msgId, msgName) {
 
     chatReply.innerHTML = `
         <div class="chat-reply" data-id="${msgId}">
-            <span>${localeType === 'en' ? 'Reply ' + msgName : 'Ответить ' + msgName}</span>
-            <a id="closeReplyMenu">X</a>
+            <a href="#message-${msgId}">${localeType === 'en' ? 'Reply ' + msgName : 'Ответить ' + msgName}</a>
+            <b id="closeReplyMenu">X</b>
         </div>
 `;
 

@@ -139,10 +139,13 @@ body {
     font-size: 14px;
     text-decoration: none;
 }
-.chat-reply span {
-    margin-left: 20px;
-}
 .chat-reply a {
+    margin-left: 20px;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+}
+.chat-reply b {
     position: absolute;
     right: 25px;
     cursor: pointer;
