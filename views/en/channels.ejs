@@ -132,8 +132,20 @@
                                     <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Edited)' : '' %></span>
                                 </div>
                             </div>
-                            <div class="tools" onclick="openToolsMenu('<%= msg._id %>')" id="tools-<%= msg._id %>">
-                                <div class="menu-trigger">⋯</div>
+                            <div class="tools" id="tools-<%= msg._id %>">
+                                <div class="tools-settings">
+                                    <div class="tools-svg">
+                                        <% if (msg.id === myData.id) { %>
+                                            <div onclick="msgRedactionMenu('<%= msg._id %>')">
+                                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                                            </div>
+                                        <% } %>
+                                        <div onclick="msgReplyMenu('<%= msg._id %>', '<%= msg.name %>')">
+                                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+                                        </div>
+                                    </div>
+                                    <div class="menu-trigger" onclick="openToolsMenu('<%= msg._id %>')">⋯</div>
+                                </div>
                                 <div class="dropdown-menu">
                                     <button onclick="msgReplyMenu('<%= msg._id %>', '<%= msg.name %>')">
                                         Reply

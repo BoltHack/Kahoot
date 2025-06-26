@@ -384,12 +384,34 @@ ul {
     position: relative;
     margin-left: auto;
     /*display: inline-block;*/
+    /*width: 100%;*/
     color: #999;
     cursor: pointer;
     font-size: 20px;
     display: none;
 }
-
+.tools-settings {
+    display: flex;
+    padding: 7px 10px;
+    background-color: #16171d;
+    height: 30px;
+    border-radius: 10px;
+    gap: 10px;
+}
+.tools-svg {
+    display: flex;
+    gap: 10px;
+    right: 30px;
+    top: 1.5px;
+}
+.tools-svg svg {
+    width: 20px;
+    padding: 3px 3px;
+    border-radius: 4px;
+}
+.tools-svg svg:hover {
+    background-color: #2a2f37;
+}
 .menu-trigger {
     padding: 3px;
     border-radius: 4px;
@@ -403,7 +425,7 @@ ul {
 .dropdown-menu {
     position: absolute;
     top: 0;
-    right: 30px;
+    right: 35px;
     background-color: #1f2228;
     border: 1px solid #2a2f37;
     border-radius: 10px;

@@ -119,8 +119,20 @@ socket.on('showMessages', async (showMessagesData) => {
                 </div>
             </div>
             
-            <div class="tools" onclick="openToolsMenu('${showMessagesData._id}')" id="tools-${showMessagesData._id}">
-                <div class="menu-trigger">⋯</div>
+            <div class="tools" id="tools-${showMessagesData._id}">
+                <div class="tools-settings">
+                    <div class="tools-svg">
+                    ${showMessagesData.id === sendId ? `
+                        <div onclick="msgRedactionMenu('${showMessagesData._id}')">
+                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                        </div>` : ``}
+                        <div onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+                        </div>
+                        <div class="menu-trigger" onclick="openToolsMenu('${showMessagesData._id}')">⋯</div>
+                    </div>
+                </div>
+                
                     <div class="dropdown-menu">
                     <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
                         ${localeType === 'en' ? 'Reply' : 'Ответить'}
@@ -148,7 +160,9 @@ function showTools(msgData) {
     const message = document.getElementById('message-'+msgData.msgId);
     const toolsId = document.getElementById('tools-'+msgData.msgId);
 
-    toolsId.style.display = 'inline-block';
+    if (message.querySelector('textarea') === null) {
+        toolsId.style.display = 'inline-block';
+    }
 
     message.addEventListener('mouseout', () => {
         if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
@@ -280,7 +294,11 @@ function checkPageHeight() {
 }
 function msgRedactionMenu(msgId) {
     const message = document.getElementById('msg-'+msgId);
+    const messageId = document.getElementById('message-'+msgId);
+    const toolsId = document.getElementById('tools-'+msgId);
     const editInput = document.createElement('textarea');
+
+    toolsId.style.display = 'none';
 
     editInput.value = message.textContent;
     editInput.id = 'msg-' + msgId;
@@ -312,10 +330,16 @@ function msgRedactionMenu(msgId) {
                 console.log('Введённый текст:', value);
                 socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
                 editInput.replaceWith(message);
+                if (messageId.matches(':hover')) {
+                    toolsId.style.display = 'inline-block';
+                }
             }
         }
         else if (event.key === 'Escape') {
             editInput.replaceWith(message);
+            if (messageId.matches(':hover')) {
+                toolsId.style.display = 'inline-block';
+            }
         }
     });
 
