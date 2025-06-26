@@ -350,3 +350,36 @@ function findReplyMsg(msgId) {
     })
     setTimeout(() => msg.style.backgroundColor = '#363a53', 100);
 }
+
+
+function msgDeleteMenu(channelId, msgId) {
+    const deleteMenu = document.createElement('div');
+    const barrier = document.getElementById('barrier');
+
+    deleteMenu.innerHTML = `
+    <div class="delete-border">
+        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Are you sure you want to delete this message?` : `Вы действительно хотите удалить это сообщение?`}</h4>
+        <div class="delete-modal">
+            <button id="requestBtn">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
+            <button id="closeDeleteBorder">${localeType === 'en' ? 'Cancel' : 'Отмена'}</button>
+        </div>
+    </div>
+`;
+
+    barrier.hidden = false;
+    document.body.appendChild(deleteMenu);
+
+    document.getElementById('requestBtn').addEventListener('click', () => {
+        socket.emit('deleteMsg', {channelId: channelId, msgId: msgId });
+        barrier.hidden = true;
+        document.body.removeChild(deleteMenu);
+    });
+    document.getElementById('closeDeleteBorder').addEventListener('click', () => {
+        barrier.hidden = true;
+        document.body.removeChild(deleteMenu);
+    });
+    barrier.addEventListener('click', () => {
+        barrier.hidden = true;
+        document.body.removeChild(deleteMenu);
+    });
+}
