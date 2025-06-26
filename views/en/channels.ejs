@@ -71,16 +71,28 @@
                             <img class="avatar <%= msg.reply && msg.reply.length > 0 ? 'reply-avatarTop' : '' %>" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
                             <div class="message-content">
                                 <% if (msg.reply && msg.reply.length > 0) { %>
-                                    <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
-                                        <div class="reply-line-wrapper">
-                                            <div class="reply-line"></div>
-                                            <img class="reply-avatar" src="<%= msg.reply[0].id === msg.reply[0].toWho ? myData.image : companion.image %>">
-                                        </div>
-                                        <div class="reply-text-container">
-                                            <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
-                                            <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
-                                        </div>
-                                    </a>
+                                    <% if (channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString())) { %>
+                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line"></div>
+                                                <img class="reply-avatar" src="<%= msg.reply[0].id === msg.reply[0].toWho ? myData.image : companion.image %>">
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
+                                                <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
+                                            </div>
+                                        </a>
+                                    <% } else { %>
+                                            <a class="reply-container">
+                                                <div class="reply-line-wrapper">
+                                                    <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
+                                                    <br/>
+                                                </div>
+                                                <div class="reply-text-container">
+                                                    <div class="reply-text">The original message has been deleted</div>
+                                                </div>
+                                            </a>
+                                    <% } %>
                                 <% } %>
                                 <div class="message-header">
                                     <span class="username"><%= msg.name %></span>
@@ -134,7 +146,7 @@
                                         </button>
                                         <div class="tools-line"></div>
                                         <button style="color: #f47171" onclick="msgDeleteMenu('<%= channel._id %>', '<%= msg._id %>')">
-                                            Delete
+                                            Delete message
                                             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M3 1a1 1 0 0 1 1 1v.82l8.67-1.45A2 2 0 0 1 15 3.35v1.47l5.67-.95A2 2 0 0 1 23 5.85v7.3a2 2 0 0 1-1.67 1.98l-9 1.5a2 2 0 0 1-1.78-.6c-.2-.21-.08-.54.18-.68a5.01 5.01 0 0 0 1.94-1.94c.18-.32-.1-.66-.46-.6L4 14.18V21a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1Z" class=""></path></svg>
                                         </button>
                                     <% } %>

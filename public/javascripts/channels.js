@@ -56,7 +56,7 @@ socket.on('showMessages', async (showMessagesData) => {
                 <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}"" src="${showMessagesData.image}">
             <div class="message-content">
             ${showMessagesData.reply.id ? `
-            <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
+            <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
                 <div class="reply-line-wrapper">
                     <div class="reply-line"></div>
                     <img class="reply-avatar" src="${showMessagesData.reply.image}">
@@ -122,10 +122,20 @@ socket.on('showMessages', async (showMessagesData) => {
             <div class="tools" onclick="openToolsMenu('${showMessagesData._id}')" id="tools-${showMessagesData._id}">
                 <div class="menu-trigger">⋯</div>
                     <div class="dropdown-menu">
-                        <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">${localeType === 'en' ? 'Reply' : 'Ответить'}</button>
-                        <button onclick="msgRedactionMenu('${showMessagesData._id}')">${localeType === 'en' ? 'Edit' : 'Редактировать'}</button>
+                    <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+                        ${localeType === 'en' ? 'Reply' : 'Ответить'}
+                        <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+                    </button>
+                    ${showMessagesData.id === sendId ? `
+                        <button onclick="msgRedactionMenu('${showMessagesData._id}')">
+                            ${localeType === 'en' ? 'Edit' : 'Редактировать'}
+                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                        </button>
                         <div class="tools-line"></div>
-                        <button style="color: #cc0000" onclick="socket.emit('deleteMsg', { channelId: channelId, msgId: '${showMessagesData._id}'})">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
+                        <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${showMessagesData._id}')">
+                            ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
+                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path></svg>
+                        </button>` : ``}
                     </div>
                 </div>
             </div>
@@ -209,7 +219,9 @@ else {
 socket.on('deleteMessage', async (deleteMessage) => {
     console.log('deleteMessage', deleteMessage);
     const messages = document.getElementById('messages');
-    const oldMessage = document.getElementById('message-'+deleteMessage.msgId);
+    const deleteId = deleteMessage.msgId;
+    const oldMessage = document.getElementById('message-'+deleteId);
+
     if (oldMessage && oldMessage.parentNode) {
         oldMessage.parentNode.removeChild(oldMessage);
     }
@@ -217,6 +229,31 @@ socket.on('deleteMessage', async (deleteMessage) => {
         messages.removeChild(oldMessage);
     }
     scrollToBottom();
+
+    const replyContainers = document.querySelectorAll('.reply-container');
+    replyContainers.forEach(rc => {
+        const dataMsgId = rc.getAttribute('data-msgId');
+        if (dataMsgId) {
+            if (dataMsgId === deleteId) {
+                const deleteMsg = document.getElementById('replyContainer-'+deleteId);
+                deleteMsg.href = '#';
+                deleteMsg.innerHTML = `
+                    <div class="reply-line-wrapper">
+                        <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
+                        <br/>
+                    </div>
+                    <div class="reply-text-container">
+                        <div class="reply-text">${localeType === 'en' ? 'The message has been deleted' : 'Сообщение было удалено'}</div>
+                    </div>`
+                if (rc && rc.parentNode) {
+                    rc.parentNode.appendChild(deleteMsg);
+                }
+                else {
+                    rc.appendChild(deleteMsg);
+                }
+            }
+        }
+    });
 });
 
 socket.on('broadcastDeleteMsg', async () => {

@@ -111,8 +111,36 @@ const authenticateJWT = async (req, res, next) => {
         if (token) {
             jwt.verify(token, JWTSecret, (err, user) => {
                 if (err) {
-                    const msg = locale === 'en' ? 'Invalid access token.' : 'Недействительный токен доступа.';
-                    throw new HttpErrors.Forbidden(msg);
+                    const refreshToken = req.cookies.refreshToken;
+                    if (refreshToken) {
+                        jwt.verify(refreshToken, refreshTokenSecret, async (err, user) => {
+                            if (err) {
+                                const msg = locale === 'en' ? 'Invalid refresh token.' : 'Недействительный refresh-токен.';
+                                throw new HttpErrors.Forbidden(msg);
+                            }
+                            req.user = user;
+
+                            const payload = {
+                                id: user.id,
+                                email: user.email,
+                                name: user.name,
+                                registerDate: user.registerDate,
+                                role: user.role,
+                                ip: user.ip
+                            };
+
+                            const newAccessToken = jwt.sign(payload, JWTSecret, { expiresIn: '15m' });
+                            res.cookie('token', newAccessToken, {
+                                httpOnly: true,
+                                secure: true,
+                                maxAge: parseMaxAge('15m')
+                            });
+                            next();
+                        });
+                    } else {
+                        const msg = locale === 'en' ? 'Invalid access token.' : 'Недействительный токен доступа.';
+                        throw new HttpErrors.Forbidden(msg);
+                    }
                 }
                 req.user = user;
                 next();
