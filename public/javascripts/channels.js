@@ -233,25 +233,17 @@ socket.on('deleteMessage', async (deleteMessage) => {
     const replyContainers = document.querySelectorAll('.reply-container');
     replyContainers.forEach(rc => {
         const dataMsgId = rc.getAttribute('data-msgId');
-        if (dataMsgId) {
-            if (dataMsgId === deleteId) {
-                const deleteMsg = document.getElementById('replyContainer-'+deleteId);
-                deleteMsg.href = '#';
-                deleteMsg.innerHTML = `
-                    <div class="reply-line-wrapper">
-                        <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
-                        <br/>
-                    </div>
+        if (dataMsgId === deleteId) {
+            console.log('dataMsgId', dataMsgId);
+            rc.href = '#';
+            rc.innerHTML = `
+                <div class="reply-line-wrapper">
+                    <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
+                    <br/>
+                </div>
                     <div class="reply-text-container">
-                        <div class="reply-text">${localeType === 'en' ? 'The message has been deleted' : 'Сообщение было удалено'}</div>
-                    </div>`
-                if (rc && rc.parentNode) {
-                    rc.parentNode.appendChild(deleteMsg);
-                }
-                else {
-                    rc.appendChild(deleteMsg);
-                }
-            }
+                    <div class="reply-text">${localeType === 'en' ? 'Original post removed' : 'Оригинальное сообщение удалено'}</div>
+                </div>`
         }
     });
 });

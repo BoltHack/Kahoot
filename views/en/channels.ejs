@@ -72,10 +72,10 @@
                             <div class="message-content">
                                 <% if (msg.reply && msg.reply.length > 0) { %>
                                     <% if (channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString())) { %>
-                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
                                             <div class="reply-line-wrapper">
                                                 <div class="reply-line"></div>
-                                                <img class="reply-avatar" src="<%= msg.reply[0].id === msg.reply[0].toWho ? myData.image : companion.image %>">
+                                                <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
                                             </div>
                                             <div class="reply-text-container">
                                                 <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
@@ -89,7 +89,7 @@
                                                     <br/>
                                                 </div>
                                                 <div class="reply-text-container">
-                                                    <div class="reply-text">The original message has been deleted</div>
+                                                    <div class="reply-text">Original post removed</div>
                                                 </div>
                                             </a>
                                     <% } %>
