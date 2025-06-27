@@ -95,6 +95,30 @@
             dropdownTitles[index].style.backgroundColor = '#1C2025';
         });
     });
+
+    function logout() {
+        fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json()).then((res) => {
+            const {status, error} = res;
+            if (error) {
+                console.log('Ошибка выхода', error);
+                return;
+            }
+
+            if (status) {
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('token');
+                localStorage.removeItem('session');
+                localStorage.removeItem('sessionEndTime');
+                window.location.href = "/auth/login";
+                return;
+            }
+        });
+    }
 </script>
 </body>
 </html>
