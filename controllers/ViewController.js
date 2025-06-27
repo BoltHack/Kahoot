@@ -90,7 +90,7 @@ class ViewController {
             const game = await GamesModel.findById(game_id);
             if (game.game_online.online > 0){
                 const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const user = req.user;
 
@@ -122,7 +122,7 @@ class ViewController {
             const game = await GamesModel.findById(game_id);
             if (game.game_online.online > 0){
                 const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const user = req.user;
 
@@ -158,7 +158,7 @@ class ViewController {
             }
             if (game.game_online.online > 0) {
                 const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игроки.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
             const user = req.user;
@@ -171,7 +171,7 @@ class ViewController {
             const myGamesId = userData.myGames.find(g => g.gameId.toString() === game_id.toString());
             if (!myGamesId) {
                 const errorMsg = locale === 'en' ? 'You do not have access to this game.' : 'У вас нет доступа к этой игре.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=403&message=${encodeURIComponent(errorMsg)}`);
             }
 
             const gamesInfo = await GamesModel.findById(myGamesId.gameId);
@@ -408,13 +408,13 @@ class ViewController {
     static userProfileView = async (req, res, next) => {
         try {
             const {user_id} = req.params;
+            const locale = req.cookies['locale'] || 'en';
 
             if (!mongoose.Types.ObjectId.isValid(user_id)) {
-                const errorMsg = locale === 'en' ? 'Player not found.' : 'Игрок не найдена.';
+                const errorMsg = locale === 'en' ? 'Player not found.' : 'Игрок не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
 
             const userInfo = await UsersModel.findById(user_id);

@@ -246,7 +246,7 @@ class PostController {
 
             if (game.game_online.online > 0){
                 const errorMsg = locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const user = req.user;
 
@@ -288,7 +288,7 @@ class PostController {
 
             if (game.game_online.online > 0){
                 const errorMsg = locale === 'en' ? 'You cannot Delete a game that has players in it.' : 'Вы не можете Удалить игру, в котором есть игроки.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             await GamesModel.findByIdAndDelete(game_id);
             return res.redirect('/my-games');
@@ -363,12 +363,12 @@ class PostController {
 
             if (!req.files.image.mimetype.startsWith('image/')) {
                 const errorMsg = locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
             if(!req.files || !req.files.image){
                 const errorMsg = locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const imageFile = req.files.image;
             const fileExt = path.extname(imageFile.name);
@@ -441,12 +441,12 @@ class PostController {
 
             if (!req.files.image.mimetype.startsWith('image/')) {
                 const errorMsg = locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
             if(!req.files || !req.files.image){
                 const errorMsg = locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const imageFile = req.files.image;
             const fileExt = path.extname(imageFile.name);

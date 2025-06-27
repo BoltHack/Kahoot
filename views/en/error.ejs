@@ -406,7 +406,7 @@
 <div class="star star5"></div>
 
 <div class="error">
-    <div class="error__title"><%= error.status %></div>
+    <div class="error__title"><%= code ? code : error.status %></div>
     <div class="error__subtitle">An error occurred...</div>
     <div class="error__description"><%=  message %></div>
     <button class="error__button error__button--active" onclick="window.location.href = '/'">Home</button>

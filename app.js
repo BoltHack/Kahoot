@@ -969,6 +969,7 @@ app.use(function(err, req, res, next) {
 
         res.status(err.status || 500);
         const message = req.query.message || err.message;
+        const code = req.query.code || '404';
 
         let locale = req.cookies['locale'] || 'en';
 
@@ -976,7 +977,7 @@ app.use(function(err, req, res, next) {
             res.cookie('locale', locale, { httpOnly: true });
         }
 
-        res.render(locale === 'en' ? 'en/error' : 'ru/error', { message });
+        res.render(locale === 'en' ? 'en/error' : 'ru/error', { code, message });
     } catch (error) {
         console.log('app Error', error);
     }

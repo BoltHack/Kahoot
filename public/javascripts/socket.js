@@ -68,7 +68,7 @@ let userName = name;
         const checkAllId = getId.length !== new Set(getId).size;
         if (checkAllId) {
             const errorMsg = localeType === 'en' ? 'You cannot log into the same game with the same account from different browser windows.' : 'Вы не можете зайти в одну и ту же игру с одного аккаунта с разных окон браузера.';
-            window.location.href = `/error?message=${encodeURIComponent(errorMsg)}`;
+            window.location.href = `/error?code=409&message=${encodeURIComponent(errorMsg)}`;
         }
         document.getElementById('onlineCount').innerText = `${localeType === 'en' ? 'online: ' + onlineCount.online : 'Онлайн: ' + onlineCount.online}`;
 
@@ -188,7 +188,8 @@ let userName = name;
         });
 
         socket.on('gameOff', () => {
-            window.location.href = `/error?message=${encodeURIComponent('Игра выключена.')}`;
+            const errorMsg = localeType === 'en' ? 'Game is off.' : 'Игра выключена.';
+            window.location.href = `/error?code=410&message=${encodeURIComponent(errorMsg)}`;
         });
 
         socket.on('updateAnswersCount', (answersCount) => {
@@ -291,7 +292,7 @@ let userName = name;
                     console.log('пропуск', id);
                 } else {
                     const privateKickMsg = localeType === 'en' ? "Access to this game is restricted! You must be on the room creator's friends list to participate." : "Доступ к этой игре ограничен! Вам необходимо быть в списке друзей создателя комнаты, чтобы принять участие.";
-                    window.location.assign(`/error?message=${encodeURIComponent(privateKickMsg)}`);
+                    window.location.assign(`/error?code=403&message=${encodeURIComponent(privateKickMsg)}`);
                 }
             }
         });
@@ -356,7 +357,7 @@ let userName = name;
         console.log('updateGameTypeCount', gameTypeCount);
         if (gameTypeCount === 'Close') {
             const gameTypeMsg = localeType === 'en' ? 'This game has already begun.' : 'Данная игра уже началась.';
-            window.location.replace(`/error?message=${encodeURIComponent(gameTypeMsg)}`);
+            window.location.replace(`/error?code=409&message=${encodeURIComponent(gameTypeMsg)}`);
         }
     });
 
