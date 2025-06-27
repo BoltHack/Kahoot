@@ -71,7 +71,8 @@
                             <img class="avatar <%= msg.reply && msg.reply.length > 0 ? 'reply-avatarTop' : '' %>" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
                             <div class="message-content">
                                 <% if (msg.reply && msg.reply.length > 0) { %>
-                                    <% if (channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString())) { %>
+                                    <% let msgEdited = channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString()) %>
+                                    <% if (msgEdited && !msgEdited.edited) { %>
                                         <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
                                             <div class="reply-line-wrapper">
                                                 <div class="reply-line"></div>
@@ -80,6 +81,20 @@
                                             <div class="reply-text-container">
                                                 <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
                                                 <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
+                                            </div>
+                                        </a>
+                                    <% } else if (msgEdited && msgEdited.edited === true) { %>
+                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line"></div>
+                                                <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
+                                                <div class="reply-text">
+                                                    <%= msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message %>
+                                                    <span class="edited-msg">(Edited)</span>
+                                                </div>
                                             </div>
                                         </a>
                                     <% } else { %>

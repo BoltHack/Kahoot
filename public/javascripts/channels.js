@@ -352,6 +352,26 @@ socket.on('editedMsg', async (editMsg) => {
 
     message.textContent = editMsg.editMessage;
     edited.textContent = localeType === 'en' ? '(Edited)' : '(Изменено)';
+
+    const replyContainers = document.querySelectorAll('.reply-container');
+    replyContainers.forEach(rc => {
+        const dataMsgId = rc.getAttribute('data-msgId');
+        if (dataMsgId === editMsg.msgId) {
+            console.log('dataMsgId', dataMsgId);
+            rc.innerHTML = `
+                <div class="reply-line-wrapper">
+                    <div class="reply-line"></div>
+                    <img class="reply-avatar" src="${editMsg.userImage}">
+                </div>
+                <div class="reply-text-container">
+                    <div class="reply-header"><strong>${editMsg.userName}</strong></div>
+                        <div class="reply-text">
+                        ${editMsg.editMessage.length > 50 ? editMsg.editMessage.slice(0, 50) : editMsg.editMessage}
+                        <span class="edited-msg">${localeType === 'en' ? '(Edited)' : '(Изменено)'}</span>
+                    </div>
+                </div>`
+        }
+    });
 });
 
 

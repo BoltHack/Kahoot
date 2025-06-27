@@ -897,6 +897,8 @@ io.on('connection', async (socket) => {
         const cleanMessage = linkify(cleanBeforeLink);
 
         if (findEditMsg.id.toString() === socket.userId.toString() && cleanMessage.length !== 0) {
+            const userInfo = await UsersModel.findById(findEditMsg.id);
+            console.log('userInfo', userInfo.name);
             console.log('msgData', msgData.newMsg);
             await ChannelsModel.findOneAndUpdate(
                 { _id: msgData.channelId },
@@ -912,6 +914,8 @@ io.on('connection', async (socket) => {
                 }
             );
             io.to(msgData.channelId).emit('editedMsg', {
+                userName: userInfo.name,
+                userImage: userInfo.image,
                 msgId: msgData.msgId,
                 editMessage: cleanMessage,
             })
