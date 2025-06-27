@@ -44,7 +44,7 @@
                     <br/>
                 </div>
 
-                <% if (userInfo.id !== myInfo.id) { %>
+                <% if (user.id && userInfo.id !== myInfo.id) { %>
                 <div style="display: flex">
                     <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Написать</button>
                     <input value="<%= userInfo.id %>" id="friendId" hidden>
