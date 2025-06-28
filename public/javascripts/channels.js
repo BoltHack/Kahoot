@@ -366,7 +366,7 @@ socket.on('editedMsg', async (editMsg) => {
                 <div class="reply-text-container">
                     <div class="reply-header"><strong>${editMsg.userName}</strong></div>
                         <div class="reply-text">
-                        ${editMsg.editMessage.length > 50 ? editMsg.editMessage.slice(0, 50) : editMsg.editMessage}
+                        ${editMsg.editMessage.length > 20 ? editMsg.editMessage.slice(0, 20) : editMsg.editMessage}
                         <span class="edited-msg">${localeType === 'en' ? '(Edited)' : '(Изменено)'}</span>
                     </div>
                 </div>`

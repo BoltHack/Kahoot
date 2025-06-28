@@ -92,7 +92,7 @@
                                                 <div class="reply-text-container">
                                                     <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
                                                     <div class="reply-text">
-                                                        <%= msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message %>
+                                                        <%= msgEdited.message.length > 20 ? msgEdited.message.slice(0, 20) + '...' : msgEdited.message %>
                                                         <span class="edited-msg">(Изменено)</span>
                                                     </div>
                                                 </div>
