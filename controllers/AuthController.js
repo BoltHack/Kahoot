@@ -251,14 +251,19 @@ class AuthController {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
+            if (!email) {
+                const errorMsg = locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.';
+                return res.status(400).json({ error: errorMsg });
+            }
+
             if (!checkEmail){
-                const msg = locale === 'en' ? 'The entered address was not found.' : 'Введённый адрес не найден.';
-                return res.redirect(`/error?message=${encodeURIComponent(msg)}`);
+                const errorMsg = locale === 'en' ? 'The entered address was not found.' : 'Введённый адрес не найден.';
+                return res.status(400).json({ error: errorMsg });
             }
 
             if (checkIp && checkIp.ip === ip){
-                const msg = locale === 'en' ? 'You have already sent a verification code. Please try again later.' : 'Вы уже отправили код подтверждения. Повтроите попытку позже.';
-                return res.redirect(`/error?message=${encodeURIComponent(msg)}`);
+                const errorMsg = locale === 'en' ? 'You have already sent a verification code. Please try again later.' : 'Вы уже отправили код подтверждения. Повтроите попытку позже.';
+                return res.status(400).json({ error: errorMsg });
             }
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -289,7 +294,7 @@ class AuthController {
                 emailCode.save();
                 res.cookie('email', email, { httpOnly: true, maxAge: 600000 })
 
-                return res.redirect('/auth/account-recovery');
+                return res.status(200).json('Адрес найден!');
             });
 
         }catch (err){
@@ -315,25 +320,35 @@ class AuthController {
 
     static accountRecovery = async (req, res, next) => {
         try {
-            const {code, password, confirmPassword} = req.body;
+            const {code, password, confirmPassword} = req.body
+            let locale = req.cookies['locale'] || 'en';
             const email = req.cookies['email'];
+
+            if (!code || !password || !confirmPassword) {
+                const errorMsg = locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.';
+                return res.status(400).json({ error: errorMsg });
+            }
 
             const user = await ForgottenPasswordsModel.findOne({email});
             if (!user) {
-                return res.redirect(`/error?message=${encodeURIComponent('Пользователь не найден.')}`);
+                const errorMsg = locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
+                return res.status(400).json({ error: errorMsg });
             }
 
             if (user.code !== code) {
-                return res.redirect(`/error?message=${encodeURIComponent('Коды не совпадают.')}`);
+                const errorMsg = locale === 'en' ? 'Code not found.' : 'Код не найден.';
+                return res.status(400).json({ error: errorMsg });
             }
 
             if (password !== confirmPassword) {
-                return res.redirect(`/error?message=${encodeURIComponent('Пароли не совпадают.')}`);
+                const errorMsg = locale === 'en' ? 'The passwords do not match.' : 'Пароли не совпадают.';
+                return res.status(400).json({ error: errorMsg });
             }
 
             const emailId = await UsersModel.findOne({ email });
             if (!emailId) {
-                return res.redirect(`/error?message=${encodeURIComponent('Пользователь не найден.')}`);
+                const errorMsg = locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
+                return res.status(400).json({ error: errorMsg });
             }
 
             const idS = emailId._id.toString();
@@ -347,7 +362,7 @@ class AuthController {
             );
             res.clearCookie('email');
             updatePassword.save();
-            return res.redirect('/auth/login')
+            return res.status(400).json('Пароль успешно изменён!');
         } catch (e) {
             next(e)
         }

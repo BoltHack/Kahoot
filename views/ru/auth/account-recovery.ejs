@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <body>
-<form action="/auth/send-code" method="POST">
+<form id="changePasswordForm" method="POST">
     <div class="card">
         <div style="display: flex; gap: 10px;">
             <a href="/" class="card__a"><i class="fa fa-home"></i></a>
@@ -20,41 +20,26 @@
         </p>
         <div class="card__form">
             <p class="text">Код подтвеждения</p>
-            <input type="text" id="node" name="code" class="card__form-input" placeholder="Введите код подтвеждения" required>
+            <input type="text" id="code" name="code" class="card__form-input" placeholder="Введите код подтвеждения" autocomplete="off" required>
             <p class="text">Пароль</p>
             <input type="password" id="password" name="password" class="card__form-input" placeholder="Введите новый пароль" required>
             <p class="text">Повтор пароля</p>
             <input type="password" id="confirmPassword" name="confirmPassword" class="card__form-input" placeholder="Повторите пароль" required>
             <img src="/images/invisiblePassword.png" class="toggle-password" style="top: 63.5%;" id="togglePassword1">
             <img src="/images/visiblePassword.png" class="toggle-password" style="top: 63.5%;" id="togglePassword2" hidden>
-            <button type="submit" class="card__button">Сменить пароль</button>
+            <button type="submit" class="card__button" id="changePasswordBtn">Сменить пароль</button>
+            <div class="card__button" style="padding: 10px 0; width: 98.5%; height: 21px; opacity: 1" id="loaderBtn" hidden>
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+            </div>
         </div>
     </div>
 </form>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const togglePassword1 = document.getElementById('togglePassword1');
-        const togglePassword2 = document.getElementById('togglePassword2');
-        let passwordField = document.getElementById('password');
-        let confirmPasswordField = document.getElementById('confirmPassword');
-        let passwordFieldType = passwordField.getAttribute('type');
-        togglePassword1.addEventListener('click', function () {
-            if (passwordFieldType === 'password') {
-                passwordField.setAttribute('type', 'text');
-                confirmPasswordField.setAttribute('type', 'text');
-                togglePassword2.hidden = false;
-                togglePassword1.hidden = true;
-            }
-        })
-        togglePassword2.addEventListener('click', function () {
-            if (passwordFieldType === 'password') {
-                passwordField.setAttribute('type', 'password');
-                confirmPasswordField.setAttribute('type', 'password');
-                togglePassword2.hidden = true;
-                togglePassword1.hidden = false;
-            }
-        });
-    })
-</script>
+<script src="/javascripts/auth/accountRecovery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
