@@ -80,7 +80,7 @@
                                             </div>
                                             <div class="reply-text-container">
                                                 <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
-                                                <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
+                                                <div class="reply-text"><%= msg.reply[0].message.length > 100 ? msg.reply[0].message.slice(0, 100) + '...' : msg.reply[0].message %></div>
                                             </div>
                                         </a>
                                     <% } else if (msgEdited && msgEdited.edited === true) { %>
@@ -92,7 +92,8 @@
                                             <div class="reply-text-container">
                                                 <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
                                                 <div class="reply-text">
-                                                    <%= msgEdited.message.length > 20 ? msgEdited.message.slice(0, 20) + '...' : msgEdited.message %>
+                                                    <%= msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message %>
+                                                    <% msg.message.length >= 50 ? '<br/>' : '' %>
                                                     <span class="edited-msg">(Edited)</span>
                                                 </div>
                                             </div>

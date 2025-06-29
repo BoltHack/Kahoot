@@ -63,7 +63,7 @@ socket.on('showMessages', async (showMessagesData) => {
                 </div>
                 <div class="reply-text-container">
                     <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
-                <div class="reply-text">${showMessagesData.reply.message.length > 50 ? showMessagesData.reply.message.slice(0, 50) + '...' : showMessagesData.reply.message}</div>
+                <div class="reply-text">${showMessagesData.reply.message.length > 100 ? showMessagesData.reply.message.slice(0, 100) + '...' : showMessagesData.reply.message}</div>
                 </div>
             </a>
             ` : ''}
@@ -366,7 +366,8 @@ socket.on('editedMsg', async (editMsg) => {
                 <div class="reply-text-container">
                     <div class="reply-header"><strong>${editMsg.userName}</strong></div>
                         <div class="reply-text">
-                        ${editMsg.editMessage.length > 20 ? editMsg.editMessage.slice(0, 20) + '...' : editMsg.editMessage}
+                        ${editMsg.editMessage.length > 100 ? editMsg.editMessage.slice(0, 100) + '...' : editMsg.editMessage}
+                        ${editMsg.editMessage.length >= 50 ? '<br/>' : ''}
                         <span class="edited-msg">${localeType === 'en' ? '(Edited)' : '(Изменено)'}</span>
                     </div>
                 </div>`
