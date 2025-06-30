@@ -41,12 +41,12 @@
                                 <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                             </a>
                         <% } else { %>
-                                <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
-                                    💬
-                                    <%= channels.companionName %>
-                                    <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
-                                </a>
-                            <% } %>
+                            <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                💬
+                                <%= channels.companionName %>
+                                <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                            </a>
+                        <% } %>
                     </li>
                 <% }) %>
             </ul>
@@ -71,7 +71,7 @@
                             <img class="avatar <%= msg.reply && msg.reply.length > 0 ? 'reply-avatarTop' : '' %>" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
                             <div class="message-content">
                                 <% if (msg.reply && msg.reply.length > 0) { %>
-                                <% let msgEdited = channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString()) %>
+                                    <% let msgEdited = channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString()) %>
                                     <% if (msgEdited && !msgEdited.edited) { %>
                                         <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
                                             <div class="reply-line-wrapper">
@@ -83,32 +83,32 @@
                                                 <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
                                             </div>
                                         </a>
-                                        <% } else if (msgEdited && msgEdited.edited === true) { %>
-                                            <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
-                                                <div class="reply-line-wrapper">
-                                                    <div class="reply-line"></div>
-                                                    <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
+                                    <% } else if (msgEdited && msgEdited.edited === true) { %>
+                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line"></div>
+                                                <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
+                                                <div class="reply-text">
+                                                    <%= msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message %>
+                                                    <%- msgEdited.message.length >= 50 ? '<br/>' : '' %>
+                                                    <span class="edited-msg">(Изменено)</span>
                                                 </div>
-                                                <div class="reply-text-container">
-                                                    <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
-                                                    <div class="reply-text">
-                                                        <%= msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message %>
-                                                        <%- msgEdited.message.length >= 50 ? '<br/>' : '' %>
-                                                        <span class="edited-msg">(Изменено)</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        <% } else { %>
-                                            <a class="reply-container">
-                                                <div class="reply-line-wrapper">
-                                                    <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
-                                                    <br/>
-                                                </div>
-                                                <div class="reply-text-container">
-                                                    <div class="reply-text">Оригинальное сообщение удалено</div>
-                                                </div>
-                                            </a>
-                                        <% } %>
+                                            </div>
+                                        </a>
+                                    <% } else { %>
+                                        <a class="reply-container">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
+                                                <br/>
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-text">Оригинальное сообщение удалено</div>
+                                            </div>
+                                        </a>
+                                    <% } %>
                                 <% } %>
                                 <div class="message-header">
                                     <span class="username"><%= msg.name %></span>
@@ -144,7 +144,16 @@
                                 </div>
 
                                 <div class="msg-content">
-                                    <div class="text" id="msg-<%= msg._id %>"><%- msg.message %></div>
+                                    <%
+                                        function linkify(text) {
+                                            const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                            return text.replace(urlPattern, function(url) {
+                                                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                            });
+                                        }
+                                        const linkedMessage = linkify(msg.message);
+                                    %>
+                                    <div class="text" id="msg-<%= msg._id %>"><%- linkedMessage %></div>
                                     <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Изменено)' : '' %></span>
                                 </div>
                             </div>

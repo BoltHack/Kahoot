@@ -768,21 +768,12 @@ io.on('connection', async (socket) => {
         socket.leave(channelId);
     });
 
-    function linkify(text) {
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        return text.replace(urlRegex, function(url) {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
-        });
-    }
-
     socket.on('sendMessage', async (messageData) => {
         try {
             const companionSocketId = clients[messageData.companionId]
-            const cleanBeforeLink = sanitizeHtml(messageData.message, {
+            const cleanMessage = sanitizeHtml(messageData.message, {
                 allowedTags: ['b', 'i', 'em', 'strong', 'br'],
             });
-
-            const cleanMessage = linkify(cleanBeforeLink);
 
             const replyData = await ChannelsModel.findById(messageData.channelId);
             const messages = replyData.messages;
@@ -890,11 +881,9 @@ io.on('connection', async (socket) => {
 
         const findEditMsg = findChannel.messages.find(m => m._id.toString() === msgData.msgId.toString());
 
-        const cleanBeforeLink = sanitizeHtml(msgData.newMsg, {
+        const cleanMessage = sanitizeHtml(msgData.newMsg, {
             allowedTags: ['b', 'i', 'em', 'strong', 'br'],
         });
-
-        const cleanMessage = linkify(cleanBeforeLink);
 
         if (findEditMsg.id.toString() === socket.userId.toString() && cleanMessage.length !== 0) {
             const userInfo = await UsersModel.findById(findEditMsg.id);
@@ -904,7 +893,7 @@ io.on('connection', async (socket) => {
                 { _id: msgData.channelId },
                 {
                     $set: {
-                        'messages.$[elem].message': msgData.newMsg,
+                        'messages.$[elem].message': cleanMessage,
                         'messages.$[elem].edited': true
                     }
                 },

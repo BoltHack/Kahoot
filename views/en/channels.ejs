@@ -99,15 +99,15 @@
                                             </div>
                                         </a>
                                     <% } else { %>
-                                            <a class="reply-container">
-                                                <div class="reply-line-wrapper">
-                                                    <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
-                                                    <br/>
-                                                </div>
-                                                <div class="reply-text-container">
-                                                    <div class="reply-text">Original post removed</div>
-                                                </div>
-                                            </a>
+                                        <a class="reply-container">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
+                                                <br/>
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-text">Original post removed</div>
+                                            </div>
+                                        </a>
                                     <% } %>
                                 <% } %>
                                 <div class="message-header">
@@ -144,7 +144,16 @@
                                 </div>
 
                                 <div class="msg-content">
-                                    <div class="text" id="msg-<%= msg._id %>"><%- msg.message %></div>
+                                    <%
+                                        function linkify(text) {
+                                            const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                            return text.replace(urlPattern, function(url) {
+                                                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                            });
+                                        }
+                                        const linkedMessage = linkify(msg.message);
+                                    %>
+                                    <div class="text" id="msg-<%= msg._id %>"><%- linkedMessage %></div>
                                     <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Edited)' : '' %></span>
                                 </div>
                             </div>

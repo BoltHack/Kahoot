@@ -50,104 +50,113 @@ window.addEventListener('load', () => {
 socket.on('showMessages', async (showMessagesData) => {
     const messages = document.getElementById('messages');
     const newMessage = document.createElement('div');
+
+    function linkify(text) {
+        const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+        return text.replace(urlPattern, function(url) {
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+        });
+    }
+
     newMessage.innerHTML = `
         <div class="message ${showMessagesData.reply.id ? 'reply' : ''}" data-id="${showMessagesData._id}" id="message-${showMessagesData._id}" onmouseover="showTools({msgId: '${showMessagesData._id}', myId: '${showMessagesData.id}'});">
             <div class="message-container">
-                <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}"" src="${showMessagesData.image}">
-            <div class="message-content">
-            ${showMessagesData.reply.id ? `
-            <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
-                <div class="reply-line-wrapper">
-                    <div class="reply-line"></div>
-                    <img class="reply-avatar" src="${showMessagesData.reply.image}">
-                </div>
-                <div class="reply-text-container">
-                    <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
-                <div class="reply-text">${showMessagesData.reply.message.length > 100 ? showMessagesData.reply.message.slice(0, 100) + '...' : showMessagesData.reply.message}</div>
-                </div>
-            </a>
-            ` : ''}
-                <div class="message-header">
-                    <span class="username">${showMessagesData.name}</span>
-                    <span class="timestamp">${ (() => {
-        const d = new Date(showMessagesData.date);
-        const now = new Date();
-
-        const isSameDay = (d1, d2) =>
-            d1.getDate() === d2.getDate() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getFullYear() === d2.getFullYear();
-
-        const yesterday = new Date(now);
-        yesterday.setDate(now.getDate() - 1);
-
-        if (isSameDay(d, now)) {
-            return localeType === 'en' ?
-                'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
-                :
-                'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
-        } else if (isSameDay(d, yesterday)) {
-            return localeType === 'en' ?
-                'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
-                :
-                'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
-        } else {
-            return localeType === 'en' ?
-                d.toLocaleString('en-US', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                })
-                :
-                d.toLocaleString('ru-RU', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-        }
-    })() }</span>
-                </div>
-                <div class="msg-content">
-                    <div class="text" id="msg-${showMessagesData._id}">${showMessagesData.message}</div>
-                    <span class="edited-msg" id="edited-${showMessagesData._id}"></span>
-                </div>
-            </div>
-            
-            <div class="tools" id="tools-${showMessagesData._id}">
-                <div class="tools-settings">
-                    <div class="tools-svg">
-                    ${showMessagesData.id === sendId ? `
-                        <div onclick="msgRedactionMenu('${showMessagesData._id}')">
-                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
-                        </div>` : ``}
-                        <div onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
-                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
-                        </div>
-                        <div class="menu-trigger" onclick="openToolsMenu('${showMessagesData._id}')">⋯</div>
+                <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}" src="${showMessagesData.image}">
+                <div class="message-content">
+                ${showMessagesData.reply.id ? `
+                <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
+                    <div class="reply-line-wrapper">
+                        <div class="reply-line"></div>
+                        <img class="reply-avatar" src="${showMessagesData.reply.image}">
+                    </div>
+                    <div class="reply-text-container">
+                        <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
+                        <div class="reply-text">${showMessagesData.reply.message.length > 100 ? showMessagesData.reply.message.slice(0, 100) + '...' : showMessagesData.reply.message}</div>
+                    </div>
+                </a>
+                ` : ''}
+                    <div class="message-header">
+                        <span class="username">${showMessagesData.name}</span>
+                        <span class="timestamp">${ (() => {
+            const d = new Date(showMessagesData.date);
+            const now = new Date();
+    
+            const isSameDay = (d1, d2) =>
+                d1.getDate() === d2.getDate() &&
+                d1.getMonth() === d2.getMonth() &&
+                d1.getFullYear() === d2.getFullYear();
+    
+            const yesterday = new Date(now);
+            yesterday.setDate(now.getDate() - 1);
+    
+            if (isSameDay(d, now)) {
+                return localeType === 'en' ?
+                    'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
+                    :
+                    'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+            } else if (isSameDay(d, yesterday)) {
+                return localeType === 'en' ?
+                    'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
+                    :
+                    'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+            } else {
+                return localeType === 'en' ?
+                    d.toLocaleString('en-US', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    })
+                    :
+                    d.toLocaleString('ru-RU', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    });
+            }
+        })() }</span>
+                    </div>
+                    <div class="msg-content">
+                        <div class="text" id="msg-${showMessagesData._id}">${linkify(showMessagesData.message)}</div>
+                        <span class="edited-msg" id="edited-${showMessagesData._id}"></span>
                     </div>
                 </div>
                 
-                    <div class="dropdown-menu">
-                    <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
-                        ${localeType === 'en' ? 'Reply' : 'Ответить'}
-                        <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
-                    </button>
-                    ${showMessagesData.id === sendId ? `
-                        <button onclick="msgRedactionMenu('${showMessagesData._id}')">
-                            ${localeType === 'en' ? 'Edit' : 'Редактировать'}
-                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                <div class="tools" id="tools-${showMessagesData._id}">
+                    <div class="tools-settings">
+                        <div class="tools-svg">
+                        ${showMessagesData.id === sendId ? `
+                            <div onclick="msgRedactionMenu('${showMessagesData._id}')">
+                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                            </div>` : ``}
+                            <div onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+                            </div>
+                            <div class="menu-trigger" onclick="openToolsMenu('${showMessagesData._id}')">⋯</div>
+                        </div>
+                    </div>
+                    
+                        <div class="dropdown-menu">
+                        <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+                            ${localeType === 'en' ? 'Reply' : 'Ответить'}
+                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
                         </button>
-                        <div class="tools-line"></div>
-                        <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${showMessagesData._id}')">
-                            ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
-                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path></svg>
-                        </button>` : ``}
+                        ${showMessagesData.id === sendId ? `
+                            <button onclick="msgRedactionMenu('${showMessagesData._id}')">
+                                ${localeType === 'en' ? 'Edit' : 'Редактировать'}
+                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                            </button>
+                            <div class="tools-line"></div>
+                            <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${showMessagesData._id}')">
+                                ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
+                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path></svg>
+                            </button>` : ``}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -350,7 +359,14 @@ socket.on('editedMsg', async (editMsg) => {
     const message = document.getElementById('msg-'+editMsg.msgId);
     const edited = document.getElementById('edited-'+editMsg.msgId);
 
-    message.textContent = editMsg.editMessage;
+    function linkify(text) {
+        const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+        return text.replace(urlPattern, function(url) {
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+        });
+    }
+
+    message.innerHTML = linkify(editMsg.editMessage);
     edited.textContent = localeType === 'en' ? '(Edited)' : '(Изменено)';
 
     const replyContainers = document.querySelectorAll('.reply-container');
