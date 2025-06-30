@@ -92,6 +92,32 @@
     </div>
 
 </header>
+
+<div class="brutalist-card" id="authBorder" hidden>
+    <div class="brutalist-card__header">
+        <div class="brutalist-card__icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                ></path>
+            </svg>
+        </div>
+        <div class="brutalist-card__alert">You are not logged in!</div>
+    </div>
+    <div class="brutalist-card__message">
+        <span>Sign in or create an account.</span>
+        <br>
+        <br>
+        <span>By registering or logging in, you agree to our <a class="termsOfUse" href="/rules" target="_blank">Terms of Use</a> and <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Privacy Policy</a>.</span>
+    </div>
+    <div class="brutalist-card__actions">
+        <button onclick="window.location.href = '/auth/login'" class="auth-btn">Log in</button>
+        <button onclick="window.location.href = '/auth/register'" class="auth-btn">Create an account</button>
+    </div>
+    <button class="close-btn" id="closeAuthBorder">X</button>
+</div>
+
+<div class="new-barrier" id="barrier" hidden></div>
 <%- include('back.ejs') %>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/header.js"></script>

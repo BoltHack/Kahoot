@@ -75,3 +75,22 @@ dropdown.forEach((title, index) => {
         dropdownTitles[index].style.backgroundColor = '#1C2025';
     });
 });
+
+
+function authMenu() {
+    const authBorder = document.getElementById('authBorder');
+    const barrier = document.getElementById('barrier');
+    const closeAuthBorder = document.getElementById('closeAuthBorder');
+
+    authBorder.hidden = false;
+    barrier.hidden = false;
+
+    closeAuthBorder.addEventListener('click', () => {
+        authBorder.hidden = true;
+        barrier.hidden = true;
+    })
+    barrier.addEventListener('click', () => {
+        authBorder.hidden = true;
+        barrier.hidden = true;
+    })
+}

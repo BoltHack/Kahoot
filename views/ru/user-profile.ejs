@@ -54,6 +54,11 @@
                         <button class="btn" id="addFriend" onclick="addFriend()">➕ Добавить в друзья</button>
                     <% } %>
                 </div>
+                <% } else { %>
+                    <div style="display: flex">
+                        <button class="btn" onclick="authMenu()">✉️ Написать</button>
+                        <button class="btn" id="addFriend" onclick="authMenu()">➕ Добавить в друзья</button>
+                    </div>
                 <% } %>
             </div>
 
