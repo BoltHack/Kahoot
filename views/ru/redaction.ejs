@@ -64,6 +64,12 @@
                                 <input type="number" class="type" style="width: 200px;" name="game_expiresInSeconds" placeholder="Введите время (в секундах)" value="<%= gamesInfo.game_expiresInSeconds %>" max="100" required>
                             </div>
                         </div>
+
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Уже создано вопросов: <%= gamesInfo.game_questions.length %></p>
+                            </div>
+                        </div>
                     </div>
                     <div style="display: flex">
                         <div class="modal__footer">
