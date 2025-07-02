@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (getId.includes(id)) {
             window.removeEventListener("beforeunload", handler);
             const kickMsg = localeType === 'en' ? 'You have been banned by the admin.' : 'Вы были забанены администатором.';
-            window.location.assign(`/error?message=${encodeURIComponent(kickMsg)}`);
+            window.location.assign(`/error?code=banned&message=${encodeURIComponent(kickMsg)}`);
         }
     });
 });

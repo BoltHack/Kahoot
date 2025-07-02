@@ -119,7 +119,6 @@
         .error__title {
             font-size: 10em;
         }
-
         .error__subtitle {
             font-size: 2em;
         }
@@ -394,6 +393,7 @@
             border-top-right-radius: 8em;
             border-bottom: 4px solid #e67e22;
         }
+
     </style>
 </head>
 <body>
@@ -409,7 +409,7 @@
 <div class="star star5"></div>
 
 <div class="error">
-    <div class="error__title"><%= code ? code : error.status %></div>
+    <div class="error__title"><%- code === 'banned' ? 'Ой!' : code ? code : error.status %></div>
     <div class="error__subtitle">Возникла ошибка...</div>
     <div class="error__description"><%= message === 'Not Found' ? 'Страница не найдена.' : message %></div>
     <button class="error__button error__button--active" onclick="window.location.href = '/'">Домой</button>
