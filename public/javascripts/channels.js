@@ -251,7 +251,6 @@ socket.on('deleteMessage', async (deleteMessage) => {
     else {
         messages.removeChild(oldMessage);
     }
-    scrollToBottom();
 
     const replyContainers = document.querySelectorAll('.reply-container');
     replyContainers.forEach(rc => {

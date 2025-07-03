@@ -10,8 +10,7 @@ socket.on('connect', () => {
     }
 });
 
-function addFriend() {
-    const friendName = document.getElementById('friendId').value;
+function addFriend(friendName) {
     if (typeof socket !== 'undefined' && friendName.length > 0) {
         socket.emit('addFriend', { senderId: sendId, friendName: friendName });
         console.log('friendId', friendName);

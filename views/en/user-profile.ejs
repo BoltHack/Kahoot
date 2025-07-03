@@ -48,11 +48,10 @@
                 <% if (user.id && userInfo.id !== myInfo.id) { %>
                 <div style="display: flex">
                     <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Message</button>
-                    <input value="<%= userInfo.id %>" id="friendId" hidden>
                     <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
                         <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Remove Friend</button>
                     <% } else { %>
-                        <button class="btn" id="addFriend" onclick="addFriend()">➕ Add Friend</button>
+                        <button class="btn" id="addFriend" onclick="addFriend('<%= userInfo.name %>')">➕ Add Friend</button>
                     <% } %>
                 </div>
                 <% } %>
