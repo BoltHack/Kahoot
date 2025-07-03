@@ -46,7 +46,7 @@ PASS=Пароль приложения для указанного адреса 
 ```
 MONGODB_URL=mongodb://admin:mySecurePassword@localhost:27017/myDatabase?retryWrites=true&w=majority
 JWTSecret=kkgjdhfgdfkgbhdfbgdfhg156g46fg
-refreshTokenSecret=hlndfghfdh5gf5h65gitgfh+65gf6h1gf65gf1f4gh1gf1h981gf91gf98h1gf98h1g56fg6h1fg
+refreshTokenSecret=kkgjdhfgdfkgbhdfbgdfhg156g46fg
 USER='test@gmail.com'
 PASS='lknghiutynoliunf'
 ```
