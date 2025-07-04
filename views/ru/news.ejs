@@ -83,7 +83,16 @@
                                     <img src="<%= news.update[0].image %>">
                                 <% } %>
                             </div>
-                            <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>
+                            <%
+                                function linkify(text) {
+                                    const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                    return text.replace(urlPattern, function(url) {
+                                        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                    });
+                                }
+                                const linkedMessage = linkify(news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content);
+                            %>
+                            <p class="news-summary"><%- linkedMessage %></p>
 
                             <div class="news-footer">
                                 <div class="stats">

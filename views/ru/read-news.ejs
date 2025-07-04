@@ -72,7 +72,16 @@
                                 <% } %>
                             </div>
                         <% } %>
-                        <p class="news-summary"><%= updateNews.content %></p>
+                        <%
+                            function linkify(text) {
+                                const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                return text.replace(urlPattern, function(url) {
+                                    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                });
+                            }
+                            const linkedMessage = linkify(updateNews.content);
+                        %>
+                        <p class="news-summary"><%- linkedMessage %></p>
                     <br>
                     <br>
                     <% }) %>
