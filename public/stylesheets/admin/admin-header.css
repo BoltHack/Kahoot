@@ -148,6 +148,7 @@ html.lightTheme {
     transform: rotate(90deg);
     font-size: 12px;
     margin-left: 10px;
+    transition-duration: 0.2s;
 }
 .dropdown img{
     width: 30px;
