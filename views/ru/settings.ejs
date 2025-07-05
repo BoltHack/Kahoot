@@ -4,32 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kahoot | Настройки</title>
-    <script>
-        const darkTheme = `<%= darkTheme %>`;
-        if (darkTheme === 'on') {
-            document.documentElement.classList.add('darkTheme');
-        } else {
-            document.documentElement.classList.remove('darkTheme');
-        }
-    </script>
     <link rel="stylesheet" href="/stylesheets/settings.css">
-    <link rel="stylesheet" href="/stylesheets/theme.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <script>
     const settingId = "<%= userId.id %>";
     const settingImage = "<%= userId.image %>";
-    const localeType = '<%= locale %>';
     const mainImage = '<%= userId.settings.mainBackgroundImage %>';
-    const pushNotifications = `<%= notifications %>`;
 </script>
 <body>
-<header>
-    <h1>Настройки</h1>
-</header>
-<a href="/" class="home-btn">На главную</a>
-<div class="settings">
+<%- include('header.ejs') %>
+<main class="settings">
     <div class="container">
         <section class="section" id="profile">
             <h2>Профиль</h2>
@@ -96,14 +82,14 @@
         <section class="section" id="extra-settings">
             <h2>Дополнительные настройки</h2>
             <div class="extra-settings">
-                <div class="extra-setting">
-                    <h3>Настройки языка</h3>
-                    <p>Выберите предпочитаемый язык интерфейса.</p>
-                    <select name="locale" class="type" style="width: 150px;" id="changeLocale">
-                        <option value="ru" selected>Русский (Выбран)</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
+<!--                <div class="extra-setting">-->
+<!--                    <h3>Настройки языка</h3>-->
+<!--                    <p>Выберите предпочитаемый язык интерфейса.</p>-->
+<!--                    <select name="locale" class="type" style="width: 150px;" id="changeLocale">-->
+<!--                        <option value="ru" selected>Русский (Выбран)</option>-->
+<!--                        <option value="en">English</option>-->
+<!--                    </select>-->
+<!--                </div>-->
 
                 <div class="extra-setting" id="editMainBackgroundBtn">
                     <h3>Фон главного меню</h3>
@@ -143,77 +129,58 @@
         </section>
     </div>
     <br>
-    <section id="editImage" hidden>
-        <label>
-            <img src="" class="profile-pic-edit" id="userImageView">
-            <input type="file" name="file" id="attachFile" style="display: none">
-        </label>
+</main>
+<section id="editImage" hidden>
+    <label>
+        <img src="" class="profile-pic-edit" id="userImageView">
+        <input type="file" name="file" id="attachFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Сохранить" id="saveImageBtn">
+        <input type="button" value="Удалить" id="deleteImageBtn">
+    </div>
+</section>
+
+<section id="editMainMenu" hidden>
+    <label>
+        <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
+        <input type="file" name="file" id="backgroundFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
+        <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
+    </div>
+</section>
+
+<section id="editStatusMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Сменить статус профиля</p>
+        <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
+        <a id="maxStatusLength">0/90</a>
+        <br>
+        <br>
         <div class="edit-buttons">
-            <input type="button" value="Сохранить" id="saveImageBtn">
-            <input type="button" value="Удалить" id="deleteImageBtn">
+            <input type="button" value="Изменить" id="changeStatusBtn">
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="editMainMenu" hidden>
-        <label>
-            <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
-            <input type="file" name="file" id="backgroundFile" style="display: none">
-        </label>
+<section id="editAboutMeMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Напишите что-нибудь о себе</p>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
+        <a id="maxAboutMeLength">0/200</a>
+        <br>
+        <br>
         <div class="edit-buttons">
-            <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
-            <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
+            <input type="button" value="Сохранить" id="changeAboutMeBtn">
         </div>
-    </section>
-
-    <section id="editStatusMenu" hidden>
-        <div style="display: block; margin-top: -15px;">
-            <p>Сменить статус профиля</p>
-            <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
-            <a id="maxStatusLength">0/90</a>
-            <br>
-            <br>
-            <div class="edit-buttons">
-                <input type="button" value="Изменить" id="changeStatusBtn">
-            </div>
-        </div>
-    </section>
-
-    <section id="editAboutMeMenu" hidden>
-        <div style="display: block; margin-top: -15px;">
-            <p>Напишите что-нибудь о себе</p>
-            <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
-            <a id="maxAboutMeLength">0/200</a>
-            <br>
-            <br>
-            <div class="edit-buttons">
-                <input type="button" value="Сохранить" id="changeAboutMeBtn">
-            </div>
-        </div>
-    </section>
-</div>
+    </div>
+</section>
 
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/settings.js"></script>
-<script src="/javascripts/friends.js"></script>
-<script src="/javascripts/alert.js"></script>
-<script src="/javascripts/locale.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    const sendId = '<%= user.id %>';
-    document.addEventListener("DOMContentLoaded", () => {
-        if (localStorage.getItem('token')) {
-            if (typeof socket !== "undefined" && sendId) {
-                socket.emit('requestMyFriendsCount', sendId);
-            } else {
-                console.error("Socket or sendId is not defined.");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 2000);
-            }
-        }
-    });
-</script>
 </body>
 </html>

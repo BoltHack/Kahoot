@@ -4,7 +4,9 @@ header{
     position: absolute;
     background-color: #16171d;
     top: 0;
+    left: 0;
     z-index: 1;
+    font-family: Arial, sans-serif;
 }
 .container-logo{
     display: flex;
@@ -165,14 +167,14 @@ html.lightTheme {
     border-radius: var(--border-radius);
 }
 
-.toggle {
-    width: 40px;
-    height: 20px;
-    background: #ddd;
-    border-radius: 10px;
-    position: relative;
-    cursor: pointer;
-}
+/*.toggle {*/
+/*    width: 40px;*/
+/*    height: 20px;*/
+/*    background: #ddd;*/
+/*    border-radius: 10px;*/
+/*    position: relative;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .locale {
     margin-top: 18px;

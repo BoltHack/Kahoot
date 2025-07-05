@@ -361,5 +361,3 @@ function changeSettings() {
         }
     });
 }
-
-const socket = io();

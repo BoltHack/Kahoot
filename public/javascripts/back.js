@@ -114,6 +114,11 @@ function pages(){
             <a class="between"> ❯ </a>
             <a class="other-color">${localeType === 'en' ? `Profile ${userName}` : `Профиль ${userName}`}</a>`
     }
+    else if (page.startsWith('/settings')) {
+        pageName.innerHTML = `
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? 'Settings' : 'Настройки'}</a>`
+    }
     else if (page === '/') {
         document.getElementById('back').style.display = 'none';
     }

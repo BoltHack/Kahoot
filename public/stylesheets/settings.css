@@ -3,22 +3,16 @@
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
     background: #f0f2f5;
     color: #333;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
-header {
-    background: #5563DE;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
+
 .container {
     max-width: 900px;
-    margin: -25px auto;
+    margin: 100px auto;
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
