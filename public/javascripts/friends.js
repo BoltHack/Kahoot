@@ -10,11 +10,16 @@ socket.on('connect', () => {
     }
 });
 
+function sendFriendRequest() {
+    const friendName = document.getElementById('friendName').value;
+    addFriend(friendName);
+}
+
 function addFriend(friendName) {
     if (typeof socket !== 'undefined' && friendName.length > 0) {
         socket.emit('addFriend', { senderId: sendId, friendName: friendName });
         console.log('friendId', friendName);
-        document.getElementById('friendId').value = '';
+        document.getElementById('friendName').value = '';
     } else {
         console.error("Игрок не найден.");
     }
