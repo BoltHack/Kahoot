@@ -70,8 +70,11 @@
         background: #16171d;
         border: 1px solid #313338;
     }
-    .questions-modal a {
-        color: var(--f);
+    .questions-modal .card-edit a {
+        color: #0096c7;
+    }
+    .questions-modal .card-delete a {
+        color: #c1121f;
     }
     .questions-modal .card {
         background: var(--inputModalBackgournd);
@@ -141,6 +144,14 @@
         border: 1px solid #313338;
         background: var(--inputModalBackgournd);
         color: var(--bp);
+    }
+    .settings .setting:hover {
+        background: #22212c;
+        /*opacity: 0.6;*/
+    }
+    .settings .extra-setting:hover {
+        background: #22212c;
+        /*opacity: 0.6;*/
     }
 
     /*support*/
