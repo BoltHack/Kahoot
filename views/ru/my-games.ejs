@@ -10,7 +10,7 @@
 <body>
 <%- include('header.ejs') %>
 <main>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 50px;">
+    <div class="myGames">
         <% if (myGames && myGames.length > 0) { %>
             <% myGames.forEach(games => { %>
                 <div class="card">

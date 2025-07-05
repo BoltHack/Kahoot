@@ -20,12 +20,12 @@ body {
     padding: 20px;
 }
 
-.rules-container h2 {
+.rules-info h2 {
     color: black;
     font-size: 24px;
 }
 
-.rules-container b {
+.rules-info b {
     color: black;
 }
 

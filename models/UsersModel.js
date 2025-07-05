@@ -120,6 +120,10 @@ const UsersSchema = new Schema({
             type: String,
             default: 'on'
         },
+        darkTheme: {
+            type: String,
+            default: 'on'
+        },
         status: {
             type: String,
             maxLength: 90

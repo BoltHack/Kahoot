@@ -9,6 +9,15 @@ body{
     overflow-x: hidden;
 }
 
+.myGames {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 50px;
+}
+
 .card {
     width: fit-content;
     min-width: 400px;
@@ -16,7 +25,7 @@ body{
     /*background-color: #f2f3f7;*/
     border-radius: 0.75em;
     transition: ease 0.2s;
-    box-shadow: 1em 1em 1em #d8dae0b1, -0.75em -0.75em 1em #ffffff;
+    /*box-shadow: 1em 1em 1em #d8dae0b1, -0.75em -0.75em 1em #ffffff;*/
     /*border: 1.5px solid #f2f3f7;*/
     background-color: #d3ddf1;
     border: 1.5px solid #1677ff;
@@ -85,12 +94,11 @@ body{
     border-radius: 1.5em;
     cursor: pointer;
     text-decoration: none;
-    &:hover{
-        text-decoration: underline;
-        text-decoration-color: black;
-    }
 }
-
+.primary-cta:hover {
+    text-decoration: underline;
+    text-decoration-color: black;
+}
 button:hover {
     text-decoration: underline;
 }

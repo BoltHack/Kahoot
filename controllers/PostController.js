@@ -557,12 +557,13 @@ class PostController {
 
     static changeSettings = async (req, res, next) => {
         try {
-            const {notifications, soundTrack, mainEffects} = req.body;
+            const {notifications, soundTrack, mainEffects, darkTheme} = req.body;
             const user = req.user;
 
             res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
             res.cookie('mainEffects', mainEffects ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            res.cookie('darkTheme', darkTheme ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
             await UsersModel.findByIdAndUpdate(
                 user.id,
@@ -570,7 +571,8 @@ class PostController {
                     $set: {
                         'settings.notifications': notifications ? 'on' : 'off',
                         'settings.soundTrack': soundTrack ? 'on' : 'off',
-                        'settings.mainEffects': mainEffects ? 'on' : 'off'
+                        'settings.mainEffects': mainEffects ? 'on' : 'off',
+                        'settings.darkTheme': darkTheme ? 'on' : 'off'
                     }
                 },
                 { new: true }

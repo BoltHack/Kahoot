@@ -4,16 +4,18 @@ const {GamesModel} = require("../models/GamesModel");
 const {NewsModel} = require("../models/NewsModel");
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {ChannelsModel} = require("../models/ChannelsModel");
+
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const mainEffects = req.cookies['mainEffects'] || 'on';
             const acceptCookies = req.cookies['acceptCookies'];
 
             if (!req.cookies['locale']) {
-                res.cookie('locale', locale, notifications, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+                res.cookie('locale', locale, notifications, darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
             if (req.cookies['refreshToken']) {
                 await authenticateJWT(req, res, async () => {
@@ -21,12 +23,12 @@ class ViewController {
                     if (user && user.id) {
                         const getData = await UsersModel.findById(user.id);
                         const mainBackgroundImage = getData.settings.mainBackgroundImage;
-                        return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, notifications, mainEffects, acceptCookies, mainBackgroundImage});
+                        return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user, locale, notifications, darkTheme, mainEffects, acceptCookies, mainBackgroundImage});
                     }
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user: '', locale, notifications, mainEffects, acceptCookies, mainBackgroundImage: ''});
+                return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user: '', locale, notifications, darkTheme, mainEffects, acceptCookies, mainBackgroundImage: ''});
             }
         } catch (e) {
             next(e);
@@ -38,7 +40,8 @@ class ViewController {
             const user = req.user;
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
-            return res.render(locale === 'en' ? 'en/create-game' : 'ru/create-game', {user, locale, notifications});
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+            return res.render(locale === 'en' ? 'en/create-game' : 'ru/create-game', {user, locale, notifications, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -48,6 +51,7 @@ class ViewController {
             const {game_id} = req.params;
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             if (!mongoose.Types.ObjectId.isValid(game_id)) {
                 const errorMsg = locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
@@ -75,7 +79,7 @@ class ViewController {
             await UsersModel.findByIdAndUpdate(id, { $set: { current_game: game_id }, game: { game_id: user.id, game_name: user.name, game_answers: 0, game_correct_answers: 0 } });
             console.log('добавлен новый игрок:', game_id);
 
-            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale, notifications});
+            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale, notifications, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -86,6 +90,7 @@ class ViewController {
             const { game_id } = req.params;
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             const game = await GamesModel.findById(game_id);
             if (game.game_online.online > 0){
@@ -108,7 +113,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, locale, notifications });
+            return res.render(locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, locale, notifications, darkTheme });
         } catch (e) {
             next(e);
         }
@@ -137,8 +142,9 @@ class ViewController {
             const gamesInfo = await GamesModel.findById(game_id);
 
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
-            return res.render(locale === 'en' ? 'en/create-questions' : 'ru/create-questions', {user, gamesInfo, locale, notifications});
+            return res.render(locale === 'en' ? 'en/create-questions' : 'ru/create-questions', {user, gamesInfo, locale, notifications, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -150,6 +156,7 @@ class ViewController {
 
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             const game = await GamesModel.findById(game_id);
             if (!game) {
@@ -186,7 +193,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(locale === 'en' ? `en/edit-question` : `ru/edit-question`, {user, game_id, questionInfo, locale, notifications});
+            return res.render(locale === 'en' ? `en/edit-question` : `ru/edit-question`, {user, game_id, questionInfo, locale, notifications, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -197,6 +204,7 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             const user = req.user;
 
@@ -205,7 +213,7 @@ class ViewController {
             const myGamesId = getUserId.myGames.map(games => games.gameId);
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
 
-            return res.render(locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, locale, notifications});
+            return res.render(locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, locale, notifications, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -217,12 +225,13 @@ class ViewController {
             const userId = await UsersModel.findById(user.id);
 
             const theme = req.cookies['theme'];
-            const notifications = req.cookies['notifications'];
+            const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const soundTrack = req.cookies['soundTrack'];
             const mainEffects = req.cookies['mainEffects'];
             const locale = req.cookies['locale'];
 
-            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, soundTrack, mainEffects, locale});
+            return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, darkTheme, soundTrack, mainEffects, locale});
         } catch (e) {
             next(e);
         }
@@ -241,14 +250,15 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, locale, notifications});
+                    return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, locale, notifications, darkTheme});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', locale, notifications});
+                return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -259,14 +269,15 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user, locale, notifications});
+                    return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user, locale, notifications, darkTheme});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user: '', locale, notifications});
+                return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user: '', locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -277,14 +288,15 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user, locale, notifications});
+                    return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user, locale, notifications, darkTheme});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user: '', locale, notifications});
+                return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user: '', locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -295,14 +307,15 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user, locale, notifications});
+                    return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user, locale, notifications, darkTheme});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', locale, notifications});
+                return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -313,14 +326,15 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user, locale, notifications});
+                    return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user, locale, notifications, darkTheme});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user: '', locale, notifications});
+                return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user: '', locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -331,6 +345,7 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             const tag = req.query.tag;
             const query = tag ? {"tags.tagName": tag} : {};
@@ -357,7 +372,8 @@ class ViewController {
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
                 locale,
-                notifications
+                notifications,
+                darkTheme
             }
 
             if (req.cookies['token']) {
@@ -380,6 +396,7 @@ class ViewController {
             const {news_id} = req.params;
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             if (!mongoose.Types.ObjectId.isValid(news_id)) {
                 const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
@@ -394,11 +411,11 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale, notifications});
+                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale, notifications, darkTheme});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, locale, notifications});
+                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -416,6 +433,7 @@ class ViewController {
             }
 
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             const userInfo = await UsersModel.findById(user_id);
             if (req.cookies['refreshToken']) {
@@ -423,12 +441,12 @@ class ViewController {
                     const user = req.user;
                     const myInfo = await UsersModel.findById(user.id);
                     if (user && user.id) {
-                        return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user, userInfo, myInfo, locale, notifications});
+                        return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user, userInfo, myInfo, locale, notifications, darkTheme});
                     }
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, locale, notifications});
+                return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, locale, notifications, darkTheme});
             }
         } catch (e) {
             next(e);
@@ -441,6 +459,7 @@ class ViewController {
             const {channel_id} = req.params;
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             if (!channel_id || !mongoose.Types.ObjectId.isValid(channel_id)) {
                 const errorMsg = locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
@@ -476,7 +495,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, notifications, companion, myChannels });
+            return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, notifications, darkTheme, companion, myChannels });
         } catch (e) {
             next(e);
         }
@@ -486,12 +505,13 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const user = req.user;
 
             const myData = await UsersModel.findById(user.id);
             const myChannels = myData.myChannels;
 
-            return res.render(locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, locale, notifications, myChannels });
+            return res.render(locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, locale, notifications, darkTheme, myChannels });
 
         } catch (e) {
             next(e);
