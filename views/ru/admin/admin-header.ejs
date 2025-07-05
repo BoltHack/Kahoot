@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
     <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
-    <title>Админ панель</title>
+    <link rel="stylesheet" href="/stylesheets/theme.css">
     <noscript>
         <style>
             body{
@@ -43,7 +51,7 @@
                 <p class="ha dropdown-title">Админ панель<span>❯</span></p>
                 <div class="dropdown-content" style="width: 150px;">
                     <a href="/admin/user-contacts">Список контактов</a>
-                    <a href="/admin/admin-panel">Список игроков</a>
+                    <a href="/admin/list-users">Список игроков</a>
                     <a href="/admin/list-news">Список новостей</a>
                     <a href="/admin/post-news">Разместить статью</a>
                 </div>

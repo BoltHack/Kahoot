@@ -82,7 +82,7 @@
                 <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
                 <div class="dropdown-content">
                     <% if (user.role === 'Admin') {%>
-                        <a href="/admin/admin-panel">Admin panel</a>
+                        <a href="/admin/list-users">Admin panel</a>
                     <% } %>
                         <a onclick="logout();">Sign out</a>
                 </div>

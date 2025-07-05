@@ -13,7 +13,7 @@
 </script>
 <body>
 <%- include('admin-header.ejs') %>
-<main>
+<main class="admin-tools">
     <form action="/admin/redaction-news/<%= newsInfo.id %>" method="POST" enctype="multipart/form-data">
         <div class="container" style="left: 60%; top: -20%;">
             <div class="modal">
@@ -87,7 +87,7 @@
                 <div class="input">
                     <label class="input__label">Picture (optional)</label>
                     <br>
-                    <input type="file" accept="image/*" name="image0">
+                    <input type="file" accept="image/*" name="image0" class="input-file">
                     <br>
                     <div class="input">
                         <div class="input_container">
@@ -116,7 +116,7 @@
                 <div class="input">
                     <label class="input__label">Picture (optional)</label>
                     <br>
-                    <input type="file" accept="image/*" name="image1">
+                    <input type="file" accept="image/*" name="image1" class="input-file">
                     <br>
                     <div class="input">
                         <div class="input_container">
@@ -145,7 +145,7 @@
                 <div class="input">
                     <label class="input__label">Picture (optional)</label>
                     <br>
-                    <input type="file" accept="image/*" name="image2">
+                    <input type="file" accept="image/*" name="image2" class="input-file">
                     <br>
                     <div class="input">
                         <div class="input_container">
@@ -174,7 +174,7 @@
                 <div class="input">
                     <label class="input__label">Picture (optional)</label>
                     <br>
-                    <input type="file" accept="image/*" name="image3">
+                    <input type="file" accept="image/*" name="image3" class="input-file">
                     <br>
                     <div class="input">
                         <div class="input_container">
@@ -203,7 +203,7 @@
                 <div class="input">
                     <label class="input__label">Picture (optional)</label>
                     <br>
-                    <input type="file" accept="image/*" name="image4">
+                    <input type="file" accept="image/*" name="image4" class="input-file">
                     <br>
                     <div class="input">
                         <div class="input_container">

@@ -6,6 +6,7 @@ class AdminController{
     static userContactsViewAdmin = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const user = req.user;
 
             const userContacts = await AdminUserContactsModel.find({});
@@ -14,7 +15,7 @@ class AdminController{
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
-            return res.render(locale === 'en' ? 'en/admin/user-contacts' : 'ru/admin/user-contacts', {user, userContacts, locale});
+            return res.render(locale === 'en' ? 'en/admin/user-contacts' : 'ru/admin/user-contacts', {user, userContacts, locale, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -23,13 +24,14 @@ class AdminController{
     static newsViewAdmin = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const user = req.user;
 
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
-            return res.render(locale === 'en' ? 'en/admin/post-news' : 'ru/admin/post-news', {user, locale});
+            return res.render(locale === 'en' ? 'en/admin/post-news' : 'ru/admin/post-news', {user, locale, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -41,6 +43,7 @@ class AdminController{
             const user = req.user
             const newsInfo = await NewsModel.findById(news_id);
             const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
@@ -50,7 +53,7 @@ class AdminController{
                 return res.redirect(`/admin/redaction-news/${news_id}`);
             }
 
-            return res.render(locale === 'en' ? 'en/admin/redaction-news' : 'ru/admin/redaction-news', { newsInfo, user, locale });
+            return res.render(locale === 'en' ? 'en/admin/redaction-news' : 'ru/admin/redaction-news', { newsInfo, user, locale, darkTheme });
         } catch (e) {
             next(e);
         }
@@ -59,6 +62,7 @@ class AdminController{
     static listNewsViewAdmin = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const user = req.user;
 
             const listNews = await NewsModel.find({}).sort({fullDate: -1});
@@ -77,7 +81,7 @@ class AdminController{
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
-            return res.render(locale === 'en' ? 'en/admin/list-news' : 'ru/admin/list-news', {user, listNews: enrichedNews , locale});
+            return res.render(locale === 'en' ? 'en/admin/list-news' : 'ru/admin/list-news', {user, listNews: enrichedNews, locale, darkTheme});
         } catch (e) {
             next(e);
         }
@@ -86,6 +90,7 @@ class AdminController{
     static adminPanelViewAdmin = async (req, res, next) => {
         try {
             const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             const user = req.user;
 
             const allUsers = await UsersModel.find({role: 'User'});
@@ -94,7 +99,7 @@ class AdminController{
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
-            return res.render(locale === 'en' ? 'en/admin/admin-panel' : 'ru/admin/admin-panel', {user, allUsers, locale});
+            return res.render(locale === 'en' ? 'en/admin/list-users' : 'ru/admin/list-users', {user, allUsers, locale, darkTheme});
         } catch (e) {
             next(e);
         }

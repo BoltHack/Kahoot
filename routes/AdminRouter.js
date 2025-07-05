@@ -24,7 +24,7 @@ router.get('/redaction-news/:news_id',
     redactionNewsViewAdmin);
 router.get('/list-news', verifyPermissions('Admin'), authenticateJWT, listNewsViewAdmin);
 
-router.get('/admin-panel', verifyPermissions('Admin'), authenticateJWT, adminPanelViewAdmin);
+router.get('/list-users', verifyPermissions('Admin'), authenticateJWT, adminPanelViewAdmin);
 
 router.post('/post-news', verifyPermissions('Admin'), postNews);
 router.post('/delete-news/:news_id', verifyPermissions('Admin'), authenticateJWT, deleteNews);

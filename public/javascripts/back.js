@@ -76,29 +76,29 @@ function pages(){
             <a class="between"> ❯ </a>
             <a class="other-color">${newsTitle.length > 50 ? newsTitle.slice(0, 50) + '...' : newsTitle}</a>`
     }
-    else if (page.startsWith('/admin/admin-panel')) {
+    else if (page.startsWith('/admin/list-users')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
-            <a class="other-color">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>`
+            <a class="other-color">${localeType === 'en' ? 'List of players' : 'Список игроков'}</a>`
     }
     else if (page.startsWith('/admin/user-contacts')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
-            <a href="/admin/admin-panel" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
+            <a href="/admin/list-users" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
             <a class="between"> ❯ </a>
             <a class="other-color">${localeType === 'en' ? 'User contacts' : 'Список контактов'}</a>`
     }
     else if (page.startsWith('/admin/list-news')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
-            <a href="/admin/admin-panel" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
+            <a href="/admin/list-users" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
             <a class="between"> ❯ </a>
             <a class="other-color">${localeType === 'en' ? 'News list' : 'Список новостей'}</a>`
     }
     else if (page.startsWith('/admin/post-news')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
-            <a href="/admin/admin-panel" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
+            <a href="/admin/list-users" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
             <a class="between"> ❯ </a>
             <a class="other-color">${localeType === 'en' ? 'Post news' : 'Разместить новость'}</a>`
     }
