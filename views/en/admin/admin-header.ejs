@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
+    <link rel="stylesheet" href="/stylesheets/theme.css">
+    <title>Admin panel</title>
+    <noscript>
+        <style>
+            body{
+                overflow: hidden;
+            }
+        </style>
+        <div class="header-barrier"></div>
+        <div class="header-border">
+            <h1>JavaScript is disabled!</h1>
+            <p>To ensure the website works properly, please enable JavaScript in your browser settings. Here’s how to do it:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Google Chrome:</strong> Open Settings → Privacy and security → Site Settings → JavaScript → Enable.</li>
+                <li><strong>Mozilla Firefox:</strong> Type <code>about:config</code> in the address bar → Find <code>javascript.enabled</code> → Set it to <code>true</code>.</li>
+                <li><strong>Safari:</strong> Open Settings → Security → Enable JavaScript.</li>
+                <li><strong>Microsoft Edge:</strong> Go to Settings → Cookies and site permissions → JavaScript → Enable.</li>
+                <li style="text-align: center;"><a href="/">Refresh the page</a> after enabling JavaScript.</li>
+            </ul>
+            <p style="margin-top: -10px;">If the issue persists, please contact <a href="mailto:hffreelancers@gmail.com">support</a>.</p>
+            <br>
+        </div>
+    </noscript>
+</head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
+<body>
+<header>
+    <div class="container-logo">
+        <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
+    </div>
+
+    <div class="header-container">
+
+        <div id="rules">
+            <div class="dropdown">
+                <p class="ha dropdown-title">Admin panel<span>❯</span></p>
+                <div class="dropdown-content" style="width: 150px;">
+                    <a href="/admin/user-contacts">Contact list</a>
+                    <a href="/admin/list-users">list of players</a>
+                    <a href="/admin/list-news">News list</a>
+                    <a href="/admin/post-news">Post an article</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="account-container">
+
+        <% if (user && user.name) { %>
+            <div class="dropdown">
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                <div class="dropdown-content">
+                    <a onclick="logout();">Sign out</a>
+                </div>
+            </div>
+        <% } %>
+        <br>
+        <div class="dropdown">
+            <p class="ha dropdown-title">English<span>❯</span></p>
+            <div class="dropdown-content" style="width: 80px;">
+                <a onclick="changeLocaleRu();">Русский</a>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+<%- include('../back.ejs') %>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/token.js"></script>
+<script src="/javascripts/locale.js"></script>
+<script>
+    const dropdownContents = document.querySelectorAll('.dropdown-content');
+    const dropdownTitles = document.querySelectorAll('.dropdown-title');
+    const dropdown = document.querySelectorAll('.dropdown');
+
+    dropdown.forEach((title, index) => {
+        title.addEventListener('mouseover', () => {
+            dropdownContents[index].style.display = 'flex';
+            dropdownContents[index].style.transform = 'scaleY(1)';
+            dropdownTitles[index].querySelector('span').style.transform = 'rotate(0)';
+            dropdownTitles[index].style.backgroundColor = '#303740';
+        });
+
+        title.addEventListener('mouseout', () => {
+            dropdownContents[index].style.display = 'none';
+            dropdownContents[index].style.transform = 'scaleY(0)';
+            dropdownTitles[index].querySelector('span').style.transform = 'rotate(90deg)';
+            dropdownTitles[index].style.backgroundColor = '#1C2025';
+        });
+    });
+
+    function logout() {
+        fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json()).then((res) => {
+            const {status, error} = res;
+            if (error) {
+                console.log('Ошибка выхода', error);
+                return;
+            }
+
+            if (status) {
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('token');
+                localStorage.removeItem('session');
+                localStorage.removeItem('sessionEndTime');
+                window.location.href = "/auth/login";
+                return;
+            }
+        });
+    }
+</script>
+</body>
+</html>

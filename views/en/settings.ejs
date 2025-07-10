@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kahoot | Settings</title>
+    <link rel="stylesheet" href="/stylesheets/settings.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const settingId = "<%= userId.id %>";
+    const settingImage = "<%= userId.image %>";
+    const mainImage = '<%= userId.settings.mainBackgroundImage %>';
+</script>
+<body>
+<%- include('header.ejs') %>
+<main class="settings">
+    <div class="container">
+        <section class="section" id="profile">
+            <h2>Profile</h2>
+            <div class="profile">
+                <img src="<%= userId.image %>" alt="User Avatar" id="editImageBtn" title="Change Avatar" />
+                <div class="profile-info">
+                    <div style="display: flex; gap: 10px;">
+                        <h3><%= userId.name %></h3>
+                        <a href="/user-profile/<%= userId.id %>" target="_blank" style="align-items: center">Statistics</a>
+                        <a href="/channels/@me" target="_blank" style="align-items: center">Available chats</a>
+                    </div>
+                    <p><%= userId.email %></p>
+                    <p>ID: <%= userId.id %></p>
+                </div>
+            </div>
+        </section>
+
+        <form action="/changeSettings" method="POST">
+            <section class="section" id="settings">
+                <h2>General Settings</h2>
+                <div class="setting">
+                    <span>Show notifications</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="notifications" id="notificationsCheckbox" <%= notifications === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting">
+                    <span>Music</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="soundTrack" id="soundTrackCheckbox" <%= soundTrack === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting">
+                    <span>Effects in the main menu</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="mainEffects" id="mainEffectsCheckbox"<%= mainEffects === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting">
+                    <span>Dark theme</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="darkTheme" id="darkThemeCheckbox"<%= darkTheme === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <div style="text-align: center">
+                <button type="submit" class="save-settings" onclick="saveSettings()">Save Changes</button>
+            </div>
+        </form>
+
+        <section class="section" id="extra-settings">
+            <h2>Additional Settings</h2>
+            <div class="extra-settings">
+<!--                <div class="extra-setting">-->
+<!--                    <h3>Language Settings</h3>-->
+<!--                    <p>Select your preferred interface language.</p>-->
+<!--                    <select name="locale" class="type" style="width: 150px;" id="changeLocale">-->
+<!--                        <option value="en" selected>English (Selected)</option>-->
+<!--                        <option value="ru">Русский</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+                <div class="extra-setting" id="editMainBackgroundBtn">
+                    <h3>Main menu background</h3>
+                    <p>If you wish, you can change the background of the game's main menu.</p>
+                </div>
+
+                <div class="extra-setting" id="editStatusBtn">
+                    <h3>Profile Status</h3>
+                    <p>Create a cool status for yourself for other players to see!</p>
+                </div>
+
+                <div class="extra-setting" id="editAboutMeBtn">
+                    <h3>About me</h3>
+                    <p>Write something about yourself. You can use links.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="change-password">
+            <h2>Change Password</h2>
+            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
+                <label for="current-password">Current Password</label>
+                <input type="password" name="oldPassword" id="current-password" placeholder="Enter current password" required />
+
+                <label for="new-password">New Password</label>
+                <input type="password" name="password" id="pwd" placeholder="Enter new password" required />
+
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="cpwd" placeholder="Confirm new password" required />
+
+                <p class="text" id="togglePassword1">Show Password</p>
+                <p class="text" id="togglePassword2" hidden>Hide Password</p>
+                <div style="text-align: center">
+                    <button type="submit">Change Password</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+
+<section id="editImage" hidden>
+    <label>
+        <img src="" class="profile-pic-edit" id="userImageView">
+        <input type="file" name="file" id="attachFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Save" id="saveImageBtn">
+        <input type="button" value="Delete" id="deleteImageBtn">
+    </div>
+</section>
+
+
+<section id="editMainMenu" hidden>
+    <label>
+        <img src="" class="main-pic-edit" id="mainBackgroundView" title="Click to change background">
+        <input type="file" name="file" id="backgroundFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Save" id="saveMainBackgroundBtn">
+        <input type="button" value="Reset" id="deleteMainBackgroundBtn">
+    </div>
+</section>
+
+<section id="editStatusMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Change profile status</p>
+        <textarea name="status" id="status" placeholder="Enter the desired status" maxlength="90" required><%= userId.settings.status %></textarea>
+        <a id="maxStatusLength">0/90</a>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Change" id="changeStatusBtn">
+        </div>
+    </div>
+</section>
+
+<section id="editAboutMeMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Write something about yourself</p>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Enter the desired text" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
+        <a id="maxAboutMeLength">0/200</a>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Change" id="changeAboutMeBtn">
+        </div>
+    </div>
+</section>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/settings.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

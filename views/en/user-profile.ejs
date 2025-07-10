@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profile <%= userInfo.name %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/user-profile.css">
+</head>
+<script>
+    const userName = `<%= userInfo.name %>`;
+    const userId = `<%= userInfo.id %>`;
+</script>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div class="profile-container">
+
+        <div class="player-banner">
+            <div class="banner-info">
+                <h1><%= userInfo.name %></h1>
+                <% if (userInfo.settings && userInfo.settings.status && userInfo.settings.status.length) { %>
+                    <p>💬 "<%= userInfo.settings.status %>"</p>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="avatar-section">
+                <div class="profile-info">
+                    <img src="<%= userInfo.image %>" alt="Avatar" class="banner-avatar">
+                    <div class="banner-info">
+                        <div class="profile-role">
+                            <h1><%= userInfo.name %></h1>
+                        </div>
+                        <p style="text-align: start"><%= userInfo.onlineMod === 'Online' ? 'Online' : 'Offline' %></p>
+                    </div>
+                </div>
+
+                <div style="text-align: start; margin-left: 22px;">
+                    <span>Among the participants from</span>
+                    <br/>
+                    <span><%= userInfo.registerDate %></span>
+                    <br/>
+                    <br/>
+                </div>
+
+                <input value="<%= userInfo.id %>" id="friendId" hidden>
+                <% if (user.id && userInfo.id !== myInfo.id) { %>
+                <div style="display: flex">
+                    <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Message</button>
+                    <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
+                        <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Remove Friend</button>
+                    <% } else { %>
+                        <button class="btn" id="addFriend" onclick="addFriend('<%= userInfo.name %>')">➕ Add Friend</button>
+                    <% } %>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="info-section">
+                <div class="stat-box">
+                    <h3>📊 Statistics</h3>
+                    <ul>
+                        <li>Level: <strong><%= userInfo.games_info.lvl %></strong></li>
+                        <li>Progress: <strong><%= userInfo.games_info.lvlUp %> / 5</strong></li>
+                        <li>Wins: <strong><%= userInfo.games_info.wins %></strong></li>
+                    </ul>
+                </div>
+
+                <% if (userInfo.settings.aboutMe && userInfo.settings.aboutMe.length) { %>
+                    <div class="aboutMe-box">
+                        <h3>📝 About me</h3>
+                        <p><%- userInfo.settings.aboutMe %></p>
+                    </div>
+                <% } %>
+
+                <div class="achievements">
+                    <h3>🏆 Achievements</h3>
+                    <div class="badges">
+                        <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
+                            <% userInfo.games_info.achievements.forEach(ach => { %>
+                                <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Achievement: Reached level 5' : '' %>">
+                            <% }) %>
+                        <% } else { %>
+                            <a>No achievements</a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/timer.js"></script>
+<script>
+    socket.on('reloadOtherPage', async () => {
+        console.log('reload');
+        window.location.reload();
+    });
+</script>
+</body>
+</html>

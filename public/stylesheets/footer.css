@@ -1,0 +1,95 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.line{
+    border-top: 1px solid #666;
+    position: relative;
+    margin-left: 0;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
+}
+footer {
+    background-color: #16171d;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    margin-bottom: auto;
+
+}
+main {
+    flex: 1;
+}
+footer h3{
+    color: #f3d5b5
+}
+footer a {
+    color: #ECF1FD;
+    text-decoration: none;
+}
+footer a:hover{
+    color: #F2F2F2;
+    text-decoration: underline;
+}
+footer p {
+    color: #F2F2F2
+}
+.footer-links {
+    display: flex;
+    margin: 20px 200px;
+}
+.footer-our-company{
+    width: 350px;
+    flex-wrap: wrap;
+    display: grid;
+}
+.footer-our-company div {
+    display: flex;
+    margin-left: -3.5px;
+}
+.footer-our-company h3 {
+    margin: 6px;
+}
+.footer-our-company p {
+    color: #e5e5e5;
+}
+.footer-info{
+    display: grid;
+    gap: 10px;
+    margin-left: 50px;
+    margin-top: -14.5px;
+}
+.footer-info a {
+    color: #e5e5e5;
+}
+.footer-contacts{
+    display: grid;
+    gap: 10px;
+    margin-left: 50px;
+    margin-top: -14.5px;
+}
+.footer-links a {
+    margin-right: 20px;
+}
+
+.footer-links a:last-child {
+    margin-right: 0;
+}
+.company-logo{
+    width: 30px;
+    height: 30px;
+}
+.company-name{
+    margin-left: 200px;
+    color: #e5e5e5;
+}
+.contact-us{
+    display: grid;
+    gap: 10px;
+    margin-left: 50px;
+    margin-top: -14.5px;
+}

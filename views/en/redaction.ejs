@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Editor</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/createGame.css">
+</head>
+<script>
+    const maxQuestions = `<%= gamesInfo.game_max_questions %>`;
+</script>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div>
+        <form action="/redaction/<%= gamesInfo.id %>" method="POST" enctype="multipart/form-data">
+            <div class="container redactionGame" style="left: 60%;">
+                <div class="modal">
+                    <div class="modal__header">
+                        <span class="modal__title">Edit game: <%= gamesInfo.game_name %></span>
+                    </div>
+                    <div class="modal__body" style="border-bottom: none;">
+                        <div class="input">
+                            <label class="input__label">Room name</label>
+                            <input class="input__field" type="text" name="game_name" placeholder="Enter room name" value="<%= gamesInfo.game_name %>" maxlength="10" required>
+                            <p class="input__description">The name must be no more than 10 characters long.</p>
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <div class="input">
+                                <div class="input_container">
+                                    <p>Type:</p>
+                                    <select name="game_access" class="type" style="width: 170px;" required>
+                                        <option value="General" <%= gamesInfo.game_access === 'General' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'General' ? 'Public (Current)' : 'Public' %></option>
+                                        <option value="Private" <%= gamesInfo.game_access === 'Private' ? 'selected' : '' %> ><%= gamesInfo.game_access === 'Private' ? 'Private (Current)' : 'Private' %></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Max online:</p>
+                                <select name="max_online" class="type" style="width: 200px;" required>
+                                    <option value="2" <%= gamesInfo.game_online.max_online === 2 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 2 ? '2 players (Current)' : '2 players' %></option>
+                                    <option value="3" <%= gamesInfo.game_online.max_online === 3 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 3 ? '3 players (Current)' : '3 players' %></option>
+                                    <option value="4" <%= gamesInfo.game_online.max_online === 4 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 4 ? '4 players (Current)' : '4 players' %></option>
+                                    <option value="5" <%= gamesInfo.game_online.max_online === 5 ? 'selected' : '' %> ><%= gamesInfo.game_online.max_online === 5 ? '5 players (Current)' : '5 players' %></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Game start:</p>
+                                <select name="game_start_type" class="type" style="width: 200px;" required>
+                                    <option value="Auto" <%= gamesInfo.game_start_type === 'Auto' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Auto' ? 'Automatic (Current)' : 'Automatic' %></option>
+                                    <option value="Manually" <%= gamesInfo.game_start_type === 'Manually' ? 'selected' : '' %> ><%= gamesInfo.game_start_type === 'Manually' ? 'Manual (Current)' : 'Manual' %></option>
+                                </select>
+                                <div id="questions_container" style="color: red"></div>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Game timer duration:</p>
+                                <input type="number" class="type" style="width: 200px;" name="game_expiresInSeconds" placeholder="Enter time (in seconds)" value="<%= gamesInfo.game_expiresInSeconds %>" min="5" max="100" required>
+                            </div>
+                        </div>
+
+                        <div class="input">
+                            <div class="input_container">
+                                <p>Already created questions: <%= gamesInfo.game_questions.length %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex">
+                        <div class="modal__footer">
+                            <button class="button button--primary">Save</button>
+                        </div>
+                        <div class="modal__footer">
+                            <a class="button button--primary" href="/my-games" style="text-decoration: none">My Games</a>
+                        </div>
+                        <div class="modal__footer">
+                            <a class="button button--primary" href="/create-questions/<%= gamesInfo._id %>" style="text-decoration: none">New Question</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal questions-modal">
+                <% if (gamesInfo.game_questions && gamesInfo.game_questions.length) { %>
+                    <div class="game-questions">
+                        <% gamesInfo.game_questions.forEach(quest => { %>
+                            <div class="card">
+                                <div class="card__corner"></div>
+                                <div class="card__img">
+                                    <img src="<%= quest.question_image %>">
+                                    <div class="card__span">
+                                        <div class="card__span-tools">
+                                            <span>Вопрос #<%= quest.question_number + 1 %></span>
+                                            <div class="card-edit">
+                                                <a href="/edit-question/<%= gamesInfo._id %>/<%= quest._id %>">Edit</a>
+                                            </div>
+                                            <div class="card-delete">
+                                                <a onclick="deleteQuestionMenu('<%= gamesInfo._id %>', '<%= quest._id %>', '<%= quest.question_number %>')">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-int">
+                                    <p class="card-int__title"><%= quest.question_title %></p>
+                                    <p class="excerpt">1. <%= quest.question_1.title %></p>
+                                    <p class="excerpt">2. <%= quest.question_2.title %></p>
+                                    <p class="excerpt">3. <%= quest.question_3.title %></p>
+                                    <p class="excerpt">4. <%= quest.question_4.title %></p>
+                                    <p class="excerpt">Correct answer: <%= quest.correct_question.slice(9) %></p>
+                                    <br/>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                        <a class="create-questions" href="/create-questions/<%= gamesInfo._id %>">Start creating questions</a>
+                <% } %>
+            </div>
+        </form>
+    </div>
+</main>
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/redaction.js"></script>
+<script src="/javascripts/timer.js"></script>
+</body>
+</html>

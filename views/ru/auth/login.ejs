@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Авторизация</title>
+    <link rel="stylesheet" href="/stylesheets/login-register.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
+<body>
+<form method="POST" id="loginForm">
+    <div class="card">
+        <div style="display: flex; gap: 10px;">
+<!--            <span class="card__a"><a href="/">&#11013;</a></span>-->
+            <a href="/" class="card__a"><i class="fa fa-home"></i></a>
+            <span class="card__title">Авторизуйтесь</span>
+        </div>
+        <p class="card__content">
+            Мы рады видеть вас!
+        </p>
+        <div class="card__form">
+            <p class="text">Эл. адрес</p>
+            <input type="email" id="email" name="email" class="card__form-input" placeholder="Введите свой Эл. адрес" required>
+            <p class="text">Пароль</p>
+            <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Введите свой пароль" required>
+            <img src="/images/invisiblePassword.png" class="toggle-password" style="top: 57%;" id="togglePassword1">
+            <img src="/images/visiblePassword.png" class="toggle-password" style="top: 57%;" id="togglePassword2" hidden>
+            <div class="password-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMeCheckbox">
+                    <label class="remember-me" for="rememberMeCheckbox">Запомнить меня</label>
+                </div>
+                <a href="/auth/forget-password" class="forget-password">Я забыл пароль</a>
+            </div>
+            <button class="card__button" id="loginButton">Войти</button>
+            <div class="card__button" style="padding: 10px 0; width: 98.5%; height: 21px; opacity: 1" id="loaderButton" hidden>
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+            </div>
+        </div>
+        <p class="no-account">У вас ещё нет аккаунта? <a href="/auth/register" class="link">Создать</a></p>
+    </div>
+</form>
+<script src="/javascripts/auth/login.js"></script>
+<script src="/javascripts/pageIdentificator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

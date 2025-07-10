@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Expired</title>
+    <link rel="stylesheet" href="/stylesheets/login-register.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
+<body>
+<form method="POST" id="loginForm">
+    <div class="card">
+        <div style="display: flex; gap: 10px;">
+            <a href="/" class="card__a"><i class="fa fa-home"></i></a>
+            <span class="card__title">Session Expired</span>
+        </div>
+        <p class="card__content">
+            Your session has expired. Please log in again and check "Remember me" if you wish to stay logged in.
+        </p>
+        <div class="card__form">
+            <p class="text">Email Address</p>
+            <input type="email" id="email" name="email" class="card__form-input" placeholder="Enter your email address" required>
+            <p class="text">Password</p>
+            <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Enter your password" required>
+            <img src="/images/invisiblePassword.png" class="toggle-password" style="top: 65.5%;" id="togglePassword1">
+            <img src="/images/visiblePassword.png" class="toggle-password" style="top: 65.5%;" id="togglePassword2" hidden>
+            <div class="password-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMeCheckbox">
+                    <label class="remember-me" for="rememberMeCheckbox">Remember me</label>
+                </div>
+                <a href="/auth/forget-password" class="forget-password">Forgot your password?</a>
+            </div>
+            <button class="card__button" id="loginButton">Log In</button>
+            <div class="card__button" style="padding: 10px 0; height: 21px; opacity: 1" id="loaderButton" hidden>
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+            </div>
+        </div>
+        <p class="no-account">Don't have an account yet? <a href="/auth/register" class="link">Create one</a></p>
+    </div>
+</form>
+<script src="/javascripts/auth/sessionLogin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

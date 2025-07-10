@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Contacts</title>
+    <link rel="stylesheet" href="/stylesheets/contacts.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main class="contactUs">
+    <div class="container">
+        <div class="contacts-container">
+            <h1>Contacts</h1>
+            <div class="contacts">
+                <div class="contact">
+                    <span class="contact-emoji">✉</span>
+                    <h2>Support Email</h2>
+                    <span>
+                    For any inquiries, please write to
+                    <a>kahoot@gmail.com</a>
+                    </span>
+                    <br/>
+                    <button onclick="window.location.href = 'mailto:kahoot@gmail.com'">Message</button>
+                </div>
+
+                <div class="contact">
+                    <span class="contact-emoji">➣</span>
+                    <h2>Telegram Support</h2>
+                    <span>
+                    You can contact technical support via Telegram
+                    </span>
+                    <br/>
+                    <button onclick="window.location.href = 'https://web.telegram.org/a/'">Message</button>
+                </div>
+
+                <div class="contact">
+                    <span class="contact-emoji">🛠️ ️</span>
+                    <h2>In-game support</h2>
+                    <span>
+                    If you are unable to write to us via Telegram or Email, you can contact technical support directly in the in-game chat.
+                    </span>
+                    <br/>
+                    <button onclick="techChat()" id="techChatBtn">Message</button>
+                    <button id="loadingBtn" hidden>Loading...</button>
+                </div>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq">
+                    <h2>Frequently Asked Questions</h2>
+                    <br/>
+                    <br/>
+                    <section class="faq-section" id="faqSection-1">
+                        <button onclick="openAnswerMenu('1')">
+                            <h2>What is this platform?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            This is an online quiz platform inspired by Kahoot. It allows you to create your own games, add questions (including images), set time limits for answers, and manage the game's privacy settings.
+                        </div>
+                    </section>
+
+                    <section class="faq-section" id="faqSection-2">
+                        <button onclick="openAnswerMenu('2')">
+                            <h2>How to join a game?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            To join, simply enter the unique game code created by the host (game creator). After entering the code, you will immediately enter the game.
+                            Another way is to accept an invitation from the host or any other player from your friends list.
+                            However, it’s important to understand that if the invitation is sent by someone other than the host, and the game is in private mode, you may be removed from the game if you are not on the host’s friends list.
+                        </div>
+                    </section>
+
+                    <section class="faq-section" id="faqSection-3">
+                        <button onclick="openAnswerMenu('3')">
+                            <h2>Is registration required to participate?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            Yes, registration is required to participate in a game.
+                            You also need to register to create your own games.
+                        </div>
+                    </section>
+
+                    <section class="faq-section" id="faqSection-4">
+                        <button onclick="openAnswerMenu('4')">
+                            <h2>What settings are available when creating a quiz?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            The game creator can:
+                            <ol>
+                                <li>Add text questions and images;</li>
+                                <li>Set time limits for each question;</li>
+                                <li>Decide whether the game will be public or private;</li>
+                                <li>Control access to the game.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="faq-section" id="faqSection-5">
+                        <button onclick="openAnswerMenu('5')">
+                            <h2>Can images be added to questions?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            Yes, when creating questions, you can add images to make the quiz more visual and engaging.
+                        </div>
+                    </section>
+
+                    <section class="faq-section" id="faqSection-6">
+                        <button onclick="openAnswerMenu('6')">
+                            <h2>What languages are supported by the platform?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            Currently, two languages are supported:
+                            <ul>
+                                <li>Russian</li>
+                                <li>English</li>
+                            </ul>
+                            You can switch the language automatically or manually in the settings.
+                        </div>
+                    </section>
+
+                    <section class="faq-section" id="faqSection-7">
+                        <button onclick="openAnswerMenu('7')">
+                            <h2>What is a leaderboard?</h2>
+                            <span class="faq-open">+</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            <div class="faq-line"></div>
+                            A leaderboard is a results table showing which participants scored the most points in the quiz. It updates after each question.
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<%- include('footer.ejs') %>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/contacts.js"></script>
+</body>
+</html>

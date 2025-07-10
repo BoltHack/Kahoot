@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Home</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<script>
+    const cookiesType = '<%= acceptCookies %>';
+    const effects = '<%= mainEffects %>';
+    const mainImage = '<%= mainBackgroundImage %>';
+</script>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div class="home-container">
+        <% if (user && user.id) { %>
+            <a class="btn" onclick="redirectPage('/create-game')">📜 Create Game</a>
+            <a class="btn" onclick="findGame()">🔎 Find Game</a>
+            <a class="btn" onclick="redirectPage('/my-games')">🎮 My Games</a>
+            <a class="btn" onclick="redirectPage('/channels/@me')">👥 Friends</a>
+            <a class="btn" onclick="redirectPage('/settings')">⚙ Account settings</a>
+            <a class="btn support-btn" href="/support">📩 Support</a>
+        <% } else { %>
+                <a class="btn" onclick="authMenu()">📜 Start the game</a>
+                <a class="btn support-btn" href="/support">📩 Support</a>
+        <% } %>
+    </div>
+
+    <div class="new-border" id="border" hidden>
+        <b id="close" style="position: absolute; right: 5px; top: 10px; cursor:pointer; color: black">X</b>
+        <h4 style="text-align: center">Where shall we go?</h4>
+        <div class="border-data">
+            <input type="text" name="text" placeholder="Enter the game pin code" class="find-input" id="infoInput" autocomplete="off">
+            <br>
+            <br>
+            <button type="submit" id="searchButton" class="find-button">Join</button>
+        </div>
+    </div>
+</main>
+<footer id="acceptCookiesFooter">
+    <p>
+        We use cookies to ensure you get the best experience on our website.
+        <a href="/privacyPolicy">Privacy Policy</a>.
+        <button onclick="acceptCookiesFunc()">
+            OK
+        </button>
+    </p>
+</footer>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/main.js"></script>
+<script src="/javascripts/effects.js"></script>
+</body>
+</html>

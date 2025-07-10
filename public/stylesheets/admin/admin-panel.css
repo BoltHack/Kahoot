@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+
+.admin-panel {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 150px auto;
+    padding: 20px;
+}
+
+.panel {
+    width: 1200px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 80px;
+}
+
+.admins-list {
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.form-row input, .form-row select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.btn {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #155a9c;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    display: inline-block;
+}
+
+.badge-admin {
+    background: #1976d2;
+    color: #fff;
+}
+
+.badge-techSupport {
+    background: #4caf50;
+    color: #333;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 16px;
+}
+
+.actions .delete {
+    color: #e53935;
+}

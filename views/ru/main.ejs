@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Главная</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<script>
+    const cookiesType = '<%= acceptCookies %>';
+    const effects = '<%= mainEffects %>';
+    const mainImage = '<%= mainBackgroundImage %>';
+</script>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div class="home-container">
+        <% if (user && user.id) { %>
+            <a class="btn" onclick="redirectPage('/create-game')">📜 Создать игру</a>
+            <a class="btn" onclick="findGame()">🔎 Найти игру</a>
+            <a class="btn" onclick="redirectPage('/my-games')">🎮 Мои игры</a>
+            <a class="btn" onclick="redirectPage('/channels/@me')">👥 Друзья</a>
+            <a class="btn" onclick="redirectPage('/settings')">⚙ Настройки аккаунт</a>
+            <a class="btn support-btn" href="/support">📩 Поддержка</a>
+        <% } else { %>
+                <a class="btn" onclick="authMenu()">📜 Начать игру</a>
+                <a class="btn support-btn" href="/support">📩 Поддержка</a>
+        <% } %>
+    </div>
+
+    <div class="new-border" id="border" hidden>
+        <h4 style="text-align: center">Куда отправимся?</h4>
+        <div class="border-data">
+            <input type="text" name="text" placeholder="Введите код игры" class="find-input" id="infoInput" autocomplete="off">
+            <br>
+            <br>
+            <button type="submit" id="searchButton" class="find-button">Присоенидиться</button>
+        </div>
+        <button class="close-btn" id="close">X</button>
+    </div>
+
+</main>
+
+<footer id="acceptCookiesFooter">
+    <p>
+        Мы используем файлы cookie, чтобы обеспечить вам максимальное удобство использования нашего веб-сайта.
+        <a href="/privacyPolicy"> Правила конфиденциальности</a>.
+        <button onclick="acceptCookiesFunc()">ОК</button>
+    </p>
+</footer>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/main.js"></script>
+<script src="/javascripts/effects.js"></script>
+</body>
+</html>

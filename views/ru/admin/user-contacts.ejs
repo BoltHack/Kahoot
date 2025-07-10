@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель | Контакты пользователей</title>
+    <link rel="stylesheet"  href="/stylesheets/admin/user-contacts.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('admin-header.ejs') %>
+<main class="admin-tools">
+    <div class="contacts-container">
+        <% if (userContacts && userContacts.length > 0) { %>
+            <% userContacts.forEach(contacts => { %>
+                <article class="card">
+                    <div class="date">
+                        <span><%= contacts.date %></span>
+                    </div>
+
+                    <div class="quote">
+                        <p><%= contacts.email %></p>
+                        <p><%= contacts.name %></p>
+                    </div>
+
+                    <div>
+                        <p class="message">
+                            <a>- <%= contacts.message %></a>
+                        </p>
+                    </div>
+                </article>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Ничего не найдено.</p>
+            </div>
+        <% } %>
+    </div>
+</main>
+</body>
+</html>

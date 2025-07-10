@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kahoot | Доступные чаты</title>
+    <link rel="stylesheet" href="/stylesheets/channels.css">
+    <link rel="stylesheet" href="/stylesheets/friends.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const sendId = `<%= myData.id %>`;
+    const localeType = `<%= locale %>`;
+    const pushNotifications = `<%= notifications %>`;
+</script>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-header">Опции</div>
+        <ul class="chat-tools">
+            <li>
+                <a class="chat-tool" id="friendsContainerBtn" onclick="friendsContainerFunc()">Друзья</a>
+                <a class="chat-tool" id="addFriendBtn" onclick="addFriendFunc()">Добавить друга</a>
+            </li>
+        </ul>
+        <br>
+        <div class="sidebar-line"></div>
+        <br>
+        <div class="sidebar-header">Личные сообщения</div>
+        <% if (myChannels && myChannels.length) { %>
+            <ul class="chat-list">
+                <% myChannels.forEach(channels => { %>
+                    <li>
+                        <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                            💬
+                            <%= channels.companionName %>
+                            <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <a>Начните диалог</a>
+        <% } %>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-position">
+                <span class="chat-name" style="text-decoration: none; cursor: default;" id="chatName">Загрузка...</span>
+                <span id="onlineMod"></span>
+            </div>
+            <a class="home" href="/">На главную</a>
+        </div>
+
+        <div class="chat-messages">
+            <div class="friends-container" id="friendsContainerMenu">
+                <div class="search-friend">
+                    <input type="text" id="searchInput" placeholder="Поиск" autocomplete="off">
+                </div>
+                <div class="friends-list">
+                    <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
+                        <circle r="20" cy="50" cx="50"></circle>
+                    </svg>
+                    <div id="myFriendsCount"></div>
+                </div>
+            </div>
+
+            <div class="add-friend" id="addFriendMenu" hidden>
+                <span>Вы можете добавить друзей по имени пользователя.</span>
+                <br>
+                <br>
+                <div class="add-friend-container">
+                    <input type="text" placeholder="Введите ник игрока, чтобы отправить ему заявку в друзья" id="friendName" autocomplete="off" required>
+                    <button onclick="sendFriendRequest()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    function checkMenusState() {
+        console.log('checkMenus');
+        if (menus.addFriendMenu === 'true') {
+            addFriendMenuOpen();
+            friendsContainerMenuClose();
+        }
+        else {
+            addFriendMenuClose();
+            friendsContainerMenuOpen();
+        }
+    }
+    window.addEventListener('load', () => {
+        setTimeout(function () {
+            checkMenusState();
+        }, 500);
+    });
+</script>
+<script src="/javascripts/friends.js"></script>
+<script src="/javascripts/timer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/javascripts/alert.js"></script>
+<script src="/javascripts/channelTools.js"></script>
+<script src="/javascripts/warnings.js"></script>
+</body>
+</html>

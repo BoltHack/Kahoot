@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    display: grid;
+    background-color: #f0f2f5;
+    /*background-color: #ECF1FD;*/
+    height: 100vh;
+    background-repeat: no-repeat;
+    grid-template-rows: auto 1fr auto;
+    overflow-x: hidden;
+}
+
+.card {
+    max-width: 320px;
+    border-width: 1px;
+    border-color: rgba(219, 234, 254, 1);
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    grid-gap: 1rem;
+    gap: 1rem;
+}
+
+.icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: rgba(96, 165, 250, 1);
+    padding: 0.5rem;
+    color: rgba(255, 255, 255, 1);
+}
+
+.icon svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+.alert {
+    font-weight: 600;
+    color: rgba(107, 114, 128, 1);
+}
+
+.message {
+    margin-top: 1rem;
+    color: rgba(107, 114, 128, 1);
+    text-align: center;
+}
+
+.actions {
+    margin-top: 1.5rem;
+}
+
+.actions a {
+    text-decoration: none;
+}
+
+.mark-as-read, .read {
+    display: inline-block;
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 0;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+}
+
+.read {
+    background-color: rgba(59, 130, 246, 1);
+    color: rgba(255, 255, 255, 1);
+    width: 100%;
+    cursor: pointer;
+}
+
+.mark-as-read {
+    margin-top: 0.5rem;
+    background-color: rgba(249, 250, 251, 1);
+    color: rgba(107, 114, 128, 1);
+    transition: all .15s ease;
+}
+
+.mark-as-read:hover {
+    background-color: rgb(230, 231, 233);
+}

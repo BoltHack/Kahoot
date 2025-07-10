@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Create a new game</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/createGame.css">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <form action="/create-game" method="POST">
+        <div class="container createGame">
+            <div class="modal">
+                <div class="modal__header">
+                    <span class="modal__title">Game creation</span>
+                </div>
+                <div class="modal__body" style="border-bottom: none;">
+                    <div class="input">
+                        <label class="input__label">Game name</label>
+                        <input class="input__field" type="text" name="game_name" placeholder="Come up with a name for the game" required>
+                        <p class="input__description">The name must be a maximum of 10 characters.</p>
+                    </div>
+                </div>
+                <div style="display: flex">
+                    <div class="modal__footer">
+                        <button class="button button--primary">Create</button>
+                    </div>
+                    <div class="modal__footer">
+                        <a class="button button--primary" href="/" style="text-decoration: none">Go home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+<script src="/javascripts/timer.js"></script>
+</body>
+</html>

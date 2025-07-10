@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | <%= gameId.game_name %></title>
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/game.css">
+    <link rel="stylesheet" href="/stylesheets/friends.css">
+    <link rel="stylesheet" href="/stylesheets/theme.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+</head>
+<script>
+    const game = '<%= myGame %>';
+    const id = '<%= user.id %>';
+    const sendId = '<%= user.id %>';
+    const name = '<%= user.name %>';
+    const gamesId = `<%= gameId._id %>`;
+    const gamesExpiresInSeconds = `<%= gameId.game_expiresInSeconds %>`;
+    const gameMaxQuestions = `<%= gameId.game_questions.length %>`;
+    const gameStartType = `<%= gameId.game_start_type %>`;
+    const authorId = `<%= gameId.game_author.id %>`;
+    const sounds = '<%= soundTrack %>';
+    const localeType = '<%= locale %>';
+    const pushNotifications = `<%= notifications %>`;
+</script>
+<body>
+<main class="game">
+    <div style="display: flex; position: absolute; top: 1%; left: 1%;" id="b-c">
+        <button onclick="window.location.replace('/');" class="leave-button">Выйти</button>
+        <button type="button" class="button" onclick="window.location.reload();" id="refresh">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-arrow-repeat"
+                    viewBox="0 0 16 16"
+            >
+                <path
+                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+                ></path>
+                <path
+                        fill-rule="evenodd"
+                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+                ></path>
+            </svg>
+            Обновить
+        </button>
+    </div>
+
+    <div style="position: absolute; top: 15%; left: 2%">
+        <p id="onlineCount"></p>
+        <div id="usersCount"></div>
+        <div id="userInfo"></div>
+    </div>
+
+    <div id="questions" hidden>
+        <% if (gameId.game_questions && gameId.game_questions.length > 0) {%>
+            <% gameId.game_questions.forEach(games => { %>
+                <div id="question-<%= games.question_number %>" data-number="<%= games.question_number %>" class="questions-container" hidden>
+                    <header>
+                        <h2><%= games.question_title %></h2>
+                    </header>
+                    <div class="all-container">
+                        <div class="img-container">
+                            <img src="<%= games.question_image%>">
+                        </div>
+                        <br>
+                        <br>
+                        <div class="quest-container">
+                            <div style="display: flex; gap: 10px;">
+                                <button class="c-question" style="background-color: #c1121f" data-name="<%= games.question_1.name %>" data-number="<%= games.question_number %>"><%= games.question_1.title %></button>
+                                <button class="c-question" style="background-color: #0077b6" data-name="<%= games.question_2.name %>" data-number="<%= games.question_number %>"><%= games.question_2.title %></button>
+                            </div>
+                            <br>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="c-question" style="background-color: #ffc300" data-name="<%= games.question_3.name %>" data-number="<%= games.question_number %>"><%= games.question_3.title %></button>
+                                <button class="c-question" style="background-color: #008000" data-name="<%= games.question_4.name %>" data-number="<%= games.question_number %>"><%= games.question_4.title %></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+            <div id="gameTimer"></div>
+            <span id="mainTimer" class="main-timer"></span>
+            <div id="correctAnswersCount" class="game-correct-answers-count"></div>
+            <div id="answersCount" class="answers-count"></div>
+    </div>
+    <div class="user-info">
+        <% if (gameId.game_author.id === user.id) {%>
+            <div class="banned-users">
+                <button id="openBannedPlayersMenu">Банлист</button>
+            </div>
+        <% } %>
+            <% if (gameId.game_author.id === user.id && gameId.game_start_type === 'Manually') {%>
+                <button onclick="manualGameLaunch()">Старт</button>
+            <% } %>
+        <div class="my-friends">
+            <button id="openFriendListMenu">Друзья</button>
+        </div>
+    </div>
+    <div id="timer"></div>
+    <div class="overlay" id="overlay">
+            <table class="leaderboard">
+                <thead>
+                <tr>
+                    <th>Место</th>
+                    <th>Никнейм</th>
+                    <th>Ответы</th>
+                    <th>Время</th>
+                </tr>
+                </thead>
+                <tbody id="leaderBoard">
+                </tbody>
+            </table>
+    </div>
+
+    <div class="overlay" id="overlayFriendListMenu">
+        <div id="friendListMenu">
+            <h2 style="text-align: center">Список друзей</h2>
+            <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
+                <circle r="20" cy="50" cx="50"></circle>
+            </svg>
+            <div class="card">
+                <div id="myFriendsCount" class="wrapper"></div>
+            </div>
+            <button class="close-btn" id="closeFriendsMenu">X</button>
+        </div>
+    </div>
+    <% if (gameId.game_author.id === user.id) {%>
+        <div class="overlay" id="overlayBannedUsersMenu">
+            <div id="bannedPlayersMenu">
+                <h2 style="text-align: center">Список забаненных игроков</h2>
+                <svg viewBox="25 25 50 50" id="banLoaderSvg">
+                    <circle r="20" cy="50" cx="50"></circle>
+                </svg>
+                <div class="card">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="bannedUsersCount"></div>
+                </div>
+                <button class="close-btn" id="closeBannedUsersMenu">X</button>
+            </div>
+        </div>
+    <% } %>
+    <div class="game-pin">
+        <span>
+            <p>Код игры:</p>
+            <p style="font-weight: 600"><%= gameId._id%></p>
+        </span>
+    </div>
+
+    <div class="answer-container" id="wrongAnswerContainer" hidden>
+        <div class="answer-emoji-container">
+            <div class="answer-message">Неправильный ответ!</div>
+            <div class="answer-emoji">❌</div>
+        </div>
+    </div>
+
+    <div class="answer-container" id="timeIsUp" hidden>
+        <div class="answer-emoji-container">
+            <div class="answer-message">Время истекло!</div>
+            <div class="answer-emoji">⏳</div>
+        </div>
+    </div>
+
+    <div class="answer-container" id="correctAnswerContainer" hidden>
+        <div class="answer-emoji-container">
+            <div class="answer-message">Правильный ответ!</div>
+            <div class="answer-emoji">✅</div>
+        </div>
+    </div>
+
+    <div id="waitAllPlayer" hidden>
+        <div class="🤚">
+            <div class="👉"></div>
+            <div class="👉"></div>
+            <div class="👉"></div>
+            <div class="👉"></div>
+            <div class="🌴"></div>
+            <div class="👍"></div>
+        </div>
+        <p>Подождите, пока все игроки закончат игру...</p>
+    </div>
+</main>
+<div class="new-barrier" id="barrier" hidden></div>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script defer src="/socket.io/socket.io.js"></script>
+<script defer src="/javascripts/game.js"></script>
+<script defer src="/javascripts/socket.js"></script>
+<script defer src="/javascripts/timer.js"></script>
+<script defer src="/javascripts/friends.js"></script>
+<script defer src="/javascripts/alert.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script defer src="/javascripts/warnings.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Регистрация</title>
+    <link rel="stylesheet" href="/stylesheets/login-register.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
+<body>
+<form method="POST" id="loginForm">
+    <div class="card">
+        <div style="display: flex; gap: 10px;">
+            <a href="/" class="card__a"><i class="fa fa-home"></i></a>
+            <span class="card__title">Регистрация</span>
+        </div>
+
+        <p class="card__content">
+            Создайте себе аккаунт!
+        </p>
+        <div class="card__form">
+            <p class="text">Никнейм</p>
+            <input type="text" id="name" name="name" class="card__form-input" placeholder="Придуймайте никнейм" required>
+            <p class="text">Эл. адрес</p>
+            <input type="email" id="email" name="email" class="card__form-input" placeholder="Введите свой Эл. адрес" required>
+            <p class="text">Пароль</p>
+            <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Придумайте пароль" required>
+            <p class="text">Повтор пароля</p>
+            <input type="password" id="cpwd" name="confirmPassword" class="card__form-input" placeholder="Повтор пароля" required>
+            <img src="/images/invisiblePassword.png" class="toggle-password-reg" style="top: 57%;" id="togglePassword1">
+            <img src="/images/visiblePassword.png" class="toggle-password-reg" style="top: 57%;" id="togglePassword2" hidden>
+
+            <div class="rules">
+                <span>Регистрируясь, вы принимаете наши <a href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank">Политику конфиденциальности.</a></span>
+            </div>
+
+            <button class="card__button" id="registerButton">Создать аккаунт</button>
+            <div class="card__button" style="padding: 10px 0; width: 98.5%; height: 20.5px; opacity: 1" id="loaderButton" hidden>
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+            </div>
+        </div>
+        <p class="no-account">У вас уже есть аккаунт? <a href="/auth/login" class="link">Войти</a></p>
+    </div>
+</form>
+<script src="/javascripts/auth/register.js"></script>
+<script src="/javascripts/alert.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
+    <link rel="stylesheet" href="/stylesheets/header.css">
+    <link rel="stylesheet" href="/stylesheets/theme.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <noscript>
+        <style>
+            body{
+                overflow: hidden;
+            }
+        </style>
+        <div class="header-barrier"></div>
+        <div class="header-border">
+            <h1>JavaScript отключён!</h1>
+            <p>Для корректной работы сайта включите JavaScript в настройках вашего браузера. Вот как это сделать:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Google Chrome:</strong> Откройте настройки → Конфиденциальность и безопасность → Настройки сайта → JavaScript → Включите.</li>
+                <li><strong>Mozilla Firefox:</strong> Введите <code>about:config</code> в адресной строке → Найдите <code>javascript.enabled</code> → Установите в <code>true</code>.</li>
+                <li><strong>Safari:</strong> Откройте настройки → Безопасность → Включите опцию JavaScript.</li>
+                <li><strong>Microsoft Edge:</strong> Перейдите в параметры → Файлы cookie и разрешения сайта → JavaScript → Включите.</li>
+            </ul>
+            <div style="text-align: center">
+                <p><a href="/">Обновите страницу</a> после того, как включите JavaScript.</p>
+                <p>Если после всех действий не удалось решить проблему, обратитеть в <a href="mailto:hffreelancers@gmail.com">поддержку.</a></p>
+                <br>
+            </div>
+        </div>
+    </noscript>
+</head>
+<script>
+    const pushNotifications = `<%= notifications %>`;
+    const localeType = '<%= locale %>';
+    const sendId = '<%= user.id %>';
+</script>
+<body>
+<header>
+    <div class="container-logo">
+        <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
+    </div>
+
+    <div class="header-container">
+
+        <div id="news">
+            <div class="dropdown">
+                <p class="ha dropdown-title">Новости<span>❯</span></p>
+                <div class="dropdown-content" style="width: 140px;">
+                    <a href="/news?tag=Updates">Обновление</a>
+                    <a href="/news?tag=AboutGame">Об игре</a>
+                    <a href="/news?tag=BugsErrors">Баги/Ошибки</a>
+                    <a href="/news">Все новости</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="rules">
+            <div class="dropdown">
+                <p class="ha dropdown-title">Правила<span class="dropdown-icon">❯</span></p>
+                <div class="dropdown-content">
+                    <a href="/privacyPolicy">Правила конфиденциальности</a>
+                    <a href="/rules">Условия использования</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="aboutUs">
+            <div class="dropdown">
+                <p class="ha dropdown-title">О нас<span>❯</span></p>
+                <div class="dropdown-content" style="width: 120px;">
+                    <a href="/aboutUs">О компании</a>
+                    <a href="/contacts">Контакты</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="account-container">
+
+        <% if (user && user.name) { %>
+            <div class="dropdown">
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                <div class="dropdown-content">
+                    <% if (user.role === 'Admin') {%>
+                        <a href="/admin/admin-panel">Админка</a>
+                    <% } %>
+                        <a onclick="logout();">Выйти</a>
+                </div>
+            </div>
+        <% } else {%>
+            <p onclick="window.location.href = '/auth/login'" class="ha">Войти</p>
+        <% } %>
+        <br>
+        <div class="dropdown">
+            <p class="ha dropdown-title">Русский<span>❯</span></p>
+            <div class="dropdown-content" style="width: 80px;">
+                <a onclick="changeLocaleEn();">English</a>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+<div class="brutalist-card" id="authBorder" hidden>
+    <div class="brutalist-card__header">
+        <div class="brutalist-card__icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                ></path>
+            </svg>
+        </div>
+        <div class="brutalist-card__alert">Вы не авторизованы!</div>
+    </div>
+    <div class="brutalist-card__message">
+        <span>Войдите в учётную запись или создайте аккаунт.</span>
+        <br>
+        <br>
+        <span>Регистрируясь или авторизируясь, вы принимаете наши <a class="termsOfUse" href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Политику конфиденциальности</a>.</span>
+    </div>
+    <div class="brutalist-card__actions">
+        <button onclick="window.location.href = '/auth/login'" class="auth-btn">Войти</button>
+        <button onclick="window.location.href = '/auth/register'" class="auth-btn">Создать аккаунт</button>
+    </div>
+    <button class="close-btn" id="closeAuthBorder">X</button>
+</div>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<%- include('back.ejs') %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/header.js"></script>
+<script src="/javascripts/locale.js"></script>
+<script src="/javascripts/friends.js"></script>
+<script src="/javascripts/token.js"></script>
+<script src="/javascripts/alert.js"></script>
+<script src="/javascripts/warnings.js"></script>
+<script src="/javascripts/pageIdentificator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

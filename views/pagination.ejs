@@ -1,0 +1,116 @@
+<style>
+    .pagination {
+        width: 720px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: center;
+        /*border: 1px solid black;*/
+    }
+    .pagination a {
+        display: inline-block;
+        margin: 0 8px;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        border: 2px solid #007bff;
+        padding: 10px 16px;
+        border-radius: 8px;
+        transition: background-color 0.3s, color 0.3s;
+        cursor: pointer;
+    }
+    .pagination a:hover,
+    .pagination a:focus {
+        background-color: #007bff;
+        color: white;
+        outline: none;
+    }
+    .pagination a.disabled {
+        color: #6c757d;
+        border-color: #6c757d;
+        pointer-events: none;
+    }
+    .pagination .current {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    .pagination span {
+        display: inline-block;
+        margin: 0 8px;
+        color: #6c757d;
+        font-size: 16px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="pagination">
+    <% if (currentPage > 1) { %>
+        <a onclick="previousPage()"> < </a>
+    <% } else { %>
+        <a class="disabled"> < </a>
+    <% } %>
+
+    <%
+    const maxPagesToShow = 10;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    if (startPage > 1) { %>
+        <a href="?page=1">1</a>
+        <% if (startPage > 2) { %>
+            <span>...</span>
+        <% } %>
+    <% } %>
+
+    <% for (let i = startPage; i <= endPage; i++) { %>
+        <a class="<%= i === currentPage ? 'current' : '' %>" onclick="listPages(<%= i %>)"><%= i %></a>
+    <% } %>
+
+    <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+            <span>...</span>
+        <% } %>
+        <a id="totalPages"><%= totalPages %></a>
+    <% } %>
+
+    <% if (currentPage < totalPages) { %>
+        <a onclick="nextPage()"> > </a>
+    <% } else { %>
+        <a class="disabled"> > </a>
+    <% } %>
+</div>
+<div style="margin-bottom: 350px;"></div>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const tag = params.get('tag');
+    function nextPage() {
+        if (tag) {
+            window.location.href = `?page=<%= currentPage + 1%>&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=<%= currentPage + 1%>`;
+        }
+    }
+   function previousPage() {
+        if (tag) {
+            window.location.href = `?page=<%= currentPage - 1%>&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=<%= currentPage - 1%>`;
+        }
+    }
+
+    function listPages(i) {
+        if (tag) {
+            window.location.href = `?page=${i}&tag=${tag}`;
+        }
+        else {
+            window.location.href = `?page=${i}`;
+        }
+    }
+</script>

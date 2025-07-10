@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель | Обновления</title>
+    <link rel="stylesheet" href="/stylesheets/admin/redactionNews.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const editNews = `<%= newsInfo.updateTitle %>`;
+    const newsLength = `<%= newsInfo.update.length || 1 %>`;
+</script>
+<body>
+<%- include('admin-header.ejs') %>
+<main class="admin-tools">
+    <form action="/admin/redaction-news/<%= newsInfo.id %>" method="POST" enctype="multipart/form-data">
+        <div class="container" style="left: 60%; top: -20%;">
+            <div class="modal">
+                <div class="modal__header">
+                    <span class="modal__title">Редактирование: <%= newsInfo.updateTitle %></span>
+                </div>
+                <div class="modal__body" style="border-bottom: none;">
+                    <div class="input">
+                        <label class="input__label">Название</label>
+                        <input class="input__field" type="text" name="updateTitle" placeholder="Введите название" value="<%= newsInfo.updateTitle %>" maxlength="100">
+                        <p class="input__description">Название должно содержать максимум 100 символов.</p>
+                    </div>
+                    <div class="input">
+                        <div class="input_container">
+                            <p>Количество заголовков:</p>
+                            <select name="max_news" class="type">
+                                <option value="1" <%= newsInfo.update.length === 1 ? 'Selected' : '' %> >1</option>
+                                <option value="2" <%= newsInfo.update.length === 2 ? 'Selected' : '' %> >2</option>
+                                <option value="3" <%= newsInfo.update.length === 3 ? 'Selected' : '' %> >3</option>
+                                <option value="4" <%= newsInfo.update.length === 4 ? 'Selected' : '' %> >4</option>
+                                <option value="5" <%= newsInfo.update.length === 5 ? 'Selected' : '' %> >5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <div class="input_container">
+                            <p>Теги:</p>
+                            <div style="margin-top: 15px;">
+                                <input type="checkbox" id="updatesTag" name="updatesTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Updates') ? 'checked' : '' %> >
+                                <label for="updatesTag">Обновление</label>
+
+                                <input type="checkbox" id="aboutGameTag" name="aboutGameTag" <%= newsInfo.tags.some(tag => tag.tagName === 'AboutGame') ? 'checked' : '' %> >
+                                <label for="newsTag">Об игре</label>
+
+                                <input type="checkbox" id="bugsErrorsTag" name="bugsErrorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'BugsErrors') ? 'checked' : '' %> >
+                                <label for="errorsTag">Баги/Ошибки</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <div class="input_container">
+                            <div style="margin-top: 15px;">
+                                <input type="checkbox" id="updateDate" name="updateDate">
+                                <label for="updateDate">Обновить дату</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div style="display: flex">
+                    <div class="modal__footer">
+                        <button class="button button--primary">Сохранить</button>
+                    </div>
+                    <div class="modal__footer">
+                        <a class="button button--primary" href="/admin/list-news" style="text-decoration: none">Все новости</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal questions-modal">
+
+            <div class="modal__body" id="modal0">
+                <div class="input">
+                    <label class="input__label">Заголовок 1</label>
+                    <input class="input__field" type="text" name="title0" value="<%= newsInfo.update[0] ? newsInfo.update[0].title : '' %>" placeholder="Заголовок" required>
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Картинка (необязательно)</label>
+                    <br>
+                    <input type="file" accept="image/*" name="image0" class="input-file" id="image0">
+                    <br>
+                    <div class="input">
+                        <div class="input_container">
+                            <input type="checkbox" id="delImg0" name="delImg0">
+                            <label for="delImg0">Удалить картину</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Описание</label>
+                    <textarea class="input__field" type="text" name="content0" placeholder="Описание" required><%= newsInfo.update[0] ? newsInfo.update[0].content : '' %></textarea>
+                </div>
+            </div>
+
+            <div class="modal__body" id="modal1" hidden>
+                <div class="input">
+                    <label class="input__label">Заголовок 2</label>
+                    <input class="input__field" type="text" name="title1" value="<%= newsInfo.update[1] ? newsInfo.update[1].title : '' %>" placeholder="Заголовок">
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Картинка (необязательно)</label>
+                    <br>
+                    <input type="file" accept="image/*" name="image1" class="input-file">
+                    <br>
+                    <div class="input">
+                        <div class="input_container">
+                            <input type="checkbox" id="delImg1" name="delImg1">
+                            <label for="delImg1">Удалить картину</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Описание</label>
+                    <textarea class="input__field" type="text" name="content1" placeholder="Описание"><%= newsInfo.update[1] ? newsInfo.update[1].content : '' %></textarea>
+                </div>
+            </div>
+
+            <div class="modal__body" id="modal2" hidden>
+                <div class="input">
+                    <label class="input__label">Заголовок 3</label>
+                    <input class="input__field" type="text" name="title2" value="<%= newsInfo.update[2] ? newsInfo.update[2].title : '' %>" placeholder="Заголовок">
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Картинка (необязательно)</label>
+                    <br>
+                    <input type="file" accept="image/*" name="image2" class="input-file">
+                    <br>
+                    <div class="input">
+                        <div class="input_container">
+                            <input type="checkbox" id="delImg2" name="delImg2">
+                            <label for="delImg2">Удалить картину</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Описание</label>
+                    <textarea class="input__field" type="text" name="content2" placeholder="Описание"><%= newsInfo.update[2] ? newsInfo.update[2].content : '' %></textarea>
+                </div>
+            </div>
+
+            <div class="modal__body" id="modal3" hidden>
+                <div class="input">
+                    <label class="input__label">Заголовок 4</label>
+                    <input class="input__field" type="text" name="title3" value="<%= newsInfo.update[3] ? newsInfo.update[3].title : '' %>" placeholder="Заголовок">
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Картинка (необязательно)</label>
+                    <br>
+                    <input type="file" accept="image/*" name="image3" class="input-file">
+                    <br>
+                    <div class="input">
+                        <div class="input_container">
+                            <input type="checkbox" id="delImg3" name="delImg3">
+                            <label for="delImg3">Удалить картину</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Описание</label>
+                    <textarea class="input__field" type="text" name="content3" placeholder="Описание"><%= newsInfo.update[3] ? newsInfo.update[3].content : '' %></textarea>
+                </div>
+            </div>
+
+            <div class="modal__body" id="modal4" hidden>
+                <div class="input">
+                    <label class="input__label">Заголовок 5</label>
+                    <input class="input__field" type="text" name="title4" value="<%= newsInfo.update[4] ? newsInfo.update[4].title : '' %>" placeholder="Заголовок">
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Картинка (необязательно)</label>
+                    <br>
+                    <input type="file" accept="image/*" name="image4" class="input-file">
+                    <br>
+                    <div class="input">
+                        <div class="input_container">
+                            <input type="checkbox" id="delImg4" name="delImg4">
+                            <label for="delImg4">Удалить картину</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input">
+                    <br>
+                </div>
+                <div class="input">
+                    <label class="input__label">Описание</label>
+                    <textarea class="input__field" type="text" name="content4" placeholder="Описание"><%= newsInfo.update[4] ? newsInfo.update[4].content : '' %></textarea>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</main>
+<script>
+    const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
+    const inputs = [...Array(5)].map((_, i) => document.querySelector(`input[name="title${i}"]`));
+    document.querySelector('select[name="max_news"]').addEventListener('change', function () {
+        const value = Number(this.value);
+        console.log('value', value);
+
+        modals.forEach((modal, i) => modal.hidden = i >= value);
+
+        inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const value = newsLength;
+        console.log('value 2', value);
+        modals.forEach((modal, i) => modal.hidden = i >= value);
+
+        inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
+    })
+
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            document.querySelectorAll('input[required]').forEach(input => {
+                if (input.hidden || input.offsetParent === null) {
+                    input.required = false;
+                }
+            });
+        });
+    });
+
+
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('keydown', event => {
+            if (event.key === 'Enter') event.preventDefault();
+        });
+    });
+</script>
+</body>
+</html>
+

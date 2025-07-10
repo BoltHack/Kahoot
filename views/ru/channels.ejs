@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> <%= companion.role === 'TechSupport' ? 'Тех. поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : 'Чат с ' + companion.name %> </title>
+    <link rel="stylesheet" href="/stylesheets/channels.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const sendId = `<%= myData.id %>`;
+    const sendName = `<%= myData.name %>`;
+    const channelId = `<%= channel._id %>`;
+    const localeType = `<%= locale %>`;
+    const companionId = `<%= companion.id %>`;
+    const pushNotifications = `<%= notifications %>`;
+</script>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-header">Опции</div>
+        <ul class="chat-tools">
+            <li>
+                <a class="chat-tool" id="friendsContainerBtn" onclick="friendsContainerFunc()">Друзья</a>
+                <a class="chat-tool" id="addFriendBtn" onclick="addFriendFunc()">Добавить друга</a>
+            </li>
+        </ul>
+        <br>
+        <div class="sidebar-line"></div>
+        <br>
+        <div class="sidebar-header">Личные сообщения</div>
+        <% if (myChannels && myChannels.length) { %>
+            <ul class="chat-list">
+                <% myChannels.forEach(channels => { %>
+                    <li>
+                        <% if (channel._id.toString() === channels.channelId.toString()) { %>
+                            <a class="chat-link chat-selected">
+                                💬
+                                <%= channels.companionName %>
+                                <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                            </a>
+                        <% } else { %>
+                            <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                💬
+                                <%= channels.companionName %>
+                                <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                            </a>
+                        <% } %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-position">
+                <img class="avatar header-avatar" src="<%= companion.image %>" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')">
+                <span class="chat-name" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')"><%= companion.role === 'TechSupport' ? 'Тех. поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : companion.name %></span>
+                <span id="onlineMod"></span>
+            </div>
+            <a class="home" href="/">На главную</a>
+        </div>
+
+        <div class="chat-messages" id="messages">
+            <% if (channel.messages && channel.messages.length) { %>
+                <% channel.messages.forEach(msg => { %>
+                    <div class="message <%= msg.reply && msg.reply.length > 0 ? 'reply' : '' %>" data-id="<%= msg._id %>" id="message-<%= msg._id %>" onmouseover="showTools({msgId: '<%= msg._id %>', myId: '<%= msg.id %>'});">
+                        <div class="message-container">
+                            <img class="avatar <%= msg.reply && msg.reply.length > 0 ? 'reply-avatarTop' : '' %>" src="<%= msg.id === companion.id ? companion.image : myData.image %>">
+                            <div class="message-content">
+                                <% if (msg.reply && msg.reply.length > 0) { %>
+                                    <% let msgEdited = channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString()) %>
+                                    <% if (msgEdited && !msgEdited.edited) { %>
+                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line"></div>
+                                                <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
+                                                <div class="reply-text"><%= msg.reply[0].message.length > 50 ? msg.reply[0].message.slice(0, 50) + '...' : msg.reply[0].message %></div>
+                                            </div>
+                                        </a>
+                                    <% } else if (msgEdited && msgEdited.edited === true) { %>
+                                        <a href="#message-<%= msg.reply[0].msgId %>" class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>')">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line"></div>
+                                                <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-header"><strong><%= msg.reply[0].name %></strong></div>
+                                                <div class="reply-text">
+                                                    <%= msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message %>
+                                                    <%- msgEdited.message.length >= 50 ? '<br/>' : '' %>
+                                                    <span class="edited-msg">(Изменено)</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% } else { %>
+                                        <a class="reply-container">
+                                            <div class="reply-line-wrapper">
+                                                <div class="reply-line" style="margin-right: 10px; height: 15px;"></div>
+                                                <br/>
+                                            </div>
+                                            <div class="reply-text-container">
+                                                <div class="reply-text">Оригинальное сообщение удалено</div>
+                                            </div>
+                                        </a>
+                                    <% } %>
+                                <% } %>
+                                <div class="message-header">
+                                    <span class="username"><%= msg.name %></span>
+                                    <span class="timestamp">
+                                    <%= (() => {
+                                        const d = new Date(msg.date);
+                                        const now = new Date();
+
+                                        const isSameDay = (d1, d2) =>
+                                                d1.getDate() === d2.getDate() &&
+                                                d1.getMonth() === d2.getMonth() &&
+                                                d1.getFullYear() === d2.getFullYear();
+
+                                        const yesterday = new Date(now);
+                                        yesterday.setDate(now.getDate() - 1);
+
+                                        if (isSameDay(d, now)) {
+                                            return 'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+                                        } else if (isSameDay(d, yesterday)) {
+                                            return 'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+                                        } else {
+                                            return d.toLocaleString('ru-RU', {
+                                                day: '2-digit',
+                                                month: 'long',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                hour12: false
+                                            });
+                                        }
+                                    })() %>
+                                </span>
+                                </div>
+
+                                <div class="msg-content">
+                                    <%
+                                        function linkify(text) {
+                                            const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                            return text.replace(urlPattern, function(url) {
+                                                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                            });
+                                        }
+                                        const linkedMessage = linkify(msg.message);
+                                    %>
+                                    <div class="text" id="msg-<%= msg._id %>"><%- linkedMessage %></div>
+                                    <span class="edited-msg" id="edited-<%= msg._id %>"><%- msg.edited === true ? '(Изменено)' : '' %></span>
+                                </div>
+                            </div>
+                            <div class="tools" id="tools-<%= msg._id %>">
+                                <div class="tools-settings">
+                                    <div class="tools-svg">
+                                        <% if (msg.id === myData.id) { %>
+                                            <div onclick="msgRedactionMenu('<%= msg._id %>')">
+                                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                                            </div>
+                                        <% } %>
+                                        <div onclick="msgReplyMenu('<%= msg._id %>', '<%= msg.name %>')">
+                                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+                                        </div>
+                                    </div>
+                                    <div class="menu-trigger" onclick="openToolsMenu('<%= msg._id %>')">⋯</div>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <button onclick="msgReplyMenu('<%= msg._id %>', '<%= msg.name %>')">
+                                        Ответить
+                                        <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+                                    </button>
+                                    <% if (msg.id === myData.id) { %>
+                                        <button onclick="msgRedactionMenu('<%= msg._id %>')">
+                                            Редактировать
+                                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+                                        </button>
+                                        <div class="tools-line"></div>
+                                        <button style="color: #f47171" onclick="msgDeleteMenu('<%= channel._id %>', '<%= msg._id %>')">
+                                            Удалить сообщение
+                                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path></svg>
+                                        </button>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+        <div class="positionWarning" id="positionWarning">
+            <span>Вы пересматриваете старые сообщения</span>
+            <button onclick="scrollToBottom()">Перейди к последним сообщениям</button>
+        </div>
+
+        <div class="chat-input">
+            <div id="chatInput"></div>
+            <div class="chat-input-message">
+                <input type="text" placeholder="Написать сообщение..." id="message" autocomplete="off" />
+                <button onclick="sendMessage()">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+</script>
+<script defer src="/javascripts/friends.js"></script>
+<script defer src="/javascripts/timer.js"></script>
+<script defer src="/javascripts/channels.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script defer src="/javascripts/alert.js"></script>
+<script defer src="/javascripts/channelTools.js"></script>
+<script src="/javascripts/warnings.js"></script>
+</body>
+</html>

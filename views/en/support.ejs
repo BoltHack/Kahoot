@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Support</title>
+    <link rel="stylesheet" href="/stylesheets/support.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <form action="/sendContacts" method="POST">
+        <div class="container support">
+            <h2>Contact us</h2>
+            <form>
+                <% if (user && user.id) {%>
+                    <input type="text" name="name" value="<%= user.name %>" readonly>
+                    <input type="email" name="email" value="<%= user.email %>" readonly>
+                <% } else { %>
+                    <input type="text" name="name" placeholder="Your name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                <% } %>
+                <textarea name="message" placeholder="Your message" rows="5" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+            <div class="contacts">
+                <a href="mailto:hffreelancers@gmail.com">support@example.com</a>
+                <a href="tel:циферки"> +7 (900) 123-45-67</a>
+            </div>
+        </div>
+    </form>
+</main>
+<script>
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('keydown', event => {
+            if (event.key === 'Enter') event.preventDefault();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel | Post news</title>
+    <link rel="stylesheet"  href="/stylesheets/admin/post-news.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('admin-header.ejs') %>
+<main class="admin-tools">
+    <div class="news-container">
+        <h2>Create news</h2>
+        <form action="/admin/post-news" method="POST" id="newsForm">
+            <div id="titlesContainer">
+                <div class="form-group">
+                    <label>News headline:</label>
+                    <input type="text" name="updateTitle" placeholder="Enter news title" required>
+                </div>
+            </div>
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

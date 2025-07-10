@@ -1,0 +1,32 @@
+.back{
+    position: absolute;
+    margin-top: 70px;
+    left: 0;
+    padding: 12px;
+    display: flex;
+    gap: 5px;
+    background-color: #16171d;
+    border-radius: 0 0 10px 0 / 0 0 10px 0;
+    z-index: 2;
+    font-family: Arial, sans-serif;
+    border-bottom: 1px solid #313338;
+    border-right: 1px solid #313338;
+}
+.between{
+    color: #586f7c;
+    z-index: 1;
+    margin-top: -2.5px;
+}
+.color-btn{
+    /*color: #adb5bd;*/
+    color: #DAE2ED;
+    text-decoration: none;
+    cursor: pointer;
+}
+.other-color{
+    /*color: #6c757d;*/
+    color: #adb5bd;
+}
+.color-btn:hover{
+    text-decoration: underline;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Профиль <%= userInfo.name %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/user-profile.css">
+</head>
+<script>
+    const userName = `<%= userInfo.name %>`;
+    const userId = `<%= userInfo.id %>`;
+</script>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div class="profile-container">
+
+        <div class="player-banner">
+            <div class="banner-info">
+                <h1><%= userInfo.name %></h1>
+                <% if (userInfo.settings && userInfo.settings.status && userInfo.settings.status.length) { %>
+                    <p>💬 "<%= userInfo.settings.status %>"</p>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="avatar-section">
+                <div class="profile-info">
+                    <img src="<%= userInfo.image %>" alt="Аватар" class="banner-avatar">
+                    <div class="banner-info">
+                        <div class="profile-role">
+                            <h1><%= userInfo.name %></h1>
+                        </div>
+                        <p style="text-align: start"><%= userInfo.onlineMod === 'Online' ? 'В сети' : 'Не в сети' %></p>
+                    </div>
+                </div>
+
+                <div style="text-align: start; margin-left: 22px;">
+                    <span>В числе участников с</span>
+                    <br/>
+                    <span><%= userInfo.registerDate %></span>
+                    <br/>
+                    <br/>
+                </div>
+
+                <% if (user.id && userInfo.id !== myInfo.id) { %>
+                <div style="display: flex">
+                    <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Написать</button>
+                    <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
+                        <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Удалить из друзей</button>
+                    <% } else { %>
+                        <button class="btn" id="addFriend" onclick="addFriend('<%= userInfo.name %>')">➕ Добавить в друзья</button>
+                    <% } %>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="info-section">
+                <div class="stat-box">
+                    <h3>📊 Статистика</h3>
+                    <ul>
+                        <li>Уровень: <strong><%= userInfo.games_info.lvl %></strong></li>
+                        <li>Прогресс: <strong><%= userInfo.games_info.lvlUp %> / 5</strong></li>
+                        <li>Побед: <strong><%= userInfo.games_info.wins %></strong></li>
+                    </ul>
+                </div>
+
+                <% if (userInfo.settings.aboutMe && userInfo.settings.aboutMe.length) { %>
+                    <div class="aboutMe-box">
+                        <h3>📝 Обо мне</h3>
+                        <p><%- userInfo.settings.aboutMe %></p>
+                    </div>
+                <% } %>
+
+                <div class="achievements">
+                    <h3>🏆 Достижения</h3>
+                    <div class="badges">
+                        <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
+                            <% userInfo.games_info.achievements.forEach(ach => { %>
+                               <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Ачивка: Получи 5-й уровень' : '' %>">
+                            <% }) %>
+                        <% } else { %>
+                            <a>Достижений нету</a>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/timer.js"></script>
+<script>
+    socket.on('reloadOtherPage', async () => {
+        console.log('reload');
+        window.location.reload();
+    });
+</script>
+</body>
+</html>

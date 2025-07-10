@@ -1,0 +1,58 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const findEmailBtn = document.getElementById('findEmailBtn');
+    const loaderBtn = document.getElementById('loaderBtn');
+    const email = document.getElementById('email');
+
+    findEmailBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        loaderBtn.hidden = false;
+        findEmailBtn.hidden = true;
+
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(async data => {
+                const ip = data.ip;
+
+                await fetch(`/auth/send-email/${ip}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `email=${encodeURIComponent(email.value)}`
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        let {error} = data;
+                        if (error) {
+                            loaderBtn.hidden = true;
+                            findEmailBtn.hidden = false;
+                            Swal.fire({
+                                text: error,
+                                icon: "error",
+                                position: "top-end",
+                                timer: 4000,
+                                showConfirmButton: false,
+                                toast: true,
+                                customClass: {
+                                    popup: "small-alert"
+                                }
+                            });
+                            return;
+                        } else {
+                            setTimeout(function () {
+                                window.location.href = '/auth/account-recovery';
+                            }, 500);
+                        }
+                    })
+            });
+    });
+});
+
+document.querySelectorAll('form').forEach(function(form) {
+    form.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    });
+});

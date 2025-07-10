@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-panel.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('admin-header.ejs') %>
+
+<main class="admin-tools">
+    <div class="admin-panel">
+        <div class="panel">
+            <h2>Добавить роль</h2>
+            <div class="form-row">
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <select name="role" id="role">
+                    <option value="TechSupport">Тех. поддержка</option>
+                    <option value="Admin">Админ</option>
+                </select>
+                <button type="submit" class="btn" onclick="addNewRole()">Добавить</button>
+            </div>
+        </div>
+
+        <div class="panel admins-list">
+            <h2>Список Админов</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Роль</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% if (allStaff && allStaff.length > 0) { %>
+                    <% allStaff.forEach(staff => { %>
+                        <% if (staff._id.toString() !== user.id.toString()) { %>
+                            <tr>
+                                <td><%= staff.email %></td>
+                                <td><span class="badge <%= staff.role === 'Admin' ? 'badge-admin' : 'badge-techSupport' %>"><%= staff.role %></span></td>
+                                <td class="actions">
+                                    <button class="delete" title="Удалить" onclick="deleteAdminMenu('<%= staff.email %>')">🗑️</button>
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% }) %>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/admin/adminPanel.js"></script>
+</body>
+</html>

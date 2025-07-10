@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | My Games</title>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/my-games.css">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main>
+    <div class="myGames">
+        <% if (myGames && myGames.length > 0) { %>
+            <% myGames.forEach(games => { %>
+                <div class="card">
+                    <div class="container">
+                        <div class="left">
+                            <div class="status-ind"></div>
+                        </div>
+                        <div class="right">
+                            <div class="text-wrap">
+                                <a class="text-link">Game code: <%= games.id %></a>
+                                <a class="text-link">Title: <%= games.game_name %></a>
+                                <a class="text-link">Online: <%= games.game_online.online %> / <%= games.game_online.max_online %></a>
+                                <% if (games.expiresAt) { %>
+                                    <a class="text-link">Will retire at:
+                                        <%= (() => {
+                                            const d = games.expiresAt;
+                                            return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+                                        })() %>
+                                    </a>
+                                <% } %>
+                            </div>
+                            <div class="button-wrap">
+                                <% if (games.game_questions.length > 0) {%>
+                                    <a href="/game/<%= games.id %>" class="primary-cta" style="color: #4c956c">Join</a>
+                                <% } %>
+                                <% if (games.game_online.online === 0) {%>
+                                    <a href="/redaction/<%= games.id %>" class="primary-cta">Edit</a>
+                                        <button class="secondary-cta" onclick="deleteGameMenu('<%= games.id %>')">Delete</button>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Nothing found.</p>
+                <div style="text-align: center">
+                    <a href="/create-game" style="text-decoration: none; color: #219ebc">Create</a>
+                </div>
+            </div>
+            <% if (getUserId.myGames && getUserId.myGames.length > 0) { %>
+                <script>
+                    console.log('Process started')
+                    fetch('/deleteAllGames', {
+                        method: 'POST'
+                    })
+                        .then(response => {
+                            if (response.ok){
+                                console.log('All data deleted')
+                            }
+                            else {
+                                console.log('Error', response.error)
+                            }
+                        })
+                </script>
+            <% } %>
+        <% } %>
+    </div>
+</main>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/myGames.js"></script>
+</body>
+</html>

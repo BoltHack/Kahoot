@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
+    <link rel="stylesheet" href="/stylesheets/theme.css">
+    <noscript>
+        <style>
+            body{
+                overflow: hidden;
+            }
+        </style>
+        <div class="header-barrier"></div>
+        <div class="header-border">
+            <h1>JavaScript отключён!</h1>
+            <p>Для корректной работы сайта включите JavaScript в настройках вашего браузера. Вот как это сделать:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Google Chrome:</strong> Откройте настройки → Конфиденциальность и безопасность → Настройки сайта → JavaScript → Включите.</li>
+                <li><strong>Mozilla Firefox:</strong> Введите <code>about:config</code> в адресной строке → Найдите <code>javascript.enabled</code> → Установите в <code>true</code>.</li>
+                <li><strong>Safari:</strong> Откройте настройки → Безопасность → Включите опцию JavaScript.</li>
+                <li><strong>Microsoft Edge:</strong> Перейдите в параметры → Файлы cookie и разрешения сайта → JavaScript → Включите.</li>
+                <li style="text-align: center;"><a href="/">Обновите страницу</a> после того, как включите JavaScript.</li>
+            </ul>
+            <p style="margin-top: -10px;">Если после всех действий не удалось решить проблему, обратитеть в <a href="mailto:hffreelancers@gmail.com">поддержку.</a></p>
+            <br>
+        </div>
+    </noscript>
+</head>
+<script>
+    const localeType = '<%= locale %>';
+</script>
+<body>
+<header>
+    <div class="container-logo">
+        <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
+    </div>
+
+    <div class="header-container">
+
+        <div id="rules">
+            <div class="dropdown">
+                <p class="ha dropdown-title">Админ панель<span>❯</span></p>
+                <div class="dropdown-content" style="width: 150px;">
+                    <a href="/admin/user-contacts">Список контактов</a>
+                    <a href="/admin/list-users">Список игроков</a>
+                    <a href="/admin/list-news">Список новостей</a>
+                    <a href="/admin/post-news">Разместить статью</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="account-container">
+
+        <% if (user && user.name) { %>
+            <div class="dropdown">
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                <div class="dropdown-content">
+                    <a onclick="logout();">Выйти</a>
+                </div>
+            </div>
+        <% } %>
+        <br>
+        <div class="dropdown">
+            <p class="ha dropdown-title">Русский<span>❯</span></p>
+            <div class="dropdown-content" style="width: 80px;">
+                <a onclick="changeLocaleEn();">English</a>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+<%- include('../back.ejs') %>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/token.js"></script>
+<script src="/javascripts/locale.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const dropdownContents = document.querySelectorAll('.dropdown-content');
+    const dropdownTitles = document.querySelectorAll('.dropdown-title');
+    const dropdown = document.querySelectorAll('.dropdown');
+
+    dropdown.forEach((title, index) => {
+        title.addEventListener('mouseover', () => {
+            dropdownContents[index].style.display = 'flex';
+            dropdownContents[index].style.transform = 'scaleY(1)';
+            dropdownTitles[index].querySelector('span').style.transform = 'rotate(0)';
+            dropdownTitles[index].style.backgroundColor = '#303740';
+        });
+
+        title.addEventListener('mouseout', () => {
+            dropdownContents[index].style.display = 'none';
+            dropdownContents[index].style.transform = 'scaleY(0)';
+            dropdownTitles[index].querySelector('span').style.transform = 'rotate(90deg)';
+            dropdownTitles[index].style.backgroundColor = '#1C2025';
+        });
+    });
+
+    function logout() {
+        fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json()).then((res) => {
+            const {status, error} = res;
+            if (error) {
+                console.log('Ошибка выхода', error);
+                return;
+            }
+
+            if (status) {
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('token');
+                localStorage.removeItem('session');
+                localStorage.removeItem('sessionEndTime');
+                window.location.href = "/auth/login";
+                return;
+            }
+        });
+    }
+</script>
+</body>
+</html>

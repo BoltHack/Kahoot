@@ -1,0 +1,155 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+
+.contacts-container {
+    margin: 200px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    max-width: 1300px;
+    width: 100%;
+    list-style-type: none;
+    justify-content: center;
+}
+
+.card {
+    min-width: 350px;
+    max-width: 800px;
+    border: 1px solid black;
+    background: linear-gradient(to bottom, white, #e5e5e5, #cccccc);
+    padding: 20px;
+    border-radius: 10px;
+
+}
+.date{
+    /*margin-top: -25px;*/
+    margin-left: 260px;
+    color: black;
+    font-weight: bold;
+}
+.title {
+    margin-left: 280px;
+    color: red;
+    cursor: pointer;
+}
+.title:hover {
+    text-decoration: underline;
+}
+.quote {
+    margin-top: -20px;
+    padding-left: 10px;
+    border-left: 4px solid red;
+    font-size: 16px;
+    color: #333;
+    display: block;
+}
+.message {
+    margin-top: 20px;
+    color: black;
+    word-break: break-word;
+}
+.position {
+    font-weight: bold;
+    color: grey;
+    transition: color 0.5s;
+}
+.position:hover {
+    color: #777;
+}
+.data {
+    margin-top: 20px;
+    color: black;
+    display: flex;
+}
+
+.avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.search {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+    margin: auto 0;
+}
+
+.search input {
+    width: 400px;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.deleteAccountMenu{
+    width: 350px;
+    height: 180px;
+    background-color: #212529;
+    border-radius: 10px;
+    z-index: 2;
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.barrier{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.6;
+    z-index: 1;
+}
+.no-btn {
+    background: none;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 80px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+.yes-btn{
+    background: none;
+    color: #90e0ef;
+    border: none;
+    padding: 10px 20px;
+    width: 80px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+.no-btn:hover{
+    background-color: #6c757d;
+}
+.yes-btn:hover{
+    background-color: #118ab2;
+}
+.yes-or-no{
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.delete-button {
+    padding: 2px 8px;
+    background-color: rgb(237, 68, 68);
+    border: none;
+    color: #f1f5f8;
+    border-radius: 5px;
+    cursor: pointer;
+}

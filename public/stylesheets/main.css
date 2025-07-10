@@ -1,0 +1,237 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.home-container {
+    position: absolute;
+    top: 53%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    text-align: start;
+    padding: 50px 40px;
+    border-radius: 20px;
+    width: 600px;
+}
+
+
+.btn {
+    background-color: #009688;
+    color: white;
+    font-size: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin-top: 20px;
+    width: 250px;
+}
+
+.btn:hover {
+    background-color: #00796b;
+    /*transform: translateY(-5px);*/
+    transform: translateX(10px);
+}
+
+.btn:active {
+    transform: translateX(10px) translateY(2px);
+}
+
+.support-btn {
+    background: #ff5733;
+}
+.support-btn:hover {
+    background: #ff2e00;
+}
+
+a {
+    text-decoration: none;
+}
+footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #333;
+    opacity: 0.7;
+}
+
+footer p {
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.find-input{
+    width: 250px;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 7px 0 rgb(0, 0, 0, 0.2);
+    outline: none;
+    color: dimgray;
+}
+.find-input:invalid {
+    animation: justshake 0.3s forwards;
+    color: red;
+}
+
+.find-button{
+    display: inline-block;
+    padding: 12px;
+    background-color: #468faf;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    &:hover{
+        opacity: 0.8;
+        color: black;
+    }
+}
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background-color: #fff;
+    opacity: 1;
+}
+footer a {
+    color: rgb(59 130 246);
+}
+footer a:hover {
+    text-decoration: underline;
+}
+footer button {
+    width: 40px;
+    height: 25px;
+    margin-left: 10px;
+    /*background-color: #2c3e50;*/
+    background-color: #16171d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.symbolTop {
+    position: absolute;
+    top: -10px;
+    color: white;
+    font-size: 10px;
+    user-select: none;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    animation: fallTop linear infinite;
+}
+@keyframes fallTop {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+
+.symbolBottom {
+    position: absolute;
+    bottom: -10px;
+    color: white;
+    font-size: 10px;
+    user-select: none;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    animation: fallBottom linear infinite;
+}
+@keyframes fallBottom {
+    to {
+        transform: translateY(-100vh);
+    }
+}
+
+
+
+
+.new-border{
+    width: 400px;
+    height: 200px;
+    background: rgb(231,225,231);
+    background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);
+    border-radius: 10px;
+    z-index: 4;
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.border-data{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.auth-border {
+    width: 500px;
+    height: 360px;
+    background: rgb(231,225,231);
+    background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);
+    border-radius: 10px;
+    z-index: 4;
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.auth-border b {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    cursor:pointer;
+    color: black
+}
+.auth-border h2{
+    color: #3c096c;
+}
+.auth-border a{
+    color: #0d49d7;
+}
+.auth-border a:hover{
+    text-decoration: underline;
+}
+
+.auth-data{
+    text-align: center;
+    margin-top: 10px;
+    padding: 20px;
+}
+
+
+
+.home-friends {
+    display: flex;
+}
+.home-friends span {
+    position: relative;
+    padding: 5px 8px;
+    border-radius: 50%;
+    text-align: center;
+    background: red;
+    color: white;
+    top: -100%;
+    left: 60%;
+}

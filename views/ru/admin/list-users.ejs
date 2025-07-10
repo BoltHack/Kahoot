@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель | Список всех игроков</title>
+    <link rel="stylesheet"  href="/stylesheets/admin/user-contacts.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('admin-header.ejs') %>
+<main class="admin-tools">
+    <div class="search">
+        <h2>Список пользователей</h2>
+        <input type="text" id="searchInput" placeholder="Поиск по id или email">
+    </div>
+    <ul class="contacts-container" id="userList">
+        <% if (allUsers && allUsers.length > 0) { %>
+            <% allUsers.forEach(user => { %>
+                <li class="card">
+
+                    <div class="date">
+                        <span><%= user.registerDate %></span>
+                    </div>
+
+                    <div class="quote">
+                        <div class="avatar">
+                            <img src="<%= user.image %>">
+                        </div>
+                        <p class="user-id"><%= user.id %></p>
+                        <p class="user-email"><%= user.email %></p>
+                        <p><%= user.name %></p>
+                        <p>- <%= user.role %></p>
+                        <p>- <%= user.ip %></p>
+                        <p>- <%= user.onlineMod %></p>
+                    </div>
+
+                    <div>
+                        <div class="data">
+                            <button class="delete-button" data-id="<%= user._id %>">Удалить</button>
+                        </div>
+                    </div>
+
+                    <div id="deleteMenu-<%= user._id %>" class="deleteAccountMenu" hidden>
+                        <p style="text-align: center; color: white; margin: 30px 0; padding: 10px;">Удалить аккаунт <%= user.email %>?</p>
+                        <div class="yes-or-no">
+                            <button class="no-btn" id="closeBtn-<%= user._id %>">Нет</button>
+                            <form action="/admin/delete-user/<%= user._id %>" method="POST">
+                                <button class="yes-btn">Да</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Ничего не найдено.</p>
+            </div>
+        <% } %>
+    </ul>
+    <div class="barrier" hidden></div>
+</main>
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchValue = this.value.trim().toLowerCase();
+        const userList = document.getElementById('userList');
+        const users = userList.getElementsByTagName('li');
+
+        Array.from(users).forEach(user => {
+            const userIdElement = user.querySelector('.user-id');
+            const userEmailElement = user.querySelector('.user-email');
+
+            const userId = userIdElement ? userIdElement.textContent.toLowerCase() : '';
+            const userEmail = userEmailElement ? userEmailElement.textContent.toLowerCase() : '';
+
+            user.style.display = (userId.includes(searchValue) || userEmail.includes(searchValue)) ? '' : 'none';
+        });
+    });
+
+    const deleteButton = document.querySelectorAll('.delete-button');
+
+    deleteButton.forEach(button => {
+        button.addEventListener('click', function () {
+            const dataId = this.getAttribute('data-id');
+            const deleteMenu = document.getElementById('deleteMenu-' + dataId);
+            const closeBtn = document.getElementById('closeBtn-' + dataId);
+            const barrier = document.querySelector('.barrier');
+            deleteMenu.hidden = false;
+            barrier.hidden = false;
+            closeBtn.addEventListener('click', () => {
+                deleteMenu.hidden = true;
+                barrier.hidden = true;
+            })
+        })
+    })
+</script>
+</body>
+</html>

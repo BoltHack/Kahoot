@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости | <%= readNews.updateTitle %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/stylesheets/news.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const newsTitle = '<%= readNews.updateTitle %>';
+</script>
+<body>
+<%- include('header.ejs') %>
+<main class="news">
+    <div class="sticky-container" id="stickyHeight">
+        <div class="sticky">
+            <div class="sticky-box">
+                <div class="info-card" id="infoCard">
+                    <div class="info-image">
+                        <img src="/images/donates.png">
+                    </div>
+                    <div class="info-content">
+                        <a>
+                    <span class="info-title">
+                        Поддержите нас монеточкой :)
+                    </span>
+                        </a>
+
+                        <p class="info-desc">
+                            Ваши донаты помогают нам поддерживать проект, развивать его и делать доступным для
+                            всех абсолютно бесплатно. Любая сумма — это вклад в будущее проекта и наша мотивация
+                            продолжать!
+                        </p>
+
+                        <a class="info-action" href="/about-donates" target="_blank">
+                            Узнать больше
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="news-container writeNews">
+            <article class="news-card">
+                <h2 class="news-title"><%= readNews.updateTitle %></h2>
+                <div class="news-meta">
+                    <div class="news-author" onclick="window.open('/user-profile/<%= readNews.author.authorId %>', '_blank')">
+                        <img src="<%= authorImage %>">
+                        <span><%= readNews.author.authorName %></span>
+                    </div>
+                    <span class="news-date">📅 <%= readNews.date %></span>
+                    <div class="tags">
+                        <% if (readNews.tags && readNews.tags.length > 0) {%>
+                            <% readNews.tags.forEach(tags => { %>
+                                <a class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Обновление' : tags.tagName === 'AboutGame' ? 'Об игре' : tags.tagName === 'BugsErrors' ? 'Баги/Ошибки' : 'Все новости' %></a>
+                            <% }) %>
+                        <% } %>
+                    </div>
+                </div>
+                <% if (readNews.update && Array.isArray(readNews.update) && readNews.update.length > 0) { %>
+                    <% readNews.update.forEach(updateNews => { %>
+                        <h3><%= updateNews.title %></h3>
+                        <% if (updateNews.image) { %>
+                            <div class="news-image" style="margin-top: -30px;">
+                                <% if (updateNews && updateNews.image) {%>
+                                    <img src="<%= updateNews.image %>">
+                                <% } %>
+                            </div>
+                        <% } %>
+                        <%
+                            function linkify(text) {
+                                const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                return text.replace(urlPattern, function(url) {
+                                    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                });
+                            }
+                            const linkedMessage = linkify(updateNews.content);
+                        %>
+                        <p class="news-summary"><%- linkedMessage %></p>
+                    <br>
+                    <br>
+                    <% }) %>
+                <% } %>
+                <div class="news-footer">
+                    <div class="stats">
+                        <span style="font-size: 25px; font-weight: 600">&#128065;</span>
+                        <p style="margin-top: 11.5px;"><%= readNews.views %></p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</main>
+<div style="margin-bottom: 350px;"></div>
+<%- include('footer.ejs') %>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/readNews.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

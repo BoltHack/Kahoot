@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel | News list</title>
+    <link rel="stylesheet"  href="/stylesheets/news.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <style>
+        .listNews-container {
+            margin: 200px auto;
+            max-width: 850px;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+        .deleteNewsMenu{
+            width: 350px;
+            height: 180px;
+            background-color: #212529;
+            border-radius: 10px;
+            z-index: 2;
+            opacity: 1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .barrier{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        .no-btn {
+            background: none;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 80px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .yes-btn{
+            background: none;
+            color: #90e0ef;
+            border: none;
+            padding: 10px 20px;
+            width: 80px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .no-btn:hover{
+            background-color: #6c757d;
+        }
+        .yes-btn:hover{
+            background-color: #118ab2;
+        }
+        .yes-or-no{
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+<%- include('admin-header.ejs') %>
+<main class="admin-tools">
+    <ul class="listNews-container">
+        <% if (listNews && listNews.length > 0) { %>
+            <% listNews.forEach(news => { %>
+                <li class="news-container" style="margin-top: 150px;">
+                    <div class="news-card">
+                        <h2 class="news-title"><%= news.updateTitle %></h2>
+                        <br>
+                        <div class="news-meta">
+                            <div class="news-author">
+                                <span>Author</span>
+                                <img src="<%= news.authorImage %>">
+                                <span><%= news.author.authorName %></span>
+                            </div>
+                            <span class="news-date">📅 <%= news.date %></span>
+                            <div class="tags">
+                                <% if (news.tags && news.tags.length > 0) {%>
+                                    <% news.tags.forEach(tags => { %>
+                                        <div class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Updates' : tags.tagName === 'News' ? 'News' : tags.tagName === 'Errors' ? 'Bugs/Errors' : 'All news' %></div>
+                                    <% }) %>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="news-image">
+                            <% if (news.update[0] && news.update[0].image) {%>
+                                <img src="<%= news.update[0].image %>">
+                            <% } %>
+                        </div>
+                        <% if (news.update && news.update.length > 0 && news.update[0].content) { %>
+                            <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>
+                        <% } %>
+                        <br>
+                        <br>
+                        <div class="news-footer">
+                            <div class="stats">
+                                <span style="font-size: 25px; font-weight: 600">&#128065;</span>
+                                <p style="margin-top: 11.5px;"><%= news.views %></p>
+                            </div>
+                            <div style="display: flex; gap: 20px;">
+                                <a href="/admin/redaction-news/<%= news._id %>" class="news-edit">Edit</a>
+                                <button type="submit" class="news-delete" data-id="<%= news._id %>">Delete</button>
+                            </div>
+                            <form action="/viewNews/<%= news._id %>" method="POST">
+                                <button class="read-more">Read more</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="deleteMenu-<%= news._id %>" class="deleteNewsMenu" hidden>
+                        <p style="text-align: center; color: white; margin: 30px 0; padding: 10px;word-break: break-word">Delete attachment "<%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 30) + '...' : news.updateTitle %>"</p>
+                        <div class="yes-or-no">
+                            <button class="no-btn" id="closeBtn-<%= news._id %>">Нет</button>
+                            <form action="/admin/delete-news/<%= news._id %>" method="POST">
+                                <button class="yes-btn">Да</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <div class="not-found">
+                <p>Ничего не найдено.</p>
+            </div>
+        <% } %>
+    </ul>
+    <div class="barrier" hidden></div>
+</main>
+<script>
+    const deleteButton = document.querySelectorAll('.news-delete');
+
+    deleteButton.forEach(button => {
+        button.addEventListener('click', function () {
+            const dataId = this.getAttribute('data-id');
+            console.log('dataId', dataId)
+            const deleteMenu = document.getElementById('deleteMenu-' + dataId);
+            const closeBtn = document.getElementById('closeBtn-' + dataId);
+            const barrier = document.querySelector('.barrier');
+            deleteMenu.hidden = false;
+            barrier.hidden = false;
+            closeBtn.addEventListener('click', () => {
+                deleteMenu.hidden = true;
+                barrier.hidden = true;
+            })
+        })
+    })
+</script>
+</body>
+</html>

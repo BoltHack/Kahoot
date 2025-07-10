@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+
+.container {
+    margin: 150px auto;
+    justify-content: center;
+    display: flex;
+}
+
+.contacts {
+    display: flex;
+    gap: 50px;
+}
+
+.contact {
+    width: 400px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 265px;
+}
+
+.contact-emoji {
+    font-size: 60px;
+}
+
+.contact span {
+    display: block;
+}
+
+.contact a {
+    display: block;
+    font-weight: 550;
+}
+
+.contact button {
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 20px;
+    border: none;
+    background-color: #023047;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.contact button:hover {
+    opacity: 0.6;
+}
+
+
+.faq-container {
+    margin: 150px auto;
+    justify-content: center;
+    display: flex;
+}
+.faq {
+    display: block;
+}
+.faq-section {
+    width: 1000px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+.faq-answer {
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+}
+.faq-section button {
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+    background: none;
+    border: none;
+    align-items: center;
+}
+.faq-section button h2 {
+    text-align: start;
+}
+.faq-open {
+    margin-left: auto;
+    margin-top: 5px;
+    font-size: 30px;
+    font-weight: 600;
+    color: black;
+}
+.faq-line {
+    border-bottom: 2px solid #5563DE;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.faq li {
+    margin-top: 10px;
+}

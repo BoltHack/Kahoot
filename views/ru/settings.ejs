@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kahoot | Настройки</title>
+    <link rel="stylesheet" href="/stylesheets/settings.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<script>
+    const settingId = "<%= userId.id %>";
+    const settingImage = "<%= userId.image %>";
+    const mainImage = '<%= userId.settings.mainBackgroundImage %>';
+</script>
+<body>
+<%- include('header.ejs') %>
+<main class="settings">
+    <div class="container">
+        <section class="section" id="profile">
+            <h2>Профиль</h2>
+            <div class="profile">
+                <img src="<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
+                <div class="profile-info">
+                    <div style="display: flex; gap: 10px;">
+                        <h3><%= userId.name %></h3>
+                        <a href="/user-profile/<%= userId.id %>" target="_blank">Стастика</a>
+                        <a href="/channels/@me" target="_blank">Доступные чаты</a>
+                    </div>
+                    <p><%= userId.email %></p>
+                    <p>ID: <%= userId.id %></p>
+                </div>
+            </div>
+        </section>
+
+        <form action="/changeSettings" method="POST">
+            <section class="section" id="settings">
+                <h2>Основные настройки</h2>
+                <div class="setting">
+                    <span>Показывать уведомления</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="notifications" id="notificationsCheckbox" <%= notifications === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting">
+                    <span>Звуки в игре</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="soundTrack" id="soundTrackCheckbox" <%= soundTrack === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting">
+                    <span>Эффекты в главном меню</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="mainEffects" id="mainEffectsCheckbox" <%= mainEffects === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting">
+                    <span>Тёмная тема</span>
+                    <div class="toggle-container">
+                        <label class="toggle">
+                            <input type="checkbox" name="darkTheme" id="darkThemeCheckbox"<%= darkTheme === 'on' ? 'checked' : '' %> />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <div style="text-align: center">
+                <button type="submit" class="save-settings" onclick="saveSettings()">Сохранить изменения</button>
+            </div>
+        </form>
+
+        <section class="section" id="extra-settings">
+            <h2>Дополнительные настройки</h2>
+            <div class="extra-settings">
+<!--                <div class="extra-setting">-->
+<!--                    <h3>Настройки языка</h3>-->
+<!--                    <p>Выберите предпочитаемый язык интерфейса.</p>-->
+<!--                    <select name="locale" class="type" style="width: 150px;" id="changeLocale">-->
+<!--                        <option value="ru" selected>Русский (Выбран)</option>-->
+<!--                        <option value="en">English</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+                <div class="extra-setting" id="editMainBackgroundBtn">
+                    <h3>Фон главного меню</h3>
+                    <p>При желании вы можете сменить фон главного меню игры.</p>
+                </div>
+
+                <div class="extra-setting" id="editStatusBtn">
+                    <h3>Статус профиля</h3>
+                    <p>Создайте себе крутой статус, чтобы другие игроки могли увидеть!</p>
+                </div>
+
+                <div class="extra-setting" id="editAboutMeBtn">
+                    <h3>Обо мне</h3>
+                    <p>Напишите что-нибудь о себе. Можно использовать ссылки.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="change-password">
+            <h2>Сменить пароль</h2>
+            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
+                <label for="current-password">Текущий пароль</label>
+                <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" required />
+
+                <label for="new-password">Новый пароль</label>
+                <input type="password" name="password" id="pwd" placeholder="Введите новый пароль" required />
+
+                <label for="confirm-password">Подтверждение пароля</label>
+                <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" required />
+
+                <p class="text" id="togglePassword1">Показать пароль</p>
+                <p class="text" id="togglePassword2" hidden>Скрыть пароль</p>
+                <div style="text-align: center">
+                    <button type="submit">Сменить пароль</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+<section id="editImage" hidden>
+    <label>
+        <img src="" class="profile-pic-edit" id="userImageView">
+        <input type="file" name="file" id="attachFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Сохранить" id="saveImageBtn">
+        <input type="button" value="Удалить" id="deleteImageBtn">
+    </div>
+</section>
+
+<section id="editMainMenu" hidden>
+    <label>
+        <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
+        <input type="file" name="file" id="backgroundFile" style="display: none">
+    </label>
+    <div class="edit-buttons">
+        <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
+        <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
+    </div>
+</section>
+
+<section id="editStatusMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Сменить статус профиля</p>
+        <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
+        <a id="maxStatusLength">0/90</a>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Изменить" id="changeStatusBtn">
+        </div>
+    </div>
+</section>
+
+<section id="editAboutMeMenu" hidden>
+    <div style="display: block; margin-top: -15px;">
+        <p>Напишите что-нибудь о себе</p>
+        <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
+        <a id="maxAboutMeLength">0/200</a>
+        <br>
+        <br>
+        <div class="edit-buttons">
+            <input type="button" value="Сохранить" id="changeAboutMeBtn">
+        </div>
+    </div>
+</section>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/settings.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

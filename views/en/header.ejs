@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlTheme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
+    <link rel="stylesheet" href="/stylesheets/header.css">
+    <link rel="stylesheet" href="/stylesheets/theme.css">
+    <link rel="stylesheet" href="/stylesheets/alert.css">
+    <noscript>
+        <style>
+            body{
+                overflow: hidden;
+            }
+        </style>
+        <div class="header-barrier"></div>
+        <div class="header-border">
+            <h1>JavaScript is disabled!</h1>
+            <p>To ensure the website works properly, please enable JavaScript in your browser settings. Here’s how to do it:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Google Chrome:</strong> Open Settings → Privacy and security → Site Settings → JavaScript → Enable.</li>
+                <li><strong>Mozilla Firefox:</strong> Type <code>about:config</code> in the address bar → Find <code>javascript.enabled</code> → Set it to <code>true</code>.</li>
+                <li><strong>Safari:</strong> Open Settings → Security → Enable JavaScript.</li>
+                <li><strong>Microsoft Edge:</strong> Go to Settings → Cookies and site permissions → JavaScript → Enable.</li>
+            </ul>
+            <div style="text-align: center">
+                <a href="/">Refresh the page</a> after enabling JavaScript.
+                <p>If the issue persists, please contact <a href="mailto:hffreelancers@gmail.com">support</a>.</p>
+                <br>
+            </div>
+        </div>
+    </noscript>
+</head>
+<script>
+    const pushNotifications = `<%= notifications %>`;
+    const localeType = '<%= locale %>';
+    const sendId = '<%= user.id %>';
+</script>
+<body>
+<header>
+    <div class="container-logo">
+        <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
+    </div>
+
+    <div class="header-container">
+
+        <div id="news">
+            <div class="dropdown">
+                <p class="ha dropdown-title">News<span>❯</span></p>
+                <div class="dropdown-content" style="width: 140px;">
+                    <a href="/news?tag=Updates">Updates</a>
+                    <a href="/news?tag=AboutGame">About the game</a>
+                    <a href="/news?tag=BugsErrors">Bugs/Errors</a>
+                    <a href="/news">All news</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="rules">
+            <div class="dropdown">
+                <p class="ha dropdown-title">Rules<span>❯</span></p>
+                <div class="dropdown-content">
+                    <a href="/privacyPolicy">Privacy Policy</a>
+                    <a href="/rules">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="aboutUs">
+            <div class="dropdown">
+                <p class="ha dropdown-title">About Us<span>❯</span></p>
+                <div class="dropdown-content" style="width: 120px;">
+                    <a href="/aboutUs">About company</a>
+                    <a href="/contacts">Contacts</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="account-container">
+
+        <% if (user && user.name) { %>
+            <div class="dropdown">
+                <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                <div class="dropdown-content">
+                    <% if (user.role === 'Admin') {%>
+                        <a href="/admin/admin-panel">Admin panel</a>
+                    <% } %>
+                        <a onclick="logout();">Sign out</a>
+                </div>
+            </div>
+        <% } else {%>
+            <p onclick="window.location.href = '/auth/login'" class="ha">Sign in</p>
+        <% } %>
+            <br>
+            <div class="dropdown">
+                <p class="dropdown-title">English<span>❯</span></p>
+                <div class="dropdown-content" style="width: 80px;">
+                    <a onclick="changeLocaleRu();">Русский</a>
+                </div>
+            </div>
+
+    </div>
+
+</header>
+
+<div class="brutalist-card" id="authBorder" hidden>
+    <div class="brutalist-card__header">
+        <div class="brutalist-card__icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                ></path>
+            </svg>
+        </div>
+        <div class="brutalist-card__alert">You are not logged in!</div>
+    </div>
+    <div class="brutalist-card__message">
+        <span>Sign in or create an account.</span>
+        <br>
+        <br>
+        <span>By registering or logging in, you agree to our <a class="termsOfUse" href="/rules" target="_blank">Terms of Use</a> and <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Privacy Policy</a>.</span>
+    </div>
+    <div class="brutalist-card__actions">
+        <button onclick="window.location.href = '/auth/login'" class="auth-btn">Log in</button>
+        <button onclick="window.location.href = '/auth/register'" class="auth-btn">Create an account</button>
+    </div>
+    <button class="close-btn" id="closeAuthBorder">X</button>
+</div>
+
+<div class="new-barrier" id="barrier" hidden></div>
+<%- include('back.ejs') %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/header.js"></script>
+<script src="/javascripts/locale.js"></script>
+<script src="/javascripts/friends.js"></script>
+<script src="/javascripts/token.js"></script>
+<script src="/javascripts/alert.js"></script>
+<script src="/javascripts/warnings.js"></script>
+<script src="/javascripts/pageIdentificator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

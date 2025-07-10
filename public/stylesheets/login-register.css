@@ -1,0 +1,264 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.card {
+    width: 300px;
+    padding: 20px;
+    background: #fff;
+    border: 6px solid #000;
+    box-shadow: 12px 12px 0 #000;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card__a i {
+    text-decoration: none;
+    color: black;
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 16px;
+    transition-duration: 0.4s;
+}
+.card__a i:hover {
+    transform: translateY(-3px);
+}
+
+.card__title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #000;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.card__title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #000;
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+}
+
+.card:hover .card__title::after {
+    transform: translateX(0);
+}
+
+.card__content {
+    font-size: 20px;
+    line-height: 1.4;
+    color: #000;
+    margin-bottom: 20px;
+    /*text-align: center;*/
+    font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+.card__form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card__form-input {
+    padding: 10px 0;
+    border: 3px solid #000;
+    /*font-size: 16px;*/
+    font-family: inherit;
+    transition: transform 0.3s;
+    width: 98.5%;
+    margin-top: -14px;
+    text-indent: 10px;
+    color: black;
+}
+
+.card__form input:focus {
+    outline: none;
+    transform: scale(1.03);
+    background-color: #fff;
+    color: black;
+}
+
+.card__button {
+    border: 3px solid #000;
+    background: #000;
+    color: #fff;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    /*text-transform: uppercase;*/
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.3s;
+    width: 100%;
+    height: 100%;
+}
+
+/*.card__button:hover::before {*/
+/*    transform: translateY(0);*/
+/*}*/
+
+/*.card__button:active {*/
+/*    transform: scale(0.95);*/
+/*}*/
+
+.toggle-password {
+    position: absolute;
+    right: 30px;
+    margin-top: -10px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    color: #afb2bf;
+    z-index: 2;
+    mix-blend-mode: multiply;
+}
+
+.toggle-password-reg {
+    position: absolute;
+    right: 30px;
+    margin-top: -37px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    color: #afb2bf;
+    z-index: 2;
+    background-color: white;
+}
+
+.no-account {
+    font-size: 15px;
+    font-weight: 400;
+    color: black;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+.link {
+    font-weight: 800;
+    color: #2879f3;
+    cursor: pointer;
+    text-decoration: none;
+}
+.link:hover{
+    text-decoration: underline;
+    color: #f37e10;
+}
+
+.password-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.checkbox-group {
+    color: black;
+    font-size: 14px;
+    /*font-weight: 500;*/
+}
+
+.remember-me{
+    color: black;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+.forget-password {
+    font-size: 15px;
+    font-weight: 500;
+    color: #2879f3;
+    text-decoration: none;
+}
+
+.forget-password:hover {
+    text-decoration: underline;
+    color: #f37e10;
+}
+
+.text {
+    margin-top: 3px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: lightslategray;
+}
+
+.rules{
+    text-align: center;
+
+}
+.rules a {
+    color: #219ebc;
+    text-decoration: none;
+}
+.rules a:hover {
+    color: #8ecae6;
+}
+
+.rules span{
+    color: black
+}
+
+.dots-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.dot {
+    height: 7px;
+    width: 7px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: grey;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:last-child {
+    margin-right: 0;
+}
+
+.dot:nth-child(1) {
+    animation-delay: -0.3s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: -0.1s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        background-color: grey;
+        box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    }
+
+    50% {
+        transform: scale(1.2);
+        background-color: grey;
+        box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+    }
+
+    100% {
+        transform: scale(0.8);
+        background-color: grey;
+        box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    }
+}

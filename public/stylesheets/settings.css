@@ -1,0 +1,330 @@
+/** {*/
+/*    box-sizing: border-box;*/
+/*}*/
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: 100px auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+.section {
+    margin-bottom: 40px;
+}
+.section h2 {
+    border-bottom: 2px solid #5563DE;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.profile img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #5563DE;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+.profile img:hover {
+    transform: scale(1.05);
+}
+.profile-info h3 {
+    margin: 0;
+    font-size: 24px;
+}
+.profile-info p {
+    margin: 5px 0 0;
+    color: #777;
+}
+.profile-info a {
+    text-decoration: none;
+    color: #5563DE;
+}
+.profile-info a:hover {
+    text-decoration: underline;
+}
+.setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f7f7f7;
+    transition: background 0.3s ease;
+}
+.setting:hover {
+    background: #eaeaea;
+}
+.setting span {
+    font-size: 16px;
+}
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.toggle {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 13px;
+}
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+input:checked + .slider {
+    background-color: #5563DE;
+}
+input:checked + .slider::before {
+    transform: translateX(24px);
+}
+.password-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+.password-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.password-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.password-form button {
+    width: 200px;
+    padding: 12px;
+    background: #5563DE;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+.password-form button:hover {
+    background: #4450b5;
+}
+.extra-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    /*display: block;*/
+}
+.extra-setting {
+    /*width: 100%;*/
+    padding: 15px;
+    background: #f7f7f7;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.extra-setting:hover {
+    background: #eaeaea;
+}
+.extra-setting h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.extra-setting p {
+    font-size: 14px;
+    color: #555;
+    word-break: break-word;
+}
+.text {
+    margin-top: 3px;
+    margin-left: 280px;
+    font-size: 14px;
+    font-weight: 700;
+    color: lightslategray;
+    cursor: pointer;
+}
+.save-settings {
+    width: 350px;
+    padding: 12px;
+    background: #5563DE;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+.save-settings:hover {
+    background: #4450b5;
+}
+
+.new-barrier{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    inset: 0;
+    background: black;
+    opacity: 0.6;
+    z-index: 3;
+}
+
+#editImage {
+    padding: 20px;
+    width: 400px;
+    height: 220px;
+    margin-right: 10px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    z-index: 4;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.profile-pic-edit{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    position: relative;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.edit-buttons{
+    margin-top: -20px;
+    text-align: center;
+}
+.edit-buttons input{
+    width: 120px;
+    height: 35px;
+    background-color: #007dab;
+    color: #FFF;
+    padding: 5px;
+    border: 1px solid #007dab;
+    cursor: pointer;
+    /*margin-left: 5px;*/
+    margin-top: -20px;
+}
+.edit-buttons input:hover{
+    background-color: #006489;
+}
+
+.home-btn{
+    width: 80px;
+    background-color: #5563DE;
+    color: #fff;
+    padding: 5px;
+    border: 1px solid #5563DE;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+#editMainMenu {
+    padding: 20px;
+    width: 800px;
+    height: 500px;
+    margin-right: 10px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    z-index: 4;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#defaultBackground, #mainBackgroundView {
+    width: 100%;
+    height: 400px;
+    cursor: pointer;
+}
+
+#editStatusMenu, #editAboutMeMenu {
+    padding: 20px;
+    width: 400px;
+    margin-right: 10px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    z-index: 4;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#editStatusMenu textarea, #editAboutMeMenu textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 150px;
+    max-height: 150px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+#editStatusMenu p, #editAboutMeMenu p {
+    text-align: center;
+}
+#editStatusMenu a, #editAboutMeMenu a {
+    position: absolute;
+    top: 60%;
+    right: 8%;
+    color: black;
+}
