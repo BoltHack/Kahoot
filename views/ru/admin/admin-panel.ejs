@@ -40,7 +40,7 @@
                         <% if (staff._id.toString() !== user.id.toString()) { %>
                             <tr>
                                 <td><%= staff.email %></td>
-                                <td><span class="badge <%= staff.role === 'Admin' ? 'badge-admin' : 'badge-techSupport' %>"><%= staff.role %></span></td>
+                                <td><span class="badge <%= staff.role === 'Admin' ? 'badge-admin' : 'badge-techSupport' %>"><%= staff.role === 'Admin' ? 'Админ' : 'Тех. поддержка' %></span></td>
                                 <td class="actions">
                                     <button class="delete" title="Удалить" onclick="deleteAdminMenu('<%= staff.email %>')">🗑️</button>
                                 </td>

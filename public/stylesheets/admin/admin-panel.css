@@ -76,16 +76,17 @@ th, td {
     border-radius: 12px;
     font-size: 13px;
     display: inline-block;
+    color: #fff;
 }
 
 .badge-admin {
     background: #1976d2;
-    color: #fff;
+    /*color: #fff;*/
 }
 
 .badge-techSupport {
     background: #4caf50;
-    color: #333;
+    /*color: #fff;*/
 }
 
 .actions button {

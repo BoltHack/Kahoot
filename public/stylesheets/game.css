@@ -95,8 +95,9 @@ header{
     color: white;
     background-color: #222;
     border-radius: 5px;
-    width: 120px;
+    /*width: 120px;*/
     height: 35px;
+    padding: 10px 10px;
     cursor: pointer;
     text-align: center;
     margin-right: 0.5rem;
@@ -114,7 +115,7 @@ header{
     display: inline;
     width: 1.3rem;
     height: 1.3rem;
-    margin-right: 0.75rem;
+    /*margin-right: 0.75rem;*/
     color: white;
 }
 
