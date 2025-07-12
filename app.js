@@ -877,56 +877,86 @@ io.on('connection', async (socket) => {
     });
 
     socket.on('editMsg', async (msgData) => {
-        const findChannel = await ChannelsModel.findById(msgData.channelId);
+        try {
+            const findChannel = await ChannelsModel.findById(msgData.channelId);
 
-        const findEditMsg = findChannel.messages.find(m => m._id.toString() === msgData.msgId.toString());
+            const findEditMsg = findChannel.messages.find(m => m._id.toString() === msgData.msgId.toString());
 
-        const cleanMessage = sanitizeHtml(msgData.newMsg, {
-            allowedTags: ['b', 'i', 'em', 'strong', 'br'],
-        });
+            const cleanMessage = sanitizeHtml(msgData.newMsg, {
+                allowedTags: ['b', 'i', 'em', 'strong', 'br'],
+            });
 
-        if (findEditMsg.id.toString() === socket.userId.toString() && cleanMessage.length !== 0) {
-            const userInfo = await UsersModel.findById(findEditMsg.id);
-            console.log('userInfo', userInfo.name);
-            console.log('msgData', msgData.newMsg);
-            await ChannelsModel.findOneAndUpdate(
-                { _id: msgData.channelId },
-                {
-                    $set: {
-                        'messages.$[elem].message': cleanMessage,
-                        'messages.$[elem].edited': true
+            if (findEditMsg.id.toString() === socket.userId.toString() && cleanMessage.length !== 0) {
+                const userInfo = await UsersModel.findById(findEditMsg.id);
+                console.log('userInfo', userInfo.name);
+                console.log('msgData', msgData.newMsg);
+                await ChannelsModel.findOneAndUpdate(
+                    { _id: msgData.channelId },
+                    {
+                        $set: {
+                            'messages.$[elem].message': cleanMessage,
+                            'messages.$[elem].edited': true
+                        }
+                    },
+                    {
+                        arrayFilters: [{ 'elem._id': msgData.msgId }],
+                        new: true
                     }
-                },
-                {
-                    arrayFilters: [{ 'elem._id': msgData.msgId }],
-                    new: true
-                }
-            );
-            io.to(msgData.channelId).emit('editedMsg', {
-                userName: userInfo.name,
-                userImage: userInfo.image,
-                msgId: msgData.msgId,
-                editMessage: cleanMessage,
-            })
+                );
+                io.to(msgData.channelId).emit('editedMsg', {
+                    userName: userInfo.name,
+                    userImage: userInfo.image,
+                    msgId: msgData.msgId,
+                    editMessage: cleanMessage,
+                })
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     });
 
     socket.on('checkOnline', async (userData) => {
-        const channel = await ChannelsModel.findById(userData.channelId);
+        try {
+            const channel = await ChannelsModel.findById(userData.channelId);
 
-        if (channel.channelUsers[0].id !== userData.sendId) {
-            const user = await UsersModel.findById(channel.channelUsers[0].id);
-            const userOnline = user.onlineMod;
-            socket.emit('onlineMod', {
-                userOnline
-            });
+            if (channel.channelUsers[0].id !== userData.sendId) {
+                const user = await UsersModel.findById(channel.channelUsers[0].id);
+                const userOnline = user.onlineMod;
+                socket.emit('onlineMod', {
+                    userOnline
+                });
+            }
+            else {
+                const user = await UsersModel.findById(channel.channelUsers[1].id);
+                const userOnline = user.onlineMod;
+                socket.emit('onlineMod', {
+                    userOnline
+                });
+            }
+        } catch (error) {
+            console.log('error', error);
         }
-        else {
-            const user = await UsersModel.findById(channel.channelUsers[1].id);
-            const userOnline = user.onlineMod;
-            socket.emit('onlineMod', {
-                userOnline
-            });
+    });
+
+    socket.on('requestUpdateRole', async (email) => {
+        const userId = socket.userId;
+
+        console.log('email', email);
+
+        console.log('userId', userId);
+
+        try {
+            const sender = await UsersModel.findById(userId);
+
+            if (sender.role === 'Admin') {
+                const emailId = await UsersModel.findOne({email});
+                const updateSocketId = clients[emailId.id];
+                console.log('updateId', updateSocketId);
+
+                io.to(updateSocketId).emit('updateRole');
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     });
 

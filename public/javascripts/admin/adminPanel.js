@@ -22,6 +22,7 @@ function deleteAdminMenu(email) {
 
     document.getElementById('requestBtn').addEventListener('click', () => {
         deleteAdmin(email);
+        socket.emit('requestUpdateRole', email);
         barrier.hidden = true;
         document.body.removeChild(deleteMenu);
     });

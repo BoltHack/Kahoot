@@ -1,4 +1,4 @@
-const {GamesModel} = require('../models/GamesModel')
+const {GamesModel} = require('../models/GamesModel');
 const {UsersModel} = require("../models/UsersModel");
 const {AdminUserContactsModel} = require("../models/AdminUserContactsModel");
 const {NewsModel} = require("../models/NewsModel");

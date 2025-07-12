@@ -37,6 +37,7 @@
 </head>
 <script>
     const localeType = '<%= locale %>';
+    const sendId = `<%= user.id %>`;
 </script>
 <body>
 <header>
@@ -84,52 +85,9 @@
 <%- include('../back.ejs') %>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/token.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/admin/adminHeader.js"></script>
 <script src="/javascripts/locale.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    const dropdownContents = document.querySelectorAll('.dropdown-content');
-    const dropdownTitles = document.querySelectorAll('.dropdown-title');
-    const dropdown = document.querySelectorAll('.dropdown');
-
-    dropdown.forEach((title, index) => {
-        title.addEventListener('mouseover', () => {
-            dropdownContents[index].style.display = 'flex';
-            dropdownContents[index].style.transform = 'scaleY(1)';
-            dropdownTitles[index].querySelector('span').style.transform = 'rotate(0)';
-            dropdownTitles[index].style.backgroundColor = '#303740';
-        });
-
-        title.addEventListener('mouseout', () => {
-            dropdownContents[index].style.display = 'none';
-            dropdownContents[index].style.transform = 'scaleY(0)';
-            dropdownTitles[index].querySelector('span').style.transform = 'rotate(90deg)';
-            dropdownTitles[index].style.backgroundColor = '#1C2025';
-        });
-    });
-
-    function logout() {
-        fetch('/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json()).then((res) => {
-            const {status, error} = res;
-            if (error) {
-                console.log('Ошибка выхода', error);
-                return;
-            }
-
-            if (status) {
-                localStorage.removeItem('userInfo');
-                localStorage.removeItem('token');
-                localStorage.removeItem('session');
-                localStorage.removeItem('sessionEndTime');
-                window.location.href = "/auth/login";
-                return;
-            }
-        });
-    }
-</script>
 </body>
 </html>

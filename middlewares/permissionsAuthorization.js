@@ -8,7 +8,7 @@ function verifyPermissions(role) {
         let locale = req.cookies['locale'] || 'en';
 
         if (!req.cookies['locale']) {
-            res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+            res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
         }
 
         if (!token) {

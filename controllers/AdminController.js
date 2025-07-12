@@ -93,7 +93,7 @@ class AdminController{
             const darkTheme = req.cookies['darkTheme'] || 'on';
             const user = req.user;
 
-            const allUsers = await UsersModel.find({role: 'User'});
+            const allUsers = await UsersModel.find({role: { $in: [ 'User', 'TechSupport' ] } });
 
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
