@@ -108,8 +108,10 @@ PASS='lknghiutynoliunf'
 
 В английской версии:
 
-![Снимок экрана 2025-05-12 143639](https://github.com/user-attachments/assets/390a095c-7878-44f8-a116-f2ba87072db5)
+<img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/1428f3d5-edf8-4560-9f80-842285b38faf" />
+
 
 В русской версии:
 
-![Снимок экрана 2025-05-12 144106](https://github.com/user-attachments/assets/4b025def-a870-497a-955c-95a529c04a71)
+<img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/948c5165-f9b8-4c87-9d72-1b394aad7677" />
+
