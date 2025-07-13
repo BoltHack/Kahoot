@@ -5,11 +5,57 @@
 }
 
 .darkTheme {
+    /*auth*/
+    .auth .card {
+        /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
+        background: #16171d;
+        border: 6px solid #313338;
+        box-shadow: 12px 12px 0 #000;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .auth .card__title, .card__a i {
+        color: var(--f);
+    }
+    .auth .card__title, .card__a i:hover {
+        color: var(--bp);
+    }
+    .auth, .card p {
+        color: var(--bp);
+    }
+    .auth input {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackgournd);
+        color: var(--bp);
+    }
+    .auth label {
+        color: var(--bp);
+    }
+    .auth .rules span {
+        color: var(--bp);
+    }
+    .auth .icon {
+        color: var(--bp);
+    }
+    .auth .card__title::after {
+        background-color: var(--bp);
+    }
+
     /*aboutUs*/
     .ab-info h2 {
         color: var(--f);
     }
     .ab-info b, .ab-info p {
+        color: var(--bp);
+    }
+    /*.auth .toggle-password {*/
+    /*    margin-top: 104px;*/
+    /*}*/
+    .auth .toggle-password-reg {
+        margin-top: 178px;
+    }
+    .auth button {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackgournd);
         color: var(--bp);
     }
 

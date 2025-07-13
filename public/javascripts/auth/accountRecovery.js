@@ -1,38 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const togglePassword1 = document.getElementById('togglePassword1');
-    const togglePassword2 = document.getElementById('togglePassword2');
-    let passwordField = document.getElementById('password');
-    let confirmPasswordField = document.getElementById('confirmPassword');
-    let passwordFieldType = passwordField.getAttribute('type');
-    togglePassword1.addEventListener('click', function () {
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'text');
-            confirmPasswordField.setAttribute('type', 'text');
-            togglePassword2.hidden = false;
-            togglePassword1.hidden = true;
-        }
-    })
-    togglePassword2.addEventListener('click', function () {
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'password');
-            confirmPasswordField.setAttribute('type', 'password');
-            togglePassword2.hidden = true;
-            togglePassword1.hidden = false;
-        }
-    });
-
-   const changePasswordForm = document.getElementById('changePasswordForm');
-   const changePasswordBtn = document.getElementById('changePasswordBtn');
-   const loaderBtn = document.getElementById('loaderBtn');
-
-   const code = document.getElementById('code');
-   const password = document.getElementById('password');
-   const confirmPassword = document.getElementById('confirmPassword');
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const loaderButton = document.getElementById('loaderButton');
 
     changePasswordBtn.addEventListener('click', (event) => {
         event.preventDefault();
 
-        loaderBtn.hidden = false;
+        loaderButton.hidden = false;
         changePasswordBtn.hidden = true;
 
         let formData = {
@@ -52,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 let {error} = data;
                 if (error) {
-                    loaderBtn.hidden = true;
+                    loaderButton.hidden = true;
                     changePasswordBtn.hidden = false;
                     Swal.fire({
                         text: error,
@@ -74,6 +48,25 @@ document.addEventListener('DOMContentLoaded', function () {
             })
     })
 });
+
+
+let isVisible  = false;
+
+function togglePassword() {
+    const pwd = document.getElementById('password');
+    const cpwd = document.getElementById('confirmPassword');
+    const eye = document.getElementById('tp');
+
+    isVisible  = !isVisible ;
+
+    pwd.type = isVisible ? 'text' : 'password';
+    cpwd.type = isVisible ? 'text' : 'password';
+    eye.setAttribute('data-lucide', isVisible ? 'eye' : 'eye-off');
+    lucide.createIcons();
+}
+
+lucide.createIcons();
+
 
 document.querySelectorAll('form').forEach(function(form) {
     form.addEventListener('keydown', function(event) {

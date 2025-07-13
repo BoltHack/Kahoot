@@ -1,26 +1,4 @@
 document.addEventListener('DOMContentLoaded', function (){
-    const togglePassword1 = document.getElementById('togglePassword1');
-    const togglePassword2 = document.getElementById('togglePassword2');
-    let passwordField = document.getElementById('pwd');
-    let confirmPasswordField = document.getElementById('cpwd');
-    let passwordFieldType = passwordField.getAttribute('type');
-    togglePassword1.addEventListener('click', function () {
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'text');
-            confirmPasswordField.setAttribute('type', 'text');
-            togglePassword2.hidden = false;
-            togglePassword1.hidden = true;
-        }
-    })
-    togglePassword2.addEventListener('click', function () {
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'password');
-            confirmPasswordField.setAttribute('type', 'password');
-            togglePassword2.hidden = true;
-            togglePassword1.hidden = false;
-        }
-    });
-
     let registerButton = document.getElementById('registerButton');
     let loginForm = document.getElementById('loginForm');
     let name = document.getElementById('name');
@@ -135,6 +113,24 @@ document.addEventListener('DOMContentLoaded', function (){
 
     });
 });
+
+
+let isVisible  = false;
+
+function togglePassword() {
+    const pwd = document.getElementById('pwd');
+    const cpwd = document.getElementById('cpwd');
+    const eye = document.getElementById('tp');
+
+    isVisible  = !isVisible ;
+
+    pwd.type = isVisible ? 'text' : 'password';
+    cpwd.type = isVisible ? 'text' : 'password';
+    eye.setAttribute('data-lucide', isVisible ? 'eye' : 'eye-off');
+    lucide.createIcons();
+}
+
+lucide.createIcons();
 
 document.querySelectorAll('form').forEach(function(form) {
     form.addEventListener('keydown', function(event) {

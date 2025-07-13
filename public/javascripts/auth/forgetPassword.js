@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const findEmailBtn = document.getElementById('findEmailBtn');
-    const loaderBtn = document.getElementById('loaderBtn');
+    const loaderButton = document.getElementById('loaderButton');
     const email = document.getElementById('email');
 
     findEmailBtn.addEventListener('click', (event) => {
         event.preventDefault();
 
-        loaderBtn.hidden = false;
+        loaderButton.hidden = false;
         findEmailBtn.hidden = true;
 
         fetch('https://api.ipify.org?format=json')
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(data => {
                         let {error} = data;
                         if (error) {
-                            loaderBtn.hidden = true;
+                            loaderButton.hidden = true;
                             findEmailBtn.hidden = false;
                             Swal.fire({
                                 text: error,

@@ -31,12 +31,14 @@ class AuthController {
     static registerView = (req, res, next) => {
         try {
             const locale = req.cookies['locale'];
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
             else {
                 res.set('Cache-Control', 'no-store');
-                return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', {locale});
+                return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', { locale, darkTheme });
             }
         } catch (e) {
             next(e)
@@ -71,12 +73,14 @@ class AuthController {
     static loginView = (req, res, next) => {
         try {
             const locale = req.cookies['locale'];
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
             else {
                 res.set('Cache-Control', 'no-store');
-                return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', {locale});
+                return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', { locale, darkTheme });
             }
         } catch (e) {
             next(e)
@@ -205,6 +209,8 @@ class AuthController {
     static sessionExpiredView = async (req, res, next) => {
         try{
             let locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+
             const token = req.cookies['token'];
             const refreshToken = req.cookies['refreshToken'];
 
@@ -213,7 +219,7 @@ class AuthController {
             }
             else {
                 res.set('Cache-Control', 'no-store');
-                return res.render(locale === 'en' ? 'en/auth/sessionExpired' : 'ru/auth/sessionExpired', { locale });
+                return res.render(locale === 'en' ? 'en/auth/sessionExpired' : 'ru/auth/sessionExpired', { locale, darkTheme });
             }
         }catch (err){
             next(err)
@@ -224,13 +230,14 @@ class AuthController {
     static forgetPasswordView = async (req, res, next) => {
         try {
             let locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
 
             if (req.cookies['token'] && req.cookies['refreshToken']){
                 return res.redirect('/')
             }
             else {
                 res.set('Cache-Control', 'no-store');
-                return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password');
+                return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password', { darkTheme });
             }
         } catch (e) {
             next(e)
@@ -307,13 +314,14 @@ class AuthController {
     static accountRecoveryView = async (req, res, next) => {
         try {
             let locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
             let email = req.cookies['email'];
             if (req.cookies['token'] && req.cookies['refreshToken'] && !req.cookies['email']){
                 return res.redirect('/')
             }
             else {
                 res.set('Cache-Control', 'no-store');
-                return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery', {email});
+                return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery', { email, darkTheme });
             }
         } catch (e) {
             next(e)
