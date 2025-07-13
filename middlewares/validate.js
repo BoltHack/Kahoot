@@ -27,10 +27,10 @@ const validateRegister = async (req, res, next) => {
 
         let Schema = Joi.object({
             name: Joi.string().min(3).max(20).required()
-                .pattern(/^[A-Za-z]+$/)
+                .pattern(/^[A-Za-z0-9]+$/)
                 .message(locale === 'en' ? 'Nickname contains forbidden characters.' : 'Никнейм содержит запрещённые символы.'),
             email: Joi.string().min(5).max(50).required()
-                .pattern(/^[A-Za-z@.]+$/)
+                .pattern(/^[A-Za-z@0-9.]+$/)
                 .message(locale === 'en' ? 'Email address contains forbidden characters.' : 'Адрес электронной почты содержит запрещённые символы.')
                 .email(),
             password: Joi.string().min(6).max(50).required(),
@@ -69,7 +69,7 @@ const validateLogin = async (req, res, next) => {
 
         const Schema = Joi.object({
             email: Joi.string().min(5).max(50).required()
-                .pattern(/^[A-Za-z@.]+$/)
+                .pattern(/^[A-Za-z@0-9.]+$/)
                 .message(locale === 'en' ? 'Email address contains forbidden characters.' : 'Адрес электронной почты содержит запрещённые символы.')
                 .email(),
             password: Joi.string().min(6).max(50).required(),
