@@ -118,6 +118,7 @@ body {
     margin-top: 11px;
 }
 .news-date {
+    margin-top: -2.5px;
     font-size: 17px;
     font-weight: 700;
 }
@@ -161,6 +162,13 @@ body {
     margin-top: 20px;
     display: flex;
     gap: 10px;
+}
+.stats span {
+    font-size: 25px;
+    font-weight: 600
+}
+.stats p {
+    margin-top: 11.5px;
 }
 .stats img {
     width: 30px;
