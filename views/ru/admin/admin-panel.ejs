@@ -29,7 +29,8 @@
             <table>
                 <thead>
                 <tr>
-                    <th>Email</th>
+                    <th>Ник</th>
+                    <th>Адрес</th>
                     <th>Роль</th>
                     <th>Действия</th>
                 </tr>
@@ -39,6 +40,7 @@
                     <% allStaff.forEach(staff => { %>
                         <% if (staff._id.toString() !== user.id.toString()) { %>
                             <tr>
+                                <td><%= staff.name %></td>
                                 <td><%= staff.email %></td>
                                 <td><span class="badge <%= staff.role === 'Admin' ? 'badge-admin' : 'badge-techSupport' %>"><%= staff.role === 'Admin' ? 'Админ' : 'Тех. поддержка' %></span></td>
                                 <td class="actions">

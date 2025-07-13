@@ -1,7 +1,9 @@
 function addNewRole() {
     const email = document.getElementById('email').value;
     const role = document.getElementById('role').value;
-    editRole(email, role);
+    if (email.length > 0) {
+        editRole(email, role);
+    }
 }
 
 function deleteAdminMenu(email) {
