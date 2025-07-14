@@ -214,8 +214,8 @@ input:checked + .slider::before {
 
 #editImage {
     padding: 20px;
-    width: 400px;
-    height: 220px;
+    width: 350px;
+    height: 180px;
     margin-right: 10px;
     background-color: #2c3e50;
     color: #fff;
@@ -258,7 +258,23 @@ input:checked + .slider::before {
 .edit-buttons input:hover{
     background-color: #006489;
 }
+#closeMenu {
+    /*margin-top: 15px;*/
+    padding: 10px 15px;
+    border: none;
+    background-color: #ff4444;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    position: absolute;
+    top: -5%;
+    right: -4%;
+}
 
+#closeMenu:hover {
+    background-color: #cc0000;
+}
 .home-btn{
     width: 80px;
     background-color: #5563DE;
@@ -328,3 +344,6 @@ input:checked + .slider::before {
     right: 8%;
     color: black;
 }
+/*.main-pic-edit {*/
+/*    margin-top: 40px;*/
+/*}*/

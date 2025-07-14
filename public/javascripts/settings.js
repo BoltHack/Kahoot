@@ -1,26 +1,5 @@
+const barrier = document.getElementById('barrier');
 document.addEventListener('DOMContentLoaded', function () {
-    const togglePassword1 = document.getElementById('togglePassword1');
-    const togglePassword2 = document.getElementById('togglePassword2');
-    let passwordField = document.getElementById('pwd');
-    let cPasswordField = document.getElementById('cpwd');
-    let passwordFieldType = passwordField.getAttribute('type');
-    togglePassword1.addEventListener('click', function () {
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'text');
-            cPasswordField.setAttribute('type', 'text');
-            togglePassword2.hidden = false;
-            togglePassword1.hidden = true;
-        }
-    })
-    togglePassword2.addEventListener('click', function () {
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'password');
-            cPasswordField.setAttribute('type', 'password');
-            togglePassword2.hidden = true;
-            togglePassword1.hidden = false;
-        }
-    });
-
     const editImageBtn = document.getElementById('editImageBtn');
     const editImage = document.getElementById('editImage');
     const saveImageBtn = document.getElementById('saveImageBtn');
@@ -29,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const attachFile = document.getElementById('attachFile');
     const userImageView = document.getElementById('userImageView');
 
-    const barrier = document.getElementById('barrier');
     editImageBtn.addEventListener('click', () => {
         editImage.hidden = false;
         barrier.hidden = false;
@@ -151,10 +129,8 @@ function saveSettings() {
 }
 
 
-
 const editMainBackgroundBtn = document.getElementById('editMainBackgroundBtn');
 const editMainMenu = document.getElementById('editMainMenu');
-const barrier = document.getElementById('barrier');
 const mainBackgroundView = document.getElementById('mainBackgroundView');
 const backgroundFile = document.getElementById('backgroundFile');
 editMainBackgroundBtn.addEventListener('click', () => {
@@ -343,10 +319,6 @@ aboutMe.addEventListener('input', () => {
     maxAboutMeLength.textContent = `${aboutMe.value.length}/200`;
 });
 
-const changeLocale = document.getElementById('changeLocale');
-changeLocale.addEventListener('change', () => {
-    changeLocale.value === 'en' ? changeLocaleEn() : changeLocaleRu();
-})
 
 function changeSettings() {
     Swal.fire({
@@ -360,4 +332,21 @@ function changeSettings() {
             popup: "small-alert"
         }
     });
+}
+
+let isVisible = false;
+
+function togglePassword() {
+    const pwd = document.getElementById('pwd');
+    const cpwd = document.getElementById('cpwd');
+    const eye = document.getElementById('tp');
+
+    const hidePassword = localeType === 'en'? 'Hide password' : 'Скрыть пароль';
+    const showPassword = localeType === 'en'? 'Show password' : 'Показать пароль';
+
+    isVisible  = !isVisible ;
+
+    pwd.type = isVisible ? 'text' : 'password';
+    cpwd.type = isVisible ? 'text' : 'password';
+    eye.innerText = isVisible ? hidePassword : showPassword;
 }

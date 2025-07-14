@@ -82,15 +82,6 @@
         <section class="section" id="extra-settings">
             <h2>Additional Settings</h2>
             <div class="extra-settings">
-<!--                <div class="extra-setting">-->
-<!--                    <h3>Language Settings</h3>-->
-<!--                    <p>Select your preferred interface language.</p>-->
-<!--                    <select name="locale" class="type" style="width: 150px;" id="changeLocale">-->
-<!--                        <option value="en" selected>English (Selected)</option>-->
-<!--                        <option value="ru">Русский</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-
                 <div class="extra-setting" id="editMainBackgroundBtn">
                     <h3>Main menu background</h3>
                     <p>If you wish, you can change the background of the game's main menu.</p>
@@ -120,8 +111,7 @@
                 <label for="confirm-password">Confirm Password</label>
                 <input type="password" name="confirmPassword" id="cpwd" placeholder="Confirm new password" required />
 
-                <p class="text" id="togglePassword1">Show Password</p>
-                <p class="text" id="togglePassword2" hidden>Hide Password</p>
+                <p class="text" id="tp" onclick="togglePassword()">Show Password</p>
                 <div style="text-align: center">
                     <button type="submit">Change Password</button>
                 </div>
