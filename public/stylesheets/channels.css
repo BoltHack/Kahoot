@@ -389,6 +389,7 @@ ul {
     cursor: pointer;
     font-size: 20px;
     display: none;
+    margin-top: -30px;
 }
 .tools-settings {
     display: flex;
