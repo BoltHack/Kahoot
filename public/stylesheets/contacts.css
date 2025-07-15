@@ -10,7 +10,10 @@ body {
     justify-content: center;
     display: flex;
 }
-
+.faq-container {
+    max-width: 1000px;
+    width: 100%;
+}
 .contacts {
     display: flex;
     gap: 50px;
@@ -65,9 +68,10 @@ body {
 }
 .faq {
     display: block;
+    max-width: 1000px;
+    width: 100%;
 }
 .faq-section {
-    width: 1000px;
     background: #fff;
     padding: 10px;
     border-radius: 12px;

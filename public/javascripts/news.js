@@ -22,12 +22,14 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
         if (foundVisible) {
             searchNotFound.style.display = 'none';
-            searchContainer.style.top = 'auto';
-            searchContainer.style.right = '10%';
+            searchContainer.classList.remove('searchMode')
+            // searchContainer.style.top = 'auto';
+            // searchContainer.style.right = '10%';
         } else {
             searchNotFound.style.display = 'block';
-            searchContainer.style.top = '-5%';
-            searchContainer.style.right = '10%';
+            searchContainer.classList.add('searchMode')
+            // searchContainer.style.top = '-5%';
+            // searchContainer.style.right = '10%';
         }
 
         function showNews () {
@@ -46,8 +48,9 @@ document.getElementById('closeIcon').addEventListener('click', () => {
     const searchNews = newsList.getElementsByTagName('li');
     Array.from(searchNews).forEach(news => {
         news.style.display = 'block';
-        searchContainer.style.top = 'auto';
-        searchNotFound.style.display = 'none';
+        searchContainer.classList.remove('searchMode')
+        // searchContainer.style.top = 'auto';
+        // searchNotFound.style.display = 'none';
     });
 })
 
