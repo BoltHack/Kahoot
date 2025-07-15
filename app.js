@@ -12,6 +12,7 @@ const sanitizeHtml = require("sanitize-html");
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
 const { ChannelsModel } = require('./models/ChannelsModel');
+const { NewsModel } = require('./models/NewsModel');
 const mongoose = require("mongoose");
 
 const app = express();
@@ -955,6 +956,106 @@ io.on('connection', async (socket) => {
 
                 io.to(updateSocketId).emit('updateRole');
             }
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+
+    socket.on('requestLikeNews', async (newsId) => {
+        try {
+            const userId = socket.userId;
+            console.log('userId', userId, 'newsId', newsId);
+
+            const news = await NewsModel.findById(newsId);
+            if (!news) {
+                console.log('id не найден.');
+                return;
+            }
+
+            const checkUserReacts = news.reactions.likes.find(id => id.toString() === userId.toString());
+
+            if (checkUserReacts) {
+                await NewsModel.findOneAndUpdate(
+                    { _id: news._id },
+                    {
+                        $pull: {
+                            'reactions.likes': userId,
+                            'reactions.dislikes': userId
+                        }
+                    }, { new: true }
+                );
+                socket.emit('reactionsCount', {
+                    type: 'reset',
+                    newsId
+                });
+                return;
+            }
+
+            await NewsModel.findOneAndUpdate(
+                { _id: news._id },
+                {
+                    $addToSet: {
+                        'reactions.likes': userId
+                    },
+                    $pull: {
+                        'reactions.dislikes': userId
+                    }
+                }, { new: true }
+            );
+            socket.emit('reactionsCount', {
+                type: 'like',
+                newsId
+            });
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+
+    socket.on('requestDislikeNews', async (newsId) => {
+        try {
+            const userId = socket.userId;
+            console.log('userId', userId, 'newsId', newsId);
+
+            const news = await NewsModel.findById(newsId);
+            if (!news) {
+                console.log('id не найден.');
+                return;
+            }
+
+            const checkUserReacts = news.reactions.dislikes.find(id => id.toString() === userId.toString());
+
+            if (checkUserReacts) {
+                await NewsModel.findOneAndUpdate(
+                    { _id: news._id },
+                    {
+                        $pull: {
+                            'reactions.dislikes': userId,
+                            'reactions.likes': userId
+                        }
+                    }, { new: true }
+                );
+                socket.emit('reactionsCount', {
+                    type: 'reset',
+                    newsId
+                });
+                return;
+            }
+
+            await NewsModel.findOneAndUpdate(
+                { _id: news._id },
+                {
+                    $addToSet: {
+                        'reactions.dislikes': userId
+                    },
+                    $pull: {
+                        'reactions.likes': userId
+                    }
+                }, { new: true }
+            );
+            socket.emit('reactionsCount', {
+                type: 'dislike',
+                newsId
+            });
         } catch (error) {
             console.log('error', error);
         }

@@ -49,6 +49,16 @@ const newsSchema = new Schema({
     tags: {
         type: [tagsSchema],
     },
+    reactions: {
+        likes: [{
+            type: [String],
+            default: []
+        }],
+        dislikes: [{
+            type: [String],
+            default: []
+        }]
+    },
     date: {
         type: String,
         default: dateOnly

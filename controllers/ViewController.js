@@ -456,7 +456,6 @@ class ViewController {
 
     static channelsView = async (req, res, next) => {
         try {
-            console.log('test 0');
             const {channel_id} = req.params;
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';

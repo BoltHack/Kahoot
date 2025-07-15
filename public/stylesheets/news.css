@@ -22,9 +22,7 @@ body {
 }
 
 .search {
-    /*position: sticky;*/
-    /*top: 20px;*/
-    width: 250px;
+    width: 288px;
     background: #fff;
     padding: 20px;
     border-radius: 12px;
@@ -49,7 +47,7 @@ body {
     display: flex;
     align-items: center;
     /*background: #2a2a36;*/
-    padding: 10px;
+    padding: 11px 10px;
     border-radius: 8px;
     margin-bottom: 10px;
     /*cursor: pointer;*/
@@ -66,9 +64,12 @@ body {
     margin-left: 5px;
 }
 
-.search-icon {
-    font-size: 16px;
+.search-icon svg {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
     margin-right: 8px;
+    margin-top: 2px;
 }
 
 .close-icon, .arrow {
@@ -88,7 +89,9 @@ body {
 
 
 .news-container {
-    width: 720px;
+    /*max-width: 720px;*/
+    max-width: 780px;
+    width: 100%;
     background: #fff;
     padding: 20px;
     border-radius: 12px;
@@ -118,7 +121,13 @@ body {
     margin-top: 11px;
 }
 .news-date {
-    margin-top: -2.5px;
+    display: flex;
+    margin-top: -16px;
+    align-items: center;
+    gap: 8px;
+}
+.news-date span {
+    margin-top: 3px;
     font-size: 17px;
     font-weight: 700;
 }
@@ -129,17 +138,20 @@ body {
     color: #555;
 }
 .tags {
+    position: relative;
+    top: -8px;
     display: flex;
     gap: 5px;
 }
 .tag {
     background: #e3e3e3;
-    padding: 4px 8px;
+    padding: 9px 8px;
     border-radius: 5px;
-    height: 20px;
+    /*height: 25px;*/
     font-size: 14px;
     border: 1px solid grey;
     color: black;
+    text-align: center;
 }
 .news-image img {
     width: 100%;
@@ -162,21 +174,47 @@ body {
     margin-top: 20px;
     display: flex;
     gap: 10px;
+    align-items: center;
 }
-.stats span {
-    font-size: 25px;
-    font-weight: 600
+/*.stats span {*/
+/*    font-size: 25px;*/
+/*    margin-top: -5px;*/
+/*}*/
+.stats .views {
+    font-size: 28px;
+    margin-top: -6px;
 }
 .stats p {
-    margin-top: 11.5px;
+    margin-top: 15px;
 }
-.stats img {
-    width: 30px;
-    height: 30px;
-    background-color: #f8f9fa;
-    mix-blend-mode: multiply;
+.likes-dislikes {
     margin-top: 5px;
+    display: flex;
+    gap: 15px;
+    margin-left: 20px;
+    border: 1px solid #313338;
+    background: var(--inputModalBackgournd);
+    color: var(--bp);
+    padding: 5px 8px;
+    border-radius: 12px;
 }
+.likes-dislikes svg {
+    color: black;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+.likes-dislikes-tools {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.likes-dislikes-tools .number span {
+    font-size: 18px;
+    margin-left: 5px;
+    color: black;
+}
+
 .read-more {
     border: 1px solid #007bff;
     color: #007bff;
@@ -267,7 +305,8 @@ body {
 
 
 .info-card {
-    max-width: 300px;
+    width: 288px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -286,7 +325,8 @@ body {
     object-fit: cover;
     width: 100%;
     height: 200px;
-    border-radius: 12px 12px 0 0 / 12px 12px 0 0;
+    border-radius: 12px;
+    /*border-radius: 12px 12px 0 0 / 12px 12px 0 0;*/
 }
 
 .info-title {
