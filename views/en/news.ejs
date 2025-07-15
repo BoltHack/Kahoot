@@ -127,8 +127,10 @@
 
                             <div class="news-footer">
                                 <div class="stats">
-                                    <span class="views">&#128065;</span>
-                                    <p><%= news.views %></p>
+                                    <div class="views">
+                                        <span>&#128065;</span>
+                                        <p><%= news.views %></p>
+                                    </div>
                                     <div class="likes-dislikes" id="likesDislikes-<%= news._id %>">
                                         <div id="like-<%= news._id %>" class="likes-dislikes-tools">
                                             <% if (user && user.id) { %>

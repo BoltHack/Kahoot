@@ -180,9 +180,17 @@ body {
 /*    font-size: 25px;*/
 /*    margin-top: -5px;*/
 /*}*/
-.stats .views {
+.views {
+    display: flex;
+    margin-top: 5px;
+    gap: 5px;
+}
+.views span {
     font-size: 28px;
-    margin-top: -6px;
+    margin-top: 1.6px;
+}
+.views p {
+    font-size: 15px;
 }
 .stats p {
     margin-top: 15px;

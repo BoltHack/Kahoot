@@ -258,6 +258,7 @@ html.lightTheme {
 
 .brutalist-card__message a{
     color: #0d49d7;
+    text-decoration: none;
 }
 .brutalist-card__message a:hover{
     text-decoration: underline;
