@@ -86,13 +86,16 @@ function authMenu() {
 
     authBorder.hidden = false;
     barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
 
     closeAuthBorder.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
     })
     barrier.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
     })
 }
