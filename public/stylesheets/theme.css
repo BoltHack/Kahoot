@@ -333,10 +333,6 @@
         color: #726d81;
         transition-duration: 0.3s;
     }
-    .news .stats .likes-dislikes svg:hover {
-        color: var(--bp);
-        fill: var(--bp);
-    }
     .news .like .number, .news .like .number {
         color: var(--bp);
     }

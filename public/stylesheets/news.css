@@ -94,7 +94,6 @@ body {
 
 
 .news-container {
-    /*max-width: 720px;*/
     max-width: 780px;
     width: 100%;
     background: #fff;
@@ -212,10 +211,13 @@ body {
     border-radius: 12px;
 }
 .likes-dislikes svg {
-    color: black;
+    color: #A9A9B3;
     cursor: pointer;
     width: 20px;
     height: 20px;
+}
+.likes-dislikes svg:hover {
+    fill: #A9A9B3;
 }
 .likes-dislikes-tools {
     display: flex;
@@ -225,7 +227,7 @@ body {
 .likes-dislikes-tools .number span {
     font-size: 18px;
     margin-left: 5px;
-    color: black;
+    color: #fff;
 }
 
 .read-more {
