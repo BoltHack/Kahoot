@@ -46,15 +46,22 @@
                     <br/>
                 </div>
 
-                <% if (user.id && userInfo.id !== myInfo.id) { %>
-                <div style="display: flex">
-                    <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Написать</button>
-                    <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
-                        <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Удалить из друзей</button>
-                    <% } else { %>
-                        <button class="btn" id="addFriend" onclick="addFriend('<%= userInfo.name %>')">➕ Добавить в друзья</button>
+                <% if (user && user.id) { %>
+                    <% if (user.id && userInfo.id !== myInfo.id) { %>
+                        <div style="display: flex">
+                            <button class="btn" onclick="checksChannel('<%= userInfo.id %>')">✉️ Написать</button>
+                            <% if (myInfo.myFriends.some(friend => friend.id === userInfo.id)) { %>
+                                <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= userInfo.id %>')">➖ Удалить из друзей</button>
+                            <% } else { %>
+                                <button class="btn" id="addFriend" onclick="addFriend('<%= userInfo.name %>')">➕ Добавить в друзья</button>
+                            <% } %>
+                        </div>
                     <% } %>
-                </div>
+                <% } else { %>
+                    <div style="display: flex">
+                        <button class="btn" onclick="authMenu()">✉️ Написать</button>
+                        <button class="btn" id="addFriend" onclick="authMenu()">➕ Добавить в друзья</button>
+                    </div>
                 <% } %>
             </div>
 
