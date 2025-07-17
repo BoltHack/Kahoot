@@ -414,26 +414,17 @@ class PostController {
         }
     }
 
-    static deleteImage = async (req, res, next) => {
+    static deleteAvatar = async (req, res, next) => {
         try {
-            const { user_id } = req.params;
+            const user = req.user;
 
-            const user = await UsersModel.findById(user_id);
+            const userInfo = await UsersModel.findById(user.id);
 
-            if (!user || !user.image) {
+            if (!userInfo || !userInfo.image) {
                 return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
             }
 
-            const imagePath = path.join(__dirname, '..', 'public', user.image);
-
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
-                await UsersModel.findByIdAndUpdate(user_id, { $set: { image: "/images/defaultUser.png" } }
-                );
-                console.log('Файл удалён:', imagePath);
-            } else {
-                console.log('Файл не найден:', imagePath);
-            }
+            await UsersModel.findByIdAndUpdate(userInfo._id, { $set: { image: "/images/defaultUser.png" } });
 
             return res.status(200).json('Картинка успешно удалена');
         } catch (err) {
@@ -542,10 +533,10 @@ class PostController {
 
     static changeLocalAuth = async (req, res, next) => {
         try {
-            const {id} = req.params;
+            const user = req.user;
             const {locale} = req.params;
             await UsersModel.findByIdAndUpdate(
-                id,
+                user.id,
                 {locale: locale},
                 {new: true}
             )

@@ -8,7 +8,7 @@ const {
     userProfileView, channelsView, channelsMeView, createQuestionView, editQuestionView, contactsView
 } = require('../controllers/ViewController');
 const {
-    createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteImage,
+    createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteAvatar,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
     languageConfirmation, deleteBackgroundImage, changeStatus, changeAboutMe, checkChannel, deleteMyChannel,
     createQuestion, editQuestion, deleteQuestion, requestTechSupport
@@ -59,11 +59,11 @@ router.post('/getUserData', authenticateJWT, getUserData);
 router.post('/languageConfirmation', languageConfirmation);
 
 router.post('/changeAvatar', authenticateJWT, changeAvatar);
-router.post('/deleteAvatar', authenticateJWT, deleteImage);
+router.post('/deleteAvatar', authenticateJWT, deleteAvatar);
 router.post('/changeBackgroundImage', authenticateJWT, changeBackgroundImage);
 router.post('/deleteBackgroundImage', authenticateJWT, deleteBackgroundImage);
 router.post('/changeLocal/:locale', changeLocal);
-router.post('/changeLocalAuth/:id/:locale', changeLocalAuth);
+router.post('/changeLocalAuth/:locale', authenticateJWT, changeLocalAuth);
 router.post('/changeSettings', authenticateJWT, changeSettings);
 router.post('/changeStatus', authenticateJWT, changeStatus);
 router.post('/changeAboutMe', authenticateJWT, changeAboutMe);
