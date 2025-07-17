@@ -117,6 +117,8 @@ function pages(){
     else if (page.startsWith('/admin/redaction-news')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
+            <a href="/admin/admin-panel" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
+            <a class="between"> ❯ </a>
             <a href="/admin/list-news" class="color-btn">${localeType === 'en' ? 'List news' : 'Список новостей'}</a>
             <a class="between"> ❯ </a>
             <a class="other-color">${editNews.length > 50 ? editNews.slice(0, 50) + '...' : editNews}</a>`
