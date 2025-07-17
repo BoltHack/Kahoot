@@ -262,6 +262,10 @@
     .news .search-box input {
         color: #ECF1FD;
     }
+    .news .search-info {
+        background: var(--inputModalBackgournd);
+        color: var(--bp);
+    }
     .news .info-card {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         background: #16171d;
