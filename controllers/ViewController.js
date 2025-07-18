@@ -398,6 +398,7 @@ class ViewController {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
             const darkTheme = req.cookies['darkTheme'] || 'on';
+            const previousPage = req.cookies['previousPage'] || 'http://localhost:3000';
 
             if (!mongoose.Types.ObjectId.isValid(news_id)) {
                 const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
@@ -405,6 +406,10 @@ class ViewController {
             }
 
             const readNews = await NewsModel.findById(news_id);
+
+            if (!readNews.update[0]) {
+                return res.redirect(previousPage);
+            }
 
             const authorId = await UsersModel.findById(readNews.author.authorId);
             const authorImage = authorId.image;
