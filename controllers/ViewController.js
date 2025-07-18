@@ -398,7 +398,7 @@ class ViewController {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
             const darkTheme = req.cookies['darkTheme'] || 'on';
-            const previousPage = req.cookies['previousPage'] || 'http://localhost:3000';
+            const previousPage = req.cookies['previousPage'] || '/';
 
             if (!mongoose.Types.ObjectId.isValid(news_id)) {
                 const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';

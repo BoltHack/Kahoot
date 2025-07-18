@@ -95,7 +95,7 @@ class AuthController {
             const userId = await UsersModel.findById(user._id);
 
             let locale = req.cookies['locale'] || 'en';
-            let previousPage = req.cookies['previousPage'] || 'http://localhost:3000';
+            let previousPage = req.cookies['previousPage'] || '/';
 
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });

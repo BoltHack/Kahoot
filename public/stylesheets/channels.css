@@ -94,6 +94,9 @@ body {
 .chat-name:hover {
     text-decoration: underline;
 }
+.tech-chat {
+    color: #a2a8d3;
+}
 .message-content {
     max-width: 80%;
 }
