@@ -38,7 +38,7 @@
         <br>
         <div class="info-card" id="infoCard">
             <div class="info-image">
-                <img src="/images/info-image.jpg">
+                <img src="/images/info-image.jpg" loading="lazy">
             </div>
             <div class="info-content">
                 <a>
@@ -71,7 +71,7 @@
                             <div class="news-meta">
                                 <div class="news-author" onclick="window.open('/user-profile/<%= news.author.authorId %>', '_blank')">
                                     <span>Author</span>
-                                    <img src="<%= news.authorImage %>">
+                                    <img src="<%= news.authorImage %>" loading="lazy">
                                     <span><%= news.author.authorName %></span>
                                 </div>
                                 <div class="news-date">
@@ -111,7 +111,7 @@
                             </div>
                             <div class="news-image">
                                 <% if (news.update[0] && news.update[0].image) {%>
-                                    <img src="<%= news.update[0].image %>">
+                                    <img src="<%= news.update[0].image %>" loading="lazy">
                                 <% } %>
                             </div>
                             <%

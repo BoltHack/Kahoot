@@ -84,6 +84,8 @@ function authMenu() {
     const barrier = document.getElementById('barrier');
     const closeAuthBorder = document.getElementById('closeAuthBorder');
 
+    const mainPage = window.location.pathname;
+
     authBorder.hidden = false;
     barrier.hidden = false;
     document.body.style.overflowY = 'hidden';
@@ -91,11 +93,12 @@ function authMenu() {
     closeAuthBorder.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        document.body.style.overflowY = mainPage !== '/' ? 'auto' : 'hidden';
+
     })
     barrier.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        document.body.style.overflowY = mainPage !== '/' ? 'auto' : 'hidden';
     })
 }

@@ -19,7 +19,7 @@
             <div class="sticky-box">
                 <div class="info-card" id="infoCard">
                     <div class="info-image">
-                        <img src="/images/donates.png">
+                        <img src="/images/donates.png" loading="lazy">
                     </div>
                     <div class="info-content">
                         <a>
@@ -50,7 +50,7 @@
                 <h2 class="news-title"><%= readNews.updateTitle %></h2>
                 <div class="news-meta">
                     <div class="news-author" onclick="window.open('/user-profile/<%= readNews.author.authorId %>', '_blank')">
-                        <img src="<%= authorImage %>">
+                        <img src="<%= authorImage %>" loading="lazy">
                         <span><%= readNews.author.authorName %></span>
                     </div>
                     <div class="news-date">
@@ -92,7 +92,7 @@
                         <% if (updateNews.image) { %>
                             <div class="news-image" style="margin-top: -30px;">
                                 <% if (updateNews && updateNews.image) {%>
-                                    <img src="<%= updateNews.image %>">
+                                    <img src="<%= updateNews.image %>" loading="lazy">
                                 <% } %>
                             </div>
                         <% } %>
