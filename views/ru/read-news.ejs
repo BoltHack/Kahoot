@@ -88,7 +88,7 @@
                 </div>
                 <% if (readNews.update && Array.isArray(readNews.update) && readNews.update.length > 0) { %>
                     <% readNews.update.forEach(updateNews => { %>
-                        <h3><%= updateNews.title %></h3>
+                        <h3 class="readNews-title"><%= updateNews.title %></h3>
                         <% if (updateNews.image) { %>
                             <div class="news-image" style="margin-top: -30px;">
                                 <% if (updateNews && updateNews.image) {%>

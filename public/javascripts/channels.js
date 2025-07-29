@@ -168,24 +168,41 @@ socket.on('showMessages', async (showMessagesData) => {
 function showTools(msgData) {
     const message = document.getElementById('message-'+msgData.msgId);
     const toolsId = document.getElementById('tools-'+msgData.msgId);
-
-    if (message.querySelector('textarea') === null) {
-        toolsId.style.display = 'inline-block';
-    }
-
-    message.addEventListener('mouseout', () => {
-        if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
-            message.style.backgroundColor = '#212429';
+    if (document.body.offsetWidth > 700) {
+        if (message.querySelector('textarea') === null) {
             toolsId.style.display = 'inline-block';
-            toolsId.querySelector('.menu-trigger').style.backgroundColor = '#2a2f37';
         }
-        else {
-            message.style.backgroundColor = '';
-            toolsId.style.display = 'none';
-            toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
-        }
-    });
+
+        message.addEventListener('mouseout', () => {
+            if (toolsId.querySelector('.dropdown-menu').style.display === 'flex') {
+                message.style.backgroundColor = '#212429';
+                toolsId.style.display = 'inline-block';
+                toolsId.querySelector('.menu-trigger').style.backgroundColor = '#2a2f37';
+            }
+            else {
+                message.style.backgroundColor = '';
+                toolsId.style.display = 'none';
+                toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+            }
+        });
+    }
 }
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.body.offsetWidth < 1400) {
+        document.querySelectorAll('.message').forEach(msg => {
+            const msgId = msg.dataset.id;
+            msg.querySelector('.tools-settings').style.display = 'none';
+
+            if (!msg.dataset.holdListenerAdded) {
+                msg.dataset.holdListenerAdded = "true";
+
+                addHoldListener(msg, 600, () => {
+                    setTimeout(() => openToolsMenu(msgId), 100);
+                });
+            }
+        });
+    }
+});
 function openToolsMenu(msgId) {
     const message = document.getElementById('message-'+msgId);
     const toolsId = document.getElementById('tools-'+msgId);
@@ -207,14 +224,34 @@ function openToolsMenu(msgId) {
         setTimeout(() => toolsId.style.display = 'inline-block', 1);
     });
 
-    document.addEventListener('click', () => {
-        toolsId.querySelector('.dropdown-menu').style.display = 'none';
-        message.style.backgroundColor = '';
-        toolsId.style.display = 'none';
-        toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
-    })
-
+    document.addEventListener('click', (e) => {
+        if (!toolsId.contains(e.target)) {
+            toolsId.querySelector('.dropdown-menu').style.display = 'none';
+            message.style.backgroundColor = '';
+            toolsId.style.display = 'none';
+            toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+        }
+    });
 }
+
+function addHoldListener(element, delay, callback) {
+    let holdTimer;
+
+    const startHold = (e) => {
+        // e.preventDefault();
+        holdTimer = setTimeout(() => callback(e), delay);
+    };
+
+    const cancelHold = () => clearTimeout(holdTimer);
+
+    element.addEventListener('mousedown', startHold);
+    element.addEventListener('touchstart', startHold);
+    element.addEventListener('mouseup', cancelHold);
+    element.addEventListener('mouseleave', cancelHold);
+    element.addEventListener('touchend', cancelHold);
+    element.addEventListener('touchcancel', cancelHold);
+}
+
 setInterval(function () {
     checkOnline();
 }, 10000);
@@ -226,12 +263,12 @@ function checkOnline() {
     });
 }
 
-socket.on('onlineMod', async (data) => {
-    console.log('userOnline', data.userOnline);
-    document.getElementById('onlineMod').innerText =
-        data.userOnline === 'Online' ? localeType === 'en' ? 'Online' :
-            'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети';
-});
+// socket.on('onlineMod', async (data) => {
+//     console.log('userOnline', data.userOnline);
+//     document.getElementById('onlineMod').innerText =
+//         data.userOnline === 'Online' ? localeType === 'en' ? 'Online' :
+//             'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети';
+// });
 
 if (window.location.pathname.startsWith('/channels/')) {
     socket.emit('joinRoom', channelId);
@@ -306,52 +343,112 @@ function msgRedactionMenu(msgId) {
     const toolsId = document.getElementById('tools-'+msgId);
     const editInput = document.createElement('textarea');
 
-    toolsId.style.display = 'none';
+    messageId.style.backgroundColor = '#212429';
 
-    editInput.value = message.textContent;
-    editInput.id = 'msg-' + msgId;
-    editInput.className = 'edit-input';
+    if (document.body.offsetWidth > 700) {
+        toolsId.style.display = 'none';
 
-    console.log('message-content', message.offsetWidth);
+        editInput.value = message.textContent;
+        editInput.id = 'msg-' + msgId;
+        editInput.className = 'edit-input';
 
-    const text = document.querySelectorAll('.edit-input');
-    text.forEach(menu => {
-        const originalText = menu.value;
-        const div = document.createElement('div');
-        div.id = menu.id;
-        div.className = 'text';
-        div.textContent = originalText;
-        menu.replaceWith(div);
-    })
+        console.log('message-content', message.offsetWidth);
 
-    editInput.style.width = `${message.clientWidth < 500 ? + 500 : message.clientWidth}px`;
-    editInput.style.height = `${message.offsetHeight}px`;
+        const text = document.querySelectorAll('.edit-input');
+        text.forEach(menu => {
+            const originalText = menu.value;
+            const div = document.createElement('div');
+            div.id = menu.id;
+            div.className = 'text';
+            div.textContent = originalText;
+            menu.replaceWith(div);
+        })
 
-    message.replaceWith(editInput);
-    editInput.focus();
+        editInput.style.width = `${message.clientWidth < 500 ? + 500 : message.clientWidth}px`;
+        editInput.style.height = `${message.offsetHeight}px`;
 
-    editInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            const newText = editInput.value.trim();
-            if (newText !== '' && newText !== message.textContent) {
-                const value = editInput.value;
-                console.log('Введённый текст:', value);
-                socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
+        message.replaceWith(editInput);
+        editInput.focus();
+
+        editInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const newText = editInput.value.trim();
+                if (newText !== '' && newText !== message.textContent) {
+                    const value = editInput.value;
+                    console.log('Введённый текст:', value);
+                    socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
+                    editInput.replaceWith(message);
+                    messageId.style.backgroundColor = '';
+                    if (messageId.matches(':hover')) {
+                        toolsId.style.display = 'inline-block';
+                    }
+                }
+            }
+            else if (event.key === 'Escape') {
                 editInput.replaceWith(message);
+                messageId.style.backgroundColor = '';
                 if (messageId.matches(':hover')) {
                     toolsId.style.display = 'inline-block';
                 }
             }
-        }
-        else if (event.key === 'Escape') {
-            editInput.replaceWith(message);
-            if (messageId.matches(':hover')) {
-                toolsId.style.display = 'inline-block';
-            }
-        }
-    });
+        });
 
-    return editInput;
+        return editInput;
+    } else {
+        const messageInput = document.getElementById('message');
+        const messageButton = document.querySelector('.chat-input').querySelector('button');
+
+        messageInput.id = 'editMessage';
+        const editMessage = document.getElementById('editMessage');
+
+        const chatInput = document.getElementById('chatInput');
+        const chatMsgEdit = document.createElement('div');
+        chatMsgEdit.innerHTML = `
+        <div class="chat-reply" data-id="${msgId}">
+            <a href="#message-${msgId}">${localeType === 'en' ? 'Edit message' : 'Редактор сообщения'}</a>
+            <b id="closeEditMenu">X</b>
+        </div>
+`;
+        chatInput.appendChild(chatMsgEdit);
+
+        chatMsgEdit.addEventListener('click', () => {
+            messageInput.value = '';
+            messageInput.id = 'message';
+            messageId.style.backgroundColor = '';
+            chatMsgEdit.remove();
+            return;
+        });
+
+        messageInput.value = message.textContent;
+        messageInput.focus();
+        editMessage.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                const newText = editMessage.value.trim();
+                if (newText !== '' && newText !== message.textContent) {
+                    const value = editMessage.value;
+                    socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
+                    messageInput.value = '';
+                    messageInput.id = 'message';
+                    messageId.style.backgroundColor = '';
+                    chatMsgEdit.remove();
+                }
+            }
+        });
+        messageButton.addEventListener('click', () => {
+            const newText = editMessage.value.trim();
+            if (newText !== '' && newText !== message.textContent) {
+                const value = editMessage.value;
+                socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
+                messageInput.value = '';
+                messageInput.id = 'message';
+                messageId.style.backgroundColor = '';
+                chatMsgEdit.remove();
+            }
+        })
+        setTimeout(() => toolsId.style.display = 'none', 100);
+
+        return editMessage;
+    }
 }
 
 socket.on('editedMsg', async (editMsg) => {
@@ -396,6 +493,7 @@ function msgReplyMenu(msgId, msgName) {
     const allReply = chatInput.querySelectorAll('.chat-reply');
     const chatReply = document.createElement('div');
     const message = document.getElementById('message-'+msgId);
+    const toolsId = document.getElementById('tools-'+msgId);
     const messages = document.querySelectorAll('.message');
 
     messages.forEach(msg => {
@@ -428,6 +526,9 @@ function msgReplyMenu(msgId, msgName) {
             message.classList.remove('reply-message');
         }
     })
+    if (document.body.offsetWidth < 1000) {
+        setTimeout(() => toolsId.style.display = 'none', 100);
+    }
 }
 
 function findReplyMsg(msgId) {
@@ -437,7 +538,8 @@ function findReplyMsg(msgId) {
     message.forEach(msgs => {
         msgs.style.backgroundColor = '';
     })
-    setTimeout(() => msg.style.backgroundColor = '#363a53', 100);
+    setTimeout(() => msg.style.backgroundColor = '#363a53', msg.style.transitionDuration = '0.3s', 100);
+    setTimeout(() => msg.style.backgroundColor = '', 2000);
 }
 
 

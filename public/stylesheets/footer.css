@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    /*overflow-x: hidden;*/
 }
 
 .line{
@@ -19,7 +20,6 @@ footer {
     padding: 20px 0;
     width: 100%;
     margin-bottom: auto;
-
 }
 main {
     flex: 1;
@@ -86,10 +86,27 @@ footer p {
 .company-name{
     margin-left: 200px;
     color: #e5e5e5;
+    max-width: 600px;
+    width: 100%;
+    word-break: break-word;
 }
-.contact-us{
-    display: grid;
-    gap: 10px;
-    margin-left: 50px;
-    margin-top: -14.5px;
+
+
+@media (max-width: 1400px) {
+    .footer-links {
+        display: block;
+        margin: 20px 30px;
+        max-width: 400px;
+        width: 100%;
+        word-break: break-word;
+    }
+    .company-name {
+        margin: 20px 30px;
+        max-width: 300px;
+        width: 100%;
+        word-break: break-word;
+    }
+    .footer-info {
+        margin-bottom: 50px;
+    }
 }

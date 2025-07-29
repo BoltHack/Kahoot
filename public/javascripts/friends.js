@@ -259,8 +259,10 @@ socket.on('updatePage', async () => {
     }
 })
 
-const addFriendBtn = document.getElementById('addFriendBtn');
-const friendsContainerBtn = document.getElementById('friendsContainerBtn');
+const addFriendBtn = document.querySelectorAll('.addFriendBtn');
+const friendsContainerBtn = document.querySelectorAll('.friendsContainerBtn');
+
+const channelMenu = document.getElementById('channelsMenu');
 
 const friendsContainerMenu = document.getElementById('friendsContainerMenu');
 const addFriendMenu = document.getElementById('addFriendMenu');
@@ -273,6 +275,7 @@ function addFriendFunc() {
     window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
     addFriendMenuOpen();
     friendsContainerMenuClose();
+    channelMenu.style.display = channelMenu.style.display === 'block' ? 'none' : '';
 }
 
 function friendsContainerFunc() {
@@ -280,6 +283,7 @@ function friendsContainerFunc() {
     window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
     addFriendMenuClose();
     friendsContainerMenuOpen();
+    channelMenu.style.display = channelMenu.style.display === 'block' ? 'none' : '';
 }
 
 function addFriendMenuOpen() {
@@ -287,7 +291,9 @@ function addFriendMenuOpen() {
     sessionStorage.setItem('menus', JSON.stringify(menus));
 
     addFriendMenu.style.display = 'block';
-    addFriendBtn.style.background = '#3b464f';
+    addFriendBtn.forEach(menus => {
+        menus.style.background = '#3b464f';
+    });
     chatName.innerText = localeType === 'en' ? 'Add as friend' : 'Добавить в друзья';
 }
 function addFriendMenuClose() {
@@ -295,7 +301,9 @@ function addFriendMenuClose() {
     sessionStorage.setItem('menus', JSON.stringify(menus));
 
     addFriendMenu.style.display = 'none';
-    addFriendBtn.style.background = 'none';
+    addFriendBtn.forEach(menus => {
+        menus.style.background = 'none';
+    });
 }
 
 
@@ -304,7 +312,10 @@ function friendsContainerMenuOpen() {
     sessionStorage.setItem('menus', JSON.stringify(menus));
 
     friendsContainerMenu.style.display = 'block';
-    friendsContainerBtn.style.background = '#3b464f';
+    // friendsContainerBtn.style.background = '#3b464f';
+    friendsContainerBtn.forEach(menus => {
+        menus.style.background = '#3b464f';
+    });
     chatName.innerText = localeType === 'en' ? 'Friends' : 'Друзья';
 }
 function friendsContainerMenuClose() {
@@ -312,7 +323,10 @@ function friendsContainerMenuClose() {
     sessionStorage.setItem('menus', JSON.stringify(menus));
 
     friendsContainerMenu.style.display = 'none';
-    friendsContainerBtn.style.background = 'none';
+    // friendsContainerBtn.style.background = 'none';
+    friendsContainerBtn.forEach(menus => {
+        menus.style.background = 'none';
+    })
 }
 
 

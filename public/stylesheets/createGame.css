@@ -14,7 +14,23 @@ body{
     background: none;
     cursor: pointer;
 }
+.redaction-flex {
+    margin-top: 80px;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    flex-wrap: wrap;
+}
 
+.container.redactionGame {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    max-width: 500px;
+}
 .container {
     position: fixed;
     top: 0;
@@ -36,6 +52,7 @@ body{
     background-color: #fff;
     box-shadow: 0 15px 30px 0 rgba(0, 125, 171, 0.15);
     border-radius: 10px;
+    padding: 10px;
 }
 
 .modal__header {
@@ -94,11 +111,16 @@ body{
 .input {
     display: flex;
     flex-direction: column;
+    /*display: flex;*/
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .input img {
-    width: 200px;
-    height: 200px;
+    max-width: 200px;
+    width: 100%;
+    max-height: 200px;
+    height: 100%;
 }
 
 .input__label {
@@ -107,12 +129,14 @@ body{
 }
 
 .input__field {
+    text-indent: 10px;
     display: block;
     margin-top: 0.5rem;
     border: 1px solid #DDD;
     border-radius: 0.25rem;
-    padding: 0.75rem 0.75rem;
+    padding: 0.75rem 0;
     transition: 0.15s ease;
+    width: 100%;
 }
 
 .input__field:focus {
@@ -203,12 +227,12 @@ body{
 }
 
 .questions-modal {
-    position: absolute;
-    left: 2%;
-    top: 21.5%;
+    position: sticky;
+    /*left: 2%;*/
+    top: 20.5%;
     max-width: 850px;
     border: 1px solid black;
-    padding: 10px;
+    padding: 10px 0;
     width: 100%;
     background-color: #fff;
     box-shadow: 0 15px 30px 0 rgba(0, 125, 171, 0.15);
@@ -223,17 +247,21 @@ body{
 }
 
 .input-image {
-    position: absolute;
+    display: flex;
+    /*position: absolute;*/
     /*top: 15%;*/
     /*right: 2%;*/
-    margin-top: -16%;
+    /*margin-top: -8%;*/
     /*margin-right: 2%;*/
-    margin-left: 72.5%;
+    /*margin-left: 72.5%;*/
 }
 .input-image img {
+    cursor: pointer;
     border: 1px solid black;
-    width: 200px;
-    height: 200px;
+    max-width: 200px;
+    width: 100%;
+    max-height: 200px;
+    height: 100%;
 }
 
 .game-questions {
@@ -245,7 +273,8 @@ body{
 }
 
 .card {
-    width: 350px;
+    max-width: 350px;
+    width: 100%;
     /*height: auto;*/
     position: relative;
     background: rgb(255, 255, 255);
@@ -330,8 +359,8 @@ body{
 
 
 .delete-border {
-    width: 400px;
-    /*width: 100%;*/
+    max-width: 400px;
+    width: 100%;
     height: 150px;
     background-color: #1f242b;
     border-radius: 10px;
@@ -369,4 +398,14 @@ body{
 
 .create-questions {
     text-align: center;
+}
+
+
+@media (max-width: 1400px) {
+    .redaction-flex {
+        flex-direction: column-reverse;
+    }
+    .input {
+        display: block;
+    }
 }

@@ -16,53 +16,56 @@
 <main>
     <div>
         <form action="/edit-question/<%= game_id %>/<%= questionInfo.id %>" method="POST" enctype="multipart/form-data">
-            <div class="modal questions-modal" style="left: 50%; transform: translateX(-50%)">
-                <div class="modal__body" id="modal0">
-                    <div class="input">
-                        <label class="input__label">Вопрос #<%= questionInfo.question_number + 1 %></label>
-                        <input class="input__field" type="text" name="question_title" value="<%= questionInfo.question_title %>" placeholder="Введите вопрос" required>
-                    </div>
-                    <div class="input">
-                        <br>
-                        <label class="input__label" style="font-weight: 450">Варианты ответов</label>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field" type="text" name="question_title_question_1" value="<%= questionInfo.question_1.title %>" placeholder="Ответ 1" required>
-                            <input class="input__field" type="text" name="question_title_question_2" value="<%= questionInfo.question_2.title %>" placeholder="Ответ 2" required>
-                        </div>
-                        <div style="display: flex; gap: 20px;">
-                            <input class="input__field" type="text" name="question_title_question_3" value="<%= questionInfo.question_3.title %>" placeholder="Ответ 3" required>
-                            <input class="input__field" type="text" name="question_title_question_4" value="<%= questionInfo.question_4.title %>" placeholder="Ответ 4" required>
-                        </div>
-                        <div class="input_container">
-                            <p>Правильный ответ:</p>
-                            <select name="question_title_correct_question" class="type" style="width: 100px;">
-                                <option value="question_1" <%= questionInfo.correct_question === 'question_1' ? 'Selected' : '' %> >1</option>
-                                <option value="question_2" <%= questionInfo.correct_question === 'question_2' ? 'Selected' : '' %> >2</option>
-                                <option value="question_3" <%= questionInfo.correct_question === 'question_3' ? 'Selected' : '' %> >3</option>
-                                <option value="question_4" <%= questionInfo.correct_question === 'question_4' ? 'Selected' : '' %> >4</option>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="input">
-                        <% if (questionInfo.question_image) {%>
-                            <div class="input-image">
-                                <img src="<%= questionInfo.question_image %>">
-                            </div>
-                        <% } %>
-                        <label class="input__label">Выберите картину для вопроса</label>
-                        <br>
-                        <input type="file" accept="image/*" name="question_image" class="input-file">
-                        <br>
+            <div class="redaction-flex">
+                <div class="modal questions-modal">
+                    <div class="modal__body" id="modal0">
                         <div class="input">
+                            <label class="input__label">Вопрос #<%= questionInfo.question_number + 1 %></label>
+                            <input class="input__field" type="text" name="question_title" value="<%= questionInfo.question_title %>" placeholder="Введите вопрос" required>
+                        </div>
+                        <div class="input">
+                            <br>
+                            <label class="input__label" style="font-weight: 450">Варианты ответов</label>
+                            <div style="display: flex; gap: 20px;">
+                                <input class="input__field" type="text" name="question_title_question_1" value="<%= questionInfo.question_1.title %>" placeholder="Ответ 1" required>
+                                <input class="input__field" type="text" name="question_title_question_2" value="<%= questionInfo.question_2.title %>" placeholder="Ответ 2" required>
+                            </div>
+                            <div style="display: flex; gap: 20px;">
+                                <input class="input__field" type="text" name="question_title_question_3" value="<%= questionInfo.question_3.title %>" placeholder="Ответ 3" required>
+                                <input class="input__field" type="text" name="question_title_question_4" value="<%= questionInfo.question_4.title %>" placeholder="Ответ 4" required>
+                            </div>
                             <div class="input_container">
-                                <input type="checkbox" id="delImg" name="delImg">
-                                <label for="delImg">Удалить картину</label>
+                                <p>Правильный ответ:</p>
+                                <select name="question_title_correct_question" class="type" style="width: 100px;">
+                                    <option value="question_1" <%= questionInfo.correct_question === 'question_1' ? 'Selected' : '' %> >1</option>
+                                    <option value="question_2" <%= questionInfo.correct_question === 'question_2' ? 'Selected' : '' %> >2</option>
+                                    <option value="question_3" <%= questionInfo.correct_question === 'question_3' ? 'Selected' : '' %> >3</option>
+                                    <option value="question_4" <%= questionInfo.correct_question === 'question_4' ? 'Selected' : '' %> >4</option>
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="input">
+                            <% if (questionInfo.question_image) {%>
+                                <span class="input__label">Выберите изображение для вопроса</span>
+                                <div class="input-image">
+                                    <label class="input__label">
+                                        <img src="<%= questionInfo.question_image %>" title="Сменить изображение">
+                                        <input type="file" accept="image/*" name="question_image" class="input-file" style="display: none">
+                                    </label>
+                                </div>
+                            <% } %>
+                            <br>
+                            <div class="input">
+                                <div class="input_container">
+                                    <input type="checkbox" id="delImg" name="delImg">
+                                    <label for="delImg">Удалить картину</label>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <button type="submit" class="button button--primary">Сохранить</button>
                 </div>
-                <button type="submit" class="button button--primary">Сохранить</button>
             </div>
         </form>
     </div>

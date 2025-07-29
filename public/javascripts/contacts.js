@@ -49,8 +49,8 @@ function techChat() {
                     techChatBtn.hidden = false;
                     loadingBtn.hidden = true;
                     if (data.id.toString() === sendId.toString()) {
-                        requestTechSupport();
-                        console.log('Ещё раз...');
+                        // requestTechSupport();
+                        console.log('Ничего не найдено.');
                         return;
                     }
                     checksChannel(`${data.id}`);

@@ -20,3 +20,14 @@ function deleteMyChannel(channelId) {
             console.error('Ошибка:', error);
         });
 }
+
+function channelsMenu() {
+    const channelsMenu = document.getElementById('channelsMenu');
+    const closeChannelsMenu = document.getElementById('closeChannelsMenu');
+
+    channelsMenu.style.display = 'block';
+
+    closeChannelsMenu.addEventListener('click', () => {
+        channelsMenu.style.display = 'none';
+    });
+}

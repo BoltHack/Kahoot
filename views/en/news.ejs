@@ -57,10 +57,12 @@
     <ul class="container" id="newsList">
         <div class="search-tag-container">
             <h4>Popular Topics</h4>
-            <a href="?tag=Updates" class="tag search-tag" id="Updates">Updates</a>
-            <a href="?tag=AboutGame" class="tag search-tag" id="AboutGame">About the game</a>
-            <a href="?tag=BugsErrors" class="tag search-tag" id="BugsErrors">Bugs/Errors</a>
-            <a href="/news" class="tag search-tag" id="AllNews">All news</a>
+            <div style="display: flex; gap: 10px;">
+                <a href="?tag=Updates" class="tag search-tag" id="Updates">Updates</a>
+                <a href="?tag=AboutGame" class="tag search-tag" id="AboutGame">About the game</a>
+                <a href="?tag=BugsErrors" class="tag search-tag" id="BugsErrors">Bugs/Errors</a>
+                <a href="/news" class="tag search-tag" id="AllNews">All news</a>
+            </div>
         </div>
         <% if (allNews && allNews.length > 0) { %>
             <% allNews.forEach(news => { %>

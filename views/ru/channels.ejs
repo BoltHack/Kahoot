@@ -36,15 +36,15 @@
                     <li>
                         <% if (channel._id.toString() === channels.channelId.toString()) { %>
                             <a class="chat-link chat-selected">
-                                💬
-                                <%= channels.companionName %>
-                                <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                <span class="link-companion"><%= channels.companionName %></span>
+                                <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                             </a>
                         <% } else { %>
                             <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
-                                💬
-                                <%= channels.companionName %>
-                                <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                <span class="link-companion"><%= channels.companionName %></span>
+                                <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                             </a>
                         <% } %>
                     </li>
@@ -58,9 +58,16 @@
             <div class="chat-position">
                 <img class="avatar header-avatar" src="<%= companion.image %>" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')">
                 <span class="chat-name <%= companion.role === 'TechSupport' ? `tech-chat` : '' %>" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')"><%= companion.role === 'TechSupport' ? 'Тех. поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : companion.name %></span>
-                <span id="onlineMod"></span>
+<!--                <span id="onlineMod"></span>-->
+                <div class="channel-tools">
+                    <a class="home" href="/">На главную</a>
+                    <div class="media-width">
+                    <span onclick="channelsMenu()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify"><path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/></svg>
+                    </span>
+                    </div>
+                </div>
             </div>
-            <a class="home" href="/">На главную</a>
         </div>
 
         <div class="chat-messages" id="messages">
@@ -204,8 +211,60 @@
             <div id="chatInput"></div>
             <div class="chat-input-message">
                 <input type="text" placeholder="Написать сообщение..." id="message" autocomplete="off" />
-                <button onclick="sendMessage()">Отправить</button>
+                <button onclick="sendMessage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal-icon lucide-send-horizontal"><path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"/><path d="M6 12h16"/></svg>
+                </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="media-body" id="channelsMenu">
+    <div class="media-header">
+        <div class="container-logo">
+            <h2>
+                <a class="logo" href="/">На главную</a>
+            </h2>
+            <button id="closeChannelsMenu">X</button>
+        </div>
+    </div>
+
+    <div class="media-border">
+        <div class="media-sidebar">
+            <div class="sidebar-header">Опции</div>
+            <ul class="chat-tools">
+                <li>
+                    <a class="chat-tool friendsContainerBtn" onclick="friendsContainerFunc()">Друзья</a>
+                    <a class="chat-tool addFriendBtn" onclick="addFriendFunc()">Добавить друга</a>
+                </li>
+            </ul>
+            <br>
+            <div class="sidebar-line"></div>
+            <br>
+            <div class="sidebar-header">Личные сообщения</div>
+            <% if (myChannels && myChannels.length) { %>
+                <ul class="chat-list" style="overflow-y: auto;">
+                    <% myChannels.forEach(channels => { %>
+                        <li>
+                            <% if (channel._id.toString() === channels.channelId.toString()) { %>
+                                <a class="chat-link chat-selected">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                    <span class="link-companion"><%= channels.companionName %></span>
+                                    <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                </a>
+                            <% } else { %>
+                                <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                    <span class="link-companion"><%= channels.companionName %></span>
+                                    <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                </a>
+                            <% } %>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <a>Начните диалог</a>
+            <% } %>
         </div>
     </div>
 </div>

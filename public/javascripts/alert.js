@@ -264,7 +264,7 @@ function inviteFriendMenu(data) {
     <img class="success-icon-container" src="${data.requestData.senderImage}">
   </div>
   <div class="success-message-text-container">
-    <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `${data.requestData.senderName } invites you to the game.` : `${data.requestData.senderName } приглашает вас в игру.`}</p>
+    <p class="success-sub-text" style="font-size: 16px;">${localeType === 'en' ? `${data.requestData.senderName} invites you to the game.` : `${data.requestData.senderName} приглашает вас в игру.`}</p>
     <br>
     <span class="success-message-request">
         <a id="${acceptId}" class="accept-request">${localeType === 'en' ? 'Accept' : 'Принять'}</a>

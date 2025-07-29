@@ -108,3 +108,10 @@ button:hover {
     flex-direction: column;
     gap: 0.875em;
 }
+
+
+@media (max-width: 1200px) {
+    .myGames {
+        flex-direction: column;
+    }
+}

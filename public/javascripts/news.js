@@ -22,14 +22,10 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
         if (foundVisible) {
             searchNotFound.style.display = 'none';
-            searchContainer.classList.remove('searchMode')
-            // searchContainer.style.top = 'auto';
-            // searchContainer.style.right = '10%';
+            searchContainer.classList.remove('searchMode');
         } else {
             searchNotFound.style.display = 'block';
-            searchContainer.classList.add('searchMode')
-            // searchContainer.style.top = '-5%';
-            // searchContainer.style.right = '10%';
+            searchContainer.classList.add('searchMode');
         }
 
         function showNews () {
@@ -48,16 +44,16 @@ document.getElementById('closeIcon').addEventListener('click', () => {
     const searchNews = newsList.getElementsByTagName('li');
     Array.from(searchNews).forEach(news => {
         news.style.display = 'block';
-        searchContainer.classList.remove('searchMode')
-        // searchContainer.style.top = 'auto';
-        // searchNotFound.style.display = 'none';
+        searchContainer.classList.remove('searchMode');
     });
-})
+});
 
 
 function tagsRegulator () {
     const params = new URLSearchParams(window.location.search);
     const tag = params.get('tag');
+    const tags = JSON.parse(sessionStorage.getItem('tags') || '{}');
+
     if (tag === 'Updates') {
         document.getElementById('Updates').classList.add('search-tag-active');
     }
@@ -70,6 +66,10 @@ function tagsRegulator () {
     if (!tag) {
         document.getElementById('AllNews').classList.add('search-tag-active');
     }
+    tags.tag = tag;
+    tags.page = params.get('page') || '1';
+    sessionStorage.setItem('tags', JSON.stringify(tags));
+
 }
 tagsRegulator();
 

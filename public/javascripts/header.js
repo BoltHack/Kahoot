@@ -102,3 +102,57 @@ function authMenu() {
         document.body.style.overflowY = mainPage !== '/' ? 'auto' : 'hidden';
     })
 }
+
+function mediaMenu() {
+    const mediaBorder = document.getElementById('mediaBorder');
+    const closeMediaBorder = document.getElementById('closeMediaBorder');
+
+    mediaBorder.style.display = 'block';
+
+    closeMediaBorder.addEventListener('click', () => {
+        mediaBorder.style.display = 'none';
+    });
+}
+
+function findGame() {
+    if (localStorage.getItem('token')) {
+        const barrier = document.getElementById('barrier');
+        const border = document.getElementById('border');
+        const close = document.getElementById('close');
+
+        barrier.hidden = false;
+        border.hidden = false;
+        document.body.style.overflow = 'hidden';
+
+        barrier.addEventListener('click', () => {
+            barrier.hidden = true;
+            border.hidden = true;
+        })
+        close.addEventListener('click', () => {
+            barrier.hidden = true;
+            border.hidden = true;
+        })
+    }
+    else {
+        authMenu();
+    }
+}
+
+
+function redirectPage(page){
+    const menus = JSON.parse(sessionStorage.getItem('menus') || '{}');
+    if (localStorage.getItem('token')) {
+        if (page === '/channels/@me') {
+            menus.friendsContainerMenu = 'true';
+            menus.addFriendMenu = 'false';
+            sessionStorage.setItem('menus', JSON.stringify(menus));
+            window.location.href = page;
+        }
+        else {
+            window.location.href = page;
+        }
+    }
+    else {
+        authMenu();
+    }
+}

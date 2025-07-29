@@ -8,50 +8,6 @@ body {
     overflow: hidden;
 }
 
-.home-container {
-    position: absolute;
-    top: 53%;
-    left: 25%;
-    transform: translate(-50%, -50%);
-    text-align: start;
-    padding: 50px 40px;
-    border-radius: 20px;
-    width: 600px;
-}
-
-
-.btn {
-    background-color: #009688;
-    color: white;
-    font-size: 20px;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: block;
-    margin-top: 20px;
-    width: 250px;
-}
-
-.btn:hover {
-    background-color: #00796b;
-    /*transform: translateY(-5px);*/
-    transform: translateX(10px);
-}
-
-.btn:active {
-    transform: translateX(10px) translateY(2px);
-}
-
-.support-btn {
-    background: #ff5733;
-}
-.support-btn:hover {
-    background: #ff2e00;
-}
-
 a {
     text-decoration: none;
 }
@@ -220,7 +176,51 @@ footer button {
     padding: 20px;
 }
 
+.home-container {
+    position: absolute;
+    top: 53%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    text-align: start;
+    padding: 50px 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    user-select: none;
+}
+.btn {
+    display: flex;
+    background-color: #009688;
+    color: white;
+    font-size: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /*display: block;*/
+    margin-top: 20px;
+    width: 250px;
+    text-decoration: none;
+}
 
+.btn:hover {
+    background-color: #00796b;
+    transform: translateX(10px);
+}
+
+.btn:active {
+    background-color: #00796b;
+    transform: translateX(10px) translateY(2px);
+}
+
+.support-btn {
+    background: #ff5733;
+}
+.support-btn:hover {
+    background: #ff2e00;
+}
 
 .home-friends {
     display: flex;
@@ -234,4 +234,22 @@ footer button {
     color: white;
     top: -100%;
     left: 60%;
+}
+
+
+@media (max-width: 1400px) {
+    .home-container {
+        display: none;
+    }
+    .btn {
+        width: 150px;
+        font-size: 15px;
+        padding: 8px;
+        align-items: start;
+    }
+    body {
+        height: 100vh;
+        overflow-y: scroll;
+        /*overflow-y: auto;*/
+    }
 }

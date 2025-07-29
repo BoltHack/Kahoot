@@ -20,8 +20,8 @@
         <div class="sidebar-header">Options</div>
         <ul class="chat-tools">
             <li>
-                <a class="chat-tool" id="friendsContainerBtn" onclick="friendsContainerFunc()">Friends</a>
-                <a class="chat-tool" id="addFriendBtn" onclick="addFriendFunc()">Add friend</a>
+                <a class="chat-tool friendsContainerBtn" onclick="friendsContainerFunc()">Friends</a>
+                <a class="chat-tool addFriendBtn" onclick="addFriendFunc()">Add Friend</a>
             </li>
         </ul>
         <br>
@@ -33,15 +33,15 @@
                 <% myChannels.forEach(channels => { %>
                     <li>
                         <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
-                            💬
-                            <%= channels.companionName %>
-                            <span onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                            <span class="link-companion"><%= channels.companionName %></span>
+                            <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
                         </a>
                     </li>
                 <% }) %>
             </ul>
         <% } else { %>
-            <a>Start a dialogue</a>
+            <a>Start a conversation</a>
         <% } %>
     </div>
 
@@ -50,14 +50,21 @@
             <div class="chat-position">
                 <span class="chat-name" style="text-decoration: none; cursor: default;" id="chatName">Loading...</span>
                 <span id="onlineMod"></span>
+                <div class="channel-tools">
+                    <a class="home" href="/">Home</a>
+                    <div class="media-width">
+                        <span onclick="channelsMenu()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify"><path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/></svg>
+                        </span>
+                    </div>
+                </div>
             </div>
-            <a class="home" href="/">Home</a>
         </div>
 
         <div class="chat-messages">
             <div class="friends-container" id="friendsContainerMenu">
                 <div class="search-friend">
-                    <input type="text" id="searchInput" placeholder="Поиск" autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="Search" autocomplete="off">
                 </div>
                 <div class="friends-list">
                     <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
@@ -69,13 +76,50 @@
 
             <div class="add-friend" id="addFriendMenu" hidden>
                 <span>You can add friends by username.</span>
-                <br>
-                <br>
+                <br><br>
                 <div class="add-friend-container">
-                    <input type="text" placeholder="Enter a player's nickname to send them a friend request" id="friendName" autocomplete="off" required>
+                    <input type="text" placeholder="Enter the player nickname to send a friend request" id="friendName" autocomplete="off" required>
                     <button onclick="sendFriendRequest()">Send</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="media-body" id="channelsMenu">
+
+    <div class="media-border">
+        <div class="media-header">
+            <a href="/">Kahoot</a>
+            <button id="closeChannelsMenu">X</button>
+        </div>
+        <div class="media-sidebar">
+            <div class="sidebar-header">Options</div>
+            <ul class="chat-tools">
+                <li>
+                    <a class="chat-tool friendsContainerBtn" onclick="friendsContainerFunc()">Friends</a>
+                    <a class="chat-tool addFriendBtn" onclick="addFriendFunc()">Add Friend</a>
+                </li>
+            </ul>
+            <br>
+            <div class="sidebar-line"></div>
+            <br>
+            <div class="sidebar-header">Direct Messages</div>
+            <% if (myChannels && myChannels.length) { %>
+                <ul class="chat-list" style="overflow-y: auto;">
+                    <% myChannels.forEach(channels => { %>
+                        <li>
+                            <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                <span class="link-companion"><%= channels.companionName %></span>
+                                <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                            </a>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <a>Start a conversation</a>
+            <% } %>
         </div>
     </div>
 </div>
@@ -86,6 +130,7 @@
     const socket = io();
 
     function checkMenusState() {
+        console.log('checkMenus');
         if (menus.addFriendMenu === 'true') {
             addFriendMenuOpen();
             friendsContainerMenuClose();

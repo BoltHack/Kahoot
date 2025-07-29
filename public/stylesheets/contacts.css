@@ -17,7 +17,8 @@ body {
 }
 
 .contact {
-    width: 400px;
+    max-width: 500px;
+    width: 100%;
     background: #fff;
     padding: 20px;
     border-radius: 12px;
@@ -105,4 +106,24 @@ body {
 }
 .faq li {
     margin-top: 10px;
+}
+
+
+@media (max-width: 1400px) {
+    .contacts {
+        flex-direction: column;
+        align-items: center;
+    }
+    .contact {
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .faq-container {
+        margin: 100px 20px;
+    }
+
+    .container {
+        margin: 100px 20px;
+    }
 }

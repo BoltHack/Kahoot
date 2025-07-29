@@ -1,6 +1,7 @@
 function pages(){
     const pageName = document.getElementById('pageName');
     const page = window.location.pathname;
+    const tags = JSON.parse(sessionStorage.getItem('tags') || '{}');
 
     if (page.startsWith('/create-game')){
         pageName.innerHTML = `
@@ -77,9 +78,11 @@ function pages(){
     else if (page.startsWith('/read-news')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
-            <a href="/news" class="color-btn">${localeType === 'en' ? 'News' : 'Новости'}</a>
+            <a href="${tags.tag ? `/news?page=${tags.page + '&tag=' + tags.tag}` : tags.page ? `/news?page=${tags.page}` : '/news'}" class="color-btn">${localeType === 'en' ? 'News' : 'Новости'}</a>
             <a class="between"> ❯ </a>
-            <a class="other-color">${newsTitle.length > 50 ? newsTitle.slice(0, 50) + '...' : newsTitle}</a>`
+            <a class="other-color">${newsTitle.length > 50 ? newsTitle.slice(0, 50) + '...' : newsTitle}</a>
+           
+`
     }
     else if (page.startsWith('/admin/admin-panel')) {
         pageName.innerHTML = `

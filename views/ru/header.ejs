@@ -11,6 +11,7 @@
             document.documentElement.classList.remove('darkTheme');
         }
     </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/stylesheets/header.css">
     <link rel="stylesheet" href="/stylesheets/theme.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
@@ -44,7 +45,7 @@
     const sendId = '<%= user.id %>';
 </script>
 <body>
-<header>
+<header class="header">
     <div class="container-logo">
         <h2><a class="logo" href="/">𝓚𝓪𝓱𝓸𝓸𝓽</a></h2>
     </div>
@@ -108,6 +109,12 @@
             </div>
         </div>
 
+        <div class="media-width" onclick="mediaMenu()">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify"><path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/></svg>
+            </span>
+        </div>
+
     </div>
 
 </header>
@@ -134,6 +141,72 @@
         <button onclick="window.location.href = '/auth/register'" class="auth-btn">Создать аккаунт</button>
     </div>
     <button class="close-btn" id="closeAuthBorder">X</button>
+</div>
+
+<div class="media-body" id="mediaBorder">
+    <div class="media-border">
+        <div class="media-header">
+            <a href="/">Kahoot</a>
+            <button id="closeMediaBorder">X</button>
+        </div>
+
+        <div class="media-scroller">
+            <div class="media-dropdowns">
+                <div>
+                    <div class="dropdown">
+                        <p class="ha dropdown-title">Новости<span>❯</span></p>
+                        <div class="dropdown-content media-dropdown-content" style="width: 140px;">
+                            <a href="/news?tag=Updates">Обновление</a>
+                            <a href="/news?tag=AboutGame">Об игре</a>
+                            <a href="/news?tag=BugsErrors">Баги/Ошибки</a>
+                            <a href="/news">Все новости</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="dropdown">
+                        <p class="ha dropdown-title">Правила<span class="dropdown-icon">❯</span></p>
+                        <div class="dropdown-content media-dropdown-content">
+                            <a href="/privacyPolicy">Правила конфиденциальности</a>
+                            <a href="/rules">Условия использования</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="dropdown">
+                        <p class="ha dropdown-title">О нас<span>❯</span></p>
+                        <div class="dropdown-content media-dropdown-content" style="width: 120px;">
+                            <a href="/aboutUs">О компании</a>
+                            <a href="/contacts">Контакты</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="phone-container">
+                <% if (user && user.id) { %>
+                    <div style="display: block">
+                        <a onclick="redirectPage('/create-game')">📜 Создать игру</a>
+                        <a onclick="findGame()">🔎 Найти игру</a>
+                        <a onclick="redirectPage('/my-games')">🎮 Мои игры</a>
+                    </div>
+                    <div style="display: block">
+                        <a onclick="redirectPage('/channels/@me')">👥 Друзья</a>
+                        <a onclick="redirectPage('/settings')">⚙ Настройки</a>
+                        <a class="support-btn" href="/support">📩 Поддержка</a>
+                    </div>
+                <% } else { %>
+                    <div style="display: block">
+                        <a onclick="authMenu()">📜 Начать игру</a>
+                        <a class="support-btn" href="/support">📩 Поддержка</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 <div class="new-barrier" id="barrier" hidden></div>

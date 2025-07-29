@@ -1,10 +1,13 @@
 <style>
     .pagination {
-        width: 780px;
+        max-width: 780px;
+        width: 100%;
         padding: 20px;
         margin-top: 20px;
         text-align: center;
-        /*border: 1px solid black;*/
+        /*display: flex;*/
+        gap: 10px;
+        /*border: 1px solid white;*/
     }
     .pagination a {
         display: inline-block;
@@ -42,8 +45,16 @@
         font-size: 16px;
         font-weight: 600;
     }
-</style>
 
+    @media (max-width: 1000px) {
+        /*.pagination a:not(.current):not(.disabled):nth-child(n+4):nth-last-child(n+4) {*/
+        /*    display: none;*/
+        /*}*/
+        .pagination {
+            padding: 0 0;
+        }
+    }
+</style>
 <div class="pagination">
     <% if (currentPage > 1) { %>
         <a onclick="previousPage()"> < </a>
@@ -52,7 +63,9 @@
     <% } %>
 
     <%
-    const maxPagesToShow = 10;
+
+    const maxPagesToShow = 4;
+
     let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
     let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
@@ -68,14 +81,14 @@
     <% } %>
 
     <% for (let i = startPage; i <= endPage; i++) { %>
-        <a class="<%= i === currentPage ? 'current' : '' %>" onclick="listPages(<%= i %>)"><%= i %></a>
+        <a class="<%= i === currentPage ? 'current' : '' %>" onclick="listPages('<%= i %>')"><%= i %></a>
     <% } %>
 
     <% if (endPage < totalPages) { %>
         <% if (endPage < totalPages - 1) { %>
             <span>...</span>
         <% } %>
-        <a id="totalPages"><%= totalPages %></a>
+        <a id="totalPages" onclick="listPages('<%= totalPages %>')"><%= totalPages %></a>
     <% } %>
 
     <% if (currentPage < totalPages) { %>

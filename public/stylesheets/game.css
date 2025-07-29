@@ -11,7 +11,8 @@ a{
 }
 header{
     width: 100%;
-    height: 70px;
+    max-height: 70px;
+    height: 70%;
     position: absolute;
     background-color: #fff;
     top: 0;
@@ -38,19 +39,14 @@ header{
 .quest-container button{
     width: 500px;
     height: 70px;
-    /*background-color: #008000;*/
     color: #fff;
     font-weight: 600;
     font-size: 15px;
     border: none;
     text-align: start;
-    padding: 20px;
+    padding: 20px 20px;
     transition-duration: 0.3s;
     cursor: pointer;
-    /*&:hover{*/
-    /*    transition-duration: 0.5s;*/
-    /*    opacity: 0.8;*/
-    /*}*/
 }
 .quest-container button:hover {
     filter: blur(0.5px);
@@ -137,7 +133,8 @@ header{
 .progress {
     background-color: #f0f2f5;
     /*background-color: #fff;*/
-    width: 300px;
+    max-width: 300px;
+    width: 100%;
     height: 20px;
     border-radius: 100px;
     overflow: hidden;
@@ -568,7 +565,8 @@ circle {
 }
 
 #bannedPlayersMenu, #friendListMenu {
-    width: 500px;
+    max-width: 500px;
+    width: 100%;
     max-height: 400px;
     background: white;
     padding: 20px;
@@ -882,4 +880,57 @@ circle {
     font-weight: bold;
     cursor: pointer;
     color: white;
+}
+
+
+@media (max-width: 1000px) {
+    header {
+        max-height: 100px;
+        height: 100%;
+    }
+    #usersCount {
+        display: none;
+    }
+    .img-container img {
+        min-width: 200px;
+        max-width: 300px;
+        width: 100%;
+        max-height: 300px;
+        height: 100%;
+    }
+    .questions-container {
+        width: 100%;
+        align-items: center;
+    }
+    .quest-container button {
+        min-width: 100px;
+        max-width: 500px;
+        width: 100%;
+        max-height: 100px;
+        height: 100%;
+    }
+    #gameTimer {
+        left: 4%;
+        max-width: 50px;
+        width: 100%;
+        max-height: 50px;
+        height: 100%;
+        align-items: center;
+    }
+    .game-timer {
+        font-size: 15px;
+    }
+    .leave-button {
+        max-width: 120px;
+        width: 100%;
+    }
+    .game-correct-answers-count {
+        display: none;
+    }
+    .user-info {
+        display: none;
+    }
+    .friend-container {
+        width: 50%;
+    }
 }
