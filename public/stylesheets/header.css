@@ -54,17 +54,17 @@ html.lightTheme {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: black;
-    opacity: 0.6;
+    background: url("../images/kahoot2.png");
+    background-size: 100%;
+    /*opacity: 0.9;*/
     z-index: 3;
 }
 .header-border{
-    background: rgb(231,225,231);
-    background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);
-    color: black;
+    border: 1px solid #313338;
+    background: #242632;
+    color: #A9A9B3;
     padding: 20px;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
     z-index: 4;
     position: fixed;
@@ -72,12 +72,15 @@ html.lightTheme {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.header-border ul code {
+    color: #ECF1FD;
+}
 .header-border li {
     margin-top: 5px;
 }
 .header-border a{
     text-decoration: none;
-    color: #24527a;
+    color: #0466c8;
 }
 .header-border a:hover{
     text-decoration: underline;
@@ -85,6 +88,15 @@ html.lightTheme {
 .header-border code{
     font-size: 13.5px;
     color: #003049;
+}
+.header-contacts {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+.header-contacts a {
+    color: #00a3c1;
+    text-decoration: underline;
 }
 
 
