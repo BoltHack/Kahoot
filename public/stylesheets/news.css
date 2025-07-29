@@ -291,7 +291,8 @@ body {
 }
 
 .sticky-container {
-    margin-top: 200px;
+    /*margin-top: 150px;*/
+    padding: 100px 0;
     position: absolute;
     right: 10%;
     left: auto;
