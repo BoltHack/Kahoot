@@ -40,6 +40,26 @@
         background-color: var(--bp);
     }
 
+    /*main*/
+    .main .new-border {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: #16171d;
+        border: 1px solid #313338;
+    }
+    .main .new-border .find-button {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackgournd);
+        color: var(--bp);
+    }
+    .main .new-border input {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackgournd);
+        color: var(--bp);
+    }
+    .main .new-border h4 {
+        color: var(--bp);
+    }
+
     /*aboutUs*/
     .ab-info h2 {
         color: var(--f);
