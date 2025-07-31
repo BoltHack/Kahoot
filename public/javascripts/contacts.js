@@ -50,6 +50,17 @@ function techChat() {
                     loadingBtn.hidden = true;
                     if (data.id.toString() === sendId.toString()) {
                         // requestTechSupport();
+                        Swal.fire({
+                            text: localeType === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.',
+                            icon: "error",
+                            position: "top-end",
+                            timer: 4000,
+                            showConfirmButton: false,
+                            toast: true,
+                            customClass: {
+                                popup: "small-alert"
+                            }
+                        });
                         console.log('Ничего не найдено.');
                         return;
                     }

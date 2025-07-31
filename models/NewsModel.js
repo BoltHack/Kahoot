@@ -59,6 +59,10 @@ const newsSchema = new Schema({
             default: []
         }]
     },
+    isVisibility: {
+        type: Boolean,
+        default: true
+    },
     date: {
         type: String,
         default: dateOnly

@@ -53,11 +53,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input">
-                        <div class="input_container">
-                            <div style="margin-top: 15px;">
-                                <input type="checkbox" id="updateDate" name="updateDate">
-                                <label for="updateDate">Update date</label>
+                    <div style="display: flex; gap: 20px;">
+                        <div class="input">
+                            <div class="input_container">
+                                <div style="margin-top: 15px;">
+                                    <input type="checkbox" id="updateDate" name="updateDate">
+                                    <label for="updateDate">Update date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="input_container">
+                                <div style="margin-top: 15px;">
+                                    <input type="checkbox" id="isVisibility" name="isVisibility" <%= newsInfo.isVisibility === false ? 'checked' : '' %> >
+                                    <label for="isVisibility">Hide news</label>
+                                </div>
                             </div>
                         </div>
                     </div>

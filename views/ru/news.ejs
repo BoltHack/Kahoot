@@ -66,7 +66,7 @@
         </div>
         <% if (allNews && allNews.length > 0) { %>
             <% allNews.forEach(news => { %>
-                <% if (news.update && news.update.length > 0) { %>
+                <% if (news.update && news.update.length > 0 && news.isVisibility === true) { %>
                     <li class="news-container">
                         <article class="news-card">
                             <h2 class="news-title"><%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 50) + '...' : news.updateTitle %></h2>

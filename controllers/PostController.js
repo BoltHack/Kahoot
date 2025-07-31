@@ -701,11 +701,7 @@ class PostController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            const {
-                updateTitle,
-                max_news,
-                updateDate
-            } = req.body;
+            const {updateTitle, max_news, updateDate, isVisibility} = req.body;
             const {updatesTag, aboutGameTag, bugsErrorsTag} = req.body;
 
             const updateFields = {};
@@ -714,6 +710,7 @@ class PostController {
 
             if (updateTitle) updateFields.updateTitle = updateTitle;
             if (updateDate === 'on') updateFields.fullDate = new Date;
+            isVisibility === 'on' ? updateFields.isVisibility = false : updateFields.isVisibility = true;
             if (updateDate) updateFields.date = dateOnly;
             if (updateTitle) updateFields.author = {
                 authorName: getData.name,
