@@ -504,16 +504,6 @@ html.lightTheme {
     margin-top: -40px;
 }
 
-@media (max-width: 1400px) {
-    .header .header-container {
-        display: none;
-    }
-    .media-width {
-        display: block;
-        color: #fff;
-    }
-}
-
 
 .phone-container {
     /*position: relative;*/
@@ -558,7 +548,15 @@ html.lightTheme {
 }
 
 
-@media (max-width: 1400px) {
+@media (max-width: 1000px) {
+    .header .header-container {
+        display: none;
+    }
+    .media-width {
+        display: block;
+        color: #fff;
+    }
+
     .header .logo {
         display: none;
     }

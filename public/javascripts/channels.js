@@ -263,12 +263,12 @@ function checkOnline() {
     });
 }
 
-// socket.on('onlineMod', async (data) => {
-//     console.log('userOnline', data.userOnline);
-//     document.getElementById('onlineMod').innerText =
-//         data.userOnline === 'Online' ? localeType === 'en' ? 'Online' :
-//             'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети';
-// });
+socket.on('onlineMod', async (data) => {
+    console.log('userOnline', data.userOnline);
+    document.getElementById('onlineMod').innerText =
+        data.userOnline === 'Online' ? localeType === 'en' ? 'Online' :
+            'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети';
+});
 
 if (window.location.pathname.startsWith('/channels/')) {
     socket.emit('joinRoom', channelId);

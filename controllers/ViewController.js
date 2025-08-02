@@ -410,6 +410,10 @@ class ViewController {
             if (!readNews.update[0]) {
                 return res.redirect(previousPage);
             }
+            if (readNews.isVisibility === false) {
+                const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            }
 
             const authorId = await UsersModel.findById(readNews.author.authorId);
             const authorImage = authorId.image;

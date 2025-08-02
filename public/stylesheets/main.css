@@ -237,7 +237,7 @@ footer button {
 }
 
 
-@media (max-width: 1400px) {
+@media (max-width: 1000px) {
     .home-container {
         display: none;
     }
