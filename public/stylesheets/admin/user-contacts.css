@@ -64,6 +64,7 @@ body {
     margin-top: 20px;
     color: black;
     display: flex;
+    gap: 10px;
 }
 
 .avatar img {
@@ -152,4 +153,7 @@ body {
     color: #f1f5f8;
     border-radius: 5px;
     cursor: pointer;
+}
+.profile-button {
+    background-color: #24527a;
 }

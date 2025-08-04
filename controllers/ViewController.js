@@ -5,6 +5,8 @@ const {NewsModel} = require("../models/NewsModel");
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {ChannelsModel} = require("../models/ChannelsModel");
 
+const ngrokLink = process.env.ngrokLink;
+
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
@@ -79,7 +81,7 @@ class ViewController {
             await UsersModel.findByIdAndUpdate(id, { $set: { current_game: game_id }, game: { game_id: user.id, game_name: user.name, game_answers: 0, game_correct_answers: 0 } });
             console.log('добавлен новый игрок:', game_id);
 
-            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale, notifications, darkTheme});
+            return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale, notifications, darkTheme, ngrokLink});
         } catch (e) {
             next(e);
         }
@@ -374,7 +376,7 @@ class ViewController {
                 currentTag: tag,
                 locale,
                 notifications,
-                darkTheme
+                darkTheme,
             }
 
             if (req.cookies['token']) {
@@ -400,6 +402,8 @@ class ViewController {
             const darkTheme = req.cookies['darkTheme'] || 'on';
             const previousPage = req.cookies['previousPage'] || '/';
 
+            const pageUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+
             if (!mongoose.Types.ObjectId.isValid(news_id)) {
                 const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
@@ -421,11 +425,11 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale, notifications, darkTheme});
+                    return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, locale, notifications, darkTheme, ngrokLink, pageUrl});
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, locale, notifications, darkTheme});
+                return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, locale, notifications, darkTheme, ngrokLink, pageUrl});
             }
         } catch (e) {
             next(e);

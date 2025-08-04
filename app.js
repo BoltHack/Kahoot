@@ -9,6 +9,9 @@ const indexRouter = require('./routes/index');
 const http = require("http");
 const socketIo = require('socket.io');
 const sanitizeHtml = require("sanitize-html");
+const axios = require('axios');
+const fs = require('fs');
+const ngrok = require('ngrok');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
 const { ChannelsModel } = require('./models/ChannelsModel');
@@ -1136,5 +1139,19 @@ server.listen(3000, async () => {
         },
     );
     io.emit('reloadPage');
-    console.log('Сервер запущен на порту: http://localhost:3000');
+    console.log('Сервер запущен на порту localhost: http://localhost:3000');
+
+    async function getNgrokUrl() {
+        try {
+            const res = await axios.get('http://127.0.0.1:4040/api/tunnels');
+            const tunnels = res.data.tunnels;
+            tunnels.forEach(tunnel => {
+                console.log("Сервер запущен на порту ngrok:", tunnel.public_url);
+            });
+        } catch (err) {
+            console.error("Ошибка ngrok API:", err.message);
+        }
+    }
+
+    getNgrokUrl();
 });
