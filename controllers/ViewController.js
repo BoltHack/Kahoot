@@ -352,12 +352,23 @@ class ViewController {
 
             const tag = req.query.tag;
             const query = tag ? {"tags.tagName": tag} : {};
+            const filteredQuery = {
+                ...query,
+                $or: [
+                    { isVisibility: true },
+                    { isVisibility: { $exists: false } }
+                ],
+                update: { $exists: true, $ne: [] }
+            };
 
             const page = parseInt(req.query.page) || 1;
             const limit = 3;
             const skip = (page - 1) * limit;
-            const allNews = await NewsModel.find(query).sort({fullDate: -1}).skip(skip).limit(limit);
-            const totalNews = await NewsModel.countDocuments(query);
+            const allNews = await NewsModel.find(filteredQuery).sort({fullDate: -1})
+                .skip(skip)
+                .limit(limit);
+            console.log('allNews', allNews);
+            const totalNews = await NewsModel.countDocuments(filteredQuery);
 
             const authorIds = allNews.map(news => news.author.authorId);
             const authors = await UsersModel.find({ _id: { $in: authorIds } });

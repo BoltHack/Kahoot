@@ -69,7 +69,11 @@
                 <% if (news.update && news.update.length > 0 && news.isVisibility === true) { %>
                     <li class="news-container">
                         <article class="news-card">
-                            <h2 class="news-title"><%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 50) + '...' : news.updateTitle %></h2>
+                            <h2 class="news-title">
+                                <%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 50) + '...' : news.updateTitle %>
+                                <br/>
+                                <%= news.update[0].title.length > 50 ? news.update[0].title.slice(0, 50) + '...' : news.update[0].title %>
+                            </h2>
                             <div class="news-meta">
                                 <div class="news-author" onclick="window.open('/user-profile/<%= news.author.authorId %>', '_blank')">
                                     <span>Author</span>

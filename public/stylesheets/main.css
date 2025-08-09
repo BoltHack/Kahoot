@@ -131,11 +131,8 @@ footer button {
     transform: translate(-50%, -50%);
 }
 .border-data{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     text-align: center;
+    align-items: center;
     margin-top: 20px;
 }
 
