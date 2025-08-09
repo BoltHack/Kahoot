@@ -367,7 +367,6 @@ class ViewController {
             const allNews = await NewsModel.find(filteredQuery).sort({fullDate: -1})
                 .skip(skip)
                 .limit(limit);
-            console.log('allNews', allNews);
             const totalNews = await NewsModel.countDocuments(filteredQuery);
 
             const authorIds = allNews.map(news => news.author.authorId);
