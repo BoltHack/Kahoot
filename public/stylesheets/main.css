@@ -187,15 +187,21 @@ footer button {
 }
 .btn {
     display: flex;
-    background-color: #009688;
-    color: white;
+    /*background: #ad5389;*/
+    background: rgba(0, 0, 0, 0.25);
+    /*background: rgba(132, 116, 254, 0.25);*/
+    border: none;
+    letter-spacing: 0.05em;
+    /*border: none;*/
+    /*box-shadow: 0 0.7em 1.5em -0.5em #4d36d0be;*/
+    color: #ECF1FD;
     font-size: 20px;
     padding: 15px;
-    border: none;
+    /*border: none;*/
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
     /*display: block;*/
     margin-top: 20px;
     width: 250px;
@@ -203,17 +209,22 @@ footer button {
 }
 
 .btn:hover {
-    background-color: #00796b;
+    /*background: #ad5389;*/
+    /*background: linear-gradient(to right, #0f0c29, #302b63, #24243e);*/
+    /*background-color: #00796b;*/
+    background: rgba(132, 116, 254, 0.7);
     transform: translateX(10px);
 }
 
 .btn:active {
-    background-color: #00796b;
+    background: rgba(132, 116, 254, 1);
+    /*background-color: #00796b;*/
     transform: translateX(10px) translateY(2px);
 }
 
 .support-btn {
-    background: #ff5733;
+    background: rgba(255, 87, 51, 0.6);
+    /*background: #ff5733;*/
 }
 .support-btn:hover {
     background: #ff2e00;

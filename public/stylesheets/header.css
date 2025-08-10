@@ -12,20 +12,36 @@ header{
 }
 .container-logo{
     display: flex;
-    padding: 10px;
+    /*gap: 10px;*/
+    /*padding: 10px;*/
     z-index: 2;
-    margin: 0 100px;
+    margin: 5px 125px;
+    align-items: center;
+    text-decoration: none;
+}
+.container-logo img {
+    width: 60px;
+    height: 60px;
+}
+.container-logo span {
+    font-size: 35px;
+    /*align-items: center;*/
+    font-weight: 600;
+    /*color: #9d4edd;*/
+    color: rgba(132, 116, 254, 1);
 }
 .logo{
-    font-size: 45px;
-    /*color: #009688;*/
-    color: #26a69a;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
-    position: absolute;
-    top: 12%;
-    text-decoration: none;
-    cursor: pointer;
-    z-index: 2;
+    /*font-size: 45px;*/
+    /*align-items: center;*/
+    /*font-weight: 600;*/
+    /*!*color: #009688;*!*/
+    /*color: #26a69a;*/
+    /*text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);*/
+    /*!*position: absolute;*!*/
+    /*!*top: 12%;*!*/
+    /*text-decoration: none;*/
+    /*cursor: pointer;*/
+    /*z-index: 2;*/
 }
 
 .ha{

@@ -25,7 +25,9 @@ main {
     flex: 1;
 }
 footer h3{
-    color: #f3d5b5
+    /*color: #f3d5b5*/
+    color: #5bbfba;
+    font-weight: 750;
 }
 footer a {
     color: #ECF1FD;
