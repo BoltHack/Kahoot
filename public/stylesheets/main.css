@@ -187,6 +187,7 @@ footer button {
 }
 .btn {
     display: flex;
+    gap: 10px;
     /*background: #ad5389;*/
     background: rgba(0, 0, 0, 0.25);
     /*background: rgba(132, 116, 254, 0.25);*/
@@ -207,7 +208,10 @@ footer button {
     width: 250px;
     text-decoration: none;
 }
-
+.btn svg {
+    /*color: #6B7280;*/
+    color: #adb5bd;
+}
 .btn:hover {
     background: rgba(132, 116, 254, 0.7);
     transform: translateX(10px);
