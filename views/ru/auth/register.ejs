@@ -54,7 +54,7 @@
                 </div>
 
                 <button class="card__button" id="registerButton">Создать аккаунт</button>
-                <button class="card__button" id="loaderButton" hidden>
+                <button class="card__button" id="loaderButton" hidden onclick="return false">
                     <section class="dots-container">
                         <div class="dot"></div>
                         <div class="dot"></div>
@@ -67,8 +67,9 @@
         </div>
     </form>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="toast-container" id="toast-container"></div>
 <script src="/javascripts/auth/register.js"></script>
 <script src="/javascripts/alert.js"></script>
+<script src="/javascripts/pageIdentificator.js"></script>
 </body>
 </html>

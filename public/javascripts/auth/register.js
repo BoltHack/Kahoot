@@ -14,17 +14,7 @@ document.addEventListener('DOMContentLoaded', function (){
         loaderButton.hidden = false;
 
         if (!name.value || !email.value || !pwd.value || !cpwd.value) {
-            Swal.fire({
-                text: localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
-                icon: "error",
-                position: "top-end",
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+            showToast('error', localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields');
             name.style.border = '3px solid #780000';
             email.style.border = '3px solid #780000';
             pwd.style.border = '3px solid #780000';
@@ -62,18 +52,7 @@ document.addEventListener('DOMContentLoaded', function (){
                     .then(data => {
                         const {error} = data;
                         if (error) {
-                            // errorMenu(error)
-                            Swal.fire({
-                                text: error,
-                                icon: "error",
-                                position: "top-end",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                toast: true,
-                                customClass: {
-                                    popup: "small-alert"
-                                }
-                            });
+                            showToast('error', error);
                             name.style.border = '3px solid #780000';
                             email.style.border = '3px solid #780000';
                             pwd.style.border = '3px solid #780000';
@@ -82,17 +61,7 @@ document.addEventListener('DOMContentLoaded', function (){
                             loaderButton.hidden = true;
                             return;
                         }
-                        Swal.fire({
-                            text: localeType === 'en' ? 'Successful registration!' : 'Успешная регистрация!',
-                            icon: "success",
-                            position: "top-end",
-                            timer: 2000,
-                            showConfirmButton: false,
-                            toast: true,
-                            customClass: {
-                                popup: "small-alert"
-                            }
-                        });
+                        showToast('success', localeType === 'en' ? 'Successful registration!' : 'Успешная регистрация!');
                         name.style.border = '1px solid #0d2818';
                         email.style.border = '1px solid #0d2818';
                         pwd.style.border = '1px solid #0d2818';

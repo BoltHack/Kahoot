@@ -12,17 +12,7 @@ document.addEventListener('DOMContentLoaded', function (){
         loaderButton.hidden = false;
 
         if (!email.value || !pwd.value) {
-            Swal.fire({
-                text: localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields',
-                icon: "error",
-                position: "top-end",
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+            showToast('error', localeType === 'ru' ? 'Пожалуйста, заполните все поля' : 'Please fill in all fields');
             email.style.border = '3px solid #780000';
             pwd.style.border = '3px solid #780000';
             loginButton.hidden = false;
@@ -52,18 +42,8 @@ document.addEventListener('DOMContentLoaded', function (){
                     .then(data => {
                         let {error, token, user} = data;
                         if (error) {
-                            console.log('error', error)
-                            Swal.fire({
-                                text: error,
-                                icon: "error",
-                                position: "top-end",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                toast: true,
-                                customClass: {
-                                    popup: "small-alert"
-                                }
-                            });
+                            console.log('error', error);
+                            showToast('error', error);
                             email.style.border = '3px solid #780000';
                             pwd.style.border = '3px solid #780000';
                             loginButton.hidden = false;
@@ -72,17 +52,7 @@ document.addEventListener('DOMContentLoaded', function (){
                         }
 
                         if (token) {
-                            Swal.fire({
-                                text: localeType === 'en' ? 'Successful login!' : 'Успешный вход!',
-                                icon: "success",
-                                position: "top-end",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                toast: true,
-                                customClass: {
-                                    popup: "small-alert"
-                                }
-                            });
+                            showToast('success', localeType === 'en' ? 'Successful login!' : 'Успешный вход!');
                             email.style.border = '3px solid #0d2818';
                             pwd.style.border = '3px solid #0d2818';
                             loginButton.hidden = false;

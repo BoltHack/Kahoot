@@ -27,45 +27,15 @@ function addFriend(friendName) {
 }
 
 socket.on('broadcastFriendIdSenderId', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? "You can't be friends with yourself!" : 'Вы не можете подружиться с самим собой!',
-        icon: "error",
-        position: "top-end",
-        timer: 4000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('error', localeType === 'en' ? "You can't be friends with yourself!" : 'Вы не можете подружиться с самим собой!');
 })
 
 socket.on('broadcastAlreadyFriend', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.',
-        icon: "error",
-        position: "top-end",
-        timer: 4000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('error', localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже в вашем списке друзей.');
 })
 
 socket.on('broadcastFriendNotFound', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'Nickname not found.' : 'Никнейм не найден.',
-        icon: "error",
-        position: "top-end",
-        timer: 4000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('error', localeType === 'en' ? 'Nickname not found.' : 'Никнейм не найден.');
 })
 
 socket.on('friendRequest', async (requestData) => {
@@ -127,17 +97,7 @@ function checksChannel(friendId) {
 }
 
 socket.on('broadcastUpdateMyFriends', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'Player accepted your request' : 'Игрок принял ваш запрос!',
-        icon: "success",
-        position: "top-end",
-        timer: 3000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('success', localeType === 'en' ? 'Player accepted your request' : 'Игрок принял ваш запрос!');
 })
 
 let alreadyFriendAdd = [];
@@ -185,72 +145,22 @@ socket.on('inviteRequest', async (requestData) => {
 })
 
 socket.on('playerIsOffline', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'Player is offline.' : 'Игрок не в сети.',
-        icon: "error",
-        position: "top-end",
-        timer: 4000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('error', localeType === 'en' ? 'Player is offline.' : 'Игрок не в сети.');
 })
 
 socket.on('broadcastInviteRequest', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'Invitation sent!' : 'Приглашение отправлено!',
-        icon: "success",
-        position: "top-end",
-        timer: 3000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('success', localeType === 'en' ? 'Invitation sent!' : 'Приглашение отправлено!');
 })
 socket.on('broadcastAcceptInvite', async (data) => {
-    Swal.fire({
-        text: localeType === 'en' ? `${data.requestData.name} accepted your invitation!` : `${data.requestData.name} принял ваше приглашение!`,
-        icon: "success",
-        position: "top-end",
-        timer: 3000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('success', localeType === 'en' ? `${data.requestData.name} accepted your invitation!` : `${data.requestData.name} принял ваше приглашение!`);
 })
 
 socket.on('broadcastRejectInvite', async (data) => {
-    Swal.fire({
-        text: localeType === 'en' ? `${data.requestData.name} declined your invitation!` : `${data.requestData.name} отклонил ваше приглашение!`,
-        icon: "error",
-        position: "top-end",
-        timer: 4000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('error', localeType === 'en' ? `${data.requestData.name} declined your invitation!` : `${data.requestData.name} отклонил ваше приглашение!`);
 })
 
 socket.on('broadcastFriendRequest', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!',
-        icon: "success",
-        position: "top-end",
-        timer: 3000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('success', localeType === 'en' ? 'Friend request sent!' : 'Запрос на дружбу отправлен!');
 })
 
 socket.on('updatePage', async () => {

@@ -142,30 +142,10 @@ let userName = name;
                 socket.emit('requestStartGame');
             }
             if (onlineCount.online < 2) {
-                Swal.fire({
-                    text: localeType === 'en' ? 'Few players!' : 'Мало игроков!',
-                    icon: "error",
-                    position: "top-end",
-                    timer: 4000,
-                    showConfirmButton: false,
-                    toast: true,
-                    customClass: {
-                        popup: "small-alert"
-                    }
-                });
+                showToast('warning', localeType === 'en' ? 'Few players!' : 'Мало игроков!');
             }
             if (isGameStart === true) {
-                Swal.fire({
-                    text: localeType === 'en' ? 'The game has already started!' : 'Игра уже началась!',
-                    icon: "error",
-                    position: "top-end",
-                    timer: 4000,
-                    showConfirmButton: false,
-                    toast: true,
-                    customClass: {
-                        popup: "small-alert"
-                    }
-                });
+                showToast('error', localeType === 'en' ? 'The game has already started!' : 'Игра уже началась!');
             }
         }
 
@@ -258,31 +238,11 @@ let userName = name;
             setTimeout(function () {
                 socket.emit('requestBannedUsersCount');
             }, 500);
-            Swal.fire({
-                text: localeType === 'en' ? `Player ${data.userName} has been unbanned!` : `Игрок ${data.userName} разбанен!`,
-                icon: "success",
-                position: "top-end",
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+            showToast('success', localeType === 'en' ? `Player ${data.userName} has been unbanned!` : `Игрок ${data.userName} разбанен!`);
         });
 
         socket.on('banBroadcast', (data) => {
-            Swal.fire({
-                text: localeType === 'en' ? `Player ${data.userName} banned!` : `Игрок ${data.userName} забанен!`,
-                icon: "success",
-                position: "top-end",
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+            showToast('success', localeType === 'en' ? `Player ${data.userName} banned!` : `Игрок ${data.userName} забанен!`);
         });
 
         socket.on('updateGameAccessCount', async (data) => {

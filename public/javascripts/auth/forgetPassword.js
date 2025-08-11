@@ -27,18 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (error) {
                             loaderButton.hidden = true;
                             findEmailBtn.hidden = false;
-                            Swal.fire({
-                                text: error,
-                                icon: "error",
-                                position: "top-end",
-                                timer: 4000,
-                                showConfirmButton: false,
-                                toast: true,
-                                customClass: {
-                                    popup: "small-alert"
-                                }
-                            });
-                            return;
+                            showToast('error', error);
                         } else {
                             setTimeout(function () {
                                 window.location.href = '/auth/account-recovery';
