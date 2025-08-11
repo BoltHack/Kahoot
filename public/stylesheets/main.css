@@ -209,25 +209,24 @@ footer button {
 }
 
 .btn:hover {
-    /*background: #ad5389;*/
-    /*background: linear-gradient(to right, #0f0c29, #302b63, #24243e);*/
-    /*background-color: #00796b;*/
     background: rgba(132, 116, 254, 0.7);
     transform: translateX(10px);
 }
 
 .btn:active {
     background: rgba(132, 116, 254, 1);
-    /*background-color: #00796b;*/
     transform: translateX(10px) translateY(2px);
 }
 
 .support-btn {
     background: rgba(255, 87, 51, 0.6);
-    /*background: #ff5733;*/
 }
 .support-btn:hover {
-    background: #ff2e00;
+    background: rgba(255, 46, 0, 0.6);
+}
+.support-btn:active {
+    background: rgba(255, 46, 0, 1);
+    transform: translateX(10px) translateY(2px);
 }
 
 .home-friends {
