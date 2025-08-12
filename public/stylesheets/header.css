@@ -15,7 +15,10 @@ header{
     margin: 5px 80px;
     align-items: center;
     text-decoration: none;
+    max-width: 185px;
+    width: 100%;
 }
+
 .container-logo img {
     width: 60px;
     height: 60px;
