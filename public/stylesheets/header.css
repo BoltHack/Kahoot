@@ -12,7 +12,7 @@ header{
 .container-logo{
     display: flex;
     z-index: 2;
-    margin: 5px 80px;
+    margin: 5px 75px;
     align-items: center;
     text-decoration: none;
     max-width: 185px;
