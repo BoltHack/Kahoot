@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     saveImageBtn.addEventListener('click', () => {
-        showToast('warning', '', localeType === 'en' ? 'Loading image...' : 'Загрузка изображения...');
+        showToast('warning', localeType === 'en' ? 'Loading image...' : 'Загрузка изображения...');
 
         const formData = new FormData();
         console.log('formData', formData);
@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => {
                 if(response.ok){
                     console.log('Изображение успешно сохранено!');
-                    showToast('success', 'Успешно!', localeType === 'en' ? 'Image saved successfully!' : 'Изображение успешно сохранено!');
+                    showToast('success', localeType === 'en' ? 'Image saved successfully!' : 'Изображение успешно сохранено!');
                     setTimeout(function () {
                         window.location.href = '/settings';
                         return response.json();
                     }, 1000);
                 } else {
-                    showToast('error', 'Ошибка!', localeType === 'en' ? 'No file selected.' : 'Файл не выбран.');
+                    showToast('error', localeType === 'en' ? 'No file selected.' : 'Файл не выбран.');
                     console.log('Ошибка при загрузке изображения');
                 }
             })
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function saveSettings() {
-    showToast('success', 'Успешно!', localeType === 'en' ? 'Basic settings saved!' : 'Основные настройки сохранены!');
+    showToast('success', localeType === 'en' ? 'Basic settings saved!' : 'Основные настройки сохранены!');
 }
 
 
@@ -124,7 +124,7 @@ editMainBackgroundBtn.addEventListener('click', () => {
             .then(response => {
                 if(response.ok){
                     console.log('Изображение успешно сохранено!');
-                    showToast('success', 'Успешно!', localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!');
+                    showToast('success', localeType === 'en' ? 'The main menu background has been changed!' : 'фон главного меню изменён!');
                     setTimeout(function () {
                         window.location.href = '/settings';
                         return response.json();
@@ -148,7 +148,7 @@ editMainBackgroundBtn.addEventListener('click', () => {
                 if(response.ok){
                     window.location.href = '/settings';
                     console.log('Изображение успешно удалено!');
-                    showToast('success', 'Успешно!', localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!');
+                    showToast('success', localeType === 'en' ? 'Main menu background reset!' : 'фон главного меню сброшен!');
                     return response.json();
                 } else {
                     console.log('Ошибка при загрузке изображения');
@@ -262,7 +262,7 @@ aboutMe.addEventListener('input', () => {
 
 
 function changeSettings() {
-    showToast('success', 'Успешно!', localeType === 'en' ? 'Settings changed successfully!' : 'Настройки успешно изменены!');
+    showToast('success', localeType === 'en' ? 'Settings changed successfully!' : 'Настройки успешно изменены!');
 }
 
 let isVisible = false;
