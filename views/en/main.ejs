@@ -14,7 +14,7 @@
 </script>
 <body>
 <%- include('header.ejs') %>
-<main>
+<main class="main">
     <div class="home-container">
         <% if (user && user.id) { %>
             <a class="btn" onclick="redirectPage('/create-game')">
@@ -63,16 +63,17 @@
             <button type="submit" id="searchButton" class="find-button">Join</button>
         </div>
     </div>
+
+    <footer id="acceptCookiesFooter" hidden>
+        <p>
+            We use cookies to ensure you get the best experience on our website.
+            <a href="/privacyPolicy">Privacy Policy</a>.
+            <button onclick="acceptCookiesFunc()">
+                OK
+            </button>
+        </p>
+    </footer>
 </main>
-<footer id="acceptCookiesFooter" hidden>
-    <p>
-        We use cookies to ensure you get the best experience on our website.
-        <a href="/privacyPolicy">Privacy Policy</a>.
-        <button onclick="acceptCookiesFunc()">
-            OK
-        </button>
-    </p>
-</footer>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/main.js"></script>
 <script src="/javascripts/effects.js"></script>

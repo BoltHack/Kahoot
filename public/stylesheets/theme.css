@@ -59,6 +59,11 @@
     .main .new-border h4 {
         color: var(--bp);
     }
+    .main footer {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackgournd);
+        color: var(--bp);
+    }
 
     /*aboutUs*/
     .ab-info h2 {
