@@ -315,21 +315,15 @@
 /*.toast.warning { background: #f59e0b; }*/
 .toast.success svg {
     color: #74c69d;
-    width: 25px;
-    height: 25px;
 }
 .toast.error svg {
     color: #d90429;
-    width: 30px;
-    height: 30px;
 }
 .toast.warning svg {
     color: orange;
-    width: 25px;
-    height: 25px;
 }
 .toast-icon { flex-shrink: 0; }
-.toast-icon svg { width: 20px; height: 20px; }
+.toast-icon svg { width: 30px; height: 30px; }
 
 .toast-content { flex: 1; }
 .toast-title { font-weight: bold; margin-bottom: 4px; }
