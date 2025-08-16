@@ -61,3 +61,15 @@ socket.on('updateRole', () => {
     getRefreshTokens();
     setTimeout(() => window.location.reload(), 500);
 });
+
+
+function mediaMenu() {
+    const mediaBorder = document.getElementById('mediaBorder');
+    const closeMediaBorder = document.getElementById('closeMediaBorder');
+
+    mediaBorder.style.display = 'block';
+
+    closeMediaBorder.addEventListener('click', () => {
+        mediaBorder.style.display = 'none';
+    });
+}

@@ -8,6 +8,7 @@ header{
     font-family: Arial, sans-serif;
     border-bottom: 1px solid #313338;
     user-select: none;
+    z-index: 1;
 }
 .container-logo{
     display: flex;
@@ -451,7 +452,7 @@ html.lightTheme {
     text-decoration: underline;
     font-size: 22px;
     font-weight: 700;
-    color: #26a69a;
+    color: rgba(132, 116, 254, 1);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -558,8 +559,12 @@ html.lightTheme {
         color: #fff;
     }
 
-    .header .logo {
+    .header .container-logo svg {
         display: none;
+    }
+    .header .container-logo {
+        max-width: 60px;
+        width: 100%;
     }
     header {
         z-index: 3;

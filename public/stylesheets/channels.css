@@ -731,7 +731,7 @@ ul {
     text-decoration: underline;
     font-size: 22px;
     font-weight: 700;
-    color: #26a69a;
+    color: rgba(132, 116, 254, 1);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
