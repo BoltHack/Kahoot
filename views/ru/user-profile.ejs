@@ -29,12 +29,15 @@
         <div class="profile-card">
             <div class="avatar-section">
                 <div class="profile-info">
-                    <img src="<%= userInfo.image %>" alt="Аватар" class="banner-avatar">
+                    <div class="avatar-wrapper">
+                        <img src="<%= userInfo.image %>" alt="Avatar" class="friend-avatar">
+                        <div class="status <%= userInfo.onlineMod === 'Online' ? 'online' : 'offline' %>"></div>
+                    </div>
                     <div class="banner-info">
                         <div class="profile-role">
                             <h1><%= userInfo.name %></h1>
                         </div>
-                        <p style="text-align: start"><%= userInfo.onlineMod === 'Online' ? 'В сети' : 'Не в сети' %></p>
+                        <p style="text-align: start"><%= userInfo.role === 'TechSupport' ? 'Тех поддержка' : userInfo.role === 'Admin' ? 'Админ' : 'Игрок' %></p>
                     </div>
                 </div>
 
