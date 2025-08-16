@@ -517,7 +517,8 @@ html.lightTheme {
 }
 .phone-container a {
     display: flex;
-    background-color: #009688;
+    gap: 10px;
+    background-color: #343a40;
     color: white;
     font-size: 12px;
     padding: 10px 10px;
@@ -531,22 +532,13 @@ html.lightTheme {
     width: 100px;
     text-decoration: none;
 }
-
-.phone-container a:hover {
-    background-color: #00796b;
-    /*transform: translateY(-5px);*/
-    transform: translateX(10px);
-}
-
-.phone-container a:active {
-    transform: translateX(10px) translateY(2px);
+.phone-container a svg {
+    width: 14px;
+    height: 14px;
 }
 
 .phone-container .support-btn {
     background: #ff5733;
-}
-.phone-container .support-btn:hover {
-    background: #ff2e00;
 }
 
 
@@ -565,6 +557,8 @@ html.lightTheme {
     .header .container-logo {
         max-width: 60px;
         width: 100%;
+        margin-left: 5px;
+        z-index: 4;
     }
     header {
         z-index: 3;

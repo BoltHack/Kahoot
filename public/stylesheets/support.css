@@ -39,7 +39,7 @@ textarea {
     max-height: 150px;
     height: 100%;
 }
-button {
+.container button {
     background: #007bff;
     color: white;
     border: none;
@@ -48,7 +48,7 @@ button {
     border-radius: 5px;
     width: 100%;
 }
-button:hover {
+.container button:hover {
     background: #0056b3;
 }
 .contacts {
