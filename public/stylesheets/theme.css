@@ -39,6 +39,14 @@
     .auth .card__title::after {
         background-color: var(--bp);
     }
+    .auth .toggle-password-reg {
+        margin-top: 178px;
+    }
+    .auth button {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackgournd);
+        color: var(--bp);
+    }
 
     /*main*/
     .main .new-border {
@@ -70,17 +78,6 @@
         color: var(--f);
     }
     .ab-info b, .ab-info p {
-        color: var(--bp);
-    }
-    /*.auth .toggle-password {*/
-    /*    margin-top: 104px;*/
-    /*}*/
-    .auth .toggle-password-reg {
-        margin-top: 178px;
-    }
-    .auth button {
-        border: 1px solid #313338;
-        background-color: var(--inputModalBackgournd);
         color: var(--bp);
     }
 

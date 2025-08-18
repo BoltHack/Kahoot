@@ -22,16 +22,21 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.card__a i {
+.card__a svg {
     text-decoration: none;
-    color: black;
-    font-weight: 700;
-    font-size: 20px;
-    margin-top: 16px;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    margin-top: 11px;
     transition-duration: 0.4s;
 }
-.card__a i:hover {
-    transform: translateY(-3px);
+.card__a svg:hover {
+    transform: translateX(-3px);
+}
+
+.card__info {
+    display: flex;
+    gap: 1px;
 }
 
 .card__title {
