@@ -29,7 +29,7 @@
         <div class="profile-card">
             <div class="avatar-section">
                 <div class="profile-info">
-                    <div class="avatar-wrapper">
+                    <div class="avatar-wrapper" title="<%= userInfo.onlineMod === 'Online' ? 'В сети' : 'Не в сети' %>">
                         <img src="<%= userInfo.image %>" alt="Avatar" class="friend-avatar">
                         <div class="status <%= userInfo.onlineMod === 'Online' ? 'online' : 'offline' %>"></div>
                     </div>
@@ -69,7 +69,10 @@
 
             <div class="info-section">
                 <div class="stat-box">
-                    <h3>📊 Статистика</h3>
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-bar-icon lucide-chart-bar"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16h8"/><path d="M7 11h12"/><path d="M7 6h3"/></svg>
+                        <span>Статистика</span>
+                    </h3>
                     <ul>
                         <li>Уровень: <strong><%= userInfo.games_info.lvl %></strong></li>
                         <li>Прогресс: <strong><%= userInfo.games_info.lvlUp %> / 5</strong></li>
@@ -79,13 +82,19 @@
 
                 <% if (userInfo.settings.aboutMe && userInfo.settings.aboutMe.length) { %>
                     <div class="aboutMe-box">
-                        <h3>📝 Обо мне</h3>
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notebook-text-icon lucide-notebook-text"><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9.5 8h5"/><path d="M9.5 12H16"/><path d="M9.5 16H14"/></svg>
+                            <span>Обо мне</span>
+                        </h3>
                         <p><%- userInfo.settings.aboutMe %></p>
                     </div>
                 <% } %>
 
                 <div class="achievements">
-                    <h3>🏆 Достижения</h3>
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy-icon lucide-trophy"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        <span>Достижения</span>
+                    </h3>
                     <div class="badges">
                         <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
                             <% userInfo.games_info.achievements.forEach(ach => { %>
