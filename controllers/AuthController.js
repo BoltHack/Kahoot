@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
+const {GamesModel} = require("../models/GamesModel");
 function generateRandomNumber() {
     const min = 10000;
     const max = 99999;
@@ -503,6 +504,17 @@ class AuthController {
                     return console.log('Ошибка при отправке письма:', error);
                 }
                 console.log('Письмо отправлено:', info.response);
+
+                // const findAllCodes = await AddressRecoveryRequestsModel.find({});
+                // const getAllCodeId = findAllCodes.find(get => get.id.toString() === userInfo.id.toString());
+                // if (getAllCodeId) {
+                    const codes = await AddressRecoveryRequestsModel.find({ id: userInfo.id });
+                    const idS = codes.map(code => code._id)
+
+                    await AddressRecoveryRequestsModel.deleteMany(
+                        { _id: { $in: idS } }
+                    )
+                // }
 
                 const sendCode = new AddressRecoveryRequestsModel({
                     id: user.id,
