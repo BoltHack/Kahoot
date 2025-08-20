@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const darkTheme = `<%= darkTheme %>`;
+        if (darkTheme === 'on') {
+            document.documentElement.classList.add('darkTheme');
+        } else {
+            document.documentElement.classList.remove('darkTheme');
+        }
+    </script>
+    <link rel="icon" type="image/png" href="/images/icon.png">
+    <link rel="stylesheet" href="/stylesheets/account-deletion-process.css">
+    <link rel="stylesheet" href="/stylesheets/theme.css">
+    <title>Удаление аккаунта</title>
+</head>
+<script>
+    const deleteDate = `<%= userInfo.expiresAt %>`;
+    const sendCode = `<%= sendCode %>`;
+</script>
+<body>
+<main class="accountDeletionProcess">
+    <div class="container">
+        <% if (sendCode === false) { %>
+            <div class="warning-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            </div>
+            <h1>Ваш аккаунт будет удалён!</h1>
+            <span>Аккаунт будет окончательно удалён в:</span>
+            <div class="date" id="countdown"></div>
+
+            <p>Вы можете восстановить аккаунт до наступления даты, нажав на кнопку ниже:</p>
+
+            <div class="btn-s">
+                <button class="btn" onclick="restoreAccount()">Восстановить аккаунт</button>
+                <button class="load-btn">Пожалуйста, подождите...</button>
+            </div>
+
+            <p class="warning">После удаления все данные будут безвозвратно удалены.</p>
+            <a style="cursor: pointer;" onclick="logout()">Выйти из аккаунта</a>
+        <% } else { %>
+                <div class="warning-svg">
+                    <svg style="color: #52b788;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <h1>Ссылка для восстановления аккаунта отправлена на ваш email.</h1>
+                <p>Проверьте почту <strong><%= user.email %></strong> и перейдите по ссылке в течение 10 минут.</p>
+
+                <div class="btn-s">
+                    <button class="btn" onclick="restoreAccount()">Не пришла ссылка? Попробуйте ещё раз</button>
+                    <button class="load-btn">Пожалуйста, подождите...</button>
+                </div>
+        <% } %>
+    </div>
+</main>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/alert.js"></script>
+<script src="/javascripts/auth/account-deletion-process.js"></script>
+</body>
+</html>

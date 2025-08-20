@@ -13,11 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
         barrier.hidden = false;
         document.body.style.overflowY = 'hidden';
     })
+    editImage.querySelector('.close-btn').addEventListener('click', () => {
+        editImage.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
     barrier.addEventListener('click', () => {
         editImage.hidden = true;
         barrier.hidden = true;
         document.body.style.overflowY = 'auto';
-    })
+    });
 
 
     attachFile.addEventListener('change', () => {
@@ -99,6 +104,11 @@ editMainBackgroundBtn.addEventListener('click', () => {
     barrier.hidden = false;
     document.body.style.overflowY = 'hidden';
 
+    editMainMenu.querySelector('.close-btn').addEventListener('click', () => {
+        editMainMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
     barrier.addEventListener('click', () => {
         editMainMenu.hidden = true;
         barrier.hidden = true;
@@ -175,6 +185,11 @@ editStatusBtn.addEventListener('click', () => {
     document.body.style.overflowY = 'hidden';
     maxStatusLength.textContent = `${status.value.length}/90`;
 
+    editStatusMenu.querySelector('.close-btn').addEventListener('click', () => {
+        editStatusMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
     barrier.addEventListener('click', () => {
         editStatusMenu.hidden = true;
         barrier.hidden = true;
@@ -216,6 +231,11 @@ editAboutMeBtn.addEventListener('click', () => {
     document.body.style.overflowY = 'hidden';
     maxAboutMeLength.textContent = `${aboutMe.value.length}/200`;
 
+    editAboutMeMenu.querySelector('.close-btn').addEventListener('click', () => {
+        editAboutMeMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
     barrier.addEventListener('click', () => {
         editAboutMeMenu.hidden = true;
         barrier.hidden = true;
@@ -245,6 +265,71 @@ document.getElementById('changeAboutMeBtn').addEventListener('click', () => {
         .catch(error => {
             console.error('Ошибка:', error);
         });
+});
+
+const changePasswordBtn = document.getElementById('changePasswordBtn');
+const changePasswordMenu = document.getElementById('changePasswordMenu');
+changePasswordBtn.addEventListener('click', () => {
+    changePasswordMenu.hidden = false;
+    barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
+
+    changePasswordMenu.querySelector('.close-btn').addEventListener('click', () => {
+        changePasswordMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
+    barrier.addEventListener('click', () => {
+        changePasswordMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
+});
+
+const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+const deleteAccountMenu = document.getElementById('deleteAccountMenu');
+deleteAccountBtn.addEventListener('click', () => {
+    deleteAccountMenu.hidden = false;
+    barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
+
+    deleteAccountMenu.querySelector('.close-btn').addEventListener('click', () => {
+        deleteAccountMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
+    barrier.addEventListener('click', () => {
+        deleteAccountMenu.hidden = true;
+        barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
+    });
+});
+
+document.getElementById('deleteAccount').addEventListener('click', (e) => {
+    const deleteInput = document.getElementById('deleteInput');
+    if (deleteInput.value.length) {
+        fetch('/auth/account-delete',{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ deleteInput: deleteInput.value })
+        }).then(res => res.json())
+            .then(data => {
+                let {error} = data;
+                if (error) {
+                    e.preventDefault();
+                    deleteInput.value = '';
+                    console.log('error', error);
+                    showToast('error', error);
+                } else {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    }
 });
 
 

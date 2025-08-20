@@ -100,8 +100,78 @@
         </section>
 
         <section class="section" id="change-password">
-            <h2>Сменить пароль</h2>
-            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
+            <h2>Аккаунт</h2>
+            <div class="extra-settings">
+                <div class="extra-setting" id="changePasswordBtn">
+                    <h3>Сменить пароль</h3>
+                    <p>Если вы сомневаетесь в надёжности текущего пароля, вы можете сменить его на новый.</p>
+                </div>
+                <div class="extra-setting" id="deleteAccountBtn">
+                    <h3>Удалить аккаунт</h3>
+                    <p>Удаление аккаунта приведёт к безвозвратной потере всех ваших данных.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="edit-menus">
+    <section id="editImage" hidden>
+        <label>
+            <img src="" class="profile-pic-edit" id="userImageView">
+            <input type="file" name="file" id="attachFile" style="display: none">
+        </label>
+        <div class="edit-buttons">
+            <input type="button" value="Сохранить" id="saveImageBtn">
+            <input type="button" value="Удалить" id="deleteImageBtn">
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="editMainMenu" hidden>
+        <label>
+            <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
+            <input type="file" name="file" id="backgroundFile" style="display: none">
+        </label>
+        <div class="edit-buttons">
+            <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
+            <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="editStatusMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Сменить статус профиля</h2>
+            <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
+            <a id="maxStatusLength">0/90</a>
+            <br>
+            <br>
+            <div class="edit-buttons">
+                <input type="button" value="Изменить" id="changeStatusBtn">
+            </div>
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="editAboutMeMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Напишите что-нибудь о себе</h2>
+            <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
+            <a id="maxAboutMeLength">0/200</a>
+            <br>
+            <br>
+            <div class="edit-buttons">
+                <input type="button" value="Сохранить" id="changeAboutMeBtn">
+            </div>
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="changePasswordMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Смена пароля</h2>
+            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="form-tools">
                 <label for="current-password">Текущий пароль</label>
                 <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" required />
 
@@ -111,61 +181,28 @@
                 <label for="confirm-password">Подтверждение пароля</label>
                 <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" required />
 
+                <button type="submit">Сменить пароль</button>
                 <p class="text" id="tp" onclick="togglePassword()">Показать пароль</p>
-                <div style="text-align: center">
-                    <button type="submit">Сменить пароль</button>
-                </div>
             </form>
-        </section>
-    </div>
-</main>
-<section id="editImage" hidden>
-    <label>
-        <img src="" class="profile-pic-edit" id="userImageView">
-        <input type="file" name="file" id="attachFile" style="display: none">
-    </label>
-    <div class="edit-buttons">
-        <input type="button" value="Сохранить" id="saveImageBtn">
-        <input type="button" value="Удалить" id="deleteImageBtn">
-    </div>
-</section>
-
-<section id="editMainMenu" hidden>
-    <label>
-        <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
-        <input type="file" name="file" id="backgroundFile" style="display: none">
-    </label>
-    <div class="edit-buttons">
-        <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
-        <input type="button" value="Сбросить" id="deleteMainBackgroundBtn">
-    </div>
-</section>
-
-<section id="editStatusMenu" hidden>
-    <div style="display: block; margin-top: -15px;">
-        <p>Сменить статус профиля</p>
-        <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
-        <a id="maxStatusLength">0/90</a>
-        <br>
-        <br>
-        <div class="edit-buttons">
-            <input type="button" value="Изменить" id="changeStatusBtn">
         </div>
-    </div>
-</section>
+        <button class="close-btn">X</button>
+    </section>
 
-<section id="editAboutMeMenu" hidden>
-    <div style="display: block; margin-top: -15px;">
-        <p>Напишите что-нибудь о себе</p>
-        <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
-        <a id="maxAboutMeLength">0/200</a>
-        <br>
-        <br>
-        <div class="edit-buttons">
-            <input type="button" value="Сохранить" id="changeAboutMeBtn">
+    <section id="deleteAccountMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Удалить аккаунт<br/><%= userId.email %></h2>
+            <span>Введите свой текущий пароль для удаления аккаунта.</span>
+            <br/>
+            <br/>
+            <div class="form-tools" id="deleteForm">
+                <label for="password">Пароль</label>
+                <input placeholder="Введите пароль" name="deleteInput" id="deleteInput" type="password" class="input_field" required>
+                <button id="deleteAccount">Удалить аккаунт</button>
+            </div>
         </div>
-    </div>
-</section>
+        <button class="close-btn">X</button>
+    </section>
+</div>
 
 <div class="toast-container" id="toast-container"></div>
 <div class="new-barrier" id="barrier" hidden></div>

@@ -119,16 +119,16 @@ input:checked + .slider {
 input:checked + .slider::before {
     transform: translateX(24px);
 }
-.password-form {
+.form-tools {
     max-width: 400px;
     margin: 0 auto;
 }
-.password-form label {
+.form-tools label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
-.password-form input {
+.form-tools input {
     width: 100%;
     padding: 10px 0;
     text-indent: 10px;
@@ -136,7 +136,7 @@ input:checked + .slider::before {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-.password-form button {
+.form-tools button {
     width: 200px;
     padding: 12px;
     background: #5563DE;
@@ -147,7 +147,7 @@ input:checked + .slider::before {
     font-size: 16px;
     transition: background 0.3s ease;
 }
-.password-form button:hover {
+.form-tools button:hover {
     background: #4450b5;
 }
 .extra-settings {
@@ -215,20 +215,13 @@ input:checked + .slider::before {
 }
 
 #editImage {
-    padding: 20px;
     width: 350px;
     height: 180px;
-    margin-right: 10px;
-    background-color: #2c3e50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    z-index: 4;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+}
+
+@keyframes openAnimation {
+    from {top: 48%; opacity: 0}
+    to {top: 50%; opacity: 1}
 }
 
 .profile-pic-edit{
@@ -290,41 +283,18 @@ input:checked + .slider::before {
 }
 
 #editMainMenu {
-    padding: 20px;
     width: 800px;
     height: 500px;
-    margin-right: 10px;
-    background-color: #2c3e50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    z-index: 4;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 #defaultBackground, #mainBackgroundView {
     width: 100%;
     height: 400px;
     cursor: pointer;
+    margin-top: 40px;
 }
 
 #editStatusMenu, #editAboutMeMenu {
-    padding: 20px;
     width: 400px;
-    margin-right: 10px;
-    background-color: #2c3e50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    z-index: 4;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 #editStatusMenu textarea, #editAboutMeMenu textarea {
     min-width: 100%;
@@ -337,15 +307,35 @@ input:checked + .slider::before {
     border-radius: 5px;
     box-sizing: border-box;
 }
-#editStatusMenu p, #editAboutMeMenu p {
-    text-align: center;
-}
 #editStatusMenu a, #editAboutMeMenu a {
     position: absolute;
     top: 60%;
     right: 8%;
     color: black;
 }
-/*.main-pic-edit {*/
-/*    margin-top: 40px;*/
-/*}*/
+
+
+#changePasswordMenu, #deleteAccountMenu {
+    width: 400px;
+}
+
+.edit-menus section {
+    padding: 20px;
+    margin-right: 10px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    z-index: 4;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-name: openAnimation;
+    animation-duration: 0.4s
+}
+.edit-menus section svg {
+    width: 35px;
+    height: 35px;
+}

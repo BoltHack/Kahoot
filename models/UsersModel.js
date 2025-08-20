@@ -158,7 +158,17 @@ const UsersSchema = new Schema({
         type: [MyChannelsSchema],
         default: []
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+
+    expiresAt: {
+        type: Date,
+    },
 });
+
+UsersSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const UsersModel = model('user', UsersSchema);
 

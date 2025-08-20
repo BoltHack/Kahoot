@@ -100,8 +100,80 @@
         </section>
 
         <section class="section" id="change-password">
+            <h2>Account</h2>
+            <div class="extra-settings">
+                <div class="extra-setting" id="changePasswordBtn">
+                    <h3>Change password</h3>
+                    <p>If you doubt the strength of your current password, you can change it to a new one.</p>
+                </div>
+                <div class="extra-setting" id="deleteAccountBtn">
+                    <h3>Delete account</h3>
+                    <p>Deleting your account will result in the permanent loss of all your data.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<div class="edit-menus">
+    <section id="editImage" hidden>
+        <label>
+            <img src="" class="profile-pic-edit" id="userImageView">
+            <input type="file" name="file" id="attachFile" style="display: none">
+        </label>
+        <div class="edit-buttons">
+            <input type="button" value="Save" id="saveImageBtn">
+            <input type="button" value="Delete" id="deleteImageBtn">
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+
+    <section id="editMainMenu" hidden>
+        <label>
+            <img src="" class="main-pic-edit" id="mainBackgroundView" title="Click to change background">
+            <input type="file" name="file" id="backgroundFile" style="display: none">
+        </label>
+        <div class="edit-buttons">
+            <input type="button" value="Save" id="saveMainBackgroundBtn">
+            <input type="button" value="Reset" id="deleteMainBackgroundBtn">
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="editStatusMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Change profile status</h2>
+            <textarea name="status" id="status" placeholder="Enter the desired status" maxlength="90" required><%= userId.settings.status %></textarea>
+            <a id="maxStatusLength">0/90</a>
+            <br>
+            <br>
+            <div class="edit-buttons">
+                <input type="button" value="Change" id="changeStatusBtn">
+            </div>
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="editAboutMeMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Write something about yourself</h2>
+            <textarea name="aboutMe" id="aboutMe" placeholder="Enter the desired text" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
+            <a id="maxAboutMeLength">0/200</a>
+            <br>
+            <br>
+            <div class="edit-buttons">
+                <input type="button" value="Change" id="changeAboutMeBtn">
+            </div>
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="changePasswordMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
             <h2>Change Password</h2>
-            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="password-form">
+            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="form-tools">
                 <label for="current-password">Current Password</label>
                 <input type="password" name="oldPassword" id="current-password" placeholder="Enter current password" required />
 
@@ -111,63 +183,28 @@
                 <label for="confirm-password">Confirm Password</label>
                 <input type="password" name="confirmPassword" id="cpwd" placeholder="Confirm new password" required />
 
+                <button type="submit">Change Password</button>
                 <p class="text" id="tp" onclick="togglePassword()">Show Password</p>
-                <div style="text-align: center">
-                    <button type="submit">Change Password</button>
-                </div>
             </form>
-        </section>
-    </div>
-</main>
-
-<section id="editImage" hidden>
-    <label>
-        <img src="" class="profile-pic-edit" id="userImageView">
-        <input type="file" name="file" id="attachFile" style="display: none">
-    </label>
-    <div class="edit-buttons">
-        <input type="button" value="Save" id="saveImageBtn">
-        <input type="button" value="Delete" id="deleteImageBtn">
-    </div>
-</section>
-
-
-<section id="editMainMenu" hidden>
-    <label>
-        <img src="" class="main-pic-edit" id="mainBackgroundView" title="Click to change background">
-        <input type="file" name="file" id="backgroundFile" style="display: none">
-    </label>
-    <div class="edit-buttons">
-        <input type="button" value="Save" id="saveMainBackgroundBtn">
-        <input type="button" value="Reset" id="deleteMainBackgroundBtn">
-    </div>
-</section>
-
-<section id="editStatusMenu" hidden>
-    <div style="display: block; margin-top: -15px;">
-        <p>Change profile status</p>
-        <textarea name="status" id="status" placeholder="Enter the desired status" maxlength="90" required><%= userId.settings.status %></textarea>
-        <a id="maxStatusLength">0/90</a>
-        <br>
-        <br>
-        <div class="edit-buttons">
-            <input type="button" value="Change" id="changeStatusBtn">
         </div>
-    </div>
-</section>
+        <button class="close-btn">X</button>
+    </section>
 
-<section id="editAboutMeMenu" hidden>
-    <div style="display: block; margin-top: -15px;">
-        <p>Write something about yourself</p>
-        <textarea name="aboutMe" id="aboutMe" placeholder="Enter the desired text" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
-        <a id="maxAboutMeLength">0/200</a>
-        <br>
-        <br>
-        <div class="edit-buttons">
-            <input type="button" value="Change" id="changeAboutMeBtn">
+    <section id="deleteAccountMenu" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Delete account<br/><%= userId.email %></h2>
+            <span>Please enter your current password to delete your account.</span>
+            <br/>
+            <br/>
+            <div class="form-tools" id="deleteForm">
+                <label for="password">Password</label>
+                <input placeholder="Enter password" name="deleteInput" id="deleteInput" type="password" class="input_field" required>
+                <button id="deleteAccount">Delete account</button>
+            </div>
         </div>
-    </div>
-</section>
+        <button class="close-btn">X</button>
+    </section>
+</div>
 
 <div class="toast-container" id="toast-container"></div>
 <div class="new-barrier" id="barrier" hidden></div>

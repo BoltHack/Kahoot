@@ -1,5 +1,6 @@
-const {UsersModel } = require("../models/UsersModel");
-const {ForgottenPasswordsModel } = require("../models/ForgottenPasswords");
+const {UsersModel} = require("../models/UsersModel");
+const {ForgottenPasswordsModel} = require("../models/ForgottenPasswords");
+const {AddressRecoveryRequestsModel} = require("../models/Address-recovery-requests");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -10,6 +11,15 @@ function generateRandomNumber() {
     const min = 10000;
     const max = 99999;
     return Math.floor((Math.random() + Date.now() % 1) * (max - min + 1)) + min;
+}
+
+function generateRandomSymbols() {
+    let password = '';
+    let symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!№;%:?*()_+=";
+    for (let i = 0; i < 200; i++) {
+        password += symbols.charAt(Math.floor(Math.random() * symbols.length));
+    }
+    return password;
 }
 
 const {JWTSecret, refreshTokenSecret} = process.env;
@@ -306,7 +316,7 @@ class AuthController {
                 return res.status(200).json('Адрес найден!');
             });
 
-        }catch (err){
+        } catch (err){
             next(err);
         }
     }
@@ -378,8 +388,172 @@ class AuthController {
         }
     }
 
+    static accountDelete = async (req, res, next) => {
+        try {
+            const {deleteInput} = req.body;
 
-    static logout = async (req, res, next)=> {
+            const user = req.user;
+            const userInfo = await UsersModel.findById(user.id);
+            const locale = req.cookies['locale'] || 'en';
+
+            if (!userInfo || !userInfo.password) {
+                console.log('Пользователь не найден.');
+            }
+
+            if (!deleteInput) {
+                const msg = locale === 'en' ? 'Password is required.' : 'Введите пароль.';
+                return res.status(400).json({ error: msg });
+            }
+
+            const pass = await bcrypt.compare(deleteInput, userInfo.password);
+
+            if (!pass) {
+                const errorMsg = locale === 'en' ? 'Wrong password.' : 'Неверный пароль.';
+                return res.status(401).json({ error: errorMsg });
+            }
+
+            const deletionDate = new Date(Date.now() + 30*24*60*60*1000);
+            await UsersModel.findByIdAndUpdate(
+                { _id: user.id },
+                {
+                    $set: {
+                        expiresAt: deletionDate
+                    }
+                },
+                { new: true }
+            )
+            return res.status(200).json({ message: 'Аккаунт успешно переводен на стадию удаления!' });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static accountDeletionProcess = async (req, res, next) => {
+        try {
+            const user = req.user;
+            const userInfo = await UsersModel.findById(user.id);
+            const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+            const sendCode = req.cookies['sendCode'] || false;
+
+            if (userInfo.expiresAt) {
+                res.set('Cache-Control', 'no-store');
+                return res.render(locale === 'en' ? 'en/auth/account-deletion-process' : 'ru/auth/account-deletion-process', { user, userInfo, darkTheme, sendCode });
+            } else {
+                const previousPage = req.cookies['previousPage'] || '/';
+                return res.redirect(previousPage);
+            }
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static accountRestore = async (req, res, next) => {
+        try {
+            const user = req.user;
+            const userInfo = await UsersModel.findById(user.id);
+            if (!userInfo.expiresAt) {
+                return res.redirect('/');
+            }
+
+            const locale = req.cookies['locale'] || 'en';
+            const code = generateRandomSymbols().toString();
+            const recoverUrl = req.protocol + '://' + req.get('host') + '/auth/account-recover/' + encodeURIComponent(code);
+
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.USER,
+                    pass: process.env.PASS
+                }
+            })
+
+            const mainOptions = {
+                from: process.env.USER,
+                to: user.email,
+                subject: locale === 'en'
+                    ? 'Your HFFreelancers Account: Account Recovery'
+                    : 'Ваш аккаунт HFFreelancers: Восстановление аккаунта',
+                html: locale === 'en'
+                    ? `
+            <p>
+                It looks like you're trying to restore your account.
+                <a href="${recoverUrl}" target="_blank" rel="noopener noreferrer">
+                    Click here to restore your account
+                </a>
+            </p>
+            <p>This link is valid for 10 minutes.</p>
+        `
+                    : `
+            <p>
+                Похоже, вы пытаетесь восстановить ваш аккаунт.
+                <a href="${recoverUrl}" target="_blank" rel="noopener noreferrer">
+                    Перейдите по ссылке для восстановления аккаунта
+                </a>
+            </p>
+            <p>Ссылка действительна 10 минут.</p>
+        `
+            };
+
+
+            transporter.sendMail(mainOptions, async (error, info) => {
+                if (error) {
+                    const errorMsg = locale === 'en' ? 'Error sending email.' : 'Ошибка при отправке письма.';
+                    res.status(401).json({ error: errorMsg });
+                    return console.log('Ошибка при отправке письма:', error);
+                }
+                console.log('Письмо отправлено:', info.response);
+
+                const sendCode = new AddressRecoveryRequestsModel({
+                    id: user.id,
+                    email: user.email,
+                    code: code,
+                    ip: user.ip,
+                    expiresInMinutes: 10
+                })
+                await sendCode.save();
+                res.cookie('sendCode', true, {maxAge: 10 * 60 * 1000});
+
+                return res.status(200).json({ message: 'Письмо отправлено!' })
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static accountRecover = async (req, res, next) => {
+        try {
+            const {code} = req.params;
+            console.log('code', code);
+
+            const locale = req.cookies['locale'] || 'en';
+            const userInfo = await AddressRecoveryRequestsModel.findOne({ code: code });
+
+            if (userInfo) {
+                console.log('userInfo', userInfo.email);
+                await UsersModel.findByIdAndUpdate(
+                    userInfo.id,
+                    {
+                        $unset: { expiresAt: "" }
+                    }
+                )
+
+                await AddressRecoveryRequestsModel.deleteOne({ code });
+                res.clearCookie('sendCode');
+                return res.redirect('/');
+            } else {
+                const errorMsg = locale === 'en' ? 'This link is no longer valid.' : 'Эта ссылка уже недействительна.';
+                return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
+            }
+
+            return res.render(locale === 'en' ? 'en/auth/account-recover' : 'ru/auth/account-recover');
+        } catch (e) {
+            next(e);
+        }
+    }
+
+
+    static logout = async (req, res, next) => {
         try {
             const id = req.user.id;
             await UsersModel.findByIdAndUpdate(id, {

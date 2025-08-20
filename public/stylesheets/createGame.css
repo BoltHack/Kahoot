@@ -372,6 +372,13 @@ body{
     transform: translate(-50%, -50%);
     /*bottom: 0;*/
     border: 1px solid black;
+    animation-name: openAnimation;
+    animation-duration: 0.4s
+}
+
+@keyframes openAnimation {
+    from {top: 48%; opacity: 0}
+    to {top: 50%; opacity: 1}
 }
 .delete-modal {
     display: flex;

@@ -16,33 +16,34 @@ const {
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
 const {refreshToken} = require('../middlewares/updateRefreshToken');
+const {checkAccountPermissions} = require('../middlewares/checkAccountPermissions');
 const router = express.Router();
 
-router.get('/', mainView);
-router.get('/create-game', authenticateJWT, createGameView);
-router.get('/game/:game_id', authenticateJWT, gameView);
-router.get('/redaction/:game_id', authenticateJWT, redactionView);
-router.get('/edit-question/:game_id/:question_id', authenticateJWT, editQuestionView);
-router.get('/create-questions/:game_id', authenticateJWT, createQuestionView);
-router.get('/my-games', authenticateJWT, myGamesView);
+router.get('/', checkAccountPermissions, mainView);
+router.get('/create-game', authenticateJWT, checkAccountPermissions, createGameView);
+router.get('/game/:game_id', authenticateJWT, checkAccountPermissions, gameView);
+router.get('/redaction/:game_id', authenticateJWT, checkAccountPermissions, redactionView);
+router.get('/edit-question/:game_id/:question_id', authenticateJWT, checkAccountPermissions, editQuestionView);
+router.get('/create-questions/:game_id', authenticateJWT, checkAccountPermissions, createQuestionView);
+router.get('/my-games', authenticateJWT, checkAccountPermissions, myGamesView);
 
-router.get('/settings', authenticateJWT, settingsView);
+router.get('/settings', authenticateJWT, checkAccountPermissions, settingsView);
 
 router.get('/return-menu', returnMenuView);
 
-router.get('/privacyPolicy', privacyPolicyView);
-router.get('/rules', rulesView);
-router.get('/aboutUs', aboutUsView);
-router.get('/contacts', contactsView);
-router.get('/about-donates', aboutDonatesView);
+router.get('/privacyPolicy', checkAccountPermissions, privacyPolicyView);
+router.get('/rules', checkAccountPermissions, rulesView);
+router.get('/aboutUs', checkAccountPermissions, aboutUsView);
+router.get('/contacts', checkAccountPermissions, contactsView);
+router.get('/about-donates', checkAccountPermissions, aboutDonatesView);
 
-router.get('/support', supportView);
-router.get('/news', newsView);
-router.get('/read-news/:news_id', readNewsView);
-router.get('/user-profile/:user_id', userProfileView);
+router.get('/support', checkAccountPermissions, supportView);
+router.get('/news', checkAccountPermissions, newsView);
+router.get('/read-news/:news_id', checkAccountPermissions, readNewsView);
+router.get('/user-profile/:user_id', checkAccountPermissions, userProfileView);
 
-router.get('/channels/@me', authenticateJWT, channelsMeView);
-router.get('/channels/@me/:channel_id', authenticateJWT, channelsView);
+router.get('/channels/@me', authenticateJWT, checkAccountPermissions, channelsMeView);
+router.get('/channels/@me/:channel_id', authenticateJWT, checkAccountPermissions, channelsView);
 
 
 router.post('/create-game', authenticateJWT, createGame);

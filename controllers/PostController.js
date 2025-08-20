@@ -11,13 +11,6 @@ const sanitizeHtml = require("sanitize-html");
 
 require('dotenv').config();
 
-function linkify(text) {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
-    });
-}
-
 function getRandomId(ids) {
     const randomId = Math.floor(Math.random() * ids.length);
     return ids[randomId];
@@ -619,13 +612,11 @@ class PostController {
                 allowedTags: ['b', 'i', 'em', 'strong', 'br'],
             });
 
-            const cleanMessage = linkify(cleanBeforeLink);
-
             await UsersModel.findByIdAndUpdate(
                 user.id,
                 {
                     $set: {
-                        'settings.aboutMe': cleanMessage.slice(0, 200)
+                        'settings.aboutMe': cleanBeforeLink.slice(0, 200)
                     }
                 },
                 { new: true }
