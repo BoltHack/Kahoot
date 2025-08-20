@@ -505,16 +505,12 @@ class AuthController {
                 }
                 console.log('Письмо отправлено:', info.response);
 
-                // const findAllCodes = await AddressRecoveryRequestsModel.find({});
-                // const getAllCodeId = findAllCodes.find(get => get.id.toString() === userInfo.id.toString());
-                // if (getAllCodeId) {
-                    const codes = await AddressRecoveryRequestsModel.find({ id: userInfo.id });
-                    const idS = codes.map(code => code._id)
+                const codes = await AddressRecoveryRequestsModel.find({ id: userInfo.id });
+                const idS = codes.map(code => code._id)
 
-                    await AddressRecoveryRequestsModel.deleteMany(
-                        { _id: { $in: idS } }
-                    )
-                // }
+                await AddressRecoveryRequestsModel.deleteMany(
+                    { _id: { $in: idS } }
+                )
 
                 const sendCode = new AddressRecoveryRequestsModel({
                     id: user.id,
