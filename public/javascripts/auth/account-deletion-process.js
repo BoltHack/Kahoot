@@ -1,12 +1,11 @@
 const isoDate = deleteDate;
 const date = new Date(isoDate);
-
 const options = { year: 'numeric', month: 'long', day: 'numeric' };
 const formattedDate = date.toLocaleDateString('ru-RU', options);
 
 document.getElementById('countdown').innerHTML = `
     <span>${formattedDate}</span>
-    <span>${date.getDay().toString().padStart(2, '0') + '.' + date.getMonth().toString().padStart(2, '0') + '.' + date.getFullYear()}</p>
+    <span>${date.getDay().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0') + '.' + date.getFullYear()}</p>
     `;
 
 function restoreAccount() {
