@@ -385,6 +385,9 @@
     .news .like .number, .news .like .number {
         color: var(--bp);
     }
+    .news .likes-dislikes-tools .number span {
+        color: var(--bp);
+    }
 
     /*pagination*/
     .pagination a {
