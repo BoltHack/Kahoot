@@ -49,6 +49,8 @@ class AuthController {
             }
             else {
                 res.set('Cache-Control', 'no-store');
+                res.set('Pragma', 'no-cache');
+                res.set('Expires', '0');
                 return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', { locale, darkTheme });
             }
         } catch (e) {
@@ -91,6 +93,8 @@ class AuthController {
             }
             else {
                 res.set('Cache-Control', 'no-store');
+                res.set('Pragma', 'no-cache');
+                res.set('Expires', '0');
                 return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', { locale, darkTheme });
             }
         } catch (e) {
@@ -439,10 +443,11 @@ class AuthController {
 
             if (userInfo.expiresAt) {
                 res.set('Cache-Control', 'no-store');
+                res.set('Pragma', 'no-cache');
+                res.set('Expires', '0');
                 return res.render(locale === 'en' ? 'en/auth/account-deletion-process' : 'ru/auth/account-deletion-process', { user, userInfo, darkTheme, sendCode });
             } else {
-                const previousPage = req.cookies['previousPage'] || '/';
-                return res.redirect(previousPage);
+                return res.redirect('/');
             }
         } catch (e) {
             next(e);

@@ -2,17 +2,32 @@ const {authenticateJWT} = require("./jwtAuth");
 const {UsersModel} = require("../models/UsersModel");
 const checkAccountPermissions = async (req, res, next) => {
     try {
-        if (req.cookies['refreshToken']) {
-            await authenticateJWT(req, res, async () => {
-                const user = req.user;
-                const userInfo = await UsersModel.findById(user.id);
+        const refreshToken = req.cookies?.refreshToken;
 
-                if (userInfo.expiresAt) {
-                    return res.redirect('/auth/account-deletion-process');
+        if (!refreshToken) {
+            return next();
+        }
+
+        authenticateJWT(req, res, async (err) => {
+            if (err) {
+                console.error("JWT auth error:", err);
+                return next();
+            }
+
+            if (!req.user || !req.user.id) {
+                return next();
+            }
+
+            const userInfo = await UsersModel.findById(req.user.id).lean();
+
+            if (userInfo && userInfo.expiresAt) {
+                if (req.originalUrl !== "/auth/account-deletion-process") {
+                    console.log('name:', userInfo.name);
+                    return res.redirect("/auth/account-deletion-process");
                 }
-                next();
-            });
-        } else next();
+            }
+            next();
+        });
     } catch (e) {
         next(e);
     }
