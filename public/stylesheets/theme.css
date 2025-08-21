@@ -112,6 +112,9 @@
     .contactUs span {
         color: var(--bp);
     }
+    .contactUs svg {
+        color: #726d81;
+    }
     .contactUs .contact button {
         border: 1px solid #313338;
         background-color: var(--inputModalBackground);
