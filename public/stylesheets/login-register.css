@@ -128,11 +128,14 @@ body {
     z-index: 2;
 }
 
-.toggle-password .icon {
+.icon {
+    color: #000;
+}
+.icon svg {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    color: #000;
+    user-select: none;
 }
 
 

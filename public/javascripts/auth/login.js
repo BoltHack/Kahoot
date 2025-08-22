@@ -86,17 +86,20 @@ let isVisible  = false;
 
 function togglePassword() {
     const pwd = document.getElementById('pwd');
-    const eye = document.getElementById('tp');
+    const showPassword = document.getElementById('showPassword');
+    const hidePassword = document.getElementById('hidePassword');
 
     isVisible  = !isVisible ;
 
     pwd.type = isVisible ? 'text' : 'password';
-    eye.setAttribute('data-lucide', isVisible ? 'eye' : 'eye-off');
-    lucide.createIcons();
+    if (isVisible) {
+        showPassword.hidden = true;
+        hidePassword.hidden = false;
+    } else {
+        showPassword.hidden = false;
+        hidePassword.hidden = true;
+    }
 }
-
-lucide.createIcons();
-
 
 document.querySelectorAll('form').forEach(function(form) {
     form.addEventListener('keydown', function(event) {
