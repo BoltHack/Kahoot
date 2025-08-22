@@ -124,7 +124,7 @@
                             <div class="tags">
                                 <% if (news.tags && news.tags.length > 0) {%>
                                     <% news.tags.forEach(tags => { %>
-                                        <div class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Updates' : tags.tagName === 'News' ? 'News' : tags.tagName === 'Errors' ? 'Bugs/Errors' : 'All news' %></div>
+                                        <div class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Updates' : tags.tagName === 'AboutGame' ? 'About the game' : tags.tagName === 'BugsErrors' ? 'Bugs/Errors' : 'All news' %></div>
                                     <% }) %>
                                 <% } %>
                             </div>

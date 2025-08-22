@@ -124,7 +124,7 @@
                             <div class="tags">
                                 <% if (news.tags && news.tags.length > 0) {%>
                                     <% news.tags.forEach(tags => { %>
-                                        <div class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Обновление' : tags.tagName === 'News' ? 'Новости' : tags.tagName === 'Errors' ? 'Баги/Ошибки' : 'Все новости' %></div>
+                                        <div class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Обновление' : tags.tagName === 'AboutGame' ? 'Об игре' : tags.tagName === 'BugsErrors' ? 'Баги/Ошибки' : 'Все новости' %></div>
                                     <% }) %>
                                 <% } %>
                             </div>
