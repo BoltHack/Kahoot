@@ -9,7 +9,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
     overflow-x: hidden;
-    user-select: none;
 }
 
 .chat-header {
@@ -885,5 +884,6 @@ ul {
     body {
         overflow: hidden;
         touch-action: none;
+        user-select: none;
     }
 }
