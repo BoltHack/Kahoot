@@ -445,7 +445,7 @@ class AuthController {
                 res.set('Cache-Control', 'no-store');
                 res.set('Pragma', 'no-cache');
                 res.set('Expires', '0');
-                return res.render(locale === 'en' ? 'en/auth/account-deletion-process' : 'ru/auth/account-deletion-process', { user, userInfo, darkTheme, sendCode });
+                return res.render(locale === 'en' ? 'en/auth/account-deletion-process' : 'ru/auth/account-deletion-process', { user, userInfo, darkTheme, sendCode, locale });
             } else {
                 return res.redirect('/');
             }

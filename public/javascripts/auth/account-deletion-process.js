@@ -1,12 +1,29 @@
-const isoDate = deleteDate;
-const date = new Date(isoDate);
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
-const formattedDate = date.toLocaleDateString('ru-RU', options);
+// const isoDate = deleteDate;
+// const date = new Date(isoDate);
+// const options = { year: 'numeric', month: 'long', day: 'numeric' };
+// const formattedDate = date.toLocaleDateString(localeType === 'en' ? 'en-US' : 'ru-RU', options);
+
+// document.getElementById('countdown').innerHTML = `
+//     <span>${formattedDate}</span>
+//     <span>${date.getDate().toString().padStart(2, '0').(date.getMonth() + 1).toString().padStart(2, '0').date.getFullYear()}</p>
+//     `;
+
+function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    const longDate = date.toLocaleDateString(localeType === 'en' ? 'en-US' : 'ru-RU', options);
+    const shortDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+
+    return { longDate, shortDate };
+}
+
+const { longDate, shortDate } = formatDate(deleteDate);
 
 document.getElementById('countdown').innerHTML = `
-    <span>${formattedDate}</span>
-    <span>${date.getDay().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0') + '.' + date.getFullYear()}</p>
-    `;
+    <span>${longDate}</span>
+    <span>${shortDate}</span>
+`;
 
 function restoreAccount() {
     const btnS = document.querySelectorAll('.btn-s');
