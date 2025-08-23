@@ -585,6 +585,14 @@
     }
 
 
+    .success-card {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackground);
+        color: var(--bp);
+    }
+    .success-sub-text {
+        color: var(--bp);
+    }
     .not-found {
         color: var(--f);
     }

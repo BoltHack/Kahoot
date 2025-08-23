@@ -234,17 +234,6 @@ let userName = name;
             }
         })
 
-        socket.on('unbanBroadcast', (data) => {
-            setTimeout(function () {
-                socket.emit('requestBannedUsersCount');
-            }, 500);
-            showToast('success', localeType === 'en' ? `Player ${data.userName} has been unbanned!` : `Игрок ${data.userName} разбанен!`);
-        });
-
-        socket.on('banBroadcast', (data) => {
-            showToast('success', localeType === 'en' ? `Player ${data.userName} banned!` : `Игрок ${data.userName} забанен!`);
-        });
-
         socket.on('updateGameAccessCount', async (data) => {
             if (data.gameData.gameAccess === 'Private') {
                 const getId = data.gameData.userFriends?.map(user => String(user.id)) || [];
@@ -322,3 +311,14 @@ let userName = name;
     });
 
 }());
+
+socket.on('unbanBroadcast', (data) => {
+    setTimeout(function () {
+        socket.emit('requestBannedUsersCount');
+    }, 500);
+    showToast('success', localeType === 'en' ? `Player ${data.userName} has been unbanned!` : `Игрок ${data.userName} разбанен!`);
+});
+
+socket.on('banBroadcast', (data) => {
+    showToast('success', localeType === 'en' ? `Player ${data.userName} banned!` : `Игрок ${data.userName} забанен!`);
+});

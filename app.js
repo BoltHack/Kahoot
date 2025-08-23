@@ -338,6 +338,7 @@ io.on('connection', async (socket) => {
                         console.log('ban', userId, 'from', gameId);
                         io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
                         socket.emit('banBroadcast', {userName: getUserData.name});
+                        return;
                     }
                 }
             });
