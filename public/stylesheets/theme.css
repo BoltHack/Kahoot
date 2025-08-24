@@ -561,6 +561,19 @@
         background: var(--inputModalBackground);
         color: var(--bp);
     }
+    .game .users-online {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: #16171d;
+        border: 1px solid #313338;
+    }
+    .game .users-online svg {
+        color: var(--bp);
+    }
+    .game #usersCount {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: #16171d;
+        border: 1px solid #313338;
+    }
 
     /*accountDeletionProcess*/
     .accountDeletionProcess .container {

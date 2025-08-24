@@ -1,64 +1,9 @@
 const socket = io();
 
-let gameId = game;
-let userId = id;
-let userName = name;
-
 (function () {
-
-    let countdown;
-    let timeLeft = 10;
-    let questions = document.getElementById('questions');
-    let refresh = document.getElementById('refresh');
-    let bc = document.getElementById('b-c');
-
-    let requestSent = false;
-    let isGameStart = false;
-
-    const startCountdown = () => {
-        countdown = setInterval(() => {
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                document.getElementById('timer').innerHTML = '';
-                questions.hidden = false;
-                requestSent = false;
-                refresh.style.display = 'none';
-                bc.style.top = '11%';
-                checkReload();
-                startUpdateTimer();
-                soundTrackAuto();
-                socket.emit('closeGame');
-                // setTimeout(function () {
-                //     socket.emit('requestQuestionTimerStart');
-                // }, 500);
-            } else {
-                document.getElementById('timer').innerHTML = `<span class="timer">${localeType === 'en' ? `<p class="beforeStart">Before the game starts</p><p class="timerLeft">${timeLeft}</p>` : `<p class="beforeStart">До начала игры</p><p class="timerLeft">${timeLeft}</p>`}</span>`;
-                timeLeft--;
-            }
-        }, 1000);
-    };
-
-    let gameStartTime = Date.now();
-
-    const updateTimer = () => {
-        const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
-
-        // console.log('elapsedTime', elapsedTime, '|', 'requestSent', requestSent);
-
-        document.getElementById('mainTimer').textContent = elapsedTime;
-
-        if (requestSent === false) {
-            setTimeout(updateTimer, 1000);
-        } else {
-            console.log('таймер остановлен');
-        }
-    };
-
-    const startUpdateTimer = () => {
-        gameStartTime = Date.now();
-        updateTimer();
-    }
-
+    let gameId = game;
+    let userId = id;
+    let userName = name;
 
     socket.on('updateUserCount', (onlineCount) => {
         setTimeout(function () {
@@ -70,15 +15,16 @@ let userName = name;
             const errorMsg = localeType === 'en' ? 'You cannot log into the same game with the same account from different browser windows.' : 'Вы не можете зайти в одну и ту же игру с одного аккаунта с разных окон браузера.';
             window.location.href = `/error?code=409&message=${encodeURIComponent(errorMsg)}`;
         }
-        document.getElementById('onlineCount').innerText = `${localeType === 'en' ? 'online: ' + onlineCount.online : 'Онлайн: ' + onlineCount.online}`;
 
         const users = document.getElementById('usersCount');
         if (users && Array.isArray(onlineCount.users)) {
             users.innerHTML = onlineCount.users
                 .map(user => `
-<br>
-<div class="userImage checkUser" data-id="${user.userId}" >
-    <img src="${user.userImage}" onmouseover="showUserName(event);" onclick="window.open('/user-profile/${user.userId}', '_blank');" title="Посмотреть профиль">
+<div class="userImage checkUser" data-id="${user.userId}">
+    <div class="avatar-wrapper">
+        <img class="avatar" src="${user.userImage}" onmouseover="showUserName(event);" onclick="window.open('/user-profile/${user.userId}', '_blank');" title="Посмотреть профиль">
+    </div>
+    
     <div id="userName-${user.userId}" class="userName" hidden>
         <span>
   ${user.userId === id
@@ -94,69 +40,28 @@ let userName = name;
                 .join('');
         }
 
-        if (onlineCount.online < 2) {
-            clearTimeout(100);
-            questions.hidden = true;
-            requestSent = true;
-            console.log('Онлайна мало');
-            clearInterval(countdown);
-            timeLeft = 10;
-            document.getElementById('timer').innerHTML = `
-        <div class="progress">
-            <div class="inner"></div>
-        </div>
-        <p class="pi">${localeType === 'en' ? 'Waiting for players...' : 'Ожидание игроков...'}</p>
-        `;
-            bc.style.top = '2%';
-            stopSound();
-        }
-        if (onlineCount.online >= 2) {
-            fetch(`/getData/${gamesId}`, {
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-            })
-                .then(response => response.json())
-                .then(data => {
-                    let {gameType} = data;
-                    if (gameType === 'Open') {
-                        if (gameStartType === 'Auto') {
-                            socket.emit('requestAutoStartGame');
-                        }
-                        else {
-                            document.getElementById('timer').innerHTML = `
-        <div class="progress">
-            <div class="inner"></div>
-        </div>
-        <p class="pi">${localeType === 'en' ? 'Waiting for the game to start...' : 'Ожидание старта игры...'}</p>
-        `;
-                        }
-                    }
-                })
-        }
+
+
+        // socket.on('requestCheckQuestionsContainer', async () => {
+        //     if (document.getElementById('gameQuestions').querySelector('.questions-container')) {
+        //         document.getElementById('gameQuestions').querySelector('.questions-container').remove();
+        //         requestSent = true;
+        //         questions.hidden = true;
+        //     }
+        // });
 
         window.manualGameLaunch = function () {
-            if (isGameStart === false && authorId === id && onlineCount.online >= 2) {
+            // if (isGameStart === false && authorId === id && onlineCount.online >= 2) {
                 console.log('Socket connected:', socket.connected);
                 socket.emit('requestStartGame');
-            }
-            if (onlineCount.online < 2) {
-                showToast('warning', localeType === 'en' ? 'Few players!' : 'Мало игроков!');
-            }
-            if (isGameStart === true) {
-                showToast('error', localeType === 'en' ? 'The game has already started!' : 'Игра уже началась!');
-            }
+            // }
+            // if (onlineCount.online < 2) {
+            //     showToast('warning', localeType === 'en' ? 'Few players!' : 'Мало игроков!');
+            // }
+            // if (isGameStart === true) {
+            //     showToast('error', localeType === 'en' ? 'The game has already started!' : 'Игра уже началась!');
+            // }
         }
-
-
-        socket.on('startGame', () => {
-            isGameStart = true;
-            clearInterval(countdown);
-            timeLeft = 10;
-            startCountdown();
-            console.log('Поехали!');
-        })
 
         if (sessionStorage.getItem("redirectAfterReload") === "true") {
             sessionStorage.removeItem("redirectAfterReload");
@@ -177,33 +82,6 @@ let userName = name;
             document.getElementById('answersCount').innerHTML = `<span><p class="game-answers">${answersCount[0].game_answers || 0}/${gameMaxQuestions}</p></span>`;
         });
 
-        socket.on('updateLeaderBoard', (leaderBoard) => {
-            const leaderB = document.getElementById('leaderBoard');
-
-            if (leaderBoard && leaderBoard.length > 0) {
-                leaderB.innerHTML = '';
-                const fragment = document.createDocumentFragment();
-
-                leaderBoard
-                    .sort((a, b) => b.correct_answers - a.correct_answers)
-                    .forEach((leader, index) => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>#${index + 1}</td>
-                            <td>${leader.name}</td>
-                            <td>${leader.correct_answers}</td>
-                            <td>${leader.time} ${localeType === 'en' ? 'Sec.' : 'Сек.'}</td>
-                        `;
-                        fragment.appendChild(tr);
-                        if (index + 1 === 1) {
-                            console.log('Первое место', leader.name);
-                        }
-                    });
-
-                leaderB.appendChild(fragment);
-            }
-        });
-
         socket.on('updateBannedUsersCount', (bannedUsersCount) => {
             const users = document.getElementById('bannedUsersCount');
             const banLoaderSvg = document.getElementById('banLoaderSvg');
@@ -213,9 +91,11 @@ let userName = name;
                     .map(user => `
 <div class="banned-container" id="banId-${user.bannedId}">
     <div class="userImage">
-        <div style="display: block; margin-top: -10px;" title="${user.bannedName + ' | ' + user.bannedId}">
-           <p>${user.bannedName}</p>
-           <img src="${user.bannedImage}" style="margin-top: -14px;">
+        <div style="display: block; margin-top: -10px; align-items: center" title="${user.bannedName + ' | ' + user.bannedId}">
+            <p>${user.bannedName.length >= 10 ? user.bannedName.slice(0, 10) : user.bannedName}</p>
+            <div class="avatar-wrapper" style="margin-top: -14px; margin-left: 14px; margin-bottom: 5px;">
+                <img src="${user.bannedImage}" class="avatar" >
+            </div>
         </div>
     
         <div id="banName-${user.bannedId}" class="banName">
@@ -272,6 +152,8 @@ let userName = name;
     window.banUser = function (userId) {
         if (typeof socket !== 'undefined') {
             if (authorId === id) {
+                console.log('id', id);
+                console.log('authorId', authorId);
                 if (!alreadyBannedUserIds.includes(userId)) {
                     socket.emit('ban', userId);
                     alreadyBannedUserIds.push(userId);

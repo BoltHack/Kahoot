@@ -40,66 +40,50 @@
 </script>
 <body>
 <main class="game">
-    <div style="display: flex; gap: 20px; position: absolute; top: 1%; left: 1%;" id="b-c">
-        <button onclick="window.location.replace('/');" class="leave-button">Выйти</button>
-        <button type="button" class="button" onclick="window.location.reload();" id="refresh">
-            <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-arrow-repeat"
-                    viewBox="0 0 16 16"
-            >
-                <path
-                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
-                ></path>
-                <path
-                        fill-rule="evenodd"
-                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
-                ></path>
-            </svg>
-        </button>
-    </div>
+    <div class="info-container">
+        <div class="info-container-btn">
+            <button onclick="window.location.replace('/');" class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            </button>
+            <button type="button" class="button" onclick="window.location.reload();" id="refresh">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-arrow-repeat"
+                        viewBox="0 0 16 16">
+                    <path
+                            d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+                    ></path>
+                    <path
+                            fill-rule="evenodd"
+                            d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+                    ></path>
+                </svg>
+            </button>
+        </div>
 
-    <div style="position: absolute; top: 15%; left: 2%">
-        <p id="onlineCount"></p>
-        <div id="usersCount"></div>
+        <div class="users-online">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div id="usersCount">
+            <section class="dots-container" id="usersCountLoaderSvg">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </section>
+        </div>
         <div id="userInfo"></div>
     </div>
 
     <div id="questions" hidden>
-        <% if (gameId.game_questions && gameId.game_questions.length > 0) {%>
-            <% gameId.game_questions.forEach(games => { %>
-                <div id="question-<%= games.question_number %>" data-number="<%= games.question_number %>" class="questions-container" hidden>
-                    <header>
-                        <h2><%= games.question_title %></h2>
-                    </header>
-                    <div class="all-container">
-                        <div class="img-container">
-                            <img src="<%= games.question_image%>">
-                        </div>
-                        <br>
-                        <br>
-                        <div class="quest-container">
-                            <div style="display: flex; gap: 10px;">
-                                <button class="c-question" style="background-color: #c1121f" data-name="<%= games.question_1.name %>" data-number="<%= games.question_number %>"><%= games.question_1.title %></button>
-                                <button class="c-question" style="background-color: #0077b6" data-name="<%= games.question_2.name %>" data-number="<%= games.question_number %>"><%= games.question_2.title %></button>
-                            </div>
-                            <br>
-                            <div style="display: flex; gap: 10px;">
-                                <button class="c-question" style="background-color: #ffc300" data-name="<%= games.question_3.name %>" data-number="<%= games.question_number %>"><%= games.question_3.title %></button>
-                                <button class="c-question" style="background-color: #008000" data-name="<%= games.question_4.name %>" data-number="<%= games.question_number %>"><%= games.question_4.title %></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
-        <% } %>
-            <div id="gameTimer"></div>
-            <span id="mainTimer" class="main-timer"></span>
-            <div id="correctAnswersCount" class="game-correct-answers-count"></div>
-            <div id="answersCount" class="answers-count"></div>
+        <div id="gameQuestions"></div>
+        <div id="gameTimer"></div>
+        <span id="mainTimer" class="main-timer"></span>
+        <div id="correctAnswersCount" class="game-correct-answers-count"></div>
+        <div id="answersCount" class="answers-count"></div>
     </div>
     <div class="user-info">
         <% if (gameId.game_author.id === user.id) {%>
@@ -116,24 +100,34 @@
     </div>
     <div id="timer"></div>
     <div class="overlay" id="overlay">
-            <table class="leaderboard">
-                <thead>
-                <tr>
-                    <th>Место</th>
-                    <th>Никнейм</th>
-                    <th>Ответы</th>
-                    <th>Время</th>
-                </tr>
-                </thead>
-                <tbody id="leaderBoard">
-                </tbody>
-            </table>
+        <table class="leaderboard">
+            <thead>
+            <tr>
+                <th>Место</th>
+                <th>Никнейм</th>
+                <th>Ответы</th>
+                <th>Время</th>
+            </tr>
+            </thead>
+            <tbody id="leaderBoard"></tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="4" class="leaderboard-footer">
+                    <div style="text-align: center; margin-left: auto; margin-right: auto; display: block;">
+                        <p><strong id="winner"></strong></p>
+                        <button class="exit-btn" onclick="window.location.assign('/')">Выйти из игры</button>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
 
     <div class="overlay" id="overlayFriendListMenu">
         <div id="friendListMenu">
             <h2 style="text-align: center">Список друзей</h2>
-            <svg viewBox="25 25 50 50" id="friendsLoaderSvg">
+            <svg class="loaderSvg" viewBox="25 25 50 50" id="friendsLoaderSvg">
                 <circle r="20" cy="50" cx="50"></circle>
             </svg>
             <div class="card">
@@ -146,7 +140,7 @@
         <div class="overlay" id="overlayBannedUsersMenu">
             <div id="bannedPlayersMenu">
                 <h2 style="text-align: center">Список забаненных игроков</h2>
-                <svg viewBox="25 25 50 50" id="banLoaderSvg">
+                <svg class="loaderSvg" viewBox="25 25 50 50" id="banLoaderSvg">
                     <circle r="20" cy="50" cx="50"></circle>
                 </svg>
                 <div class="card">

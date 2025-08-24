@@ -23,8 +23,111 @@ const io = socketIo(server);
 let gameUsers = {};
 let challengeCompleted = {};
 
+let timers = {};
 io.on('connection', async (socket) => {
     console.log('Новый пользователь подключился');
+    async function funcCheckGameOnline(socket, gameId) {
+        try {
+            const game = await GamesModel.findById(gameId);
+            if (!game) return;
+
+            setTimeout(async () => {
+                console.log('online:', game.game_online.online);
+                const gameOnline = Number(game.game_online.online);
+
+                if (gameOnline < 2) {
+                    io.to(gameId).emit('updateGameCount', 'Default');
+                    if (timers[gameId.toString()]) {
+                        clearTimeout(timers[gameId.toString()]);
+                        delete timers[gameId.toString()];
+                    }
+                }
+                else if (gameOnline >= 2 && game.game_start_type === 'Auto') {
+                    await funcGameStart(socket, 'Auto', gameId);
+                } else {
+                    io.to(gameId).emit('updateGameCount', 'Wait');
+                    if (timers[gameId.toString()]) {
+                        clearTimeout(timers[gameId.toString()]);
+                        delete timers[gameId.toString()];
+                    }
+                }
+            }, 2000);
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    async function funcGameStart(socket, type, gameId) {
+        try {
+            const gameInfo = await GamesModel.findById(gameId);
+            console.log('Старт!');
+
+            if (type === 'Auto') {
+                if (gameInfo.game_start_type === 'Auto' && gameInfo.game_online.online >= 2 && gameInfo.game_type !== 'Close') {
+                    console.log('autoStart')
+                    if (!timers[gameId.toString()] && gameInfo.game_type !== 'Close') {
+                        await startCountdown(socket, gameId, 10);
+                    }
+                }
+            } else if (type === 'Manual') {
+                if (!timers[gameId.toString()] && gameInfo.game_type !== 'Close') {
+                    await startCountdown(socket, gameId, 10);
+                }
+            }
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    async function startCountdown(socket, gameId, startTime) {
+        try {
+            const gameInfo = await GamesModel.findById(gameId);
+            let timeLeft = startTime;
+
+            if (timers[gameId.toString()]) {
+                clearTimeout(timers[gameId.toString()]);
+                delete timers[gameId.toString()];
+            }
+
+            if (gameInfo.game_type !== 'Close') {
+                const tick = () => {
+                    if (timeLeft <= -1) {
+                        clearTimeout(timers[gameId.toString()]);
+                        delete timers[gameId.toString()];
+
+                        console.log(`Game ${gameId}: finish`);
+                        funcGameClose(socket, gameId);
+                        io.to(gameId).emit('requestGetQuestions', gameInfo.game_questions);
+                        return;
+                    }
+                    console.log(`Game ${gameId}: timer:`, timeLeft);
+                    io.to(gameId).emit('startCountdown', timeLeft);
+                    timeLeft--;
+
+                    timers[gameId.toString()] = setTimeout(tick, 1000);
+                }
+                tick();
+            }
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    async function funcGameClose(socket, gameId) {
+        try {
+            const updateGameTypeCount = await GamesModel.findById(gameId);
+
+            await GamesModel.updateOne(
+                { _id: gameId },
+                { $set: { game_type: 'Close' } }
+            );
+            console.log('the game is closed.');
+            io.to(gameId).emit('updateGameTypeCount', updateGameTypeCount.game_type);
+            io.to(gameId).emit('questionTimerStart');
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
 
     socket.on('disconnect', async () => {
         const { gameId, userId, userName } = socket;
@@ -42,9 +145,10 @@ io.on('connection', async (socket) => {
         console.log(`Пользователь ${userId}(${userName}) покинул игру ${gameId}.`);
 
         try {
+            let game;
             const gameInfo = await GamesModel.findById(gameId);
 
-            const game = await GamesModel.findOneAndUpdate(
+            game = await GamesModel.findOneAndUpdate(
                 { _id: gameId },
                 {
                     $inc: { 'game_online.online': -1 },
@@ -57,6 +161,8 @@ io.on('connection', async (socket) => {
                 { new: true }
             );
 
+            await funcCheckGameOnline(socket, gameId);
+
             if (game.game_online?.users.length === 0){
                 await GamesModel.findOneAndUpdate(
                     { _id: gameId },
@@ -64,7 +170,6 @@ io.on('connection', async (socket) => {
                         $set: {
                             expiresInMinutes: 60,
                             expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-                            createdAt: Date.now(),
                             'game_type': 'Open',
                             'game_leaders': [],
                             'game_online.online': 0,
@@ -95,7 +200,9 @@ io.on('connection', async (socket) => {
                 setTimeout(function () {
                     io.emit('stopTimer');
                 }, 500);
-                io.emit('earlyCall-requestLeadersCount');
+                if (gameInfo.game_online.users.length !== gameInfo.game_leaders.length) {
+                    io.to(gameId).emit('earlyCall-requestLeadersCount');
+                }
             }
             if (gameInfo.game_users.length < 2) {
                 socket.emit('stopTimer');
@@ -136,6 +243,7 @@ io.on('connection', async (socket) => {
         socket.userId = userId;
         socket.userName = userName;
 
+
         try {
             const userInfo = await UsersModel.findById(userId);
             const userImage = userInfo.image;
@@ -160,10 +268,11 @@ io.on('connection', async (socket) => {
                 },
                 { new: true }
             );
-            await GamesModel.updateMany({}, { $unset: { expiresInMinutes: 1, createdAt: 1, expiresAt: 1 } });
+            await funcCheckGameOnline(socket, gameId);
+            await GamesModel.updateMany({ _id: gameId }, { $unset: { expiresInMinutes: 1, expiresAt: 1 } });
 
             socket.emit('updateUserCount', updatedGame.game_online);
-            socket.emit('updateUsersOnline', updatedGame.game_online.online);
+            // socket.emit('updateUsersOnline', updatedGame.game_online.online);
 
             socket.emit('updateAnswersCount', updateAnswers.game);
             socket.emit('updateGameQuestions', game_questions);
@@ -292,40 +401,37 @@ io.on('connection', async (socket) => {
             socket.on('requestStartGame', async () => {
                 const checkPerms = await GamesModel.findById(gameId);
                 if (checkPerms.game_author.id === userId) {
-                    io.emit('startGame');
+                    await funcGameStart(socket, 'Manual', gameId);
                 }
                 else {
                     console.log('нет прав.');
                 }
             });
-            socket.on('requestAutoStartGame', async () => {
-                const gameData = await GamesModel.findById(gameId);
-
-                if (gameData.game_start_type === 'Auto' && gameData.game_online.online >= 2 && gameData.game_type !== 'Close') {
-                    console.log('autoStart')
-                    io.emit('startGame');
-                }
-            })
 
             socket.on('requestGameAccessCount', async () => {
                 const updateGameAccessCount = await GamesModel.findById(gameId);
                 const updateUserFriendsCount = await UsersModel.findById(userId);
                 socket.emit('updateGameAccessCount', {
-                    gameData:
-                     { userFriends: updateUserFriendsCount.myFriends, gameAccess: updateGameAccessCount.game_access }
+                    gameData: {
+                        userFriends: updateUserFriendsCount.myFriends,
+                        gameAccess: updateGameAccessCount.game_access
+                    }
                 });
             });
 
-            let alreadyBannedUserIds = [];
             const authorId = userId;
             socket.on('ban', async (userId) => {
                 const {gameId} = socket;
                 const getUserData = await UsersModel.findById(userId);
                 const checkUserPerms = await GamesModel.findById(gameId);
 
-                if (checkUserPerms.game_author.id === authorId) {
-                    if (!alreadyBannedUserIds.includes(userId)){
-                        alreadyBannedUserIds.push(userId);
+                console.log('authorId', authorId);
+
+                if (checkUserPerms.game_author.id.toString() === authorId.toString()) {
+                    const isAlreadyBanned = checkUserPerms.game_banned_users
+                        .some(u => u.bannedId.toString() === userId.toString());
+
+                    if (!isAlreadyBanned) {
                         let updateBannedUsers = await GamesModel.findOneAndUpdate(
                             { _id: gameId },
                             {
@@ -335,10 +441,17 @@ io.on('connection', async (socket) => {
                             },
                             {new: true}
                         );
-                        console.log('ban', userId, 'from', gameId);
                         io.to(gameId).emit('updateBannedUsers', updateBannedUsers.game_banned_users);
-                        socket.emit('banBroadcast', {userName: getUserData.name});
-                        return;
+
+                        const bannedSocket = [...io.sockets.sockets.values()]
+                            .find(s => s.userId === userId);
+
+                        if (bannedSocket) {
+                            bannedSocket.leave(gameId);
+                            console.log('ban', userId, 'from', gameId);
+                            socket.emit('banBroadcast', {userName: getUserData.name});
+                        }
+
                     }
                 }
             });
@@ -348,8 +461,8 @@ io.on('connection', async (socket) => {
                 const getUserData = await UsersModel.findById(userId);
                 const checkUserPerms = await GamesModel.findById(gameId);
 
-                if (checkUserPerms.game_author.id === authorId) {
-                    alreadyBannedUserIds.splice(userId);
+                if (checkUserPerms.game_author.id.toString() === authorId.toString()) {
+                    // alreadyBannedUserIds.splice(userId);
                     let updateBannedUsers = await GamesModel.updateOne(
                         {_id: gameId},
                         {
@@ -1123,7 +1236,7 @@ server.listen(3000, async () => {
                 'game_type': 'Open',
                 expiresInMinutes: 60,
                 expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-                createdAt: Date.now(),
+                // createdAt: Date.now(),
             }
         },
     );

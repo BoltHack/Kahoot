@@ -16,11 +16,21 @@ function getRandomId(ids) {
     return ids[randomId];
 }
 
+function generateRandomSymbols() {
+    let result = '';
+    let symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!№;%:?*()_+=";
+    for (let i = 0; i < 200; i++) {
+        result += symbols.charAt(Math.floor(Math.random() * symbols.length));
+    }
+    return result;
+}
+
 class PostController {
     static createGame = async (req, res, next) => {
         try {
             const {game_name} = req.body;
             const user = req.user;
+            const serverKey = generateRandomSymbols();
 
             const userId = await UsersModel.findById(user.id);
 
@@ -39,7 +49,8 @@ class PostController {
                     online: 0,
                 },
                 game_type: 'Open',
-                game_start_type: 'Auto'
+                game_start_type: 'Auto',
+                server_key: serverKey
             })
             await newGame.save();
 

@@ -132,6 +132,9 @@ const GamesSchema = new Schema({
     game_start_type: {
         type: String,
     },
+    server_key: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now,

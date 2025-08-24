@@ -15,12 +15,12 @@ function generateRandomNumber() {
 }
 
 function generateRandomSymbols() {
-    let password = '';
+    let result = '';
     let symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!№;%:?*()_+=";
     for (let i = 0; i < 200; i++) {
-        password += symbols.charAt(Math.floor(Math.random() * symbols.length));
+        result += symbols.charAt(Math.floor(Math.random() * symbols.length));
     }
-    return password;
+    return result;
 }
 
 const {JWTSecret, refreshTokenSecret} = process.env;
