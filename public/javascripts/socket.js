@@ -15,7 +15,6 @@ const socket = io();
             const errorMsg = localeType === 'en' ? 'You cannot log into the same game with the same account from different browser windows.' : 'Вы не можете зайти в одну и ту же игру с одного аккаунта с разных окон браузера.';
             window.location.href = `/error?code=409&message=${encodeURIComponent(errorMsg)}`;
         }
-
         const users = document.getElementById('usersCount');
         if (users && Array.isArray(onlineCount.users)) {
             users.innerHTML = onlineCount.users
@@ -39,16 +38,6 @@ const socket = io();
 `)
                 .join('');
         }
-
-
-
-        // socket.on('requestCheckQuestionsContainer', async () => {
-        //     if (document.getElementById('gameQuestions').querySelector('.questions-container')) {
-        //         document.getElementById('gameQuestions').querySelector('.questions-container').remove();
-        //         requestSent = true;
-        //         questions.hidden = true;
-        //     }
-        // });
 
         window.manualGameLaunch = function () {
             // if (isGameStart === false && authorId === id && onlineCount.online >= 2) {

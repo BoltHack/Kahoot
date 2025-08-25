@@ -181,11 +181,16 @@ header{
     color: black;
     text-align: center;
 }
-.timer{
-    position: absolute;
+#infoContainer{
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    align-items: center;
+    text-align: center;
+}
+#infoContainer span {
+    font-size: 20px;
 }
 .timerLeft {
     margin-top: -5px;
@@ -967,11 +972,12 @@ header{
     cursor: pointer;
     color: white;
 }
-
-.dots-container {
+#usersCountLoaderSvg {
     position: absolute;
-    display: flex;
     margin: 10px 40px;
+}
+.dots-container {
+    display: flex;
     height: 100%;
     width: 100%;
 }

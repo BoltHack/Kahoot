@@ -24,6 +24,7 @@ let gameUsers = {};
 let challengeCompleted = {};
 
 let timers = {};
+let leaderTimers = {};
 io.on('connection', async (socket) => {
     console.log('Новый пользователь подключился');
     async function funcCheckGameOnline(socket, gameId) {
@@ -61,11 +62,19 @@ io.on('connection', async (socket) => {
         try {
             const gameInfo = await GamesModel.findById(gameId);
             console.log('Старт!');
+            const allUserId = gameInfo.game_users.map(u => u.userId.toString());
+            await UsersModel.updateMany(
+                { _id: { $in: allUserId } },
+                {
+                    $set: { 'game.0.game_answers': 0, 'game.0.game_correct_answers': 0 }
+                },
+                { new: true }
+            );
 
             if (type === 'Auto') {
                 if (gameInfo.game_start_type === 'Auto' && gameInfo.game_online.online >= 2 && gameInfo.game_type !== 'Close') {
                     console.log('autoStart')
-                    if (!timers[gameId.toString()] && gameInfo.game_type !== 'Close') {
+                    if (!timers[gameId.toString()] && gameInfo.game_type !== 'Close' && gameInfo.game_online.online > 1) {
                         await startCountdown(socket, gameId, 10);
                     }
                 }
@@ -81,23 +90,27 @@ io.on('connection', async (socket) => {
 
     async function startCountdown(socket, gameId, startTime) {
         try {
-            const gameInfo = await GamesModel.findById(gameId);
-            let timeLeft = startTime;
-
             if (timers[gameId.toString()]) {
                 clearTimeout(timers[gameId.toString()]);
                 delete timers[gameId.toString()];
             }
 
+            const gameInfo = await GamesModel.findById(gameId);
+
+            if (gameInfo.game_online.online < 2) return;
+
+            let timeLeft = startTime;
+
             if (gameInfo.game_type !== 'Close') {
-                const tick = () => {
+                const tick = async () => {
                     if (timeLeft <= -1) {
                         clearTimeout(timers[gameId.toString()]);
                         delete timers[gameId.toString()];
 
                         console.log(`Game ${gameId}: finish`);
-                        funcGameClose(socket, gameId);
-                        io.to(gameId).emit('requestGetQuestions', gameInfo.game_questions);
+                        await funcGameClose(socket, gameId);
+                        await startGameLeaderTimer(gameId);
+                        io.to(gameId).emit('requestGetQuestions', gameInfo.game_questions[0]);
                         return;
                     }
                     console.log(`Game ${gameId}: timer:`, timeLeft);
@@ -106,11 +119,46 @@ io.on('connection', async (socket) => {
 
                     timers[gameId.toString()] = setTimeout(tick, 1000);
                 }
-                tick();
+                await tick();
             }
         } catch (error) {
             console.log('error', error);
         }
+    }
+
+    async function startGameLeaderTimer(gameId) {
+        try {
+            console.log('leader timer start');
+            if (leaderTimers[gameId]?.timer) {
+                clearTimeout(leaderTimers[gameId].timer);
+                delete leaderTimers[gameId];
+            }
+
+            leaderTimers[gameId] = { timePassed: 0, timer: null };
+
+            const tick = async () => {
+                const gameInfo = await GamesModel.findById(gameId);
+
+                if (gameInfo.game_leaders.length === gameInfo.game_users.length || gameInfo.game_online.online < 2) {
+                    clearTimeout(leaderTimers[gameId].timer);
+                    delete leaderTimers[gameId];
+                    return;
+                }
+                console.log(`Game ${gameId}: leader timer:`,  leaderTimers[gameId].timePassed);
+
+                leaderTimers[gameId].timePassed++;
+                leaderTimers[gameId].timer = setTimeout(tick, 1000);
+            }
+            await tick();
+
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    async function getCurrentTimer(gameId) {
+        const time = leaderTimers[gameId]?.timePassed ?? 0;
+        return time;
     }
 
     async function funcGameClose(socket, gameId) {
@@ -127,6 +175,11 @@ io.on('connection', async (socket) => {
         } catch (error) {
             console.log('error', error);
         }
+    }
+
+    async function funcAnswersCount(userId) {
+        const updateAnswers = await UsersModel.findById(userId);
+        socket.emit('updateAnswersCount', updateAnswers.game);
     }
 
     socket.on('disconnect', async () => {
@@ -272,8 +325,6 @@ io.on('connection', async (socket) => {
             await GamesModel.updateMany({ _id: gameId }, { $unset: { expiresInMinutes: 1, expiresAt: 1 } });
 
             socket.emit('updateUserCount', updatedGame.game_online);
-            // socket.emit('updateUsersOnline', updatedGame.game_online.online);
-
             socket.emit('updateAnswersCount', updateAnswers.game);
             socket.emit('updateGameQuestions', game_questions);
             socket.emit('updateBannedUsers', checkUserBanned.game_banned_users);
@@ -294,7 +345,8 @@ io.on('connection', async (socket) => {
                 socket.emit('updateAnswersCount', updateAnswers.game);
             });
 
-            socket.on('requestLeadersCount', async () => {
+            // socket.on('requestLeadersCount', async () => {
+            async function funcLeadersCount() {
                 try {
                     const game = await GamesModel.findById(gameId);
                     console.log(
@@ -378,15 +430,16 @@ io.on('connection', async (socket) => {
                             }
                         }
 
-                        io.emit('updateLeaderBoard', game.game_leaders);
-                        io.emit('openLeadersMenu');
+                        io.to(gameId).emit('updateLeaderBoard', game.game_leaders);
+                        io.to(gameId).emit('openLeadersMenu');
                     } else {
                         console.log('ещё не все закончили');
                     }
                 } catch (error) {
                     console.log('error', error);
                 }
-            });
+            // });
+            }
 
 
             socket.on('requestBannedUsersCount', async () => {
@@ -497,12 +550,22 @@ io.on('connection', async (socket) => {
                 socket.emit('updateGameTypeCount', updateGameTypeCount.game_type);
             });
 
+            let answeredUsers = {};
+
             socket.on('gameCheckAnswer', async (data) => {
                 try {
+                    if (answeredUsers[gameId]?.[userId]) {
+                        return;
+                    }
+                    answeredUsers[gameId] = answeredUsers[gameId] || {};
+                    answeredUsers[gameId][userId] = true;
+
+                    let updatedUser;
                     const checkQuestion = await GamesModel.findById(gameId);
-                    if (checkQuestion.game_questions[data.data.dataNumber].correct_question === data.data.dataName) {
+                    if (checkQuestion.game_online.online < 2) return;
+                    if (checkQuestion.game_questions[data.dataNumber].correct_question === data.dataName) {
                         console.log('Событие получено для пользователя:', userId);
-                        const updatedUser = await UsersModel.findOneAndUpdate(
+                        updatedUser = await UsersModel.findOneAndUpdate(
                             { _id: userId },
                             {
                                 $inc: {
@@ -516,12 +579,18 @@ io.on('connection', async (socket) => {
                         socket.emit('stopTimer');
                         setTimeout(function () {
                             socket.emit('questionTimerStart', updatedUser.game[0].game_answers);
+                            if (checkQuestion.game_questions.length !== data.dataNumber + 1) {
+                                socket.emit('requestGetQuestions', checkQuestion.game_questions[data.dataNumber + 1]);
+                            } else socket.emit('requestGetQuestions');
                         }, 4000);
+
+                        console.log('checkQuestion.game_questions[data.dataNumber + 1]', checkQuestion.game_questions[data.dataNumber + 1]);
+                        answeredUsers[gameId][userId] = false;
                         console.log('Обновлено. Кол-во правильных ответов:', updatedUser.game[0].game_correct_answers);
                     }
                     else {
                         console.log('Событие получено для пользователя:', userId);
-                        const updatedUser = await UsersModel.findOneAndUpdate(
+                        updatedUser = await UsersModel.findOneAndUpdate(
                             { _id: userId },
                             {
                                 $inc: {
@@ -536,7 +605,17 @@ io.on('connection', async (socket) => {
                         socket.emit('stopTimer');
                         setTimeout(function () {
                             socket.emit('questionTimerStart', updatedUser.game[0].game_answers);
+                            if (checkQuestion.game_questions.length !== data.dataNumber + 1) {
+                                socket.emit('requestGetQuestions', checkQuestion.game_questions[data.dataNumber + 1]);
+                            } else socket.emit('requestGetQuestions');
                         }, 4000);
+                        answeredUsers[gameId][userId] = false;
+                    }
+                    await funcAnswersCount(userId);
+
+                    if (Number(updatedUser.game[0].game_answers) === Number(checkQuestion.game_questions.length)) {
+                        console.log('===');
+                        await funcUserLeader();
                     }
                 } catch (error) {
                     console.log('error', error);
@@ -572,7 +651,9 @@ io.on('connection', async (socket) => {
                 }
             });
 
-            socket.on('userLeader', async (data) => {
+            // socket.on('userLeader', async (data) => {
+            async function funcUserLeader() {
+                const time = await getCurrentTimer(gameId);
                 const user = await UsersModel.findById(userId);
                 skipUser.push(user.id);
                 console.log('answers', user.game[0].game_answers);
@@ -587,14 +668,16 @@ io.on('connection', async (socket) => {
                         { _id: gameId },
                         {
                             $push: {
-                                game_leaders: { id: user.id, name: user.name, correct_answers: user.game[0].game_correct_answers, time: data.leaderData.leaderGameTime }
+                                game_leaders: { id: user.id, name: user.name, correct_answers: user.game[0].game_correct_answers, time: time }
                             },
                         },
                         { new: true }
                     )
                     socket.emit('stopTimer');
+                    await funcLeadersCount();
                 }
-            })
+            // });
+            }
 
             if (updatedGame) {
                 console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);

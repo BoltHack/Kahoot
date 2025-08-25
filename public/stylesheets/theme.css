@@ -525,6 +525,9 @@
         border: 1px solid #313338;
         background: var(--inputModalBackground);
     }
+    .game #infoContainer span {
+        color: var(--bp);
+    }
     .game .timerLeft {
         color: var(--f);
     }
