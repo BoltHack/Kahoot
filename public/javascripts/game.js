@@ -16,9 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const waitAllPlayer = document.getElementById('waitAllPlayer');
 
     const leaderboard = document.querySelector('.leaderboard');
-    const time = document.querySelector('.main-timer');
-
-    console.log('time', time);
 
     socket.on('startCountdown', async (timeLeft) => {
         console.log('timeLeft', timeLeft);
