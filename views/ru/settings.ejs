@@ -183,19 +183,19 @@
     <section id="changePasswordMenu" hidden>
         <div style="display: block; margin-top: -15px;">
             <h2>Смена пароля</h2>
-            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="form-tools">
-                <label for="current-password">Текущий пароль</label>
-                <input type="password" name="oldPassword" id="current-password" placeholder="Введите текущий пароль" required />
+            <div class="form-tools" id="changePasswordForm">
+                <label for="currentPassword">Текущий пароль</label>
+                <input type="password" id="currentPassword" placeholder="Введите текущий пароль" required />
 
-                <label for="new-password">Новый пароль</label>
-                <input type="password" name="password" id="pwd" placeholder="Введите новый пароль" required />
+                <label for="newPassword">Новый пароль</label>
+                <input type="password" id="newPassword" placeholder="Введите новый пароль" required />
 
-                <label for="confirm-password">Подтверждение пароля</label>
-                <input type="password" name="confirmPassword" id="cpwd" placeholder="Подтвердите новый пароль" required />
+                <label for="confirmPassword">Подтверждение пароля</label>
+                <input type="password" id="confirmPassword" placeholder="Подтвердите новый пароль" required />
 
-                <button type="submit">Сменить пароль</button>
+                <button id="changePassword">Сменить пароль</button>
                 <p class="text" id="tp" onclick="togglePassword()">Показать пароль</p>
-            </form>
+            </div>
         </div>
         <button class="close-btn">X</button>
     </section>

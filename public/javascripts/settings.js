@@ -286,6 +286,41 @@ changePasswordBtn.addEventListener('click', () => {
     });
 });
 
+document.getElementById('changePassword').addEventListener('click', (e) => {
+    e.preventDefault();
+
+
+    let changePasswordInfo = {
+        currentPassword: document.getElementById('currentPassword').value,
+        newPassword: document.getElementById('newPassword').value,
+        confirmPassword: document.getElementById('confirmPassword').value
+    };
+
+    fetch('/auth/changePassword',{
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(changePasswordInfo)
+    }).then(res => res.json())
+        .then(data => {
+            let {error, message} = data;
+            if (error) {
+                console.log('error', error);
+                showToast('error', error);
+            } else {
+                showToast('success', message);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+});
+
+
 const deleteAccountBtn = document.getElementById('deleteAccountBtn');
 const deleteAccountMenu = document.getElementById('deleteAccountMenu');
 deleteAccountBtn.addEventListener('click', () => {

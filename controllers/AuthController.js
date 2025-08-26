@@ -168,53 +168,55 @@ class AuthController {
 
     static changePassword = async (req, res, next) => {
         try {
-            const { id } = req.user;
-            const { oldPassword, password, confirmPassword } = req.body;
+            const user = req.user;
+            const { currentPassword, newPassword, confirmPassword } = req.body;
 
             let locale = req.cookies['locale'] || 'en';
 
-            if (!req.cookies['locale']) {
-                res.cookie('locale', locale, { httpOnly: true });
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                const errorMsg = locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.';
+                return res.status(400).json({ error: errorMsg });
             }
 
-            const user = await UsersModel.findById(id);
+            const userInfo = await UsersModel.findById(user.id);
 
-            const pass = await bcrypt.compare(oldPassword, user.password);
+            const pass = await bcrypt.compare(currentPassword, userInfo.password);
 
             if (!pass) {
                 const errorMsg = locale === 'en' ? 'The old password is incorrect.' : 'Неверный старый пароль.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.status(401).json({ error: errorMsg });
             }
 
-            if (!password || !confirmPassword) {
-                const errorMsg = locale === 'en' ? 'Password and password confirmation are required.\n' : 'Пароль и подтверджение пароля обязательны.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            if (!newPassword || !confirmPassword) {
+                const errorMsg = locale === 'en' ? 'Password and password confirmation are required.' : 'Пароль и подтверджение пароля обязательны.';
+                return res.status(401).json({ error: errorMsg });
             }
 
-            if (password !== confirmPassword) {
+            if (newPassword !== confirmPassword) {
                 const errorMsg = locale === 'en' ? 'The passwords do not match.' : 'Пароли не совпадают.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.status(401).json({ error: errorMsg });
             }
 
-            if (password.length < 6 || password.length > 50) {
-                const errorMsg = locale === 'en' ? 'The password must contain a minimum of 6 characters and a maximum of 50 characters.\n' : 'Пароль должен содержать минимум 6 символов и максимум 50 символов.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            if (newPassword.length < 6 || newPassword.length > 50) {
+                const errorMsg = locale === 'en' ? 'The password must contain a minimum of 6 characters and a maximum of 50 characters.' : 'Пароль должен содержать минимум 6 символов и максимум 50 символов.';
+                return res.status(401).json({ error: errorMsg });
             }
 
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
 
             const updatePassword = await UsersModel.findByIdAndUpdate(
-                id,
+                user.id,
                 { password: hashedPassword },
                 { new: true }
             );
 
             if (!updatePassword) {
                 const errorMsg = locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+                return res.status(401).json({ error: errorMsg });
             }
 
-            res.redirect('/');
+            const successMessage = locale === 'en' ? 'Password successfully changed!' : 'Пароль успешно изменён!';
+            return res.status(200).json({ message: successMessage });
         } catch (e) {
             console.log(e);
             next(e);

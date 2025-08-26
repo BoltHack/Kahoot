@@ -173,19 +173,19 @@
     <section id="changePasswordMenu" hidden>
         <div style="display: block; margin-top: -15px;">
             <h2>Change Password</h2>
-            <form action="/auth/changePassword/<%= userId.id %>" method="POST" class="form-tools">
-                <label for="current-password">Current Password</label>
-                <input type="password" name="oldPassword" id="current-password" placeholder="Enter current password" required />
+            <div class="form-tools" id="changePasswordForm">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" placeholder="Enter current password" required />
 
-                <label for="new-password">New Password</label>
-                <input type="password" name="password" id="pwd" placeholder="Enter new password" required />
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" required />
 
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="cpwd" placeholder="Confirm new password" required />
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm new password" required />
 
-                <button type="submit">Change Password</button>
+                <button id="changePassword">Change Password</button>
                 <p class="text" id="tp" onclick="togglePassword()">Show Password</p>
-            </form>
+            </div>
         </div>
         <button class="close-btn">X</button>
     </section>

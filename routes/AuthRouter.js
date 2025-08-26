@@ -28,6 +28,6 @@ router.post('/account-delete', authenticateJWT, accountDelete);
 router.post('/account-restore', authenticateJWT, accountRestore);
 router.get('/account-recover/:code', authenticateJWT, accountRecover);
 
-router.post('/changePassword/:id', authenticateJWT, changePassword);
+router.post('/changePassword', authenticateJWT, changePassword);
 
 module.exports = router;
