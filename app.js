@@ -680,7 +680,7 @@ io.on('connection', async (socket) => {
             }
 
             if (updatedGame) {
-                console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${game_max_online.game_online.max_online}`);
+                console.log(`Отправка обновления для игры ${gameId}, онлайн2: ${updatedGame.game_online.online}. Лимит онлайна: ${updatedGame.game_online.max_online}`);
                 io.to(gameId).emit('updateUserCount', updatedGame.game_online);
             }
 
