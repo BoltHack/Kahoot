@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const waitAllPlayer = document.getElementById('waitAllPlayer');
 
     const leaderboard = document.querySelector('.leaderboard');
+    const loader = document.querySelector('.loader');
 
     socket.on('startCountdown', async (timeLeft) => {
         console.log('timeLeft', timeLeft);
@@ -67,15 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('updateGameCount', async (type) => {
         if (type === 'Wait') {
             checkQuestionsContainer();
+            loader.style.display = 'none';
             info.textContent =
                 localeType === 'en' ? 'Waiting for the game to start...' : 'Ожидание старта игры...';
         } else if (type === 'Default') {
             console.log('Онлайна мало');
             checkQuestionsContainer();
+            loader.style.display = 'none';
             info.textContent =
                 localeType === 'en' ? 'Waiting for players...' : 'Ожидание игроков...';
             stopSound();
             console.log('type', type);
+        } else {
+            loader.style.display = 'none';
         }
     });
 
@@ -90,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     socket.on('requestGetQuestions', async (gameQuestions) => {
-        console.log('gameQuestions', gameQuestions);
         if (gameQuestions) {
             questionsDiv.innerHTML = `
                 <div id="question-${gameQuestions.question_number}" data-number="${gameQuestions.question_number}" class="questions-container">
@@ -116,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 </div>`
-            console.log('setQuestions', questionsDiv);
         } else {
             questionsDiv.innerHTML = '';
             questions.hidden = true;
@@ -202,6 +205,19 @@ document.addEventListener('DOMContentLoaded', () => {
         leaderboard.classList.add('active');
         waitAllPlayer.hidden = true;
     });
+
+    socket.on('updateBannedUsers', async (updateBannedUsers) => {
+        console.log('bannedUsersCount', updateBannedUsers);
+        if (updateBannedUsers) {
+            const allBannedId = updateBannedUsers.find(b => b.bannedId === id);
+            if (allBannedId) {
+                window.removeEventListener("beforeunload", handler);
+                const errorMsg = localeType === 'en' ? 'You have been disconnected from this game by an administrator.' : 'Вы были отключены из этой игры администратором.';
+                window.location.assign(`/error?code=banned&message=${encodeURIComponent(errorMsg)}`);
+            }
+        }
+    });
+
 });
 
 let handler;

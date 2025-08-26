@@ -71,7 +71,7 @@ const socket = io();
             document.getElementById('answersCount').innerHTML = `<span><p class="game-answers">${answersCount[0].game_answers || 0}/${gameMaxQuestions}</p></span>`;
         });
 
-        socket.on('updateBannedUsersCount', (bannedUsersCount) => {
+        socket.on('updateBannedUsersCount', async (bannedUsersCount) => {
             const users = document.getElementById('bannedUsersCount');
             const banLoaderSvg = document.getElementById('banLoaderSvg');
             if (users && Array.isArray(bannedUsersCount)) {
@@ -101,7 +101,7 @@ const socket = io();
                 banLoaderSvg.style.display = 'none';
                 users.innerHTML = `<p class="not-found">${localeType === 'en' ? 'No banned players.' : 'Нет забаненных игроков.'}</p>`;
             }
-        })
+        });
 
         socket.on('updateGameAccessCount', async (data) => {
             if (data.gameData.gameAccess === 'Private') {

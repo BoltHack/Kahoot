@@ -75,11 +75,13 @@ io.on('connection', async (socket) => {
                 if (gameInfo.game_start_type === 'Auto' && gameInfo.game_online.online >= 2 && gameInfo.game_type !== 'Close') {
                     console.log('autoStart')
                     if (!timers[gameId.toString()] && gameInfo.game_type !== 'Close' && gameInfo.game_online.online > 1) {
+                        io.to(gameId).emit('updateGameCount');
                         await startCountdown(socket, gameId, 10);
                     }
                 }
             } else if (type === 'Manual') {
                 if (!timers[gameId.toString()] && gameInfo.game_type !== 'Close') {
+                    io.to(gameId).emit('updateGameCount');
                     await startCountdown(socket, gameId, 10);
                 }
             }
