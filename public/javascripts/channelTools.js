@@ -31,3 +31,17 @@ function channelsMenu() {
         channelsMenu.style.display = 'none';
     });
 }
+
+function showCloseBtn(channelId) {
+    const chatLink = document.querySelectorAll('.chat-link');
+    chatLink.forEach(cSelect => {
+        cSelect.querySelector('.del-companion').style.display = 'none';
+    });
+
+    const deleteBtn = document.getElementById('closeBtn-' + channelId);
+    deleteBtn.querySelector('.del-companion').style.display = 'block';
+
+    deleteBtn.addEventListener('mouseout', () => {
+        deleteBtn.querySelector('.del-companion').style.display = 'none';
+    });
+}

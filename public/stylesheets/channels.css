@@ -283,7 +283,6 @@ body {
 }
 
 .chat-link {
-    /*color: #ced4da;*/
     color: #adb5bd;
     text-decoration: none;
     padding: 10px 12px;
@@ -304,12 +303,16 @@ body {
     /*margin-top: 5px;*/
 }
 .chat-link .del-companion {
-    position: absolute;
     color: grey;
-    left: 200px;
-    margin-top: -2.5px;
+    margin-left: auto;
     cursor: pointer;
-    font-size: 17px;
+    align-items: center;
+    display: none;
+    margin-top: 0;
+}
+.chat-link .del-companion svg {
+    width: 17px;
+    height: 17px;
 }
 .chat-link span:hover {
     color: white;

@@ -1,13 +1,15 @@
-/** {*/
-/*    box-sizing: border-box;*/
-/*}*/
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
+    background-color: #f0f2f5;
     color: #333;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    /*height: 100vh;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+    /*background-position: center center;*/
+    /*background-attachment: fixed;*/
 }
 
 .container {
