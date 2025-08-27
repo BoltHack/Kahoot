@@ -20,7 +20,8 @@ function addFriend(friendName) {
     if (typeof socket !== 'undefined' && friendName.length > 0) {
         socket.emit('addFriend', { senderId: sendId, friendName: friendName });
         console.log('friendId', friendName);
-        document.getElementById('friendName').value = '';
+        if (document.getElementById('friendName'))
+            document.getElementById('friendName').value = '';
     } else {
         console.error("Игрок не найден.");
     }

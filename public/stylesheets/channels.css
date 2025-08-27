@@ -37,6 +37,37 @@ body {
     background: #9e9e9e;
 }
 
+.companion-info {
+    padding: 20px;
+}
+.companion-info img {
+    width: 100px;
+    height: 100px;
+    /*border-radius: 50%;*/
+    border-radius: 10px;
+    background: linear-gradient(135deg, #5bbfba, #39767a);
+    box-shadow: 0 0 8px #4aa9a5cc;
+    flex-shrink: 0;
+}
+.btn {
+    border: 1px solid #313338;
+    background-color: #242632;
+    color: #A9A9B3;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+.chat-line {
+    border: 1px solid #242632;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
 .chat-messages {
     flex-grow: 1;
     overflow-y: auto;
@@ -216,15 +247,16 @@ body {
 .home {
     color: #ced4da;
     cursor: pointer;
-    background-color: #1C2025;
+    background-color: #303740;
     padding: 8px;
+    margin-bottom: 15px;
     border-radius: 8px;
     font-size: 15px;
     text-decoration: none;
     text-align: center;
 }
 .home:hover {
-    background-color: #303740;
+    background-color: #3b464f;
 }
 
 .a-link {
@@ -408,8 +440,9 @@ ul {
     cursor: pointer;
     font-size: 20px;
     display: none;
-    /*margin-top: -30px;*/
-    margin-top: -20px;
+    margin-top: -30px;
+    /*margin-top: -20px;*/
+    /*margin-top: -10px;*/
 }
 .tools-settings {
     display: flex;
@@ -684,7 +717,9 @@ ul {
     cursor: pointer;
     transition: 0.3s;
 }
-
+#requestDeleteFriend {
+    background-color: #cc0000;
+}
 #requestBtn {
     background-color: #cc0000;
 }

@@ -19,6 +19,7 @@
 <body>
 <div class="layout">
     <div class="sidebar">
+        <a class="home" href="/">На главную</a>
         <div class="sidebar-header">Опции</div>
         <ul class="chat-tools">
             <li>
@@ -64,7 +65,6 @@
                 <span class="chat-name <%= companion.role === 'TechSupport' ? `tech-chat` : '' %>" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')"><%= companion.role === 'TechSupport' ? 'Тех поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : companion.name %></span>
                 <span id="onlineMod"></span>
                 <div class="channel-tools">
-                    <a class="home" href="/">На главную</a>
                     <div class="media-width">
                     <span onclick="channelsMenu()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify"><path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/></svg>
@@ -75,6 +75,17 @@
         </div>
 
         <div class="chat-messages" id="messages">
+            <div class="companion-info">
+                <img src="<%= companion.image %>">
+                <h2><%= companion.name %></h2>
+                <p>Это начало истоии ваших личных сообщений с <strong><%= companion.name %></strong>.</p>
+                <% if ( myData.myFriends.some(friend => friend.id.toString() === companion.id.toString()) ) { %>
+                    <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>')">➖ Удалить из друзей</button>
+                <% } else { %>
+                    <button class="btn" id="addFriend" onclick="addFriend('<%= companion.name %>')">➕ Добавить в друзья</button>
+                <% } %>
+                <div class="chat-line"></div>
+            </div>
             <% if (channel.messages && channel.messages.length) { %>
                 <% channel.messages.forEach(msg => { %>
                     <div class="message <%= msg.reply && msg.reply.length > 0 ? 'reply' : '' %>" data-id="<%= msg._id %>" id="message-<%= msg._id %>" onmouseover="showTools({msgId: '<%= msg._id %>', myId: '<%= msg.id %>'});">
@@ -273,12 +284,13 @@
     </div>
 </div>
 
+<div class="toast-container" id="toast-container"></div>
+
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script defer src="/javascripts/friends.js"></script>
 <script defer src="/javascripts/timer.js"></script>
 <script defer src="/javascripts/channels.js"></script>
