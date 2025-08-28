@@ -86,7 +86,7 @@
                     <div></div>
                     <span>
                         <%= (() => {
-                            const d = new Date(channel.createdAt);
+                            const d = new Date(channel.date);
                             const now = new Date();
 
                             const isSameDay = (d1, d2) =>
@@ -105,10 +105,7 @@
                                 return d.toLocaleString('en-US', {
                                     day: '2-digit',
                                     month: 'long',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    hour12: false
+                                    year: 'numeric'
                                 });
                             }
                         })() %>

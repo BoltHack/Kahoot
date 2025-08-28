@@ -60,10 +60,6 @@ const ChannelSchema = new Schema({
         type: String,
         default: currentDate
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
 });
 
 const ChannelsModel = model('channel', ChannelSchema);
