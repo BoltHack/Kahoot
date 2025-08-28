@@ -261,10 +261,11 @@ body {
     color: #ced4da;
     cursor: pointer;
     background-color: #303740;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 15px;
     border-radius: 5px;
     font-size: 15px;
+    font-weight: 700;
     text-decoration: none;
     text-align: center;
 }
