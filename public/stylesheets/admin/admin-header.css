@@ -117,7 +117,15 @@ html.lightTheme {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    animation-name: openAnimation;
+    animation-duration: 0.4s
 }
+
+@keyframes openAnimation {
+    from {top: 48%; opacity: 0}
+    to {top: 50%; opacity: 1}
+}
+
 #close{
     width: 20px;
     height: 20px;
