@@ -372,6 +372,7 @@ body {
     background-color: #3b464f;
     /*color: #5bbfba;*/
     color: #ced4da;
+    user-select: none;
 }
 .chat-container {
     flex: 1;

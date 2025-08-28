@@ -53,8 +53,8 @@ class AuthController {
                 res.set('Expires', '0');
                 return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', { locale, darkTheme });
             }
-        } catch (e) {
-            next(e)
+        } catch (err) {
+            next(err)
         }
     }
 
@@ -97,8 +97,8 @@ class AuthController {
                 res.set('Expires', '0');
                 return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', { locale, darkTheme });
             }
-        } catch (e) {
-            next(e)
+        } catch (err) {
+            next(err)
         }
     }
 
@@ -159,9 +159,9 @@ class AuthController {
             !req.cookies['darkTheme'] ? res.cookie('darkTheme', userId.settings.darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
 
             return res.json({ token: accessToken, refreshToken, user, locale, previousPage });
-        } catch (e) {
-            console.log(e);
-            next(e);
+        } catch (err) {
+            console.log(err);
+            next(err);
         }
     }
 
@@ -217,9 +217,9 @@ class AuthController {
 
             const successMessage = locale === 'en' ? 'Password successfully changed!' : 'Пароль успешно изменён!';
             return res.status(200).json({ message: successMessage });
-        } catch (e) {
-            console.log(e);
-            next(e);
+        } catch (err) {
+            console.log(err);
+            next(err);
         }
     }
 
@@ -256,8 +256,8 @@ class AuthController {
                 res.set('Cache-Control', 'no-store');
                 return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password', { darkTheme });
             }
-        } catch (e) {
-            next(e)
+        } catch (err) {
+            next(err)
         }
     }
 
@@ -340,8 +340,8 @@ class AuthController {
                 res.set('Cache-Control', 'no-store');
                 return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery', { email, darkTheme });
             }
-        } catch (e) {
-            next(e)
+        } catch (err) {
+            next(err)
         }
     }
 
@@ -390,8 +390,8 @@ class AuthController {
             res.clearCookie('email');
             updatePassword.save();
             return res.status(400).json('Пароль успешно изменён!');
-        } catch (e) {
-            next(e)
+        } catch (err) {
+            next(err)
         }
     }
 

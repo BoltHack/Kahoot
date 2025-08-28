@@ -16,8 +16,8 @@ class AdminController{
             }
 
             return res.render(locale === 'en' ? 'en/admin/user-contacts' : 'ru/admin/user-contacts', {user, userContacts, locale, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -32,8 +32,8 @@ class AdminController{
             }
 
             return res.render(locale === 'en' ? 'en/admin/post-news' : 'ru/admin/post-news', {user, locale, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -54,8 +54,8 @@ class AdminController{
             }
 
             return res.render(locale === 'en' ? 'en/admin/redaction-news' : 'ru/admin/redaction-news', { newsInfo, user, locale, darkTheme });
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -82,8 +82,8 @@ class AdminController{
             }
 
             return res.render(locale === 'en' ? 'en/admin/list-news' : 'ru/admin/list-news', {user, listNews: enrichedNews, locale, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -100,8 +100,8 @@ class AdminController{
             }
 
             return res.render(locale === 'en' ? 'en/admin/list-users' : 'ru/admin/list-users', {user, allUsers, locale, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -118,8 +118,8 @@ class AdminController{
             }
 
             return res.render(locale === 'en' ? 'en/admin/admin-panel' : 'ru/admin/admin-panel', {user, allStaff, locale, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 

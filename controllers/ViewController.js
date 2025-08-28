@@ -32,8 +32,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/main' : 'ru/main', {user: '', locale, notifications, darkTheme, mainEffects, acceptCookies, mainBackgroundImage: ''});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -44,8 +44,8 @@ class ViewController {
             const notifications = req.cookies['notifications'] || 'on';
             const darkTheme = req.cookies['darkTheme'] || 'on';
             return res.render(locale === 'en' ? 'en/create-game' : 'ru/create-game', {user, locale, notifications, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
     static gameView = async (req, res, next) => {
@@ -82,8 +82,8 @@ class ViewController {
             console.log('добавлен новый игрок:', game_id);
 
             return res.render(locale === 'en' ? 'en/game' : 'ru/game', {user, myGame, gameId, soundTrack, locale, notifications, darkTheme, ngrokLink});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -116,8 +116,8 @@ class ViewController {
             }
 
             return res.render(locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, locale, notifications, darkTheme });
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -147,8 +147,8 @@ class ViewController {
             const darkTheme = req.cookies['darkTheme'] || 'on';
 
             return res.render(locale === 'en' ? 'en/create-questions' : 'ru/create-questions', {user, gamesInfo, locale, notifications, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -196,8 +196,8 @@ class ViewController {
             }
 
             return res.render(locale === 'en' ? `en/edit-question` : `ru/edit-question`, {user, game_id, questionInfo, locale, notifications, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -216,8 +216,8 @@ class ViewController {
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
 
             return res.render(locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, locale, notifications, darkTheme});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -234,8 +234,8 @@ class ViewController {
             const locale = req.cookies['locale'];
 
             return res.render(locale === 'en' ? 'en/settings' : 'ru/settings', {user, userId, theme, notifications, darkTheme, soundTrack, mainEffects, locale});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -243,8 +243,8 @@ class ViewController {
         try {
             const locale = req.cookies['locale'] || 'en';
             return res.render(locale === 'en' ? 'en/return-menu' : 'ru/return-menu');
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -262,8 +262,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -281,8 +281,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/rules' : 'ru/rules', {user: '', locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -301,8 +301,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', {user: '', locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -320,8 +320,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -339,8 +339,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/support' : 'ru/support', {user: '', locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -398,8 +398,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/news' : 'ru/news', {user: '', ...renderData});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -441,8 +441,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, locale, notifications, darkTheme, ngrokLink, pageUrl});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -472,8 +472,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -519,8 +519,8 @@ class ViewController {
             }
 
             return res.render(locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, locale, notifications, darkTheme, companion, myChannels });
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -536,8 +536,8 @@ class ViewController {
 
             return res.render(locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, locale, notifications, darkTheme, myChannels });
 
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -555,8 +555,8 @@ class ViewController {
             else {
                 return res.render(locale === 'en' ? 'en/contacts' : 'ru/contacts', {user: '', locale, notifications, darkTheme});
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 }

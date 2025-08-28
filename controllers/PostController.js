@@ -94,7 +94,6 @@ class PostController {
             return res.redirect(`/redaction/${game_id}`);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: err.message });
             next(err);
         }
     };
@@ -163,7 +162,6 @@ class PostController {
 
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: err.message });
             next(err);
         }
     };
@@ -242,7 +240,6 @@ class PostController {
 
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: err.message });
             next(err);
         }
     };
@@ -284,7 +281,6 @@ class PostController {
             return res.status(200).json('Изменения успешно загружены' );
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: err.message });
             next(err);
         }
     };
@@ -312,7 +308,6 @@ class PostController {
             return res.status(200).json('Игра успешно удалена!');
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: err.message });
             next(err);
         }
     }

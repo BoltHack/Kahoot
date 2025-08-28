@@ -10,6 +10,7 @@ const http = require("http");
 const socketIo = require('socket.io');
 const sanitizeHtml = require("sanitize-html");
 const axios = require('axios');
+const errorHandler = require('./middlewares/errorHandler');
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
 const { ChannelsModel } = require('./models/ChannelsModel');
@@ -1270,21 +1271,33 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
+    abortOnLimit: true,
+    createParentPath: true,
+    safeFileNames: true,
+    preserveExtension: true
 }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// app.use('/uploads', express.static(path.join(__dirname, '..', 'public', 'uploads')));
+
+app.use('/uploads', (req, res, next) => {
+    next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', indexRouter);
 
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use((req, res, next) => {
+    next(createError(404));
 });
+
+app.use(errorHandler);
 
 app.use(function(err, req, res, next) {
     try {
