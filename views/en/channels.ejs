@@ -82,7 +82,39 @@
                 <% } else { %>
                     <button class="btn" id="addFriend" onclick="addFriend('<%= companion.name %>')">➕ Add Friend</button>
                 <% } %>
-                <div class="chat-line"></div>
+                <div class="chat-line">
+                    <div></div>
+                    <span>
+                        <%= (() => {
+                            const d = new Date(channel.createdAt);
+                            const now = new Date();
+
+                            const isSameDay = (d1, d2) =>
+                                    d1.getDate() === d2.getDate() &&
+                                    d1.getMonth() === d2.getMonth() &&
+                                    d1.getFullYear() === d2.getFullYear();
+
+                            const yesterday = new Date(now);
+                            yesterday.setDate(now.getDate() - 1);
+
+                            if (isSameDay(d, now)) {
+                                return 'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+                            } else if (isSameDay(d, yesterday)) {
+                                return 'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+                            } else {
+                                return d.toLocaleString('en-US', {
+                                    day: '2-digit',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false
+                                });
+                            }
+                        })() %>
+                    </span>
+                    <div></div>
+                </div>
             </div>
             <% if (channel.messages && channel.messages.length) { %>
                 <% channel.messages.forEach(msg => { %>
