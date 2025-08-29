@@ -78,5 +78,11 @@ document.getElementById('searchInput').addEventListener('input', function() {
         function hideReview () {
             review.style.display = 'none';
         }
+
+        document.getElementById('clearIcon').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            showReview();
+        });
+
     });
 });
