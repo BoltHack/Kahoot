@@ -1008,6 +1008,40 @@ class PostController {
         }
     }
 
+    static sendReview = async (req, res, next) => {
+        try {
+            const user = req.user;
+            const locale = req.cookies['locale'] || 'en';
+            const {review, grade} = req.body;
+            const currentDate = new Date();
+
+            if (!review) {
+                const errorMsg = locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.';
+                return res.status(400).json({ error: errorMsg });
+            }
+
+            await UsersModel.findByIdAndUpdate(
+                user.id,
+                {
+                    $set: {
+                        'settings.myReview.review': review,
+                        'settings.myReview.grade': grade,
+                        'settings.myReview.date': currentDate
+                    }
+                },
+                { new: true }
+            );
+
+            const successMsg = locale === 'en' ? 'Review successfully added!' : 'Отзыв успешно добавлен!';
+            return res.status(200).json({ message: successMsg });
+
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
 }
 
 module.exports = PostController;

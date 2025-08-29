@@ -5,13 +5,14 @@ const AdminRouter = require('./AdminRouter');
 const {
     mainView, createGameView, gameView, redactionView, myGamesView, settingsView, returnMenuView,
     privacyPolicyView, rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView,
-    userProfileView, channelsView, channelsMeView, createQuestionView, editQuestionView, contactsView
+    userProfileView, channelsView, channelsMeView, createQuestionView, editQuestionView, contactsView,
+    reviewsView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteAvatar,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
     languageConfirmation, deleteBackgroundImage, changeStatus, changeAboutMe, checkChannel, deleteMyChannel,
-    createQuestion, editQuestion, deleteQuestion, requestTechSupport
+    createQuestion, editQuestion, deleteQuestion, requestTechSupport, sendReview
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -35,6 +36,7 @@ router.get('/privacyPolicy', checkAccountPermissions, privacyPolicyView);
 router.get('/rules', checkAccountPermissions, rulesView);
 router.get('/aboutUs', checkAccountPermissions, aboutUsView);
 router.get('/contacts', checkAccountPermissions, contactsView);
+router.get('/reviews', checkAccountPermissions, reviewsView);
 router.get('/about-donates', checkAccountPermissions, aboutDonatesView);
 
 router.get('/support', checkAccountPermissions, supportView);
@@ -68,6 +70,8 @@ router.post('/changeLocalAuth/:locale', authenticateJWT, changeLocalAuth);
 router.post('/changeSettings', authenticateJWT, changeSettings);
 router.post('/changeStatus', authenticateJWT, changeStatus);
 router.post('/changeAboutMe', authenticateJWT, changeAboutMe);
+
+router.post('/sendReview', authenticateJWT, sendReview);
 
 router.post('/sendContacts', sendContacts);
 

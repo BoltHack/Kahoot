@@ -559,6 +559,56 @@ class ViewController {
             next(err);
         }
     }
+
+    static reviewsView = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            const notifications = req.cookies['notifications'] || 'on';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+
+            const usersLength = await UsersModel.countDocuments();
+
+            const page = parseInt(req.query.page) || 1;
+            const limit = 8;
+            const skip = (page - 1) * limit;
+            const filteredQuery = { 'settings.myReview.review': { $exists: true, $ne: '' } };
+
+            const allReviews = await UsersModel.find(filteredQuery)
+                .sort({ 'settings.myReview.date': -1 })
+                .skip(skip)
+                .limit(limit)
+                .lean();
+
+            const reviews = allReviews.map(user => ({
+                id: user._id,
+                name: user.name,
+                image: user.image,
+                review: user.settings.myReview.review,
+                grade: user.settings.myReview.grade,
+                date: user.settings.myReview.date
+            }));
+            const totalReviews = await UsersModel.countDocuments(filteredQuery);
+
+            const renderData = {
+                allReviews: reviews,
+                currentPage: page,
+                totalPages: Math.ceil(totalReviews / limit),
+                usersLength, locale, notifications, darkTheme
+            }
+
+            if (req.cookies['token']) {
+                await authenticateJWT(req, res, async () => {
+                    const user = req.user;
+                    return res.render(locale === 'en' ? 'en/reviews' : 'ru/reviews', {user, ...renderData });
+                });
+            }
+            else {
+                return res.render(locale === 'en' ? 'en/reviews' : 'ru/reviews', { user: '', ...renderData });
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = ViewController;

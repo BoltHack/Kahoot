@@ -132,6 +132,85 @@
         color: var(--bp);
     }
 
+    /*reviews*/
+    .reviews .reviews-info h1, .reviews .reviews-info span {
+        color: var(--f);
+    }
+    .reviews .reviews-info p {
+        color: var(--bp);
+    }
+    .reviews .reviews-count {
+        color: var(--f);
+        border: 1px solid #313338;
+    }
+    .reviews .review-card {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackground);
+    }
+    .reviews .user-name {
+        color: var(--f);
+    }
+    .reviews .review-text {
+        color: var(--bp);
+    }
+    .reviews .search-container .search {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: #16171d;
+        border: 1px solid #313338;
+    }
+    .reviews .search-container h3 {
+        color: var(--f);
+    }
+    .reviews .search-box {
+        border: 1px solid #313338;
+        background: var(--inputModalBackground);
+        color: var(--bp);
+    }
+    .reviews .search-box input {
+        color: #ECF1FD;
+    }
+    .reviews .search-info {
+        background: var(--inputModalBackground);
+        color: var(--bp);
+    }
+    .reviews .info-card {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: #16171d;
+        border: 1px solid #313338;
+    }
+    .reviews .info-card span {
+        color: var(--f);
+    }
+    .reviews .info-card p {
+        color: var(--bp);
+    }
+    #sendReviewMenu .review-container {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: #16171d;
+        border: 1px solid #313338;
+    }
+    #sendReviewMenu .review-container h2 {
+        color: var(--f);
+    }
+    #sendReviewMenu textarea {
+        border: 1px solid #313338;
+        background: var(--inputModalBackground);
+        color: var(--f);
+    }
+    #sendReviewMenu .review-container select {
+        border: 1px solid #313338;
+        background-color: #22212c;
+        color: #CCCCCC;
+    }
+    #sendReviewMenu .review-container p {
+        color: var(--f);
+    }
+    #sendReviewMenu .edit-buttons input {
+        border: 1px solid #313338;
+        background-color: var(--inputModalBackground);
+        color: var(--bp);
+    }
+
     /*createGame // redaction // createQuestions // editQuestions */
     .createGame .modal, .redactionGame .modal {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

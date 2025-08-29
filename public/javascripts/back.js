@@ -65,6 +65,11 @@ function pages(){
             <a class="between"> ❯ </a>
             <a class="other-color">${localeType === 'en' ? 'Contacts' : 'Контакты'}</a>`
     }
+    else if (page.startsWith('/reviews')) {
+        pageName.innerHTML = `
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? 'Reviews' : 'Отзывы'}</a>`
+    }
     else if (page.startsWith('/about-donates')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
@@ -80,9 +85,7 @@ function pages(){
             <a class="between"> ❯ </a>
             <a href="${tags.tag ? `/news?page=${tags.page + '&tag=' + tags.tag}` : tags.page ? `/news?page=${tags.page}` : '/news'}" class="color-btn">${localeType === 'en' ? 'News' : 'Новости'}</a>
             <a class="between"> ❯ </a>
-            <a class="other-color">${newsTitle.length > 50 ? newsTitle.slice(0, 50) + '...' : newsTitle}</a>
-           
-`
+            <a class="other-color">${newsTitle.length > 50 ? newsTitle.slice(0, 50) + '...' : newsTitle}</a>`
     }
     else if (page.startsWith('/admin/admin-panel')) {
         pageName.innerHTML = `

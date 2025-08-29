@@ -136,6 +136,17 @@ const UsersSchema = new Schema({
             type: String,
             default: ("/images/kahoot2.png")
         },
+        myReview: {
+            review: {
+                type: String
+            },
+            grade: {
+                type: String
+            },
+            date: {
+                type: Date,
+            }
+        },
     },
     games_info: {
         lvl: {

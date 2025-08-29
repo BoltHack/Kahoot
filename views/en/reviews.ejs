@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot | Reviews</title>
+    <link rel="stylesheet" href="/stylesheets/reviews.css">
+    <link rel="icon" type="image/png" href="/images/icon.png">
+</head>
+<body>
+<%- include('header.ejs') %>
+<main class="reviews">
+    <div class="container">
+        <div class="reviews-info">
+            <h1>Reviews</h1>
+            <p>
+                We collect feedback from our users to constantly improve.
+                Reviews are published without editing or moderation.
+                Share your impressions and ideas — you help us grow!
+            </p>
+            <p class="users-count">
+                <span><%= usersLength %></span><br/>users are already with us!
+            </p>
+        </div>
+
+        <ul class="reviews-list" id="reviewsList">
+
+            <div class="reviews-tool">
+                <div class="reviews-count">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22ZM8 13.25C7.58579 13.25 7.25 13.5858 7.25 14C7.25 14.4142 7.58579 14.75 8 14.75H13.5C13.9142 14.75 14.25 14.4142 14.25 14C14.25 13.5858 13.9142 13.25 13.5 13.25H8ZM7.25 10.5C7.25 10.0858 7.58579 9.75 8 9.75H16C16.4142 9.75 16.75 10.0858 16.75 10.5C16.75 10.9142 16.4142 11.25 16 11.25H8C7.58579 11.25 7.25 10.9142 7.25 10.5Z" fill="#6C38CC"/>
+                        </svg>
+                    </div>
+                    <span><%= allReviews.length %> reviews</span>
+                </div>
+
+                <div class="search-container" id="searchContainer">
+                    <div class="send-review">
+                        <button id="sendReviewBtn">Write a Review</button>
+                    </div>
+                    <div class="search">
+                        <h3>Search Users</h3>
+                        <div class="search-box">
+                            <div class="search-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                                    <path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="#AFB2BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M22 22L20 20" stroke="#AFB2BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <input type="text" placeholder="Search" id="searchInput">
+                            <span class="clear-icon" id="clearIcon">✖</span>
+                        </div>
+                        <br>
+                        <div class="search-info">
+                            <span>Search reviews by username.</span>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="info-card">
+                        <div class="info-image">
+                            <img src="/images/reviews-info.png" loading="lazy" alt="User reviews">
+                        </div>
+                        <div class="info-content">
+                            <a>
+                                <span class="info-title">
+                                    What Our Users Say
+                                </span>
+                            </a>
+                            <p class="info-desc">
+                                Read real feedback from our users and rate the service quality.
+                                We value every opinion and continuously improve the platform based on your ratings and comments.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% if (allReviews && allReviews.length > 0) { %>
+                <% allReviews.forEach(reviews => { %>
+                    <li class="review-card">
+                        <div class="review-header">
+                            <div class="review-user">
+                                <div class="avatar" onclick="window.open('/user-profile/<%= reviews.id %>', '_blank')" title="Check profile">
+                                    <img src="<%= reviews.image %>">
+                                </div>
+                                <div class="user-info">
+                                    <span class="user-name"><%= reviews.name %></span>
+                                    <span class="review-date">
+                                        <%= (() => {
+                                            const d = new Date(reviews.date);
+                                            const now = new Date();
+                                            const isSameDay = (d1, d2) =>
+                                                    d1.getDate() === d2.getDate() &&
+                                                    d1.getMonth() === d2.getMonth() &&
+                                                    d1.getFullYear() === d2.getFullYear();
+                                            const yesterday = new Date(now);
+                                            yesterday.setDate(now.getDate() - 1);
+
+                                            if (isSameDay(d, now)) {
+                                                return 'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+                                            } else if (isSameDay(d, yesterday)) {
+                                                return 'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+                                            } else {
+                                                return d.toLocaleString('en-US', {
+                                                    day: '2-digit',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                });
+                                            }
+                                        })() %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <%
+                                    function setGrade(grade) {
+                                        let stars = '';
+                                        for (let i = 0; i < grade; i++) {
+                                            stars += '★';
+                                        }
+                                        return stars;
+                                    }
+                                    const grade = setGrade(reviews.grade);
+                                %>
+                                <%= grade %>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            <%= reviews.review %>
+                        </p>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <p>No comments yet.</p>
+            <% } %>
+
+            <h3 class="not-found" id="searchNotFound">Nothing found.</h3>
+            <%- include('../pagination.ejs') %>
+        </ul>
+    </div>
+</main>
+
+<section id="sendReviewMenu" hidden>
+    <div class="review-container">
+        <button class="close-btn">X</button>
+        <h2>Write a Review</h2>
+        <textarea name="review" id="review" placeholder="Enter your text" required></textarea>
+        <select name="grade" id="grade" required>
+            <option value="1">⭐ 1 star</option>
+            <option value="2">⭐⭐ 2 stars</option>
+            <option value="3">⭐⭐⭐ 3 stars</option>
+            <option value="4">⭐⭐⭐⭐ 4 stars</option>
+            <option value="5">⭐⭐⭐⭐⭐ 5 stars</option>
+        </select>
+        <div class="edit-buttons">
+            <input type="button" value="Submit" id="sendReview">
+        </div>
+    </div>
+</section>
+
+<div class="toast-container" id="toast-container"></div>
+<div class="new-barrier" id="barrier" hidden></div>
+<%- include('footer.ejs') %>
+<script src="/javascripts/timer.js"></script>
+<script src="/javascripts/reviews.js"></script>
+</body>
+</html>
