@@ -366,9 +366,10 @@ html.lightTheme {
     margin-top: 10px;
     border-radius: 5px;
     font-weight: 700;
+    transition-duration: 0.3s;
 }
 .auth-btn:hover{
-    background-color: #0b0b0b;
+    background-color: #343a40;
 }
 
 .close-btn {

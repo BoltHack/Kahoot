@@ -686,6 +686,48 @@
     }
 
 
+    /*header*/
+    .brutalist-card {
+        border: 4px solid #313338;
+        /*border-radius: 8px;*/
+        background: #16171d;
+        color: var(--bp);
+        /*border: 1px solid #313338;*/
+        /*color: var(--bp);*/
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        /*background: #1e1f29;*/
+    }
+    .brutalist-card__header {
+        border-color: #2b2640;
+    }
+    .brutalist-card__icon {
+        background-color: var(--inputModalBackground);
+    }
+    .brutalist-card__icon svg {
+        fill: var(--f);
+    }
+    .brutalist-card__alert {
+        color: var(--f);
+    }
+    .brutalist-card__message {
+        color: var(--bp);
+        border-color: #2b2640;
+        border-radius: 5px;
+    }
+    .brutalist-card__actions button {
+        background-color: var(--inputModalBackground);
+    }
+    .brutalist-card__actions button:hover {
+        opacity: 0.5;
+    }
+    .brutalist-card__message a {
+        color: #219ebc;
+    }
+    .brutalist-card__message a:hover{
+        text-decoration: underline;
+        text-decoration-color: var(--bp);
+    }
+
     .success-card {
         border: 1px solid #313338;
         background-color: var(--inputModalBackground);
