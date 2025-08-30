@@ -10,13 +10,16 @@ sendReviewBtn.addEventListener('click', () => {
 
     sendReviewMenu.hidden = false;
     barrier.hidden = false;
+    document.body.style.overflowY = 'hidden';
     sendReviewMenu.querySelector('.close-btn').addEventListener('click', () => {
         sendReviewMenu.hidden = true;
         barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
     });
     barrier.addEventListener('click', () => {
         sendReviewMenu.hidden = true;
         barrier.hidden = true;
+        document.body.style.overflowY = 'auto';
     });
 });
 document.getElementById('sendReview').addEventListener('click', () => {

@@ -151,8 +151,8 @@ body {
 
 .search-container {
     position: absolute;
-    right: 8%;
-    margin-left: auto;
+    margin-left: 860px;
+    /*right: 8%;*/
     display: block;
     box-sizing: border-box;
 }
