@@ -205,8 +205,6 @@ body {
     gap: 15px;
     margin-left: 20px;
     border: 1px solid #313338;
-    background: var(--inputModalBackgournd);
-    color: var(--bp);
     padding: 5px 8px;
     border-radius: 12px;
 }

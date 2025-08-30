@@ -463,6 +463,9 @@
     .news .news-date {
         color: var(--bp);
     }
+    .news .stats .likes-dislikes {
+        color: var(--bp);
+    }
     .news .stats .likes-dislikes svg {
         color: #726d81;
         transition-duration: 0.3s;
