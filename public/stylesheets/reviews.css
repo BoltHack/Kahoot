@@ -152,7 +152,6 @@ body {
 .search-container {
     position: absolute;
     margin-left: 860px;
-    /*right: 8%;*/
     display: block;
     box-sizing: border-box;
 }

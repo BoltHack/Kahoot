@@ -191,7 +191,8 @@ html.lightTheme {
 .header-container {
     position: absolute;
     top: 8%;
-    left: 50%;
+    /*left: 50%;*/
+    margin-left: 768px;
     transform: translate(-50%);
     display: flex;
     justify-content: center;
@@ -204,7 +205,8 @@ html.lightTheme {
     display: flex;
     position: absolute;
     top: 8%;
-    right: 5%;
+    /*right: 5%;*/
+    margin-left: 1267px;
 }
 
 
@@ -555,7 +557,16 @@ html.lightTheme {
     background: #ff5733;
 }
 
-
+@media (max-width: 1400px) {
+    .header-container {
+        left: 50%;
+        margin-left: auto;
+    }
+    .account-container {
+        right: 5%;
+        margin-left: auto;
+    }
+}
 @media (max-width: 1000px) {
     .header .header-container {
         display: none;

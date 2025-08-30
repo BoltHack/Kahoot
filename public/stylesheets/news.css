@@ -18,7 +18,8 @@ body {
 .search-container {
     margin-top: 205px;
     position: absolute;
-    right: 10%;
+    /*right: 10%;*/
+    margin-left: 1039px;
     left: auto;
     display: block;
     box-sizing: border-box;
@@ -427,7 +428,9 @@ body {
         display: flex;
     }
     .news .search-container {
+        width: 89.5%;
         left: 1%;
+        margin-left: auto;
     }
     .news .news-footer {
         display: block;
