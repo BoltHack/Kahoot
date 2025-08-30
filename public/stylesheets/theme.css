@@ -133,7 +133,7 @@
     }
 
     /*reviews*/
-    .reviews .reviews-info h1, .reviews .reviews-info span {
+    .reviews .reviews-info h1 {
         color: var(--f);
     }
     .reviews .reviews-info p {
@@ -142,6 +142,9 @@
     .reviews .reviews-count {
         color: var(--f);
         border: 1px solid #313338;
+    }
+    .reviews .users-count {
+        color: var(--bp);
     }
     .reviews .review-card {
         border: 1px solid #313338;

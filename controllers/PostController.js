@@ -1042,6 +1042,25 @@ class PostController {
         }
     }
 
+    static deleteReview = async (req, res, next) => {
+        try {
+            const { review_id } = req.params;
+            const userInfo = await UsersModel.findById(review_id);
+
+            if (!userInfo) {
+                return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
+            }
+
+            await UsersModel.findByIdAndUpdate(userInfo._id, { $set: { 'settings.myReview': {} } });
+
+            return res.redirect('/admin/list-reviews')
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
 }
 
 module.exports = PostController;

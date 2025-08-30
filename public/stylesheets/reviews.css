@@ -24,10 +24,12 @@ body {
     border-radius: 10px;
     padding: 4px 10px;
     align-items: center;
+    /*margin-left: auto;*/
 }
 .reviews-count span {
     margin-top: -5px;
 }
+
 .send-review {
     display: flex;
     margin-left: auto;
@@ -58,9 +60,13 @@ body {
 }
 
 .users-count {
-    margin-top: 15px;
+    /*margin-top: 15px;*/
     font-weight: 600;
     color: #555;
+    display: block;
+    gap: 10px;
+    /*align-items: center;*/
+    /*margin-left: auto;*/
 }
 
 .users-count span {
@@ -98,8 +104,8 @@ body {
 }
 
 .avatar img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     /*background-color: #4a76a8;*/
     /*color: #fff;*/
     border-radius: 50%;
@@ -113,17 +119,20 @@ body {
 
 .user-info {
     display: flex;
+    gap: 3px;
     flex-direction: column;
 }
 
 .user-name {
+    font-size: 16px;
     font-weight: 600;
     color: #222;
 }
 
 .review-date {
-    font-size: 12px;
+    font-size: 14px;
     color: #777;
+    /*margin-top: 2px;*/
 }
 
 .review-rating {

@@ -3,9 +3,10 @@ const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {verifyPermissions} = require('../middlewares/permissionsAuthorization');
 
 const {
-    userContactsViewAdmin, newsViewAdmin, redactionNewsViewAdmin, listUsersViewAdmin, listNewsViewAdmin, adminPanelViewAdmin
+    userContactsViewAdmin, newsViewAdmin, redactionNewsViewAdmin, listUsersViewAdmin, listNewsViewAdmin,
+    adminPanelViewAdmin, listReviewsViewAdmin
 } = require('../controllers/AdminController')
-const {postNews, redactionNews, deleteNews, deleteUser, addRole} = require('../controllers/PostController')
+const {postNews, redactionNews, deleteNews, deleteReview, deleteUser, addRole} = require('../controllers/PostController')
 const router = express.Router();
 const upload = require('../middlewares/multer');
 
@@ -27,9 +28,12 @@ router.get('/list-news', verifyPermissions('Admin'), authenticateJWT, listNewsVi
 
 router.get('/list-users', verifyPermissions('Admin'), authenticateJWT, listUsersViewAdmin);
 
+router.get('/list-reviews', verifyPermissions('Admin'), authenticateJWT, listReviewsViewAdmin);
+
 router.post('/post-news', verifyPermissions('Admin'), postNews);
 router.post('/delete-news/:news_id', verifyPermissions('Admin'), authenticateJWT, deleteNews);
 router.post('/redaction-news/:news_id', verifyPermissions('Admin'), authenticateJWT, redactionNews);
+router.post('/delete-review/:review_id', verifyPermissions('Admin'), authenticateJWT, deleteReview);
 router.post('/delete-user/:user_id', verifyPermissions('Admin'), deleteUser);
 router.post('/add-role', verifyPermissions('Admin'), addRole);
 

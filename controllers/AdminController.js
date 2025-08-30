@@ -123,6 +123,33 @@ class AdminController{
         }
     }
 
+    static listReviewsViewAdmin = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+            const darkTheme = req.cookies['darkTheme'] || 'on';
+            const user = req.user;
+
+            const filteredQuery = { 'settings.myReview.review': { $exists: true, $ne: '' } };
+
+            const allReviews = await UsersModel.find(filteredQuery)
+                .sort({ 'settings.myReview.date': -1 })
+                .lean();
+
+            const reviews = allReviews.map(user => ({
+                id: user._id,
+                name: user.name,
+                image: user.image,
+                review: user.settings.myReview.review,
+                grade: user.settings.myReview.grade,
+                date: user.settings.myReview.date
+            }));
+
+            return res.render(locale === 'en' ? 'en/admin/list-reviews' : 'ru/admin/list-reviews', { user, allReviews: reviews, darkTheme, locale })
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }
 
 module.exports = AdminController;

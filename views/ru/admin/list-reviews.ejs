@@ -6,21 +6,75 @@
     <title>Kahoot | Отзывы</title>
     <link rel="stylesheet" href="/stylesheets/reviews.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
+    <style>
+        .deleteButton {
+            color: red;
+            cursor: pointer;
+        }
+        .deleteReviewMenu{
+            width: 350px;
+            height: 180px;
+            background-color: #212529;
+            border-radius: 10px;
+            z-index: 2;
+            opacity: 1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .barrier{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        .no-btn {
+            background: none;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 80px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .yes-btn{
+            background: none;
+            color: #90e0ef;
+            border: none;
+            padding: 10px 20px;
+            width: 80px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .no-btn:hover{
+            background-color: #6c757d;
+        }
+        .yes-btn:hover{
+            background-color: #118ab2;
+        }
+        .yes-or-no{
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
 </head>
 <body>
-<%- include('header.ejs') %>
+<%- include('admin-header.ejs') %>
 <main class="reviews">
     <div class="container">
         <div class="reviews-info">
-            <h1>Отзывы</h1>
-            <p>
-                Мы собираем обратную связь от пользователей, чтобы постоянно становиться лучше.
-                Отзывы публикуются без редактирования и модерации.
-                Поделитесь своими впечатлениями и идеями — именно вы помогаете нам развиваться!
-            </p>
-            <div class="users-count">
-                <span><%= usersLength %></span><br>пользователей уже с нами!
-            </div>
+            <h1>Отзывы игроков</h1>
         </div>
 
         <ul class="reviews-list" id="reviewsList">
@@ -36,9 +90,6 @@
                 </div>
 
                 <div class="search-container" id="searchContainer">
-                    <div class="send-review">
-                        <button id="sendReviewBtn">Написать отзыв</button>
-                    </div>
                     <div class="search">
                         <h3>Поиск пользователей</h3>
                         <div class="search-box">
@@ -56,24 +107,6 @@
                         <br>
                         <div class="search-info">
                             <span>Ищите отзывы по никнеймам.</span>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="info-card">
-                        <div class="info-image">
-                            <img src="/images/reviews-info.png" loading="lazy">
-                        </div>
-                        <div class="info-content">
-                            <a>
-                                <span class="info-title">
-                                    Что говорят наши пользователи
-                                </span>
-                            </a>
-                            <p class="info-desc">
-                                Читайте реальные отзывы от наших пользователей и оцените качество сервиса.
-                                Мы ценим каждое мнение и постоянно улучшаем платформу благодаря вашим оценкам и комментариям.
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -133,6 +166,17 @@
                         <p class="review-text">
                             <%= reviews.review %>
                         </p>
+                        <a class="deleteButton" data-id="<%= reviews.id %>">Удалить</a>
+
+                        <div id="deleteMenu-<%= reviews.id %>" class="deleteReviewMenu" hidden>
+                            <p style="text-align: center; color: white; margin: 30px 0; padding: 10px; word-break: break-word">Удалить отзыв "<%= reviews.name %>"</p>
+                            <div class="yes-or-no">
+                                <button class="no-btn" id="closeBtn-<%= reviews.id %>">Нет</button>
+                                <form action="/admin/delete-review/<%= reviews.id %>" method="POST">
+                                    <button class="yes-btn">Да</button>
+                                </form>
+                            </div>
+                        </div>
                     </li>
                 <% }) %>
             <% } else { %>
@@ -145,34 +189,74 @@
                 <br>
             <% } %>
             <h3 class="not-found" id="searchNotFound">Ничего не найдено.</h3>
-            <%- include('../pagination.ejs') %>
         </ul>
 
     </div>
 </main>
 
-<section id="sendReviewMenu" hidden>
-    <div class="review-container">
-        <button class="close-btn">X</button>
-        <h2>Напишите отзыв о нас</h2>
-        <textarea name="review" id="review" placeholder="Введите желаемый текст" required></textarea>
-        <select name="grade" id="grade" required>
-            <option value="1">⭐ 1 звезда</option>
-            <option value="2">⭐⭐ 2 звезды</option>
-            <option value="3">⭐⭐⭐ 3 звезды</option>
-            <option value="4">⭐⭐⭐⭐ 4 звезды</option>
-            <option value="5">⭐⭐⭐⭐⭐ 5 звёзд</option>
-        </select>
-        <div class="edit-buttons">
-            <input type="button" value="Отправить" id="sendReview">
-        </div>
-    </div>
-</section>
+<div class="barrier" id="barrier" hidden></div>
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchValue = this.value.trim().toLowerCase();
+        const reviewsList = document.getElementById('reviewsList');
+        const searchNotFound = document.getElementById('searchNotFound');
+        const searchReview = reviewsList.getElementsByTagName('li');
 
-<div class="toast-container" id="toast-container"></div>
-<div class="new-barrier" id="barrier" hidden></div>
-<%- include('footer.ejs') %>
-<script src="/javascripts/timer.js"></script>
-<script src="/javascripts/reviews.js"></script>
+        let foundVisible = false;
+
+        Array.from(searchReview).forEach(review => {
+            const reviewNameElement = review.querySelector('.user-name');
+
+            const reviewName = reviewNameElement ? reviewNameElement.textContent.toLowerCase() : '';
+
+            if (reviewName.includes(searchValue)) {
+                showReview(review);
+            }
+            else {
+                hideReview(review);
+            }
+
+            if (foundVisible) {
+                searchNotFound.style.display = 'none';
+            } else {
+                searchNotFound.style.display = 'block';
+            }
+
+            function showReview () {
+                foundVisible = true;
+                review.style.display = 'block';
+            }
+
+            function hideReview () {
+                review.style.display = 'none';
+            }
+
+            document.getElementById('clearIcon').addEventListener('click', () => {
+                document.getElementById('searchInput').value = '';
+                showReview();
+            });
+
+        });
+    });
+
+
+    const deleteButton = document.querySelectorAll('.deleteButton');
+
+    deleteButton.forEach(button => {
+        button.addEventListener('click', function () {
+            const dataId = this.getAttribute('data-id');
+            console.log('dataId', dataId)
+            const deleteMenu = document.getElementById('deleteMenu-' + dataId);
+            const closeBtn = document.getElementById('closeBtn-' + dataId);
+            const barrier = document.querySelector('.barrier');
+            deleteMenu.hidden = false;
+            barrier.hidden = false;
+            closeBtn.addEventListener('click', () => {
+                deleteMenu.hidden = true;
+                barrier.hidden = true;
+            })
+        })
+    })
+</script>
 </body>
 </html>

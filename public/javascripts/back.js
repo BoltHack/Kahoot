@@ -129,6 +129,13 @@ function pages(){
             <a class="between"> ❯ </a>
             <a class="other-color">${editNews.length > 50 ? editNews.slice(0, 50) + '...' : editNews}</a>`
     }
+    else if (page.startsWith('/admin/list-reviews')) {
+        pageName.innerHTML = `
+            <a class="between"> ❯ </a>
+            <a href="/admin/admin-panel" class="color-btn">${localeType === 'en' ? 'Admin panel' : 'Админ панель'}</a>
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? 'List reviews' : 'Список отзывов'}</a>`
+    }
     else if (page.startsWith('/user-profile/')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
