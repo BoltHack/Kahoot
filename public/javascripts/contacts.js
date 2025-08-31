@@ -33,34 +33,13 @@ function techChat() {
                     if (error) {
                         techChatBtn.hidden = false;
                         loadingBtn.hidden = true;
-                        Swal.fire({
-                            text: error,
-                            icon: "error",
-                            position: "top-end",
-                            timer: 4000,
-                            showConfirmButton: false,
-                            toast: true,
-                            customClass: {
-                                popup: "small-alert"
-                            }
-                        });
+                        showToast('error', error);
                         return;
                     }
                     techChatBtn.hidden = false;
                     loadingBtn.hidden = true;
                     if (data.id.toString() === sendId.toString()) {
-                        // requestTechSupport();
-                        Swal.fire({
-                            text: localeType === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.',
-                            icon: "error",
-                            position: "top-end",
-                            timer: 4000,
-                            showConfirmButton: false,
-                            toast: true,
-                            customClass: {
-                                popup: "small-alert"
-                            }
-                        });
+                        showToast('error', localeType === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.');
                         console.log('Ничего не найдено.');
                         return;
                     }
