@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elapsedTime >= gameTimer) {
             console.log('Таймер завершен');
             clearTimeout(gameTimerCooldown);
-            socket.emit('skipQuestion');
+            skipQuestion();
         }
 
         document.getElementById('gameTimer').querySelector('.game-timer').textContent =
@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('requestGetQuestions', async (gameQuestions) => {
         if (gameQuestions) {
+            console.log('gameQuestions', true);
             questionsDiv.innerHTML = `
                 <div id="question-${gameQuestions.question_number}" data-number="${gameQuestions.question_number}" class="questions-container">
                     <header>
@@ -121,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>`
         } else {
+            console.log('gameQuestions', false);
             questionsDiv.innerHTML = '';
             questions.hidden = true;
             waitAllPlayer.hidden = false;
@@ -140,6 +142,15 @@ document.addEventListener('DOMContentLoaded', () => {
             dataName: dataName,
         });
     });
+
+    function skipQuestion() {
+        const questionsContainer = document.querySelector('.questions-container');
+        const dataNumber = Number(questionsContainer.getAttribute('data-number'));
+        console.log('skip id', dataNumber);
+        socket.emit('skipQuestion', {
+            dataNumber: dataNumber,
+        });
+    }
 
     socket.on('updateLeaderBoard', (leaderBoard) => {
         const leaderB = document.getElementById('leaderBoard');

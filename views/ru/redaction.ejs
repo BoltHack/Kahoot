@@ -17,7 +17,7 @@
         <form action="/redaction/<%= gamesInfo.id %>" method="POST" enctype="multipart/form-data">
             <div class="redaction-flex">
 
-                <div class="questions-modal">
+                <div class="modal questions-modal">
                     <% if (gamesInfo.game_questions && gamesInfo.game_questions.length) { %>
                         <div class="game-questions">
                             <% gamesInfo.game_questions.forEach(quest => { %>

@@ -348,7 +348,6 @@ io.on('connection', async (socket) => {
                 socket.emit('updateAnswersCount', updateAnswers.game);
             });
 
-            // socket.on('requestLeadersCount', async () => {
             async function funcLeadersCount() {
                 try {
                     const game = await GamesModel.findById(gameId);
@@ -441,7 +440,6 @@ io.on('connection', async (socket) => {
                 } catch (error) {
                     console.log('error', error);
                 }
-            // });
             }
 
 
@@ -625,16 +623,11 @@ io.on('connection', async (socket) => {
                 }
             });
 
-            let skipUser = [];
+            socket.on('skipQuestion', async (data) => {
+                try {
+                    const checkQuestion = await GamesModel.findById(gameId);
+                    console.log('Событие получено для пользователя:', userId, 'в игре:', gameId);
 
-            socket.on('skipQuestion', async () => {
-                if (skipUser.includes(userId)) {
-                    socket.emit('stopTimer');
-                    socket.emit('openLeadersMenu');
-                }
-                else {
-                    console.log('skip');
-                    console.log('Событие получено для пользователя:', userId);
                     const updatedUser = await UsersModel.findOneAndUpdate(
                         { _id: userId },
                         {
@@ -645,20 +638,34 @@ io.on('connection', async (socket) => {
                         { new: true }
                     );
 
+                    console.log('dataNumber', data.dataNumber, '| game_questions.length', checkQuestion.game_questions.length);
+
                     console.log('Обновлено. Кол-во ответов:', updatedUser.game[0].game_answers);
                     socket.emit('gameTimeIsUp');
                     socket.emit('stopTimer');
+
                     setTimeout(function () {
                         socket.emit('questionTimerStart', updatedUser.game[0].game_answers);
+
+                        if (checkQuestion.game_questions.length !== data.dataNumber + 1) {
+                            socket.emit('requestGetQuestions', checkQuestion.game_questions[data.dataNumber + 1]);
+                        } else socket.emit('requestGetQuestions');
                     }, 4000);
+
+                    await funcAnswersCount(userId);
+
+                    if (Number(updatedUser.game[0].game_answers) === Number(checkQuestion.game_questions.length)) {
+                        console.log('===');
+                        await funcUserLeader();
+                    }
+                } catch (error) {
+                    console.log('error', error);
                 }
             });
 
-            // socket.on('userLeader', async (data) => {
             async function funcUserLeader() {
                 const time = await getCurrentTimer(gameId);
                 const user = await UsersModel.findById(userId);
-                skipUser.push(user.id);
                 console.log('answers', user.game[0].game_answers);
                 console.log('correct_answers', user.game[0].game_correct_answers);
 
@@ -679,7 +686,6 @@ io.on('connection', async (socket) => {
                     socket.emit('stopTimer');
                     await funcLeadersCount();
                 }
-            // });
             }
 
             if (updatedGame) {
