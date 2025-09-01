@@ -387,7 +387,7 @@ body {
     }
 
     .searchNews {
-        /*padding: 20px 1px;*/
+        padding: 30px;
         margin-top: auto;
         top: 150px;
     }
@@ -405,12 +405,7 @@ body {
         justify-content: start;
     }
     .search-tag-container {
-        /*text-align: center;*/
-        padding: 10px 0;
-        /*max-width: 780px;*/
-        /*left: 50%;*/
-        /*max-width: 780px;*/
-        /*width: 100%;*/
+        margin-top: 400px;
     }
     .news .news-meta {
         display: block;
