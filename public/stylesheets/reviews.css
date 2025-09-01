@@ -16,8 +16,11 @@ body {
     padding: 10px 0;
     display: flex;
 }
-
-.reviews-count {
+.reviews-users-info {
+    display: flex;
+    gap: 40px;
+}
+.review-tool {
     display: flex;
     gap: 5px;
     border: 1px solid black;
@@ -26,7 +29,7 @@ body {
     align-items: center;
     /*margin-left: auto;*/
 }
-.reviews-count span {
+.review-tool span {
     margin-top: -5px;
 }
 
@@ -58,22 +61,6 @@ body {
 .reviews-info p {
     font-size: 18px;
     line-height: 1.6;
-}
-
-.users-count {
-    /*margin-top: 15px;*/
-    font-weight: 600;
-    color: #555;
-    display: block;
-    gap: 10px;
-    /*align-items: center;*/
-    /*margin-left: auto;*/
-}
-
-.users-count span {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #4a76a8;
 }
 
 .reviews-list {

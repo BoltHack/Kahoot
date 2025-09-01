@@ -139,12 +139,9 @@
     .reviews .reviews-info p {
         color: var(--bp);
     }
-    .reviews .reviews-count {
+    .reviews .review-tool {
         color: var(--f);
         border: 1px solid #313338;
-    }
-    .reviews .users-count {
-        color: var(--bp);
     }
     .reviews .review-card {
         border: 1px solid #313338;
