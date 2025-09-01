@@ -404,9 +404,9 @@ body {
         margin-top: 300px;
         justify-content: start;
     }
-    .search-tag-container {
-        margin-top: 400px;
-    }
+    /*.search-tag-container {*/
+    /*    margin-top: 400px;*/
+    /*}*/
     .news .news-meta {
         display: block;
     }
@@ -434,6 +434,9 @@ body {
 @media (max-width: 600px) {
     .container {
         padding: 0 5px;
+    }
+    .searchNews {
+        margin-top: -50px;
     }
 }
 /*@media (max-width: 400px) {*/
