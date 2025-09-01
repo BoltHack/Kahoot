@@ -22,10 +22,10 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
         if (foundVisible) {
             searchNotFound.style.display = 'none';
-            searchContainer.classList.remove('searchMode');
+            // searchContainer.classList.remove('searchMode');
         } else {
             searchNotFound.style.display = 'block';
-            searchContainer.classList.add('searchMode');
+            // searchContainer.classList.add('searchMode');
         }
 
         function showNews () {

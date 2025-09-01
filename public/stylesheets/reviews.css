@@ -35,7 +35,8 @@ body {
     margin-left: auto;
 }
 .send-review button {
-    width: 200px;
+    /*width: 200px;*/
+    width: 100%;
     padding: 12px 12px;
     background: #5563DE;
     color: #fff;

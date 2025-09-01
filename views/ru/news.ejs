@@ -10,59 +10,55 @@
 <body>
 <%- include('header.ejs') %>
 <main class="news">
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <div class="search-container searchNews" id="searchContainer">
-        <div class="search">
-            <h3>Поиск статей</h3>
-            <div class="search-box">
-                <div class="search-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                        <path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="#AFB2BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="black" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M22 22L20 20" stroke="#AFB2BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M22 22L20 20" stroke="black" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <input type="text" placeholder="Поиск" id="searchInput">
-                <span class="close-icon" id="closeIcon">✖</span>
-            </div>
-            <br>
-            <div class="search-info">
-                <span>Ищите новости по заголовкам.</span>
-            </div>
-        </div>
-        <br>
-        <br>
-        <div class="info-card" id="infoCard">
-            <div class="info-image">
-                <img src="/images/info-image.jpg" loading="lazy">
-            </div>
-            <div class="info-content">
-                <a>
-                    <span class="info-title">
-                        Зачем читать игровые новости?
-                    </span>
-                </a>
-
-                <p class="info-desc">
-                    Новости помогают быть в курсе обновлений, багов, патчей и других важных событий в игре.
-                    <br/>
-                    Благодаря ним вы узнаете о новых возможностях, улучшениях и о многом другом.
-                </p>
-            </div>
-        </div>
-    </div>
     <ul class="container" id="newsList">
         <div class="search-tag-container">
             <h4>Попурярные темы</h4>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 20px;">
                 <a href="?tag=Updates" class="tag search-tag" id="Updates">Обновление</a>
                 <a href="?tag=AboutGame" class="tag search-tag" id="AboutGame">Об игре</a>
                 <a href="?tag=BugsErrors" class="tag search-tag" id="BugsErrors">Баги/Ошибки</a>
                 <a href="/news" class="tag search-tag" id="AllNews">Все новости</a>
+            </div>
+        </div>
+        <div class="search-container searchNews" id="searchContainer">
+            <div class="search">
+                <h3>Поиск статей</h3>
+                <div class="search-box">
+                    <div class="search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                            <path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="#AFB2BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="black" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 22L20 20" stroke="#AFB2BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 22L20 20" stroke="black" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Поиск" id="searchInput">
+                    <span class="close-icon" id="closeIcon">✖</span>
+                </div>
+                <br>
+                <div class="search-info">
+                    <span>Ищите новости по заголовкам.</span>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="info-card" id="infoCard">
+                <div class="info-image">
+                    <img src="/images/info-image.jpg" loading="lazy">
+                </div>
+                <div class="info-content">
+                    <a>
+                    <span class="info-title">
+                        Зачем читать игровые новости?
+                    </span>
+                    </a>
+
+                    <p class="info-desc">
+                        Новости помогают быть в курсе обновлений, багов, патчей и других важных событий в игре.
+                        <br/>
+                        Благодаря ним вы узнаете о новых возможностях, улучшениях и о многом другом.
+                    </p>
+                </div>
             </div>
         </div>
         <% if (allNews && allNews.length > 0) { %>
@@ -103,14 +99,12 @@
                                     <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#AFB2BF"/>
                                     <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="black" fill-opacity="0.2"/>
                                 </svg>
-                                <span>
-                                        <%= news.date %>
-                                    </span>
+                                <span><%= news.date %></span>
                             </div>
                             <div class="tags">
                                 <% if (news.tags && news.tags.length > 0) {%>
                                     <% news.tags.forEach(tags => { %>
-                                        <a class="tag search-tag-active"><%= tags.tagName === 'Updates' ? 'Обновление' : tags.tagName === 'AboutGame' ? 'Об игре' : tags.tagName === 'BugsErrors' ? 'Баги/Ошибки' : 'Все новости' %></a>
+                                        <a class="tag search-tag-active tag-default"><%= tags.tagName === 'Updates' ? 'Обновление' : tags.tagName === 'AboutGame' ? 'Об игре' : tags.tagName === 'BugsErrors' ? 'Баги/Ошибки' : 'Все новости' %></a>
                                     <% }) %>
                                 <% } %>
                             </div>
