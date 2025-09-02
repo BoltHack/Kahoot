@@ -153,10 +153,10 @@ class AuthController {
             res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('10d') });
             res.cookie('acceptCookies', 'true', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            !req.cookies['notifications'] ? res.cookie('notifications', userId.settings.notifications, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            !req.cookies['soundTrack'] ? res.cookie('soundTrack', userId.settings.soundTrack, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            !req.cookies['mainEffects'] ? res.cookie('mainEffects', userId.settings.mainEffects, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            !req.cookies['darkTheme'] ? res.cookie('darkTheme', userId.settings.darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['notifications'] !== userId.settings.notifications ? res.cookie('notifications', userId.settings.notifications, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['soundTrack'] !== userId.settings.soundTrack ? res.cookie('soundTrack', userId.settings.soundTrack, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['mainEffects'] !== userId.settings.mainEffects ? res.cookie('mainEffects', userId.settings.mainEffects, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['darkTheme'] !== userId.settings.darkTheme ? res.cookie('darkTheme', userId.settings.darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
 
             return res.json({ token: accessToken, refreshToken, user, locale, previousPage });
         } catch (err) {
