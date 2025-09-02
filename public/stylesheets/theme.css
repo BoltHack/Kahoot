@@ -140,12 +140,15 @@
         color: var(--bp);
     }
     .reviews .review-tool {
-        color: var(--f);
+        color: var(--bp);
         border: 1px solid #313338;
     }
     .reviews .review-card {
         border: 1px solid #313338;
         background-color: var(--inputModalBackground);
+    }
+    .reviews .tool-count {
+        color: #ECF1FD;
     }
     .reviews .user-name {
         color: var(--f);
