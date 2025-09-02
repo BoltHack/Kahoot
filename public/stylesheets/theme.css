@@ -13,10 +13,10 @@
         box-shadow: 12px 12px 0 #000;
         transition: transform 0.3s, box-shadow 0.3s;
     }
-    .auth .card__title, .card__a i {
+    .auth .card__title, .card__a svg {
         color: var(--f);
     }
-    .auth .card__title, .card__a i:hover {
+    .auth .card__title, .card__a svg:hover {
         color: var(--bp);
     }
     .auth, .card p {
