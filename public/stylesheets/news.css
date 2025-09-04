@@ -7,19 +7,15 @@ body {
 }
 
 .container {
-    padding: 100px 150px;
+    padding: 70px 180px;
     align-items: center;
-}
-.searchMode {
-    top: -5%;
-    right: 10%;
 }
 
 .search-container {
     /*margin-top: 205px;*/
     position: absolute;
     /*right: 10%;*/
-    margin-left: 880px;
+    margin-left: 850px;
     /*left: auto;*/
     display: block;
     box-sizing: border-box;
@@ -377,7 +373,7 @@ body {
 
 @media (max-width: 1400px) {
     .readNews {
-        margin-top: auto;
+        margin-top: 100px;
     }
     .readNews .sticky {
         display: none;

@@ -25,6 +25,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/stylesheets/news.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
+    <style>
+        .container {
+            margin-top: 40px;
+        }
+        @media (max-width: 1000px) {
+            .container {
+                margin-top: 100px;
+            }
+        }
+    </style>
 </head>
 <script>
     const newsTitle = '<%= readNews.updateTitle %>';
@@ -32,7 +42,7 @@
 <body>
 <%- include('header.ejs') %>
 <main class="news">
-    <div class="container" style="margin-top: 40px;">
+    <div class="container">
         <div class="sticky-container readNews" id="stickyHeight">
             <div class="sticky">
                 <div class="sticky-box">
