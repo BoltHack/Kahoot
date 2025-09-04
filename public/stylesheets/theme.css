@@ -407,6 +407,9 @@
     .news .info-card p {
         color: var(--bp);
     }
+    .news .search-tag-container h1 {
+        color: var(--f);
+    }
     .news .search-tag-container {
         color: var(--bp);
     }
