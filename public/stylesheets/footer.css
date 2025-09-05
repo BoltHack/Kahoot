@@ -7,7 +7,8 @@ html, body {
 .footer-container {
     max-width: 900px;
     width: 100%;
-    margin-left: 200px;
+    /*margin-left: 200px;*/
+    margin-left: 80px;
 }
 
 .footer-container-logo{
@@ -15,7 +16,6 @@ html, body {
     gap: 5px;
     z-index: 2;
     margin-left: -3.5px;
-    /*margin: 5px 75px;*/
     align-items: center;
     text-decoration: none;
     max-width: 100px;
@@ -96,11 +96,16 @@ footer p {
     word-break: break-word;
 }
 
-
 @media (max-width: 1000px) {
     .footer-container {
         margin: 20px 30px;
         flex-direction: column;
+        max-width: 700px;
+    }
+}
+@media (max-width: 800px) {
+    .footer-container {
+        max-width: 400px;
     }
     .footer-links {
         display: block;
