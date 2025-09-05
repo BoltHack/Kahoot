@@ -240,7 +240,8 @@ body {
 }
 
 .not-found {
-    margin-bottom: 450px;
+    margin-bottom: 550px;
+    text-align: center;
 }
 .writeNews {
     background: none;

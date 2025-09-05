@@ -356,7 +356,7 @@ input[type="button"]:hover {
 
 .not-found {
     margin-bottom: 450px;
-    width: 600px;
+    text-align: center;
 }
 #searchNotFound {
     display: none;
