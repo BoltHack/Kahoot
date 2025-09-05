@@ -9,6 +9,26 @@ html, body {
     width: 100%;
     margin-left: 200px;
 }
+
+.footer-container-logo{
+    display: flex;
+    gap: 5px;
+    z-index: 2;
+    margin-left: -3.5px;
+    /*margin: 5px 75px;*/
+    align-items: center;
+    text-decoration: none;
+    max-width: 100px;
+    width: 100%;
+}
+.footer-container-logo img {
+    width: 30px;
+    height: 30px;
+}
+.footer-container-logo svg {
+    fill: rgba(132, 116, 254, 1);
+}
+
 .line{
     border-top: 1px solid #666;
     margin-top: 50px;
@@ -48,13 +68,6 @@ footer p {
     width: 350px;
     flex-wrap: wrap;
     display: grid;
-}
-.footer-our-company div {
-    display: flex;
-    margin-left: -3.5px;
-}
-.footer-our-company h3 {
-    margin: 6px;
 }
 .footer-our-company p {
     color: #c8c9ce;
