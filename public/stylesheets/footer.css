@@ -3,13 +3,14 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    /*overflow-x: hidden;*/
 }
-
+.footer-container {
+    max-width: 900px;
+    width: 100%;
+    margin-left: 200px;
+}
 .line{
     border-top: 1px solid #666;
-    position: relative;
-    margin-left: 0;
     margin-top: 50px;
     margin-bottom: 50px;
     width: 100%;
@@ -26,24 +27,22 @@ main {
     flex: 1;
 }
 footer h3{
-    /*color: #f3d5b5*/
     color: rgba(132, 116, 254, 1);;
     font-weight: 750;
 }
 footer a {
-    color: #ECF1FD;
+    color: #A9A9B3;
     text-decoration: none;
 }
 footer a:hover{
     color: #F2F2F2;
-    text-decoration: underline;
 }
 footer p {
     color: #F2F2F2
 }
 .footer-links {
     display: flex;
-    margin: 20px 200px;
+    margin-top: 20px;
 }
 .footer-our-company{
     width: 350px;
@@ -58,18 +57,9 @@ footer p {
     margin: 6px;
 }
 .footer-our-company p {
-    color: #e5e5e5;
+    color: #c8c9ce;
 }
 .footer-info{
-    display: grid;
-    gap: 10px;
-    margin-left: 50px;
-    margin-top: -14.5px;
-}
-.footer-info a {
-    color: #e5e5e5;
-}
-.footer-contacts{
     display: grid;
     gap: 10px;
     margin-left: 50px;
@@ -87,8 +77,8 @@ footer p {
     height: 30px;
 }
 .company-name{
-    margin-left: 200px;
-    color: #e5e5e5;
+    /*margin-left: 200px;*/
+    color: #c8c9ce;
     max-width: 700px;
     width: 100%;
     word-break: break-word;
@@ -96,6 +86,10 @@ footer p {
 
 
 @media (max-width: 1000px) {
+    .footer-container {
+        margin: 20px 30px;
+        flex-direction: column;
+    }
     .footer-links {
         display: block;
         margin: 20px 30px;

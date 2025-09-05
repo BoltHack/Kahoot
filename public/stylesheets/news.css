@@ -384,9 +384,6 @@ body {
     .readNews-title {
         margin-top: 50px;
     }
-    .searchNews .info-card {
-        display: none;
-    }
     .news .news-meta {
         display: block;
     }
@@ -401,20 +398,19 @@ body {
         flex-direction: column;
         display: flex;
     }
-    .news .search-container {
-        position: relative;
-        max-width: 780px;
-        width: 100%;
-        /*top: 150px;*/
-        margin-left: 0;
-    }
     .news .news-footer {
         display: block;
         margin-top: 50px;
     }
 }
-@media (max-width: 1000px) {
-    /*.news .search-container {*/
-    /*    width: 91.5%;*/
-    /*}*/
+@media (max-width: 1220px) {
+    .news .search-container {
+        position: relative;
+        max-width: 780px;
+        width: 100%;
+        margin-left: 0;
+    }
+    .searchNews .info-card {
+        display: none;
+    }
 }
