@@ -10,6 +10,7 @@ body {
     padding: 20px;
     display: grid;
     flex-direction: column;
+    text-align: center;
 }
 h2 {
     margin-bottom: 20px;
