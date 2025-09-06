@@ -1042,6 +1042,23 @@ class PostController {
         }
     }
 
+    static deleteMyReview = async (req, res, next) => {
+        try {
+            const user = req.user;
+            const locale = req.cookies['locale'] || 'en';
+
+            await UsersModel.findByIdAndUpdate(user.id, { $set: { 'settings.myReview': {} } });
+
+            const successMsg = locale === 'en' ? 'Review successfully deleted!' : 'Отзыв успешно удалён!';
+            return res.status(200).json({ message: successMsg });
+
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
     static deleteReview = async (req, res, next) => {
         try {
             const { review_id } = req.params;

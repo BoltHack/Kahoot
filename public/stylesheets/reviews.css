@@ -361,3 +361,14 @@ input[type="button"]:hover {
 #searchNotFound {
     display: none;
 }
+
+#deleteReview {
+    color: #CB3427;
+    margin-left: auto;
+    margin-top: 5px;
+    cursor: pointer;
+    position: absolute;
+}
+#deleteReview:hover {
+    color: red;
+}

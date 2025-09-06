@@ -12,7 +12,7 @@ const {
     createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteAvatar,
     changeLocal, changeLocalAuth, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
     languageConfirmation, deleteBackgroundImage, changeStatus, changeAboutMe, checkChannel, deleteMyChannel,
-    createQuestion, editQuestion, deleteQuestion, requestTechSupport, sendReview
+    createQuestion, editQuestion, deleteQuestion, requestTechSupport, sendReview, deleteMyReview
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -71,7 +71,8 @@ router.post('/changeSettings', authenticateJWT, changeSettings);
 router.post('/changeStatus', authenticateJWT, changeStatus);
 router.post('/changeAboutMe', authenticateJWT, changeAboutMe);
 
-router.post('/sendReview', authenticateJWT, sendReview);
+router.post('/review-send', authenticateJWT, sendReview);
+router.post('/review-delete', authenticateJWT, deleteMyReview);
 
 router.post('/sendContacts', sendContacts);
 

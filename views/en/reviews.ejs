@@ -151,14 +151,26 @@
     <div class="review-container">
         <button class="close-btn">X</button>
         <h2>Write a Review</h2>
-        <textarea name="review" id="review" placeholder="Enter your text" required></textarea>
-        <select name="grade" id="grade" required>
-            <option value="1">⭐ 1 star</option>
-            <option value="2">⭐⭐ 2 stars</option>
-            <option value="3">⭐⭐⭐ 3 stars</option>
-            <option value="4">⭐⭐⭐⭐ 4 stars</option>
-            <option value="5">⭐⭐⭐⭐⭐ 5 stars</option>
-        </select>
+        <% if (myInfo && myInfo.review.review) { %>
+            <textarea name="review" id="review" required><%= myInfo.review.review %></textarea>
+            <select name="grade" id="grade" required>
+                <option value="1" <%= myInfo.review.grade === '1' ? 'selected' : '' %> >⭐ 1 star</option>
+                <option value="2" <%= myInfo.review.grade === '2' ? 'selected' : '' %> >⭐⭐ 2 stars</option>
+                <option value="3" <%= myInfo.review.grade === '3' ? 'selected' : '' %> >⭐⭐⭐ 3 stars</option>
+                <option value="4" <%= myInfo.review.grade === '4' ? 'selected' : '' %> >⭐⭐⭐⭐ 4 stars</option>
+                <option value="5" <%= myInfo.review.grade === '5' ? 'selected' : '' %> >⭐⭐⭐⭐⭐ 5 stars</option>
+            </select>
+            <a id="deleteReview">Удалить</a>
+        <% } else { %>
+            <textarea name="review" id="review" placeholder="Enter your text" required></textarea>
+            <select name="grade" id="grade" required>
+                <option value="1">⭐ 1 star</option>
+                <option value="2">⭐⭐ 2 stars</option>
+                <option value="3">⭐⭐⭐ 3 stars</option>
+                <option value="4">⭐⭐⭐⭐ 4 stars</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5 stars</option>
+            </select>
+        <% } %>
         <div class="edit-buttons">
             <input type="button" value="Submit" id="sendReview">
         </div>

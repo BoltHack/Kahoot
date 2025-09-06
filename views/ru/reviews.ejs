@@ -153,7 +153,6 @@
             <h3 class="not-found" id="searchNotFound">Ничего не найдено.</h3>
             <%- include('../pagination.ejs') %>
         </ul>
-
     </div>
 </main>
 
@@ -161,14 +160,26 @@
     <div class="review-container">
         <button class="close-btn">X</button>
         <h2>Напишите отзыв о нас</h2>
-        <textarea name="review" id="review" placeholder="Введите желаемый текст" required></textarea>
-        <select name="grade" id="grade" required>
-            <option value="1">⭐ 1 звезда</option>
-            <option value="2">⭐⭐ 2 звезды</option>
-            <option value="3">⭐⭐⭐ 3 звезды</option>
-            <option value="4">⭐⭐⭐⭐ 4 звезды</option>
-            <option value="5">⭐⭐⭐⭐⭐ 5 звёзд</option>
-        </select>
+        <% if (myInfo && myInfo.review.review) { %>
+            <textarea name="review" id="review" required><%= myInfo.review.review %></textarea>
+            <select name="grade" id="grade" required>
+                <option value="1" <%= myInfo.review.grade === '1' ? 'selected' : '' %> >⭐ 1 звезда</option>
+                <option value="2" <%= myInfo.review.grade === '2' ? 'selected' : '' %> >⭐⭐ 2 звезды</option>
+                <option value="3" <%= myInfo.review.grade === '3' ? 'selected' : '' %> >⭐⭐⭐ 3 звезды</option>
+                <option value="4" <%= myInfo.review.grade === '4' ? 'selected' : '' %> >⭐⭐⭐⭐ 4 звезды</option>
+                <option value="5" <%= myInfo.review.grade === '5' ? 'selected' : '' %> >⭐⭐⭐⭐⭐ 5 звёзд</option>
+            </select>
+            <a id="deleteReview">Удалить</a>
+        <% } else { %>
+            <textarea name="review" id="review" placeholder="Введите желаемый текст" required></textarea>
+            <select name="grade" id="grade" required>
+                <option value="1">⭐ 1 звезда</option>
+                <option value="2">⭐⭐ 2 звезды</option>
+                <option value="3">⭐⭐⭐ 3 звезды</option>
+                <option value="4">⭐⭐⭐⭐ 4 звезды</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5 звёзд</option>
+            </select>
+        <% } %>
         <div class="edit-buttons">
             <input type="button" value="Отправить" id="sendReview">
         </div>

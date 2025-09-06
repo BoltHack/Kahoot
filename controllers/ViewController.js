@@ -571,9 +571,11 @@ class ViewController {
             const page = parseInt(req.query.page) || 1;
             const limit = 8;
             const skip = (page - 1) * limit;
-            const filteredQuery = { 'settings.myReview.review': { $exists: true, $ne: '' } };
+            const filtered = {
+                'settings.myReview.review': { $exists: true, $ne: '' },
+            };
 
-            const allReviews = await UsersModel.find(filteredQuery)
+            const allReviews = await UsersModel.find(filtered)
                 .sort({ 'settings.myReview.date': -1 })
                 .skip(skip)
                 .limit(limit)
@@ -587,7 +589,7 @@ class ViewController {
                 grade: user.settings.myReview.grade,
                 date: user.settings.myReview.date
             }));
-            const totalReviews = await UsersModel.countDocuments(filteredQuery);
+            const totalReviews = await UsersModel.countDocuments(filtered);
 
             const renderData = {
                 allReviews: reviews,
@@ -599,11 +601,19 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(locale === 'en' ? 'en/reviews' : 'ru/reviews', {user, ...renderData });
+                    const userInfo = await UsersModel.findById(user.id);
+                    const myInfo = {
+                        id: userInfo.id,
+                        name: userInfo.name,
+                        image: userInfo.image,
+                        review: userInfo.settings.myReview
+                    }
+
+                    return res.render(locale === 'en' ? 'en/reviews' : 'ru/reviews', {user, ...renderData, myInfo });
                 });
             }
             else {
-                return res.render(locale === 'en' ? 'en/reviews' : 'ru/reviews', { user: '', ...renderData });
+                return res.render(locale === 'en' ? 'en/reviews' : 'ru/reviews', { user: '', ...renderData, myInfo: '' });
             }
         } catch (err) {
             next(err);

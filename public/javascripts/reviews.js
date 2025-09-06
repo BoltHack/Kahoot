@@ -26,7 +26,7 @@ document.getElementById('sendReview').addEventListener('click', () => {
     const review = document.getElementById('review').value;
     const grade = document.getElementById('grade').value;
 
-    fetch('/sendReview',{
+    fetch('/review-send',{
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -87,5 +87,52 @@ document.getElementById('searchInput').addEventListener('input', function() {
             showReview();
         });
 
+    });
+});
+
+document.getElementById('deleteReview').addEventListener('click', () => {
+    const deleteMenu = document.createElement('div');
+    const barrier = document.getElementById('barrier');
+
+    deleteMenu.innerHTML = `
+    <div class="delete-border">
+        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Are you sure you want to delete your review?` : `Вы действительно хотите удалить свой отзыв?`}</h4>
+        <div class="delete-modal">
+            <button id="requestBtn">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
+            <button id="closeDeleteBorder">${localeType === 'en' ? 'Cancel' : 'Отмена'}</button>
+        </div>
+    </div>
+`;
+    barrier.hidden = false;
+    sendReviewMenu.hidden = true;
+    document.body.appendChild(deleteMenu);
+
+    document.getElementById('requestBtn').addEventListener('click', () => {
+        fetch('/review-delete',{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(res => res.json())
+            .then(data => {
+                let {error} = data;
+                if (error) {
+                    console.log('error', error);
+                    showToast('error', error);
+                } else {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    });
+    document.getElementById('closeDeleteBorder').addEventListener('click', () => {
+        barrier.hidden = true;
+        document.body.removeChild(deleteMenu);
+    });
+    barrier.addEventListener('click', () => {
+        barrier.hidden = true;
+        document.body.removeChild(deleteMenu);
     });
 });
