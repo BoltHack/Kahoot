@@ -43,7 +43,7 @@
 
                 <div class="search-container" id="searchContainer">
                     <div class="send-review">
-                        <button id="sendReviewBtn">Write a Review</button>
+                        <button id="sendReviewBtn"><%= myInfo && myInfo.review.review ? 'My review' : 'Write a Review' %></button>
                     </div>
                     <div class="search">
                         <h3>Search Users</h3>
