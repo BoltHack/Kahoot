@@ -1,14 +1,15 @@
 html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+    /*height: 100%;*/
+    /*margin: 0;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    overflow-x: hidden;
 }
 .footer-container {
-    max-width: 900px;
-    width: 100%;
-    /*margin-left: 200px;*/
-    margin-left: 83px;
+    /*max-width: 900px;*/
+    /*width: 100%;*/
+    /*margin-left: 83px;*/
+    padding: 0 100px;
 }
 
 .footer-container-logo{
@@ -33,7 +34,7 @@ html, body {
     border-top: 1px solid #666;
     margin-top: 50px;
     margin-bottom: 50px;
-    width: 100%;
+    /*width: 100%;*/
 }
 footer {
     font-family: Arial, sans-serif;
@@ -98,14 +99,8 @@ footer p {
 
 @media (max-width: 1000px) {
     .footer-container {
-        margin: 20px 30px;
+        padding: 0 20px;
         flex-direction: column;
-        max-width: 700px;
-    }
-}
-@media (max-width: 800px) {
-    .footer-container {
-        max-width: 400px;
     }
     .footer-links {
         display: block;
