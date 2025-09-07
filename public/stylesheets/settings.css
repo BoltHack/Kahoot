@@ -310,9 +310,9 @@ input:checked + .slider::before {
     box-sizing: border-box;
 }
 #editStatusMenu a, #editAboutMeMenu a {
-    position: absolute;
-    top: 60%;
-    right: 8%;
+    /*position: absolute;*/
+    /*right: 10px;*/
+    /*top: -10px;*/
     color: black;
 }
 

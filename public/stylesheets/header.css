@@ -637,3 +637,10 @@ html.lightTheme {
         z-index: 3;
     }
 }
+
+@media (max-width: 600px) {
+    .rules-container, .privacyPolicy-container {
+        margin-left: 0;
+        max-width: 350px;
+    }
+}

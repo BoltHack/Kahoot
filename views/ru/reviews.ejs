@@ -161,7 +161,8 @@
         <button class="close-btn">X</button>
         <h2>Напишите отзыв о нас</h2>
         <% if (myInfo && myInfo.review.review) { %>
-            <textarea name="review" id="review" required><%= myInfo.review.review %></textarea>
+            <textarea name="review" id="review" maxlength="1000" required><%= myInfo.review.review %></textarea>
+            <a id="maxReviewLength">0/1000</a>
             <select name="grade" id="grade" required>
                 <option value="1" <%= myInfo.review.grade === '1' ? 'selected' : '' %> >⭐ 1 звезда</option>
                 <option value="2" <%= myInfo.review.grade === '2' ? 'selected' : '' %> >⭐⭐ 2 звезды</option>
@@ -171,7 +172,8 @@
             </select>
             <a id="deleteReview">Удалить</a>
         <% } else { %>
-            <textarea name="review" id="review" placeholder="Введите желаемый текст" required></textarea>
+            <textarea name="review" id="review" placeholder="Введите желаемый текст" maxlength="1000" required></textarea>
+            <a id="maxReviewLength">0/1000</a>
             <select name="grade" id="grade" required>
                 <option value="1">⭐ 1 звезда</option>
                 <option value="2">⭐⭐ 2 звезды</option>

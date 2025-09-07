@@ -208,6 +208,9 @@
     #sendReviewMenu .review-container p {
         color: var(--f);
     }
+    #sendReviewMenu #maxReviewLength {
+        color: var(--bp);
+    }
     #sendReviewMenu .edit-buttons input {
         border: 1px solid #313338;
         background-color: var(--inputModalBackground);

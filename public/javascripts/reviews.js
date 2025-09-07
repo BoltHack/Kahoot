@@ -2,6 +2,10 @@ const barrier = document.getElementById('barrier');
 
 const sendReviewBtn = document.getElementById('sendReviewBtn');
 const sendReviewMenu = document.getElementById('sendReviewMenu');
+const maxReviewLength = document.getElementById('maxReviewLength');
+
+const review = document.getElementById('review');
+const grade = document.getElementById('grade');
 sendReviewBtn.addEventListener('click', () => {
     if (!localStorage.getItem('token')) {
         authMenu();
@@ -11,6 +15,7 @@ sendReviewBtn.addEventListener('click', () => {
     sendReviewMenu.hidden = false;
     barrier.hidden = false;
     document.body.style.overflowY = 'hidden';
+    maxReviewLength.textContent = `${review.value.length}/1000`
     sendReviewMenu.querySelector('.close-btn').addEventListener('click', () => {
         sendReviewMenu.hidden = true;
         barrier.hidden = true;
@@ -22,16 +27,17 @@ sendReviewBtn.addEventListener('click', () => {
         document.body.style.overflowY = 'auto';
     });
 });
-document.getElementById('sendReview').addEventListener('click', () => {
-    const review = document.getElementById('review').value;
-    const grade = document.getElementById('grade').value;
+review.addEventListener('input', () => {
+    maxReviewLength.textContent = `${review.value.length}/1000`
+})
 
+document.getElementById('sendReview').addEventListener('click', () => {
     fetch('/review-send',{
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ review, grade })
+        body: JSON.stringify({ review: review.value, grade: grade.value })
     }).then(res => res.json())
         .then(data => {
             let {error} = data;
