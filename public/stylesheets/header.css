@@ -436,6 +436,56 @@ html.lightTheme {
     opacity: 0.8;
 }
 
+.find-border{
+    max-width: 400px;
+    width: 100%;
+    height: 200px;
+    background: rgb(231,225,231);
+    background: linear-gradient(144deg, rgba(231,225,231,1) -42%, rgba(231,225,231,1) 100%);
+    border-radius: 10px;
+    z-index: 4;
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-name: openAnimation;
+    animation-duration: 0.4s
+}
+.border-data{
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.find-input{
+    width: 250px;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 7px 0 rgb(0, 0, 0, 0.2);
+    outline: none;
+    color: dimgray;
+}
+.find-input:invalid {
+    animation: justshake 0.3s forwards;
+    color: red;
+}
+
+.find-button{
+    display: inline-block;
+    padding: 12px;
+    background-color: #468faf;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+.find-button:hover {
+    opacity: 0.8;
+    color: black;
+}
 
 .media-body {
     font-family: Arial, sans-serif;
@@ -444,10 +494,10 @@ html.lightTheme {
     margin: 0;
     width: 100%;
     height: 100%;
-    z-index: 3;
-    overflow-x: hidden;
-    overflow-y: scroll;
-
+    /*z-index: 3;*/
+    overflow: hidden;
+    /*overflow-x: hidden;*/
+    /*overflow-y: scroll;*/
 }
 .media-header {
     display: flex;
@@ -456,7 +506,7 @@ html.lightTheme {
     width: 100%;
     height: 70px;
     position: fixed;
-    z-index: 3;
+    /*z-index: 3;*/
     background-color: #16171d;
     top: 0;
     left: 0;
@@ -497,21 +547,55 @@ html.lightTheme {
 .media-border {
     background: #121518;
     width: 100%;
-    height: 120%;
+    height: 100vh;
     flex-direction: column;
     position: fixed;
-    /*margin-top: 70px;*/
+    left: 0;
     display: flex;
     user-select: none;
-    /*border: 1px solid white;*/
-    padding: 20px;
+    padding: 0 20px;
     z-index: 3;
-    overflow-x: hidden;
     overflow-y: scroll;
+    animation-name: openMediaBorderAnimation;
+    animation-duration: 0.4s
+}
+@keyframes openMediaBorderAnimation {
+    from {transform: translateY(-100%);; opacity: 0}
+    to {transform: translateY(0);; opacity: 1}
 }
 .media-scroller {
-    overflow-y: scroll;
-    padding: 100px 0;
+    padding-top: 70px;
+    flex: 1;
+}
+.media-tool {
+    padding: 0 20px;
+}
+.media-tool p {
+    color: #ECF1FD;
+    font-size: 18px;
+    font-weight: 500;
+}
+.media-tool ul {
+    list-style-type: none;
+    font-size: 18px;
+    font-weight: 500;
+}
+.media-tool li {
+    margin-bottom: 15px;
+}
+.media-tool li a {
+    text-decoration: none;
+    color: #A9A9B3;
+}
+.media-b-btn p {
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.media-line {
+    border: 1px solid #2b2640;
+    border-radius: 5px;
+    /*width: 80%;*/
 }
 .media-dropdowns .dropdown {
     max-width: 100px;
@@ -519,41 +603,6 @@ html.lightTheme {
 .media-dropdown-content {
     margin-left: 98px;
     margin-top: -40px;
-}
-
-
-.phone-container {
-    /*position: relative;*/
-    /*left: 50%;*/
-    /*transform: translateX(-50%);*/
-    display: flex;
-    gap: 10px;
-    margin-top: 100px;
-}
-.phone-container a {
-    display: flex;
-    gap: 10px;
-    background-color: #343a40;
-    color: white;
-    font-size: 12px;
-    padding: 10px 10px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    /*display: block;*/
-    margin-top: 20px;
-    width: 100px;
-    text-decoration: none;
-}
-.phone-container a svg {
-    width: 14px;
-    height: 14px;
-}
-
-.phone-container .support-btn {
-    background: #ff5733;
 }
 
 @media (max-width: 1400px) {

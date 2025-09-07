@@ -49,22 +49,22 @@
     }
 
     /*main*/
-    .main .new-border {
+    .find-border {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         background: #16171d;
         border: 1px solid #313338;
     }
-    .main .new-border .find-button {
+    .find-border .find-button {
         border: 1px solid #313338;
         background-color: var(--inputModalBackground);
         color: var(--bp);
     }
-    .main .new-border input {
+    .find-border input {
         border: 1px solid #313338;
         background-color: var(--inputModalBackground);
         color: var(--bp);
     }
-    .main .new-border h4 {
+    .find-border h4 {
         color: var(--bp);
     }
     .main footer {

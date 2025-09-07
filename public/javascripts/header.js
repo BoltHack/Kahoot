@@ -97,11 +97,14 @@ function authMenu() {
 function mediaMenu() {
     const mediaBorder = document.getElementById('mediaBorder');
     const closeMediaBorder = document.getElementById('closeMediaBorder');
+    // const header = document.querySelector('.header');
 
     mediaBorder.style.display = 'block';
+    // header.style.display = 'none';
 
     closeMediaBorder.addEventListener('click', () => {
         mediaBorder.style.display = 'none';
+        // header.style.display = 'block';
     });
 }
 
