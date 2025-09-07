@@ -595,7 +595,7 @@ html.lightTheme {
 .media-line {
     border: 1px solid #2b2640;
     border-radius: 5px;
-    /*width: 80%;*/
+    width: 95%;
 }
 .media-dropdowns .dropdown {
     max-width: 100px;
