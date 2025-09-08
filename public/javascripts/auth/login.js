@@ -89,7 +89,7 @@ function togglePassword() {
     const showPassword = document.getElementById('showPassword');
     const hidePassword = document.getElementById('hidePassword');
 
-    isVisible  = !isVisible ;
+    isVisible  = !isVisible;
 
     pwd.type = isVisible ? 'text' : 'password';
     if (isVisible) {

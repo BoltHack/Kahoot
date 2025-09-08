@@ -182,14 +182,18 @@ body {
 .views {
     display: flex;
     margin-top: 5px;
+    margin-left: 50px;
+    align-items: center;
     gap: 5px;
 }
-.views span {
-    font-size: 28px;
-    margin-top: 1.5px;
+.views span svg {
+    width: 25px;
+    height: 25px;
+    margin-top: 2px;
 }
 .views p {
-    font-size: 15px;
+    font-size: 16px;
+    /*font-weight: 550;*/
 }
 .stats p {
     margin-top: 15px;
@@ -198,7 +202,7 @@ body {
     margin-top: 5px;
     display: flex;
     gap: 15px;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
     border: 1px solid #313338;
     padding: 5px 8px;
     border-radius: 12px;
