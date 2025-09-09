@@ -623,7 +623,12 @@ html.lightTheme {
         display: block;
         color: #fff;
     }
+    header {
+        z-index: 3;
+    }
+}
 
+@media (max-width: 600px) {
     .header .container-logo svg {
         display: none;
     }
@@ -633,12 +638,6 @@ html.lightTheme {
         margin-left: 5px;
         z-index: 4;
     }
-    header {
-        z-index: 3;
-    }
-}
-
-@media (max-width: 600px) {
     .rules-container, .privacyPolicy-container {
         margin-left: 0;
         max-width: 350px;
