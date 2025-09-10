@@ -1,12 +1,23 @@
 const searchContainer = document.getElementById('searchContainer');
 const searchNotFound = document.getElementById('searchNotFound');
 
+const tags = JSON.parse(sessionStorage.getItem('tags') || '{}');
+const windowParams = new URLSearchParams(window.location.search);
+
 document.getElementById('searchInput').addEventListener('input', function() {
     const searchValue = this.value.trim().toLowerCase();
     const newsList = document.getElementById('newsList');
     const searchNews = newsList.getElementsByTagName('li');
 
     let foundVisible = false;
+
+    const url = new URL(window.location.href);
+
+    tags.searchNews = searchValue;
+    sessionStorage.setItem('tags', JSON.stringify(tags));
+
+    url.searchParams.set("searchNews", searchValue);
+    window.history.replaceState({}, "", url);
 
     Array.from(searchNews).forEach(news => {
         const newsTitleElement = news.querySelector('.news-title');
@@ -44,13 +55,14 @@ document.getElementById('closeIcon').addEventListener('click', () => {
         news.style.display = 'block';
         searchContainer.classList.remove('searchMode');
     });
+    tags.searchNews = '';
+    sessionStorage.setItem('tags', JSON.stringify(tags));
+    document.getElementById('searchInput').dispatchEvent(new Event('input', {bubbles: true}))
 });
 
 
 function tagsRegulator () {
-    const params = new URLSearchParams(window.location.search);
-    const tag = params.get('tag');
-    const tags = JSON.parse(sessionStorage.getItem('tags') || '{}');
+    const tag = windowParams.get('tag');
 
     if (tag === 'Updates') {
         document.getElementById('Updates').classList.add('search-tag-active');
@@ -65,7 +77,7 @@ function tagsRegulator () {
         document.getElementById('AllNews').classList.add('search-tag-active');
     }
     tags.tag = tag;
-    tags.page = params.get('page') || '1';
+    tags.page = windowParams.get('page') || '1';
     sessionStorage.setItem('tags', JSON.stringify(tags));
 
 }
@@ -120,3 +132,18 @@ socket.on('reactionsCount', async (data) => {
         }
     }
 });
+
+function checkSearchInputValue() {
+    const referrer = document.referrer || window.location.pathname;
+    const searchInput = document.getElementById('searchInput');
+
+    if (!referrer.includes('/news')) {
+        searchInput.value = '';
+    }
+    if (tags.searchNews) {
+        searchInput.value = tags.searchNews;
+    }
+    searchInput.dispatchEvent(new Event('input', {bubbles: true}));
+}
+
+checkSearchInputValue();
