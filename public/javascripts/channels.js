@@ -232,6 +232,14 @@ function openToolsMenu(msgId) {
             toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
         }
     });
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', () => {
+            toolsId.querySelector('.dropdown-menu').style.display = 'none';
+            message.style.backgroundColor = '';
+            toolsId.style.display = 'none';
+            toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+        });
+    });
 }
 
 function addHoldListener(element, delay, callback) {
