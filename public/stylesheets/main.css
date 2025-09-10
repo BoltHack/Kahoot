@@ -199,6 +199,11 @@ footer button {
     left: 60%;
 }
 
+@media (max-width: 1400px) {
+    .home-container {
+        left: 35%;
+    }
+}
 
 @media (max-width: 1000px) {
     .home-container {
@@ -210,8 +215,4 @@ footer button {
         padding: 8px;
         align-items: start;
     }
-    /*body {*/
-    /*    height: 100vh;*/
-    /*    overflow-y: scroll;*/
-    /*}*/
 }

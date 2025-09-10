@@ -1011,6 +1011,7 @@ class PostController {
     static sendReview = async (req, res, next) => {
         try {
             const user = req.user;
+            const userInfo = await UsersModel.findById(user.id);
             const locale = req.cookies['locale'] || 'en';
             const {review, grade} = req.body;
             const currentDate = new Date();
@@ -1020,8 +1021,13 @@ class PostController {
                 return res.status(400).json({ error: errorMsg });
             }
 
+            if (review === userInfo.settings.myReview.review && grade.toString() === userInfo.settings.myReview.grade.toString()) {
+                const errorMsg = locale === 'en' ? 'There have been no changes to the review.' : 'В отзыве не произошло никаких изменений.';
+                return res.status(400).json({ error: errorMsg });
+            }
+
             await UsersModel.findByIdAndUpdate(
-                user.id,
+                userInfo.id,
                 {
                     $set: {
                         'settings.myReview.review': review,
