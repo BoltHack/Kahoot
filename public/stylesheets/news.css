@@ -180,7 +180,7 @@ body {
 /*}*/
 .views {
     display: flex;
-    margin-top: 5px;
+    margin-top: 6px;
     margin-left: 50px;
     align-items: center;
     gap: 5px;

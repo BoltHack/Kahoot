@@ -469,7 +469,7 @@
     .news .news-date {
         color: var(--bp);
     }
-    .news .stats .likes-dislikes {
+    .news .stats .likes-dislikes, .admin-tools .stats .likes-dislikes {
         color: var(--bp);
     }
     .news .stats .likes-dislikes svg {
