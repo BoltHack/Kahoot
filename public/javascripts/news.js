@@ -139,11 +139,13 @@ function checkSearchInputValue() {
 
     if (!referrer.includes('/news')) {
         searchInput.value = '';
+        tags.searchNews = '';
+        searchInput.dispatchEvent(new Event('input', {bubbles: true}));
     }
-    if (tags.searchNews) {
+    if (tags.searchNews && tags.searchNews.length > 0) {
         searchInput.value = tags.searchNews;
+        searchInput.dispatchEvent(new Event('input', {bubbles: true}));
     }
-    searchInput.dispatchEvent(new Event('input', {bubbles: true}));
 }
 
 checkSearchInputValue();
