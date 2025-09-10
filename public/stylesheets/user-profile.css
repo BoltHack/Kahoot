@@ -17,7 +17,7 @@ body {
 
 .profile-container {
     max-width: 960px;
-    margin: 70px auto;
+    margin: 100px auto;
     padding: 20px;
     font-family: 'Rubik', sans-serif;
 }
@@ -136,12 +136,18 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s ease;
+    /*align-items: center;*/
+    /*display: flex;*/
+    /*gap: 5px;*/
 }
 
 .btn:hover {
     background: #2563eb;
 }
-
+.btn svg {
+    width: 15px;
+    height: 15px;
+}
 .info-section {
     width: 65%;
     padding: 20px;

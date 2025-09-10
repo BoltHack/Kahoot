@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const allBannedId = updateBannedUsers.find(b => b.bannedId === id);
             if (allBannedId) {
                 window.removeEventListener("beforeunload", handler);
-                const errorMsg = localeType === 'en' ? 'You have been disconnected from this by the administrator.' : 'Вы были отключены от этой администратором.';
+                const errorMsg = localeType === 'en' ? 'You have been disconnected from this game by an administrator.' : 'Вы были отключены от этой игры администратором.';
                 window.location.assign(`/error?code=banned&message=${encodeURIComponent(errorMsg)}`);
             }
         }

@@ -1022,7 +1022,7 @@ class PostController {
             }
 
             if (review === userInfo.settings.myReview.review && grade.toString() === userInfo.settings.myReview.grade.toString()) {
-                const errorMsg = locale === 'en' ? 'There have been no changes to the review.' : 'В отзыве не произошло никаких изменений.';
+                const errorMsg = locale === 'en' ? 'No changes were found in the review.' : 'В отзыве не обнаружено никаких изменений.';
                 return res.status(400).json({ error: errorMsg });
             }
 

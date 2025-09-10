@@ -34,7 +34,7 @@ io.on('connection', async (socket) => {
             if (!game) return;
 
             setTimeout(async () => {
-                console.log('online:', game.game_online.online);
+                console.log('Онлайн в', gameId + ':', game.game_online.online);
                 const gameOnline = Number(game.game_online.online);
 
                 if (gameOnline < 2) {

@@ -70,6 +70,8 @@ body {
     border-radius: 10px;
     background: #f7f7f7;
     transition: background 0.3s ease;
+    cursor: default;
+    user-select: none;
 }
 .setting:hover {
     background: #eaeaea;
