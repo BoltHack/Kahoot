@@ -81,6 +81,17 @@ body {
     padding: 10px;
     display: none;
     flex-direction: column;
+    animation-name: openAnswerMenuAnimation;
+    animation-duration: 0.4s
+}
+@keyframes openAnswerMenuAnimation {
+    from {
+        opacity: 0;
+        background-color: grey;
+    }
+    to {
+        opacity: 1;
+    }
 }
 .faq-section button {
     display: flex;

@@ -188,7 +188,7 @@ function showTools(msgData) {
     }
 }
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.body.offsetWidth < 1400) {
+    if (document.body.offsetWidth < 700) {
         document.querySelectorAll('.message').forEach(msg => {
             const msgId = msg.dataset.id;
             msg.querySelector('.tools-settings').style.display = 'none';

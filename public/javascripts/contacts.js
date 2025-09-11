@@ -3,6 +3,10 @@ function openAnswerMenu(faqNumber) {
     const faqAnswer = faqSection.querySelector('.faq-answer');
     const faqOpen = faqSection.querySelector('.faq-open');
 
+    document.querySelectorAll('.faq-section').forEach(e => {
+        e.querySelector('.faq-answer').style.display = 'none';
+        e.querySelector('.faq-open').innerHTML = '+';
+    });
     if (faqAnswer.style.display === 'none' || faqAnswer.style.display === '') {
         faqAnswer.style.display = 'flex';
         faqOpen.innerHTML = '⎯';

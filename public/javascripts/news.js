@@ -140,6 +140,7 @@ function checkSearchInputValue() {
     if (!referrer.includes('/news')) {
         searchInput.value = '';
         tags.searchNews = '';
+        sessionStorage.setItem('tags', JSON.stringify(tags));
     }
     if (tags.searchNews && tags.searchNews.length > 0) {
         searchInput.value = tags.searchNews;

@@ -560,8 +560,8 @@ html.lightTheme {
     animation-duration: 0.4s
 }
 @keyframes openMediaBorderAnimation {
-    from {transform: translateY(-100%);; opacity: 0}
-    to {transform: translateY(0);; opacity: 1}
+    from {transform: translateY(-100%); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
 }
 .media-scroller {
     padding-top: 70px;
