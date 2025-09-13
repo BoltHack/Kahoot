@@ -78,7 +78,7 @@
             <div class="companion-info">
                 <img src="<%= companion.image %>">
                 <h2><%= companion.name %></h2>
-                <p>Это начало истоии ваших личных сообщений с <strong><%= companion.name %></strong>.</p>
+                <p>Это начало истории ваших личных сообщений с <strong><%= companion.name %></strong>.</p>
                 <% if ( myData.myFriends.some(friend => friend.id.toString() === companion.id.toString()) ) { %>
                     <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>')">➖ Удалить из друзей</button>
                 <% } else { %>
