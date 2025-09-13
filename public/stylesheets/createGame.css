@@ -6,7 +6,9 @@ body{
     background-repeat: no-repeat;
     overflow-x: hidden;
 }
-
+.redaction-container {
+    margin-top: 100px;
+}
 .button {
     /*appaerance: none;*/
     font: inherit;
@@ -24,7 +26,7 @@ body{
     flex-wrap: wrap;
 }
 
-.container.redactionGame {
+.container .redactionGame {
     position: static;
     left: auto;
     top: auto;
@@ -32,18 +34,17 @@ body{
     max-width: 500px;
 }
 .container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
     /*width: 100%;*/
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    /*padding: 1.5rem;*/
 }
-
 .modal {
     display: flex;
     flex-direction: column;
@@ -227,12 +228,8 @@ body{
 }
 
 .questions-modal {
-    position: sticky;
-    /*left: 2%;*/
-    top: 20.5%;
-    max-width: 850px;
+    max-width: 900px;
     border: 1px solid black;
-    /*padding: 10px 0;*/
     width: 100%;
     background-color: #fff;
     box-shadow: 0 15px 30px 0 rgba(0, 125, 171, 0.15);
@@ -267,7 +264,7 @@ body{
 .game-questions {
     display: flex;
     gap: 50px;
-    justify-content: center;
+    /*justify-content: center;*/
     padding: 10px;
     flex-wrap: wrap;
 }
@@ -280,7 +277,9 @@ body{
     background: rgb(255, 255, 255);
     padding: 20px;
     /*border: 1px solid black;*/
-    box-shadow: 0 15px 30px 0 rgba(0, 125, 171, 0.15);
+    /*box-shadow: 0 15px 30px 0 rgba(0, 125, 171, 0.15);*/
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .card__img img {

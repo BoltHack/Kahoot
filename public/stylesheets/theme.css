@@ -270,6 +270,7 @@
     .questions-modal .card {
         background: var(--inputModalBackground);
         color: var(--bp);
+        border: 1px solid #313338;
     }
     .questions-modal .card__span {
         background-color: #151320;
