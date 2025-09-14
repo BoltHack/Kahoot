@@ -136,9 +136,11 @@ document.getElementById('deleteReview').addEventListener('click', () => {
     document.getElementById('closeDeleteBorder').addEventListener('click', () => {
         barrier.hidden = true;
         document.body.removeChild(deleteMenu);
+        document.body.style.overflowY = 'auto';
     });
     barrier.addEventListener('click', () => {
         barrier.hidden = true;
         document.body.removeChild(deleteMenu);
+        document.body.style.overflowY = 'auto';
     });
 });
