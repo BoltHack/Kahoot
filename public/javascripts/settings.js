@@ -388,8 +388,8 @@ function changeSettings() {
 let isVisible = false;
 
 function togglePassword() {
-    const pwd = document.getElementById('pwd');
-    const cpwd = document.getElementById('cpwd');
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
     const eye = document.getElementById('tp');
 
     const hidePassword = localeType === 'en'? 'Hide password' : 'Скрыть пароль';
@@ -397,7 +397,7 @@ function togglePassword() {
 
     isVisible  = !isVisible ;
 
-    pwd.type = isVisible ? 'text' : 'password';
-    cpwd.type = isVisible ? 'text' : 'password';
+    newPassword.type = isVisible ? 'text' : 'password';
+    confirmPassword.type = isVisible ? 'text' : 'password';
     eye.innerText = isVisible ? hidePassword : showPassword;
 }
