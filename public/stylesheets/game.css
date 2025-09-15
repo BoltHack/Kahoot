@@ -88,6 +88,7 @@ footer {
     margin-left: 0;
     padding: 20px 0;
     width: 100%;
+    /*display: block;*/
 }
 main {
     flex: 1;
@@ -249,13 +250,24 @@ main {
 }
 .game-timer{
     margin-top: 17px;
-    color: white;
+    color: #fff;
     font-size: 30px;
     font-weight: 700;
     align-items: center;
     text-align: center;
     justify-content: center;
 }
+.media-timer {
+    color: #fff;
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 8px;
+    background-color: #7209b7;
+    text-align: center;
+    margin-bottom: 10px;
+    display: none;
+}
+
 .main-timer {
     display: none;
 }
@@ -480,11 +492,12 @@ main {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
 }
 .users-online svg {
     width: 30px;
     height: 30px;
-    padding: 0 60px;
 }
 #usersCount {
     border-radius: 8px;
@@ -1055,7 +1068,7 @@ main {
 }
 #usersCountLoaderSvg {
     position: absolute;
-    margin: 10px 40px;
+    left: 30%;
 }
 .dots-container {
     display: flex;
@@ -1354,12 +1367,6 @@ main {
         margin-top: 5px;
     }
     #gameTimer {
-        /*left: 4%;*/
-        /*max-width: 50px;*/
-        /*width: 100%;*/
-        /*max-height: 50px;*/
-        /*height: 100%;*/
-        /*align-items: center;*/
         display: none;
     }
     .all-container {
@@ -1368,14 +1375,14 @@ main {
     .quest-container-btn-count {
         display: block;
     }
-    .game-timer {
-        font-size: 15px;
-    }
     .leave-button {
         max-width: 120px;
         width: 100%;
     }
     .friend-container {
         width: 50%;
+    }
+    #usersCount, .users-online {
+        width: 90%;
     }
 }

@@ -64,7 +64,6 @@
                 <div class="dot"></div>
                 <div class="dot"></div>
                 <div class="dot"></div>
-                <div class="dot"></div>
             </section>
         </div>
         <div id="userInfo"></div>
@@ -246,17 +245,20 @@
 <div class="new-barrier" id="barrier" hidden></div>
 
 <footer>
-    <div class="game-pin">
-        <span class="answers-count"></span>
-        <div class="media-correct-answers">
-            <div class="media-correct-answers-count">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-check-icon lucide-search-check"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <span class="media-game-correct-answers-count"></span>
+    <div style="padding: 10px;">
+        <div class="media-timer"></div>
+        <div class="game-pin">
+            <span class="answers-count"></span>
+            <div class="media-correct-answers">
+                <div class="media-correct-answers-count">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-check-icon lucide-search-check"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <span class="media-game-correct-answers-count"></span>
+                </div>
             </div>
-        </div>
-        <div class="pin">
-            <span>Код игры:</span>
-            <span style="font-weight: 600"><%= gameId._id %></span>
+            <div class="pin">
+                <span>Код игры:</span>
+                <span style="font-weight: 600;"><%= gameId._id %></span>
+            </div>
         </div>
     </div>
 </footer>

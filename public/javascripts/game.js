@@ -59,8 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
             skipQuestion();
         }
 
-        document.getElementById('gameTimer').querySelector('.game-timer').textContent =
-            remainingTime;
+        if (document.body.offsetWidth < 1000) {
+            document.querySelector('.media-timer').textContent = remainingTime;
+        } else {
+            document.getElementById('gameTimer').querySelector('.game-timer').textContent = remainingTime;
+        }
     };
 
     socket.on('updateGameCount', async (type) => {
@@ -230,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function onTools() {
         if (document.body.offsetWidth < 1000) {
             document.querySelector('.media-correct-answers').style.display = 'block';
+            document.querySelector('.media-game-correct-answers-count').style.display = 'block';
+            document.querySelector('.media-timer').style.display = 'block';
         }
         questions.hidden = false;
         requestSent = false;
@@ -240,6 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function offTools() {
         if (document.body.offsetWidth < 1000) {
             document.querySelector('.media-correct-answers').style.display = 'none';
+            document.querySelector('.media-game-correct-answers-count').style.display = 'none';
+            document.querySelector('.media-timer').style.display = 'none';
         }
         questionsDiv.innerHTML = '';
         questions.hidden = true;
