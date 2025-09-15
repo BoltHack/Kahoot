@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# game: http://ogp.me/ns/game#">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kahoot | <%= gameId.game_name %></title>
@@ -12,6 +12,12 @@
             document.documentElement.classList.remove('darkTheme');
         }
     </script>
+    <meta property="og:title" content="Join the game and start the quiz!" />
+    <meta property="og:description" content="Join the game and test your knowledge in a fun quiz!" />
+    <meta property="og:image" content="<%= ngrokLink %>/images/kahoot2.png" />
+    <meta property="og:url" content="<%= ngrokLink %>/<%= gameId._id %>" />
+    <meta property="og:type" content="game" />
+    <meta property="og:locale" content="en_US" />
     <link rel="icon" type="image/png" href="/images/icon.png">
     <link rel="stylesheet" href="/stylesheets/game.css">
     <link rel="stylesheet" href="/stylesheets/friends.css">
@@ -34,27 +40,19 @@
 </script>
 <body>
 <main class="game">
+    <div class="media-width" onclick="mediaMenu()">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify"><path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/></svg>
+        </span>
+    </div>
     <div class="info-container">
         <div class="info-container-btn">
             <button onclick="window.location.replace('/');" class="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
             </button>
+
             <button type="button" class="button" onclick="window.location.reload();" id="refresh">
-                <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-arrow-repeat"
-                        viewBox="0 0 16 16">
-                    <path
-                            d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
-                    ></path>
-                    <path
-                            fill-rule="evenodd"
-                            d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
-                    ></path>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16"><path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path></svg>
             </button>
         </div>
 
@@ -74,21 +72,27 @@
 
     <div id="questions" hidden>
         <div id="gameQuestions"></div>
-        <div id="gameTimer"></div>
-        <div id="correctAnswersCount" class="game-correct-answers-count"></div>
-        <div id="answersCount" class="answers-count"></div>
+        <div id="gameTimer">
+            <p class="game-timer"></p>
+        </div>
+        <div class="answers-tool">
+            <div class="game-correct-answers-count">
+                <p class="game_correct-answers"></p>
+                <p class="game_correct-answers-text"></p>
+            </div>
+        </div>
     </div>
-    <div class="user-info">
+    <div class="game-tools">
         <% if (gameId.game_author.id === user.id) {%>
             <div class="banned-users">
-                <button id="openBannedPlayersMenu">Ban list</button>
+                <button onclick="openBannedPlayersMenu()">Banned List</button>
             </div>
         <% } %>
-            <% if (gameId.game_author.id === user.id && gameId.game_start_type === 'Manually') {%>
-                <button onclick="manualGameLaunch()">Start</button>
-            <% } %>
+        <% if (gameId.game_author.id === user.id && gameId.game_start_type === 'Manually') {%>
+            <button onclick="manualGameLaunch()">Start</button>
+        <% } %>
         <div class="my-friends">
-            <button id="openFriendListMenu">Friends</button>
+            <button onclick="openFriendListMenu()">Friends</button>
         </div>
     </div>
     <div id="infoContainer">
@@ -120,20 +124,22 @@
             </thead>
             <tbody id="leaderBoard"></tbody>
 
+            <tfoot>
             <tr>
                 <td colspan="4" class="leaderboard-footer">
                     <div style="text-align: center; margin-left: auto; margin-right: auto; display: block;">
                         <p><strong id="winner"></strong></p>
-                        <button class="exit-btn" onclick="window.location.assign('/')">Exit the game</button>
+                        <button class="exit-btn" onclick="window.location.assign('/')">Exit Game</button>
                     </div>
                 </td>
             </tr>
+            </tfoot>
         </table>
     </div>
 
     <div class="overlay" id="overlayFriendListMenu">
         <div id="friendListMenu">
-            <h2 style="text-align: center">friends list</h2>
+            <h2 style="text-align: center">Friend List</h2>
             <svg class="loaderSvg" viewBox="25 25 50 50" id="friendsLoaderSvg">
                 <circle r="20" cy="50" cx="50"></circle>
             </svg>
@@ -146,7 +152,7 @@
     <% if (gameId.game_author.id === user.id) {%>
         <div class="overlay" id="overlayBannedUsersMenu">
             <div id="bannedPlayersMenu">
-                <h2 style="text-align: center">List of banned players</h2>
+                <h2 style="text-align: center">Banned Players List</h2>
                 <svg class="loaderSvg" viewBox="25 25 50 50" id="banLoaderSvg">
                     <circle r="20" cy="50" cx="50"></circle>
                 </svg>
@@ -161,30 +167,24 @@
             </div>
         </div>
     <% } %>
-    <div class="game-pin">
-        <span>
-            <p>Game code:</p>
-            <p style="font-weight: 600"><%= gameId._id%></p>
-        </span>
-    </div>
 
     <div class="answer-container" id="wrongAnswerContainer" hidden>
         <div class="answer-emoji-container">
-            <div class="answer-message">Wrong answer!</div>
+            <div class="answer-message">Wrong Answer!</div>
             <div class="answer-emoji">❌</div>
         </div>
     </div>
 
     <div class="answer-container" id="timeIsUp" hidden>
         <div class="answer-emoji-container">
-            <div class="answer-message">Time is up!</div>
+            <div class="answer-message">Time is Up!</div>
             <div class="answer-emoji">⏳</div>
         </div>
     </div>
 
     <div class="answer-container" id="correctAnswerContainer" hidden>
         <div class="answer-emoji-container">
-            <div class="answer-message">Correct answer!</div>
+            <div class="answer-message">Correct Answer!</div>
             <div class="answer-emoji">✅</div>
         </div>
     </div>
@@ -198,11 +198,68 @@
             <div class="🌴"></div>
             <div class="👍"></div>
         </div>
-        <p>Wait until all players finish the game...</p>
+        <p>Wait for all players to finish the game...</p>
     </div>
 </main>
 
+<div class="media-body" id="mediaBorder">
+    <div class="media-border">
+        <div class="media-header">
+            <a href="/">Kahoot</a>
+            <button id="closeMediaBorder">X</button>
+        </div>
+
+        <div class="media-scroller">
+            <br/>
+
+            <div class="media-tool">
+                <p>Game Code</p>
+                <ul>
+                    <li><a><%= gameId._id %></a></li>
+                </ul>
+                <div class="media-line"></div>
+            </div>
+
+            <div class="media-tool media-b-btn">
+                <p onclick="openFriendListMenu()">Friends</p>
+                <div class="media-line"></div>
+            </div>
+
+            <% if (gameId.game_author.id === user.id) { %>
+                <div class="media-tool media-b-btn">
+                    <p onclick="manualGameLaunch()">Start</p>
+                    <div class="media-line"></div>
+                </div>
+
+                <div class="media-tool media-b-btn">
+                    <p onclick="openBannedPlayersMenu()">Banned List</p>
+                </div>
+            <% } %>
+            <br/>
+            <div class="media-tool users-count"></div>
+            <br/>
+        </div>
+    </div>
+</div>
+
 <div class="toast-container" id="toast-container"></div>
+<div class="new-barrier" id="barrier" hidden></div>
+
+<footer>
+    <div class="game-pin">
+        <span class="answers-count"></span>
+        <div class="media-correct-answers">
+            <div class="media-correct-answers-count">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-check-icon lucide-search-check"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span class="media-game-correct-answers-count"></span>
+            </div>
+        </div>
+        <div class="pin">
+            <span>Game Code:</span>
+            <span style="font-weight: 600"><%= gameId._id %></span>
+        </div>
+    </div>
+</footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 <script defer src="/socket.io/socket.io.js"></script>
 <script defer src="/javascripts/game.js"></script>

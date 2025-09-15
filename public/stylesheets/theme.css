@@ -602,7 +602,7 @@
     }
 
     /*game*/
-    .game #onlineCount, .game .game-pin, .game .pi {
+    .game #onlineCount, .game-pin, .game .pi {
         color: var(--bp);
     }
     .game #bannedPlayersMenu, .game #friendListMenu {
@@ -646,7 +646,7 @@
     .game .answer-message {
         color: var(--bp);
     }
-    .game .userName {
+    .checkUser .userName {
         border: 1px solid #313338;
         background: var(--inputModalBackground);
         color: var(--bp);
@@ -656,15 +656,15 @@
         background: var(--inputModalBackground);
         color: var(--bp);
     }
-    .game .users-online {
+    .users-online {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         background: #16171d;
         border: 1px solid #313338;
     }
-    .game .users-online svg {
+    .users-online svg {
         color: var(--bp);
     }
-    .game #usersCount {
+    #usersCount {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         background: #16171d;
         border: 1px solid #313338;

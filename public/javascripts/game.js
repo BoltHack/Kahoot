@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const info = document.getElementById('info');
     const questions = document.getElementById('questions');
     const questionsDiv = document.getElementById('gameQuestions');
+    const answersCount = document.querySelector('.answers-count');
     const wrongAnswerContainer = document.getElementById('wrongAnswerContainer');
     const correctAnswerContainer = document.getElementById('correctAnswerContainer');
     const timeIsUp = document.getElementById('timeIsUp');
@@ -27,10 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.emit('requestAnswersCount');
             console.log('Поехали!');
             setTimeout(() => {
-                questionsDiv.hidden = false;
-                questions.hidden = false;
-                requestSent = false;
-                soundTrackAuto();
+                onTools();
             }, 800);
         }
     });
@@ -87,8 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkQuestionsContainer() {
         if (questionsDiv.querySelector('.questions-container')) {
             questionsDiv.querySelector('.questions-container').remove();
-            requestSent = true;
-            questions.hidden = true;
+            offTools();
             clearTimeout(gameTimerCooldown);
             window.removeEventListener("beforeunload", handler);
         }
@@ -103,28 +100,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h2>${gameQuestions.question_title}</h2>
                     </header>
                     <div class="all-container">
-                        <div class="img-container">
+                        <div class="all-container-settings">
+                            <div class="img-container">
                             <img src="${gameQuestions.question_image}">
                         </div>
                         <br>
                         <br>
                         <div class="quest-container">
-                            <div style="display: flex; gap: 10px;">
+                            <div class="quest-container-btn-count">
                                 <button class="c-question" style="background-color: #c1121f" data-name="${gameQuestions.question_1.name}" data-number="${gameQuestions.question_number}">${gameQuestions.question_1.title}</button>
                                 <button class="c-question" style="background-color: #0077b6" data-name="${gameQuestions.question_2.name}" data-number="${gameQuestions.question_number}">${gameQuestions.question_2.title}</button>
                             </div>
                             <br>
-                            <div style="display: flex; gap: 10px;">
+                            <div class="quest-container-btn-count">
                                 <button class="c-question" style="background-color: #ffc300" data-name="${gameQuestions.question_3.name}" data-number="${gameQuestions.question_number}">${gameQuestions.question_3.title}</button>
                                 <button class="c-question" style="background-color: #008000" data-name="${gameQuestions.question_4.name}" data-number="${gameQuestions.question_number}">${gameQuestions.question_4.title}</button>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>`
         } else {
             console.log('gameQuestions', false);
-            questionsDiv.innerHTML = '';
-            questions.hidden = true;
+            offTools();
             waitAllPlayer.hidden = false;
         }
     });
@@ -228,6 +226,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
+    function onTools() {
+        if (document.body.offsetWidth < 1000) {
+            document.querySelector('.media-correct-answers').style.display = 'block';
+        }
+        questions.hidden = false;
+        requestSent = false;
+        waitAllPlayer.hidden = true;
+        answersCount.style.display = 'block';
+        soundTrackAuto();
+    }
+    function offTools() {
+        if (document.body.offsetWidth < 1000) {
+            document.querySelector('.media-correct-answers').style.display = 'none';
+        }
+        questionsDiv.innerHTML = '';
+        questions.hidden = true;
+        answersCount.style.display = 'none';
+        requestSent = true;
+    }
 });
 
 let handler;
@@ -286,16 +304,19 @@ function checkGamePermissions(){
 }
 checkGamePermissions();
 
-if (authorId === id) {
+
+function openBannedPlayersMenu() {
     const overlayBannedUsersMenu = document.getElementById('overlayBannedUsersMenu');
     const bannedPlayersMenu = document.getElementById('bannedPlayersMenu');
-    document.getElementById('openBannedPlayersMenu').addEventListener('click', () => {
+
+    if (authorId === id) {
         overlayBannedUsersMenu.classList.add('active');
         bannedPlayersMenu.classList.add('active');
+
         setTimeout(function () {
             socket.emit('requestBannedUsersCount');
         }, 500);
-    })
+    }
 
     document.getElementById('closeBannedUsersMenu').addEventListener('click', () => {
         overlayBannedUsersMenu.classList.remove('active');
@@ -304,17 +325,56 @@ if (authorId === id) {
 }
 
 
-const overlayFriendListMenu = document.getElementById('overlayFriendListMenu');
-const friendListMenu = document.getElementById('friendListMenu');
-document.getElementById('openFriendListMenu').addEventListener('click', () => {
+
+function openFriendListMenu () {
+    const overlayFriendListMenu = document.getElementById('overlayFriendListMenu');
+    const friendListMenu = document.getElementById('friendListMenu');
+
     overlayFriendListMenu.classList.add('active');
     friendListMenu.classList.add('active');
+
     setTimeout(function () {
         socket.emit('requestMyFriendsCount', id);
     }, 500);
-})
 
-document.getElementById('closeFriendsMenu').addEventListener('click', () => {
-    overlayFriendListMenu.classList.remove('active');
-    friendListMenu.classList.remove('active');
+    document.getElementById('closeFriendsMenu').addEventListener('click', () => {
+        overlayFriendListMenu.classList.remove('active');
+        friendListMenu.classList.remove('active');
+    });
+}
+
+function mediaMenu() {
+    const mediaBorder = document.getElementById('mediaBorder');
+    const closeMediaBorder = document.getElementById('closeMediaBorder');
+
+    mediaBorder.style.display = 'block';
+
+    closeMediaBorder.addEventListener('click', () => {
+        mediaBorder.style.display = 'none';
+    });
+}
+
+window.addEventListener('resize', () => {
+    usersCountPositionUpdate();
 });
+
+window.addEventListener('load', () => {
+    usersCountPositionUpdate();
+});
+
+function usersCountPositionUpdate() {
+    const infoContainer = document.querySelector('.info-container');
+    const usersCount = document.querySelector('.users-count');
+
+    if (!infoContainer || !usersCount) return;
+
+    if (document.body.offsetWidth < 1000) {
+        if (infoContainer.children.length > 0) {
+            usersCount.append(...infoContainer.childNodes);
+        }
+    } else {
+        if (usersCount.children.length > 0) {
+            infoContainer.append(...usersCount.childNodes);
+        }
+    }
+}

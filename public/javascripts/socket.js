@@ -21,18 +21,32 @@ const socket = io();
                 .map(user => `
 <div class="userImage checkUser" data-id="${user.userId}">
     <div class="avatar-wrapper">
-        <img class="avatar" src="${user.userImage}" onmouseover="showUserName(event);" onclick="window.open('/user-profile/${user.userId}', '_blank');" title="Посмотреть профиль">
+        <img class="avatar" src="${user.userImage}" onmouseover="showUserName(event);">
     </div>
     
     <div id="userName-${user.userId}" class="userName" hidden>
-        <span>
-  ${user.userId === id
-                    ? (localeType === 'en' ? 'You' : 'Вы')
-                    : authorId === id
-                        ? `${user.userName + ' | '} <button id="ban-${user.userId}" onclick="banUser('${user.userId}')" class="ban-btn">${localeType === 'en' ? 'Ban' : 'Забанить'}</button>
-                                        <a id="banLoad-${user.userId}" hidden>${localeType === 'en' ? 'Loading...' : 'Загрузка...'}</a>`
-                        : user.userName}
-</span>
+      
+        <div class="profile-tool">
+        ${user.userId === id ? `
+                <p>${localeType === 'en' ? 'You' : 'Вы'}</p>
+                <ul>
+                    <li onclick="window.open('/user-profile/${user.userId}', '_blank')"><a>${localeType === 'en' ? 'Profile' : 'Профиль'}</a></li>
+                </ul>
+                ` : `${authorId === id ? `
+                    <p>${user.userName}</p>
+                    <ul>
+                        <li onclick="window.open('/user-profile/${user.userId}', '_blank')"><a>${localeType === 'en' ? 'Profile' : 'Профиль'}</a></li>
+                        <li id="ban-${user.userId}" onclick="banUser('${user.userId}')"><a>${localeType === 'en' ? 'Ban' : 'Забанить'}</a></li>
+                    </ul>`
+                    : `
+                    <p>${user.userName}</p>
+                    <ul>
+                        <li onclick="window.open('/user-profile/${user.userId}', '_blank')"><a>${localeType === 'en' ? 'Profile' : 'Профиль'}</a></li>
+                    </ul>
+                    `
+                    }`
+                }
+        </div>
     </div>
 </div>
 `)
@@ -67,8 +81,13 @@ const socket = io();
         });
 
         socket.on('updateAnswersCount', (answersCount) => {
-            document.getElementById('correctAnswersCount').innerHTML = `<span><p class="game_correct-answers">${answersCount[0].game_correct_answers || 0}</p> <p class="game_correct-answers-text">${localeType === 'en' ? 'Correct answers' : 'Правильных ответов'}</p></span>`;
-            document.getElementById('answersCount').innerHTML = `<span><p class="game-answers">${answersCount[0].game_answers || 0}/${gameMaxQuestions}</p></span>`;
+            const correctAnswersCount = document.querySelector('.game-correct-answers-count');
+
+            correctAnswersCount.querySelector('.game_correct-answers').textContent = answersCount[0].game_correct_answers || 0;
+            document.querySelector('.media-game-correct-answers-count').textContent = answersCount[0].game_correct_answers || 0;
+            correctAnswersCount.querySelector('.game_correct-answers-text').textContent = localeType === 'en' ? 'Correct answers' : 'Правильных ответов';
+
+            document.querySelector('.answers-count').textContent = `${answersCount[0].game_answers || 0}/${gameMaxQuestions}`;
         });
 
         socket.on('updateBannedUsersCount', async (bannedUsersCount) => {
@@ -147,7 +166,7 @@ const socket = io();
                     socket.emit('ban', userId);
                     alreadyBannedUserIds.push(userId);
                     document.getElementById('ban-' + userId).hidden = true;
-                    document.getElementById('banLoad-' + userId).hidden = false;
+                    // document.getElementById('banLoad-' + userId).hidden = false;
                 } else {
                     console.log('Пользователь уже забанен:', userId);
                 }

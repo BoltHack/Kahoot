@@ -494,10 +494,7 @@ html.lightTheme {
     margin: 0;
     width: 100%;
     height: 100%;
-    /*z-index: 3;*/
     overflow: hidden;
-    /*overflow-x: hidden;*/
-    /*overflow-y: scroll;*/
 }
 .media-header {
     display: flex;
