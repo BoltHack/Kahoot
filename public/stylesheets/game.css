@@ -32,7 +32,7 @@ header{
 }
 .all-container-settings {
     display: block;
-    padding: 50px;
+    padding: 0 50px;
     max-width: 1000px;
     width: 100%;
 }
@@ -41,7 +41,7 @@ header{
     justify-content: center;
 }
 .img-container img {
-    max-width: 350px;
+    max-width: 380px;
     width: 100%;
     max-height: 320px;
     height: 100%;
@@ -85,6 +85,7 @@ header{
 footer {
     /*position: absolute;*/
     margin-bottom: 0;
+    /*margin-top: auto;*/
     margin-left: 0;
     padding: 20px 0;
     width: 100%;
@@ -1343,7 +1344,11 @@ main {
     margin-top: -40px;
 }
 
-
+@media (max-width: 1200px) {
+    #gameTimer {
+        display: none;
+    }
+}
 @media (max-width: 1000px) {
     .media-width {
         display: block;
@@ -1365,9 +1370,6 @@ main {
         /*max-width: 300px;*/
         /*width: 100%;*/
         margin-top: 5px;
-    }
-    #gameTimer {
-        display: none;
     }
     .all-container {
         width: 100%;
