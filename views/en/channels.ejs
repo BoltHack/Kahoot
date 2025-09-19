@@ -262,51 +262,54 @@
 </div>
 
 <div class="media-body" id="channelsMenu">
-    <div class="media-header">
-        <div class="container-logo">
-            <h2>
-                <a class="logo" href="/">Home</a>
-            </h2>
-            <button id="closeChannelsMenu">X</button>
-        </div>
-    </div>
-
     <div class="media-border">
-        <div class="media-sidebar">
-            <div class="sidebar-header">Options</div>
-            <ul class="chat-tools">
-                <li>
-                    <a class="chat-tool friendsContainerBtn" onclick="friendsContainerFunc()">Friends</a>
-                    <a class="chat-tool addFriendBtn" onclick="addFriendFunc()">Add friend</a>
-                </li>
-            </ul>
-            <br>
-            <div class="sidebar-line"></div>
-            <br>
-            <div class="sidebar-header">Direct Messages</div>
-            <% if (myChannels && myChannels.length) { %>
-                <ul class="chat-list" style="overflow-y: auto;">
-                    <% myChannels.forEach(channels => { %>
-                        <li>
-                            <% if (channel._id.toString() === channels.channelId.toString()) { %>
-                                <a class="chat-link chat-selected">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-                                    <span class="link-companion"><%= channels.companionName %></span>
-                                    <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
-                                </a>
-                            <% } else { %>
-                                <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-                                    <span class="link-companion"><%= channels.companionName %></span>
-                                    <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
-                                </a>
-                            <% } %>
-                        </li>
-                    <% }) %>
+        <div class="media-header">
+            <a href="/">Kahoot</a>
+            <button id="closeMediaBorder">X</button>
+        </div>
+
+        <div class="media-scroller">
+            <div class="media-tool">
+                <p>Options</p>
+                <ul>
+                    <li><a onclick="friendsContainerFunc()">Friends</a></li>
+                    <li><a onclick="addFriendFunc()">Add friend</a></li>
                 </ul>
-            <% } else { %>
-                <a>Start a dialogue</a>
-            <% } %>
+                <div class="media-line"></div>
+            </div>
+
+            <div class="media-tool">
+                <p>Direct Messages</p>
+                <% if (myChannels && myChannels.length) { %>
+                    <ul class="chat-list" style="overflow-y: auto;">
+                        <% myChannels.forEach(channels => { %>
+                            <li>
+                                <% if (channel._id.toString() === channels.channelId.toString()) { %>
+                                    <a class="chat-link chat-selected">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                        <span class="link-companion"><%= channels.companionName %></span>
+                                        <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                    </a>
+                                <% } else { %>
+                                    <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                        <span class="link-companion"><%= channels.companionName %></span>
+                                        <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                    </a>
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <a>Start a dialogue</a>
+                <% } %>
+                <div class="media-line"></div>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
     </div>
 </div>

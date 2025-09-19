@@ -23,7 +23,7 @@ function deleteMyChannel(channelId) {
 
 function channelsMenu() {
     const channelsMenu = document.getElementById('channelsMenu');
-    const closeChannelsMenu = document.getElementById('closeChannelsMenu');
+    const closeChannelsMenu = document.getElementById('closeMediaBorder');
 
     channelsMenu.style.display = 'block';
 

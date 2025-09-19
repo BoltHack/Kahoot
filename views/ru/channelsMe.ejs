@@ -93,36 +93,43 @@
     <div class="media-border">
         <div class="media-header">
             <a href="/">Kahoot</a>
-            <button id="closeChannelsMenu">X</button>
+            <button id="closeMediaBorder">X</button>
         </div>
 
-        <div class="media-sidebar">
-            <div class="sidebar-header">Опции</div>
-            <ul class="chat-tools">
-                <li>
-                    <a class="chat-tool friendsContainerBtn" onclick="friendsContainerFunc()">Друзья</a>
-                    <a class="chat-tool addFriendBtn" onclick="addFriendFunc()">Добавить друга</a>
-                </li>
-            </ul>
-            <br>
-            <div class="sidebar-line"></div>
-            <br>
-            <div class="sidebar-header">Личные сообщения</div>
-            <% if (myChannels && myChannels.length) { %>
-                <ul class="chat-list" style="overflow-y: auto;">
-                    <% myChannels.forEach(channels => { %>
-                        <li>
-                            <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-                                <span class="link-companion"><%= channels.companionName %></span>
-                                <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
-                            </a>
-                        </li>
-                    <% }) %>
+        <div class="media-scroller">
+            <div class="media-tool">
+                <p>Опции</p>
+                <ul>
+                    <li><a onclick="friendsContainerFunc()">Друзья</a></li>
+                    <li><a onclick="addFriendFunc()">Добавить друга</a></li>
                 </ul>
-            <% } else { %>
-                <a>Начните диалог</a>
-            <% } %>
+                <div class="media-line"></div>
+            </div>
+
+            <div class="media-tool">
+                <p>Личные сообщения</p>
+                <% if (myChannels && myChannels.length) { %>
+                    <ul class="chat-list" style="overflow-y: auto;">
+                        <% myChannels.forEach(channels => { %>
+                            <li>
+                                <a class="chat-link" href="/channels/@me/<%= channels.channelId %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+                                    <span class="link-companion"><%= channels.companionName %></span>
+                                    <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                </a>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <a>Начните диалог</a>
+                <% } %>
+                <div class="media-line"></div>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
     </div>
 </div>

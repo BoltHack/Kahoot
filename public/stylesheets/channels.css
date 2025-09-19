@@ -538,16 +538,11 @@ ul {
 }
 
 .positionWarning {
-    position: fixed;
-    bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #2a2f37;
+    justify-content: center;
+    padding: 10px 10px;
+    background-color: #1f2228;
     opacity: 0;
     display: none;
-    align-items: center;
 }
 .show {
     animation: positionWarningShow 0.7s forwards;
@@ -766,32 +761,24 @@ ul {
 
 .media-body {
     font-family: Arial, sans-serif;
-    background-color: #121518;
+    background: #121518;
     padding: 0;
     margin: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 3;
-    animation-name: openMediaBorderAnimation;
-    animation-duration: 0.4s
-}
-@keyframes openMediaBorderAnimation {
-    from {transform: translateY(-100%); opacity: 0;}
-    to {transform: translateY(0); opacity: 1;}
 }
 
 .media-header {
-    background-color: #1f2228;
     display: flex;
     align-items: center;
     gap: 10px;
     width: 100%;
     height: 70px;
     position: fixed;
-    z-index: 3;
+    /*z-index: 3;*/
+    background-color: #16171d;
     top: 0;
     left: 0;
     font-family: Arial, sans-serif;
@@ -806,7 +793,7 @@ ul {
     left: 50%;
     transform: translateX(-50%);
 }
-.media-header button {
+#closeMediaBorder {
     padding: 10px 15px;
     border: none;
     background-color: #ff4444;
@@ -817,58 +804,81 @@ ul {
     position: absolute;
     right: 6%;
 }
-.media-border {
-    display: block;
-    z-index: 4;
-}
-.media-sidebar {
-    width: 250px;
-    /*min-height: 400px;*/
-    height: 100%;
-    background: #1f2228;
-    border-right: 1px solid #2a2f37;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-    position: absolute;
-    margin-top: 71px;
-    gap: 5px;
-    left: 0;
-    right: auto;
-}
-.container-logo {
-    display: flex;
-    padding: 10px;
-    z-index: 2;
-    margin: 0 100px;
+.media-width {
+    display: none;
     align-items: center;
-}
-.logo {
-    font-size: 20px;
-    text-decoration: underline;
-    color: #adb5bd;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
-    position: absolute;
-    top: 20%;
+    font-size: 35px;
     cursor: pointer;
-    z-index: 2;
-    margin-top: 5px;
+    padding: 10px;
+    text-align: center;
 }
-#closeChannelsMenu {
-    margin-top: 5px;
-    padding: 10px 15px;
-    border: none;
-    background-color: #ff4444;
-    color: white;
+#mediaBorder {
+    display: none;
+}
+.media-border {
+    background: #121518;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    display: flex;
+    user-select: none;
+    padding: 0 20px;
+    z-index: 3;
+    overflow-y: scroll;
+    animation-name: openMediaBorderAnimation;
+    animation-duration: 0.4s
+}
+@keyframes openMediaBorderAnimation {
+    from {transform: translateY(-100%); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+.media-scroller {
+    padding-top: 70px;
+    flex: 1;
+}
+.media-tool {
+    padding: 0 20px;
+}
+.media-tool p {
+    color: #ECF1FD;
+    font-size: 18px;
+    font-weight: 500;
+}
+.media-tool ul {
+    list-style-type: none;
+    font-size: 18px;
+    font-weight: 500;
+}
+.media-tool li {
+    margin-bottom: 15px;
+}
+.media-tool li a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #A9A9B3;
+}
+.media-b-btn p {
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.media-line {
+    border: 1px solid #2b2640;
     border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    z-index: 4;
-    position: absolute;
-    margin-left: 220px;
+    width: 95%;
 }
-
+.media-dropdowns .dropdown {
+    max-width: 100px;
+}
+.media-dropdown-content {
+    margin-left: 98px;
+    margin-top: -40px;
+}
+.media-tool .chat-link {
+    width: 90%;
+}
 
 @media (max-width: 1000px) {
     .media-width {
@@ -902,9 +912,9 @@ ul {
     .search-friend {
         margin-top: 60px;
     }
-    #messages {
-        margin-top: 85px;
-        /*margin-bottom: auto;*/
+    .chat-messages {
+        margin-top: 65px;
+        width: 100%;
     }
     .message {
         user-select: none;
@@ -920,7 +930,6 @@ ul {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         display: none;
         flex-direction: column;
-        /*min-width: 130px;*/
         width: 100%;
         max-height: 400px;
         height: 100%;
@@ -931,9 +940,9 @@ ul {
     .add-friend {
         margin-top: 60px;
     }
-    .friend-container {
-        width: 55%;
-    }
+    /*.friend-container {*/
+    /*    width: 55%;*/
+    /*}*/
     body {
         overflow: hidden;
         touch-action: none;
