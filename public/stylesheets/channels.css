@@ -774,8 +774,14 @@ ul {
     top: 0;
     left: 0;
     z-index: 3;
-
+    animation-name: openMediaBorderAnimation;
+    animation-duration: 0.4s
 }
+@keyframes openMediaBorderAnimation {
+    from {transform: translateY(-100%); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
 .media-header {
     background-color: #1f2228;
     display: flex;
@@ -874,11 +880,6 @@ ul {
     .sidebar {
         display: none;
     }
-    .chat-input {
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-    }
     .chat-input button {
         display: block;
     }
@@ -887,7 +888,6 @@ ul {
         width: 100%;
     }
     .chat-header {
-        /*width: 89.2%;*/
         width: 100%;
         position: fixed;
         top: 0;
@@ -897,19 +897,10 @@ ul {
     .search-friend {
         margin-top: 60px;
     }
-    /*#myFriendsCount {*/
-    /*    margin-top: 20px;*/
-    /*}*/
     #messages {
-        margin-top: 66px;
-        margin-bottom: 130px;
+        margin-top: 85px;
+        /*margin-bottom: auto;*/
     }
-    /*#messages {*/
-    /*    width: 100%;*/
-    /*    position: fixed;*/
-    /*    top: 8.5%;*/
-    /*    max-height: 82%;*/
-    /*}*/
     .message {
         user-select: none;
     }
