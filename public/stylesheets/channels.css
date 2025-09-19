@@ -131,6 +131,7 @@ body {
     margin-left: 20px;
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 .chat-name {
     color: #adb5bd;
@@ -893,6 +894,10 @@ ul {
         top: 0;
         left: 0;
         padding: 15px 0;
+    }
+    .chat-name, #onlineMod {
+        font-size: 15px;
+        align-items: center;
     }
     .search-friend {
         margin-top: 60px;
