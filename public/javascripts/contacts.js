@@ -3,15 +3,23 @@ function openAnswerMenu(faqNumber) {
     const faqAnswer = faqSection.querySelector('.faq-answer');
     const faqOpen = faqSection.querySelector('.faq-open');
 
+    // if (faqAnswer.style.display === 'none' || faqAnswer.style.display === '') {
+    //     document.querySelectorAll('.faq-section').forEach(e => {
+    //         e.querySelector('.faq-answer').style.display = 'none';
+    //         e.querySelector('.faq-open').innerHTML = '+';
+    //     });
+    //     setTimeout(() => {
+    //         faqAnswer.style.display = 'flex';
+    //         faqOpen.innerHTML = '⎯';
+    //     }, 50);
+    // } else {
+    //     faqAnswer.style.display = 'none';
+    //     faqOpen.innerHTML = '+';
+    // }
+
     if (faqAnswer.style.display === 'none' || faqAnswer.style.display === '') {
-        document.querySelectorAll('.faq-section').forEach(e => {
-            e.querySelector('.faq-answer').style.display = 'none';
-            e.querySelector('.faq-open').innerHTML = '+';
-        });
-        setTimeout(() => {
-            faqAnswer.style.display = 'flex';
-            faqOpen.innerHTML = '⎯';
-        }, 50);
+        faqAnswer.style.display = 'flex';
+        faqOpen.innerHTML = '⎯';
     } else {
         faqAnswer.style.display = 'none';
         faqOpen.innerHTML = '+';
