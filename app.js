@@ -433,7 +433,9 @@ io.on('connection', async (socket) => {
                         }
 
                         io.to(gameId).emit('updateLeaderBoard', game.game_leaders);
-                        io.to(gameId).emit('openLeadersMenu');
+                        setTimeout(() => {
+                            io.to(gameId).emit('openLeadersMenu');
+                        }, 4000);
                     } else {
                         console.log('ещё не все закончили');
                     }

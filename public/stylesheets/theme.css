@@ -631,6 +631,9 @@
         background: var(--inputModalBackground);
         color: var(--bp);
     }
+    .game .img-container img {
+        border: 5px solid #313338;
+    }
     .game .game_correct-answers-text, .game .game-answers, .game #waitAllPlayer {
         color: var(--bp);
     }

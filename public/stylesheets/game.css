@@ -23,6 +23,7 @@ header{
     z-index: 1;
     text-align: center;
     word-break: break-word;
+    border-bottom: 1px solid black;
 }
 .all-container{
     margin-top: auto;
@@ -43,8 +44,10 @@ header{
 .img-container img {
     max-width: 380px;
     width: 100%;
-    max-height: 320px;
+    min-height: 300px;
+    max-height: 350px;
     height: 100%;
+    border: 1px solid black;
 }
 .quest-container {
     /*justify-content: center;*/
