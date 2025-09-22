@@ -385,6 +385,9 @@ input[type="button"]:hover {
         margin-left: 0;
         width: 91.8%;
     }
+}
+
+@media (max-width: 1220px) {
     .reviews-list {
         margin-left: 0;
         padding: 20px 0;
