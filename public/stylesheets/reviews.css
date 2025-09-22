@@ -378,3 +378,30 @@ input[type="button"]:hover {
 #deleteReview:hover {
     color: red;
 }
+
+
+@media (max-width: 1400px) {
+    .container {
+        margin-left: 0;
+        width: 91.8%;
+    }
+    .reviews-list {
+        margin-left: 0;
+        padding: 20px 0;
+    }
+    .reviews-tool {
+        display: block;
+    }
+    .review-tool {
+        margin-bottom: 30px;
+    }
+    .search-container {
+        position: relative;
+        /*max-width: 780px;*/
+        /*width: 100%;*/
+        margin-left: 0;
+    }
+    .info-card {
+        display: none;
+    }
+}
