@@ -39,7 +39,7 @@
                 <% if (allStaff && allStaff.length > 0) { %>
                     <% allStaff.forEach(staff => { %>
                         <% if (staff._id.toString() !== user.id.toString()) { %>
-                            <tr>
+                            <tr title="<%= staff.id %>">
                                 <td><%= staff.name %></td>
                                 <td><%= staff.email %></td>
                                 <td><span class="badge <%= staff.role === 'Admin' ? 'badge-admin' : 'badge-techSupport' %>"><%= staff.role === 'Admin' ? 'Админ' : 'Тех. поддержка' %></span></td>
