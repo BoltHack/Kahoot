@@ -99,6 +99,18 @@ html.lightTheme {
     text-decoration: underline;
 }
 
+.header-locale {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+}
+.header-locale button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 15px;
+    color: #0466c8;
+}
 
 .new-barrier{
     width: 100%;

@@ -6,13 +6,8 @@ function getCookie(name) {
 
 function changeLocaleRu() {
     document.body.style.cursor = 'wait';
-    const token = localStorage.getItem('token');
-    const url = token ? `/changeLocalAuth/ru` : '/changeLocal/ru';
-    fetch(url, {
+    fetch('/changeLocale/ru/false', {
         method: "POST",
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
-        },
     })
         .then(response => {
             if (response.ok) {
@@ -32,13 +27,8 @@ function changeLocaleRu() {
 
 function changeLocaleEn() {
     document.body.style.cursor = 'wait';
-    const token = localStorage.getItem('token');
-    const url = token ? `/changeLocalAuth/en` : '/changeLocal/en';
-    fetch(url, {
+    fetch('/changeLocale/en/false', {
         method: "POST",
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
-        },
     })
         .then(response => {
             if (response.ok) {

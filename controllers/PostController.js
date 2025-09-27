@@ -516,33 +516,17 @@ class PostController {
         }
     }
 
-    static changeLocal = async (req, res, next) => {
+    static changeLocale = async (req, res, next) => {
         try {
-            const {locale} = req.params;
+            const {locale, autoUpdate} = req.params;
 
             res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            res.json({ locale });
-        } catch (err) {
-            console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    };
-
-    static changeLocalAuth = async (req, res, next) => {
-        try {
-            const user = req.user;
-            const {locale} = req.params;
-            await UsersModel.findByIdAndUpdate(
-                user.id,
-                {locale: locale},
-                {new: true}
-            )
-
-            res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
-
-            res.json({ locale });
+            if (autoUpdate) {
+                return res.redirect('/');
+            } else {
+                res.json({ locale });
+            }
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });

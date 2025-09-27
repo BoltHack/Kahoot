@@ -38,6 +38,14 @@
                     <a class="header-contact" href="mailto:hffreelancers@gmail.com">Эл. адрес</a>
                     <a class="header-contact" href="https://web.telegram.org/a/">Телеграм</a>
                 </div>
+                <div class="header-locale">
+                    <form action="/changeLocale/ru/true" method="POST">
+                        <button style="<%= locale === 'ru' ? 'text-decoration: underline;' : '' %>">RU</button>
+                    </form>
+                    <form action="/changeLocale/en/true" method="POST">
+                        <button style="<%= locale === 'en' ? 'text-decoration: underline;' : '' %>">EN</button>
+                    </form>
+                </div>
             </div>
         </div>
     </noscript>
