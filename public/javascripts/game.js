@@ -1,9 +1,10 @@
+let requestSent;
 document.addEventListener('DOMContentLoaded', () => {
     let gameTimerCooldown = null;
     let gameTimer = Number(gamesExpiresInSeconds);
     let gameStartTime;
 
-    let requestSent = false;
+    requestSent = true;
     let maxQuestions = Number(gameMaxQuestions);
 
     const info = document.getElementById('info');
@@ -231,27 +232,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function onTools() {
-        if (document.body.offsetWidth < 1000) {
-            document.querySelector('.media-correct-answers').style.display = 'block';
-            document.querySelector('.media-game-correct-answers-count').style.display = 'block';
-            document.querySelector('.media-timer').style.display = 'block';
-        }
         questions.hidden = false;
         requestSent = false;
         waitAllPlayer.hidden = true;
         answersCount.style.display = 'block';
         soundTrackAuto();
+        gameToolsPositionUpdate();
     }
     function offTools() {
-        if (document.body.offsetWidth < 1000) {
-            document.querySelector('.media-correct-answers').style.display = 'none';
-            document.querySelector('.media-game-correct-answers-count').style.display = 'none';
-            document.querySelector('.media-timer').style.display = 'none';
-        }
         questionsDiv.innerHTML = '';
         questions.hidden = true;
         answersCount.style.display = 'none';
         requestSent = true;
+        gameToolsPositionUpdate();
     }
 });
 
@@ -363,6 +356,7 @@ function mediaMenu() {
 
 window.addEventListener('resize', () => {
     usersCountPositionUpdate();
+    gameToolsPositionUpdate();
 });
 
 window.addEventListener('load', () => {
@@ -383,5 +377,17 @@ function usersCountPositionUpdate() {
         if (usersCount.children.length > 0) {
             infoContainer.append(...usersCount.childNodes);
         }
+    }
+}
+
+function gameToolsPositionUpdate() {
+    if (document.body.offsetWidth < 1000 && requestSent === false) {
+        document.querySelector('.media-correct-answers').style.display = 'block';
+        document.querySelector('.media-game-correct-answers-count').style.display = 'block';
+        document.querySelector('.media-timer').style.display = 'block';
+    } else {
+        document.querySelector('.media-correct-answers').style.display = 'none';
+        document.querySelector('.media-game-correct-answers-count').style.display = 'none';
+        document.querySelector('.media-timer').style.display = 'none';
     }
 }
