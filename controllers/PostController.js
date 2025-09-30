@@ -825,7 +825,7 @@ class PostController {
             const {user_id} = req.params;
             await UsersModel.findByIdAndDelete(user_id);
 
-            return res.redirect('/admin/admin-panel');
+            return res.redirect('/admin/list-users');
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });

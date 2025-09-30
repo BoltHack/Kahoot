@@ -33,6 +33,25 @@
                         <p>- <%= user.role %></p>
                         <p>- <%= user.ip %></p>
                         <p>- <%= user.onlineMod %></p>
+                        <% if (user.expiresAt) { %>
+                            <p>- На стадии удаления</p>
+                            <%
+                                function formatDate(isoDate) {
+                                    const date = new Date(isoDate);
+                                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+                                    const longDate = date.toLocaleDateString('ru-RU', options);
+                                    const shortDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+
+                                    return { longDate, shortDate };
+                                }
+
+                                const { longDate, shortDate } = formatDate(user.expiresAt);
+                            %>
+                            <span>Удалится:</span><br/>
+                            <span><%= longDate %></span>
+                            <span><%= shortDate %></span>
+                        <% } %>
                     </div>
 
                     <div>
