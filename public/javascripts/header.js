@@ -1,7 +1,13 @@
 const socket = io();
 document.addEventListener("DOMContentLoaded", () => {
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        const cookie = cookies.find(row => row.startsWith(`${name}=`));
+        return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+    }
+
     try {
-        if (localStorage.getItem('token')) {
+        if (getCookie('refreshTokenEndTime')) {
             if (typeof socket !== "undefined" && sendId) {
                 socket.emit('requestMyFriendsCount', sendId);
             } else {
