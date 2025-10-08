@@ -351,6 +351,8 @@ function msgRedactionMenu(msgId) {
     const toolsId = document.getElementById('tools-'+msgId);
     const editInput = document.createElement('textarea');
 
+    const messageContainer = messageId.querySelector('.message-container');
+
     messageId.style.backgroundColor = '#212429';
 
     if (document.body.offsetWidth > 700) {
@@ -372,7 +374,8 @@ function msgRedactionMenu(msgId) {
             menu.replaceWith(div);
         })
 
-        editInput.style.width = `${message.clientWidth < 500 ? + 500 : message.clientWidth}px`;
+        // editInput.style.width = `${message.clientWidth < 500 ? + 500 : message.clientWidth}px`;
+        editInput.style.width = `${messageContainer.offsetWidth}px`;
         editInput.style.height = `${message.offsetHeight}px`;
 
         message.replaceWith(editInput);
