@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/images/icon.png">
-    <title>Ошибка <%= error.status %></title>
+    <title><%- code === 'banned' ? 'Ой!' : code ? 'Ошибка ' + code : 'Ошибка ' + error.status %></title>
     <style>
         html,
         body {
