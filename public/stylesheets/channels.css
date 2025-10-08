@@ -768,6 +768,7 @@ ul {
     height: 100%;
     overflow: hidden;
     position: fixed;
+    z-index: 5;
 }
 
 .media-header {
