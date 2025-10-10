@@ -65,7 +65,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
                     `<a class="friend-btn" onclick="checksChannel('${friends.id}')">${localeType === 'en' ? 'Message' : 'Написать'}</a>` : ''}
         ${window.location.pathname.startsWith('/game/') ?
                     `<a class="friend-btn" onclick="inviteFriend('${friends.id}')">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>` : ''}
-        <a class="friend-btn delete" onclick="deleteFriend('${friends.id}')">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
+        <a class="friend-btn delete" onclick="deleteFriend('${friends.id}', '${friends.name}')">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
     </div>
 </div>
 </span>
@@ -103,13 +103,13 @@ socket.on('broadcastUpdateMyFriends', async () => {
 
 let alreadyFriendAdd = [];
 
-function deleteFriend(deleteId){
+function deleteFriend(deleteId, deleteName){
     document.getElementById('barrier').hidden = false;
 
     const deleteBorder = document.createElement('div');
     deleteBorder.innerHTML = `
     <div class="delete-border">
-        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Remove this player from friends?` : `Удалить данного игрока из друзей?`}</h4>
+        <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Remove "${deleteName}" from friends?` : `Удалить "${deleteName}" из друзей?`}</h4>
         <div class="delete-modal">
             <button id="requestDeleteFriend">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>
             <button id="closeDeleteBorder">${localeType === 'en' ? 'Cancel' : 'Отмена'}</button>

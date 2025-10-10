@@ -78,7 +78,7 @@
                 <h2><%= companion.name %></h2>
                 <p>This is the beginning of the history of your personal messages with <strong><%= companion.name %></strong>.</p>
                 <% if ( myData.myFriends.some(friend => friend.id.toString() === companion.id.toString()) ) { %>
-                    <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>')">➖ Remove Friend</button>
+                    <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>', '<%= companion.name %>')">➖ Remove Friend</button>
                 <% } else { %>
                     <button class="btn" id="addFriend" onclick="addFriend('<%= companion.name %>')">➕ Add Friend</button>
                 <% } %>
