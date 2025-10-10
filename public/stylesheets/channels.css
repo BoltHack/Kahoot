@@ -543,6 +543,7 @@ ul {
     background-color: #1f2228;
     opacity: 0;
     display: none;
+    align-items: center;
 }
 .show {
     animation: positionWarningShow 0.7s forwards;
