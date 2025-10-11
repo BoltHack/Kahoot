@@ -36,9 +36,36 @@ input.addEventListener('keydown', function(event) {
     }
 });
 
+function findLastMessage() {
+    const hash = window.location.hash;
+
+    if (hash) {
+        const msgId = window.location.hash.slice(9);
+        document.getElementById('message-' + msgId).scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+
+        history.pushState(null, null, location.href.split('#')[0]);
+
+        const windowHeight = window.innerHeight;
+        const scrollPosition = window.scrollY;
+        const totalPageHeight = document.documentElement.scrollHeight;
+
+        if (windowHeight + scrollPosition >= totalPageHeight) {
+            setTimeout(() => {
+                findReplyMsg(msgId);
+            }, 1500);
+        }
+    } else {
+        scrollToBottom();
+    }
+}
+
 function scrollToBottom() {
     const messagesDiv = document.getElementById('messages');
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    history.pushState(null, null, location.href.split('#')[0]);
     checkPageHeight();
 }
 
@@ -333,11 +360,16 @@ socket.on('broadcastDeleteMsg', async () => {
 function checkPageHeight() {
     const messagesDiv = document.getElementById('messages');
     const positionWarning = document.getElementById('positionWarning');
+    const positionWarningMessageBtn = document.getElementById('positionWarningMessageBtn');
+
     const messageDivScroll = messagesDiv.scrollTop;
     messagesDiv.addEventListener('scroll', function() {
         if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
             positionWarning.style.display = 'flex';
             positionWarning.classList.add('show');
+            if (window.location.hash) {
+                positionWarningMessageBtn.textContent = localeType === 'en' ? 'Go to the original post' :  'Перейти к оригинальному сообщению';
+            } else positionWarningMessageBtn.textContent = localeType === 'en' ? 'Go to latest posts' : 'Перейди к последним сообщениям';
         }
         else {
             positionWarning.style.display = 'none';
