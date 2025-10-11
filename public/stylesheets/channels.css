@@ -309,6 +309,16 @@ body {
     box-sizing: border-box;
     overflow-y: auto;
 }
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background: #181b20;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: #5bbfbaaa;
+    border-radius: 10px;
+}
 
 .sidebar-header {
     font-size: 18px;
