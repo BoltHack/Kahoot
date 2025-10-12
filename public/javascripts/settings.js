@@ -342,29 +342,27 @@ deleteAccountBtn.addEventListener('click', () => {
 
 document.getElementById('deleteAccount').addEventListener('click', (e) => {
     const deleteInput = document.getElementById('deleteInput');
-    if (deleteInput.value.length) {
-        fetch('/auth/account-delete',{
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({ deleteInput: deleteInput.value })
-        }).then(res => res.json())
-            .then(data => {
-                let {error} = data;
-                if (error) {
-                    e.preventDefault();
-                    deleteInput.value = '';
-                    console.log('error', error);
-                    showToast('error', error);
-                } else {
-                    window.location.reload();
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
-    }
+    fetch('/auth/account-delete',{
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ deleteInput: deleteInput.value })
+    }).then(res => res.json())
+        .then(data => {
+            let {error} = data;
+            if (error) {
+                e.preventDefault();
+                deleteInput.value = '';
+                console.log('error', error);
+                showToast('error', error);
+            } else {
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
 });
 
 

@@ -407,9 +407,9 @@ class AuthController {
                 console.log('Пользователь не найден.');
             }
 
-            if (!deleteInput) {
-                const msg = locale === 'en' ? 'Password is required.' : 'Введите пароль.';
-                return res.status(400).json({ error: msg });
+            if (deleteInput.length < 1) {
+                const errorMsg = locale === 'en' ? 'Password is required.' : 'Введите пароль.';
+                return res.status(400).json({ error: errorMsg });
             }
 
             const pass = await bcrypt.compare(deleteInput, userInfo.password);
