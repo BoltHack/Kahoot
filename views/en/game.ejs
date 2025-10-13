@@ -12,17 +12,14 @@
             document.documentElement.classList.remove('darkTheme');
         }
     </script>
-    <meta property="og:title" content="Join the game and start the quiz!" />
-    <meta property="og:description" content="Join the game and test your knowledge in a fun quiz!" />
-    <meta property="og:image" content="<%= ngrokLink %>/images/kahoot2.png" />
-    <meta property="og:url" content="<%= ngrokLink %>/<%= gameId._id %>" />
-    <meta property="og:type" content="game" />
-    <meta property="og:locale" content="en_US" />
     <link rel="icon" type="image/png" href="/images/icon.png">
     <link rel="stylesheet" href="/stylesheets/game.css">
     <link rel="stylesheet" href="/stylesheets/friends.css">
     <link rel="stylesheet" href="/stylesheets/theme.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
+    <noscript>
+        <%- include('./tools/noscript.ejs') %>
+    </noscript>
 </head>
 <script>
     const game = '<%= myGame %>';
