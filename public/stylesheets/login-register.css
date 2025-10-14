@@ -170,6 +170,23 @@ body {
     margin-top: 5px;
 }
 
+.login-register-a {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.login-register-a a {
+    color: #2879f3;
+    text-decoration: none;
+}
+
+.login-register-a a:hover {
+    text-decoration: underline;
+    color: #f37e10;
+}
+
 .checkbox-group {
     color: black;
     font-size: 14px;
