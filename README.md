@@ -109,9 +109,7 @@ PASS='lknghiutynoliunf'
 В английской версии:
 
 <img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/1428f3d5-edf8-4560-9f80-842285b38faf" />
-
 ##
-
 В русской версии:
 
 <img width="237" height="150" alt="Снимок экрана 2025-10-14 181515" src="https://github.com/user-attachments/assets/127a60b2-b3f5-4cae-80f7-1fc41344e811" />
