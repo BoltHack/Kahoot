@@ -108,9 +108,9 @@ PASS='lknghiutynoliunf'
 
 В английской версии:
 
-<img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/1428f3d5-edf8-4560-9f80-842285b38faf" />
+### <img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/1428f3d5-edf8-4560-9f80-842285b38faf" />
 
-___
+---
 
 В русской версии:
 
