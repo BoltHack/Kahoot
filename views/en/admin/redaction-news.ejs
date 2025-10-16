@@ -3,50 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin panel | Editor</title>
+    <title>Admin Panel | Updates</title>
     <link rel="stylesheet" href="/stylesheets/admin/redactionNews.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
 </head>
 <script>
-    const editNews = `<%= newsInfo.updateTitle %>`;
-    const newsLength = `<%= newsInfo.update.length || 1 %>`;
+    const editNews = `<%= newsInfo.mainContent.mainTitle %>`;
+    const editId = `<%= newsInfo.id %>`;
+    const editContent = `<%= newsInfo.content %>`;
 </script>
 <body>
 <%- include('admin-header.ejs') %>
 <main class="admin-tools">
-    <form action="/admin/redaction-news/<%= newsInfo.id %>" method="POST" enctype="multipart/form-data">
-        <div class="container" style="left: 60%; top: -20%;">
+    <div id="saveNewsForm">
+        <div class="container" style="left: 60%; top: -1%;">
             <div class="modal">
                 <div class="modal__header">
-                    <span class="modal__title">Edit: <%= newsInfo.updateTitle %></span>
+                    <span class="modal__title">Editing: <%= newsInfo.mainContent.mainTitle %></span>
                 </div>
                 <div class="modal__body" style="border-bottom: none;">
                     <div class="input">
-                        <label class="input__label">Title</label>
-                        <input class="input__field" type="text" name="updateTitle" placeholder="Enter a name" value="<%= newsInfo.updateTitle %>" maxlength="10">
-                        <p class="input__description">The name must be a maximum of 10 characters.</p>
+                        <label class="input__label">Article Title</label>
+                        <input class="input__field" type="text" id="mainTitle" placeholder="Enter desired text" value="<%= newsInfo.mainContent.mainTitle %>" maxlength="100">
                     </div>
+                    <br/>
                     <div class="input">
-                        <div class="input_container">
-                            <p>Number of headings:</p>
-                            <select name="max_news" class="type">
-                                <option value="1" <%= newsInfo.update.length === 1 ? 'Selected' : '' %> >1</option>
-                                <option value="2" <%= newsInfo.update.length === 2 ? 'Selected' : '' %> >2</option>
-                                <option value="3" <%= newsInfo.update.length === 3 ? 'Selected' : '' %> >3</option>
-                                <option value="4" <%= newsInfo.update.length === 4 ? 'Selected' : '' %> >4</option>
-                                <option value="5" <%= newsInfo.update.length === 5 ? 'Selected' : '' %> >5</option>
-                            </select>
+                        <label class="input__label">Short Summary</label>
+                        <input class="input__field" type="text" id="mainSummary" placeholder="Enter desired text" value="<%= newsInfo.mainContent.mainSummary %>" maxlength="100">
+                    </div>
+                    <br>
+                    <div class="input">
+                        <label class="input__label">Header Image</label>
+                        <label class="mainImage">
+                            <span>Click to upload an image</span>
+                            <input type="file" name="file" id="mainImage" style="display: none;">
+                        </label>
+                        <br/>
+                        <div class="input">
+                            <div class="input_container" style="gap: 5px;">
+                                <input type="checkbox" id="delImg">
+                                <label for="delImg">Delete image</label>
+                            </div>
                         </div>
                     </div>
+                    <br/>
                     <div class="input">
                         <div class="input_container">
                             <p>Tags:</p>
                             <div style="margin-top: 15px;">
                                 <input type="checkbox" id="updatesTag" name="updatesTag" <%= newsInfo.tags.some(tag => tag.tagName === 'Updates') ? 'checked' : '' %> >
-                                <label for="updatesTag">Updates</label>
+                                <label for="updatesTag">Update</label>
 
                                 <input type="checkbox" id="aboutGameTag" name="aboutGameTag" <%= newsInfo.tags.some(tag => tag.tagName === 'AboutGame') ? 'checked' : '' %> >
-                                <label for="newsTag">About the game</label>
+                                <label for="newsTag">About the Game</label>
 
                                 <input type="checkbox" id="bugsErrorsTag" name="bugsErrorsTag" <%= newsInfo.tags.some(tag => tag.tagName === 'BugsErrors') ? 'checked' : '' %> >
                                 <label for="errorsTag">Bugs/Errors</label>
@@ -58,7 +67,7 @@
                             <div class="input_container">
                                 <div style="margin-top: 15px;">
                                     <input type="checkbox" id="updateDate" name="updateDate">
-                                    <label for="updateDate">Update date</label>
+                                    <label for="updateDate">Update Date</label>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +75,7 @@
                             <div class="input_container">
                                 <div style="margin-top: 15px;">
                                     <input type="checkbox" id="isVisibility" name="isVisibility" <%= newsInfo.isVisibility === false ? 'checked' : '' %> >
-                                    <label for="isVisibility">Hide news</label>
+                                    <label for="isVisibility">Hide News</label>
                                 </div>
                             </div>
                         </div>
@@ -75,201 +84,37 @@
                 </div>
                 <div style="display: flex">
                     <div class="modal__footer">
-                        <button class="button button--primary">Save</button>
+                        <button class="button button--primary" onclick="saveNewsFunc()">Save</button>
                     </div>
                     <div class="modal__footer">
-                        <a class="button button--primary" href="/admin/list-news" style="text-decoration: none">All news</a>
+                        <a class="button button--primary" href="/admin/list-news" style="text-decoration: none;">All News</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal questions-modal">
-
-            <div class="modal__body" id="modal0">
-                <div class="input">
-                    <label class="input__label">Title 1</label>
-                    <input class="input__field" type="text" name="title0" value="<%= newsInfo.update[0] ? newsInfo.update[0].title : '' %>" placeholder="Title" required>
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Picture (optional)</label>
-                    <br>
-                    <input type="file" accept="image/*" name="image0" class="input-file">
-                    <br>
-                    <div class="input">
-                        <div class="input_container">
-                            <input type="checkbox" id="delImg0" name="delImg0">
-                            <label for="delImg0">Delete image</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Description</label>
-                    <textarea class="input__field" type="text" name="content0" placeholder="Description"><%= newsInfo.update[0] ? newsInfo.update[0].content : '' %></textarea>
-                </div>
+        <div class="questions-modal">
+            <div id="editor"
+                 contenteditable="true"
+                 spellcheck="false"
+                 autocorrect="off"
+                 autocapitalize="off"
+                 writingsuggestions="false"
+                 translate="no"
+                 style="border: 1px solid #ccc; padding: 10px; overflow-y: auto;"
+            ></div>
+            <br/>
+            <div class="save-img">
+                <label>
+                    <span>Click to upload an image</span>
+                    <input type="file" name="file" id="inputFile" style="display: none;">
+                </label>
             </div>
-
-            <div class="modal__body" id="modal1" hidden>
-                <div class="input">
-                    <label class="input__label">Title 2</label>
-                    <input class="input__field" type="text" name="title1" value="<%= newsInfo.update[1] ? newsInfo.update[1].title : '' %>" placeholder="Title">
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Picture (optional)</label>
-                    <br>
-                    <input type="file" accept="image/*" name="image1" class="input-file">
-                    <br>
-                    <div class="input">
-                        <div class="input_container">
-                            <input type="checkbox" id="delImg1" name="delImg1">
-                            <label for="delImg1">Delete image</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Description</label>
-                    <textarea class="input__field" type="text" name="content1" placeholder="Description"><%= newsInfo.update[1] ? newsInfo.update[1].content : '' %></textarea>
-                </div>
-            </div>
-
-            <div class="modal__body" id="modal2" hidden>
-                <div class="input">
-                    <label class="input__label">Title 3</label>
-                    <input class="input__field" type="text" name="title2" value="<%= newsInfo.update[2] ? newsInfo.update[2].title : '' %>" placeholder="Title">
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Picture (optional)</label>
-                    <br>
-                    <input type="file" accept="image/*" name="image2" class="input-file">
-                    <br>
-                    <div class="input">
-                        <div class="input_container">
-                            <input type="checkbox" id="delImg2" name="delImg2">
-                            <label for="delImg2">Delete image</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Description</label>
-                    <textarea class="input__field" type="text" name="content2" placeholder="Description"><%= newsInfo.update[2] ? newsInfo.update[2].content : '' %></textarea>
-                </div>
-            </div>
-
-            <div class="modal__body" id="modal3" hidden>
-                <div class="input">
-                    <label class="input__label">Title 4</label>
-                    <input class="input__field" type="text" name="title3" value="<%= newsInfo.update[3] ? newsInfo.update[3].title : '' %>" placeholder="Title">
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Picture (optional)</label>
-                    <br>
-                    <input type="file" accept="image/*" name="image3" class="input-file">
-                    <br>
-                    <div class="input">
-                        <div class="input_container">
-                            <input type="checkbox" id="delImg3" name="delImg3">
-                            <label for="delImg3">Delete image</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Description</label>
-                    <textarea class="input__field" type="text" name="content3" placeholder="Description"><%= newsInfo.update[3] ? newsInfo.update[3].content : '' %></textarea>
-                </div>
-            </div>
-
-            <div class="modal__body" id="modal4" hidden>
-                <div class="input">
-                    <label class="input__label">Title 5</label>
-                    <input class="input__field" type="text" name="title4" value="<%= newsInfo.update[4] ? newsInfo.update[4].title : '' %>" placeholder="Title">
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Picture (optional)</label>
-                    <br>
-                    <input type="file" accept="image/*" name="image4" class="input-file">
-                    <br>
-                    <div class="input">
-                        <div class="input_container">
-                            <input type="checkbox" id="delImg4" name="delImg4">
-                            <label for="delImg4">Delete image</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="input">
-                    <br>
-                </div>
-                <div class="input">
-                    <label class="input__label">Description</label>
-                    <textarea class="input__field" type="text" name="content4" placeholder="Description"><%= newsInfo.update[4] ? newsInfo.update[4].content : '' %></textarea>
-                </div>
-            </div>
-
+            <br/>
         </div>
-    </form>
+
+    </div>
 </main>
-<script>
-    const modals = [...Array(5)].map((_, i) => document.getElementById(`modal${i}`));
-    const inputs = [...Array(5)].map((_, i) => document.querySelector(`input[name="title${i}"]`));
-    document.querySelector('select[name="max_news"]').addEventListener('change', function () {
-        const value = Number(this.value);
-        console.log('value', value);
-
-        modals.forEach((modal, i) => modal.hidden = i >= value);
-
-        inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        const value = newsLength;
-        console.log('value 2', value);
-        modals.forEach((modal, i) => modal.hidden = i >= value);
-
-        inputs.forEach((input, i) => input.required = i <= value && !modals[i].hidden);
-    })
-
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function (event) {
-            document.querySelectorAll('input[required]').forEach(input => {
-                if (input.hidden || input.offsetParent === null) {
-                    input.required = false;
-                }
-            });
-        });
-    });
-
-
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('keydown', event => {
-            if (event.key === 'Enter') event.preventDefault();
-        });
-    });
-</script>
+<script src="/javascripts/admin/redactionNews.js"></script>
 </body>
 </html>
-

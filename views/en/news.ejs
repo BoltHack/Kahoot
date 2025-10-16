@@ -67,9 +67,7 @@
                 <li class="news-container">
                     <article class="news-card">
                         <h2 class="news-title">
-                            <%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 50) + '...' : news.updateTitle %>
-                            <br/>
-                            <%= news.update[0].title.length > 50 ? news.update[0].title.slice(0, 50) + '...' : news.update[0].title %>
+                            <%= news.mainContent.mainTitle.length > 50 ? news.mainContent.mainTitle.slice(0, 50) + '...' : news.mainContent.mainTitle %>
                         </h2>
                         <div class="news-meta">
                             <div class="news-author" onclick="window.open('/user-profile/<%= news.author.authorId %>', '_blank')">
@@ -111,8 +109,8 @@
                             </div>
                         </div>
                         <div class="news-image">
-                            <% if (news.update[0] && news.update[0].image) {%>
-                                <img src="<%= news.update[0].image %>" loading="lazy">
+                            <% if (news.mainContent.mainImage && news.mainContent.mainImage) {%>
+                                <img src="<%= news.mainContent.mainImage %>" loading="lazy">
                             <% } %>
                         </div>
                         <%
@@ -122,7 +120,7 @@
                                     return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
                                 });
                             }
-                            const linkedMessage = linkify(news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content);
+                            const linkedMessage = linkify(news.mainContent.mainSummary.length > 100 ? news.mainContent.mainSummary.slice(0, 100) + '...' : news.mainContent.mainSummary);
                         %>
                         <p class="news-summary"><%- linkedMessage %></p>
 

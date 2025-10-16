@@ -356,9 +356,14 @@ class ViewController {
                 ...query,
                 $or: [
                     { isVisibility: true },
-                    { isVisibility: { $exists: false } }
+                    { isVisibility: { $exists: false } },
                 ],
-                update: { $exists: true, $ne: [] }
+                $expr: {
+                    $and: [
+                        { $gt: [{ $strLenCP: { $ifNull: [ '$mainContent.mainTitle', '' ] } }, 1] },
+                        { $gt: [{ $strLenCP: { $ifNull: [ '$mainContent.mainSummary', '' ] } }, 1] },
+                    ]
+                }
             };
 
             const page = parseInt(req.query.page) || 1;
@@ -410,7 +415,6 @@ class ViewController {
             const locale = req.cookies['locale'] || 'en';
             const notifications = req.cookies['notifications'] || 'on';
             const darkTheme = req.cookies['darkTheme'] || 'on';
-            const previousPage = req.cookies['previousPage'] || '/';
 
             const pageUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
@@ -421,8 +425,9 @@ class ViewController {
 
             const readNews = await NewsModel.findById(news_id);
 
-            if (!readNews.update[0]) {
-                return res.redirect(previousPage);
+            if (!readNews.mainContent.mainSummary) {
+                const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
             if (readNews.isVisibility === false) {
                 const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';

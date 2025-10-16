@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News | <%= readNews.updateTitle %></title>
+    <title>News | <%= readNews.mainContent.mainTitle %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/stylesheets/news.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
@@ -14,7 +14,7 @@
     </style>
 </head>
 <script>
-    const newsTitle = '<%= readNews.updateTitle %>';
+    const newsTitle = '<%= readNews.mainContent.mainTitle %>';
 </script>
 <body>
 <%- include('header.ejs') %>
@@ -49,7 +49,7 @@
         </div>
         <div class="news-container writeNews">
             <article class="news-card">
-                <h2 class="news-title"><%= readNews.updateTitle %></h2>
+                <h2 class="news-title"><%= readNews.mainContent.mainTitle %></h2>
                 <div class="news-meta">
                     <div class="news-author" onclick="window.open('/user-profile/<%= readNews.author.authorId %>', '_blank')">
                         <img src="<%= authorImage %>" loading="lazy">
@@ -88,29 +88,33 @@
                         <% } %>
                     </div>
                 </div>
-                <% if (readNews.update && Array.isArray(readNews.update) && readNews.update.length > 0) { %>
-                    <% readNews.update.forEach(updateNews => { %>
-                        <h3 class="readNews-title"><%= updateNews.title %></h3>
-                        <% if (updateNews.image) { %>
-                            <div class="news-image" style="margin-top: -30px;">
-                                <% if (updateNews && updateNews.image) {%>
-                                    <img src="<%= updateNews.image %>" loading="lazy">
-                                <% } %>
-                            </div>
-                        <% } %>
-                        <%
-                            function linkify(text) {
-                                const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
-                                return text.replace(urlPattern, function(url) {
+                <% if (readNews.mainContent.mainSummary.length > 0) { %>
+                    <h3 class="readNews-title"><%= readNews.mainContent.mainSummary %></h3>
+                    <% if (readNews.mainContent.mainImage) { %>
+                        <div class="news-image" style="margin-top: -30px;">
+                            <img src="<%= readNews.mainContent.mainImage %>" loading="lazy">
+                        </div>
+                    <% } %>
+                    <%
+                        function linkifyAndPreserveBreaks(text) {
+                            const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+
+                            const lines = text.split('\n');
+
+                            const linkedLines = lines.map(line => {
+                                return line.replace(urlPattern, function(url) {
                                     return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
                                 });
-                            }
-                            const linkedMessage = linkify(updateNews.content);
-                        %>
-                        <p class="news-summary"><%- linkedMessage %></p>
+                            });
+
+                            return linkedLines.join('<br>');
+                        }
+
+                        const linkedMessage = linkifyAndPreserveBreaks(readNews.content);
+                    %>
+                    <div class="news-summary"><%- linkedMessage %></div>
                     <br>
                     <br>
-                    <% }) %>
                 <% } %>
                 <div class="news-footer">
                     <div class="stats">
@@ -194,6 +198,7 @@
         </div>
     </div>
 </main>
+<div style="margin-bottom: 150px;"></div>
 <%- include('footer.ejs') %>
 <script src="/javascripts/timer.js"></script>
 <script src="/javascripts/readNews.js"></script>

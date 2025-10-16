@@ -13,19 +13,7 @@ const tagsSchema = new Schema({
         type: String,
         required: true
     }
-})
-
-const updateSchema = new Schema({
-    title: {
-        type: String
-    },
-    image: {
-        type: String
-    },
-    content: {
-        type: String
-    },
-})
+});
 
 const newsSchema = new Schema({
     author: {
@@ -36,11 +24,20 @@ const newsSchema = new Schema({
             type: String,
         },
     },
-    updateTitle: {
-        type: String
+    mainContent: {
+        mainTitle: {
+            type: String
+        },
+        mainSummary: {
+            type: String
+        },
+        mainImage: {
+            type: String,
+            default: ''
+        },
     },
-    update: {
-        type: [updateSchema]
+    content: {
+        type: String
     },
     views: {
         type: Number,

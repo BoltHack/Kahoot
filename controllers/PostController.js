@@ -8,6 +8,28 @@ const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
 const geoip = require('geoip-lite');
 const sanitizeHtml = require("sanitize-html");
+const he = require('he');
+
+function cleanEditorContent(content) {
+
+    let decoded = he.decode(content);
+    // decoded = decoded
+        // .replace(/<div>(?:\s|<br>|&nbsp;)*<\/div>/g, '')
+        // .replace(/<span[^>]*>\s*(<ul>[\s\S]*?<\/ul>)\s*<\/span>/g, '$1')
+        // .replace(/<span[^>]*>\s*(<li[^>]*>[\s\S]*?<\/li>)\s*<\/span>/g, '$1')
+        // .replace(/<span[^>]*>([^<]+)<\/span>/g, '$1')
+        // .replace(/<br\s*\/?>/gi, '<span>&nbsp;</span>');
+
+    const clean = sanitizeHtml(decoded, {
+        allowedTags: ['ul','li','ol','p','b','i','u','strong','h1','h2','h3','h4','h5','h6','em','a','br','img'],
+        allowedAttributes: {
+            'a': ['href', 'target'],
+            'img': ['src', 'alt']
+        }
+    });
+
+    return clean;
+}
 
 require('dotenv').config();
 
@@ -644,7 +666,7 @@ class PostController {
 
     static postNews = async (req, res, next) => {
         try {
-            const {updateTitle} = req.body;
+            const {mainTitle} = req.body;
             const user = req.user;
 
             const postNews = new NewsModel({
@@ -652,9 +674,27 @@ class PostController {
                     authorName: user.name,
                     authorId: user.id
                 },
-                updateTitle: updateTitle
+                mainContent: {
+                    mainTitle: mainTitle
+                }
             })
             postNews.save();
+
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'newsImages');
+            const newsDir = path.join(uploadDir, postNews.id);
+
+            if (!fs.existsSync(newsDir)) {
+                fs.mkdirSync(newsDir, { recursive: true });
+            }
+
+            if (req.files && req.files.image) {
+                const imageFile = req.files.image;
+                const imagePath = path.join(newsDir, imageFile.name);
+
+                await imageFile.mv(imagePath);
+
+                console.log('Изображение сохранено по пути:', imagePath);
+            }
 
             return res.redirect(`/admin/redaction-news/${postNews._id}`);
         } catch (err) {
@@ -664,10 +704,79 @@ class PostController {
         }
     };
 
+    static postImage = async (req, res, next) => {
+        try {
+            const {postType} = req.params;
+            const {newsId} = req.body;
+            const newsInfo = await NewsModel.findById(newsId);
+
+            if (req.body['delImg'] && req.body['delImg'] === 'true') {
+                console.log('delete img', req.body['deleteImg']);
+                await NewsModel.findOneAndUpdate(
+                    { _id: newsInfo._id, },
+                    { $set: { 'mainContent.mainImage': '' } },
+                    { new: true }
+                );
+                return;
+            }
+
+            if (!req.files || !req.files.file) {
+                return res.status(400).json({ error: 'Файл не найден' });
+            }
+
+            const imageFile = req.files.file;
+
+            console.log('imageFile', imageFile);
+            const fileExt = path.extname(imageFile.name);
+            const fileName = `${newsId}-${uuidv4()}${fileExt}`;
+            const safeFileName = `/uploads/newsImages/${newsId}/${fileName}`;
+
+            console.log('safeFileName', safeFileName);
+
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'newsImages', newsId);
+            const savePath = path.join(uploadDir, fileName);
+
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+
+            await new Promise((resolve, reject) => {
+                imageFile.mv(savePath, (err) => {
+                    if (err) {
+                        console.error('Ошибка при сохранении файла:', err);
+                        return reject(new Error('Ошибка при сохранении файла'));
+                    }
+                    resolve();
+                });
+            });
+
+            if (postType === 'withoutJson') {
+                const updated = await NewsModel.findOneAndUpdate(
+                    { _id: newsInfo._id, },
+                    { $set: { 'mainContent.mainImage': safeFileName } },
+                    { new: true }
+                );
+
+                console.log('safeFileName', safeFileName);
+                if (!updated) {
+                    console.error('News not found for ID:', newsId);
+                } else {
+                    console.log('Image added successfully:', updated.mainContent.mainImage);
+                }
+            } else {
+                return res.status(200).json({ fileName: safeFileName });
+            }
+        } catch (err) {
+            console.error('Ошибка:', err);
+            res.status(500).json({ error: err.message });
+            next(err);
+        }
+    }
+
     static redactionNews = async (req, res, next) => {
         try {
-            const {news_id} = req.params;
-            const newsId = await NewsModel.findById(news_id);
+            const {newsId} = req.body;
+
             const user = req.user;
             let locale = req.cookies['locale'] || 'en';
 
@@ -682,21 +791,35 @@ class PostController {
             if (!req.cookies['locale']) {
                 res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
-            const {updateTitle, max_news, updateDate, isVisibility} = req.body;
+
+            const {mainTitle, mainSummary, updateDate, isVisibility} = req.body;
             const {updatesTag, aboutGameTag, bugsErrorsTag} = req.body;
+            const {delImg} = req.body;
+            const {content} = req.body;
+
+            console.log('content', content);
 
             const updateFields = {};
 
             const getData = await UsersModel.findById(user.id);
 
-            if (updateTitle) updateFields.updateTitle = updateTitle;
+            // updateFields.mainContent = {
+            //     'mainTitle': mainTitle,
+            //     'mainSummary': mainSummary,
+            // };
+
             if (updateDate === 'on') updateFields.fullDate = new Date;
-            isVisibility === 'on' ? updateFields.isVisibility = false : updateFields.isVisibility = true;
+            isVisibility === true ? updateFields.isVisibility = false : updateFields.isVisibility = true;
+
             if (updateDate) updateFields.date = dateOnly;
-            if (updateTitle) updateFields.author = {
+
+            if (mainTitle) updateFields.author = {
                 authorName: getData.name,
                 authorId: getData.id
             };
+
+            const text = cleanEditorContent(content);
+            if (mainTitle) updateFields.content = text;
 
             if (!updateFields["tags"]) {
                 updateFields["tags"] = [];
@@ -706,76 +829,18 @@ class PostController {
             if (aboutGameTag) updateFields["tags"].push({ tagName: 'AboutGame' });
             if (bugsErrorsTag) updateFields["tags"].push({ tagName: 'BugsErrors' });
 
-            async function updateFilesProcess(title, content, imageKey, delImg, index) {
-                if (title) {
-                    if (req.files && req.files[imageKey]) {
-                        const imageFile = req.files[imageKey];
-
-                        const fileExt = path.extname(imageFile.name);
-                        const safeFileName = `${newsId.id + '-' + uuidv4()}${fileExt}`;
-                        const imagePath = `/uploads/newsImages/${safeFileName}`;
-
-                        const uploadDir = path.join(__dirname, '..', 'public', 'uploads/newsImages');
-                        const savePath = path.join(uploadDir, safeFileName);
-
-                        if (!fs.existsSync(uploadDir)) {
-                            fs.mkdirSync(uploadDir, { recursive: true });
-                        }
-
-                        await new Promise((resolve, reject) => {
-                            imageFile.mv(savePath, (err) => {
-                                if (err) {
-                                    console.error('Ошибка при сохранении файла:', err);
-                                    return reject(new Error('Ошибка при сохранении файла'));
-                                }
-                                resolve();
-                            });
-                        });
-
-
-                        updateFields[`update.${index}`] = {
-                            title,
-                            image: imagePath,
-                            content
-                        };
-                    }
-                    else {
-                        const imageIndex = await NewsModel.findById(news_id);
-
-                        const imageValue = imageIndex.update && imageIndex.update[index]
-                            ? imageIndex.update[index].image
-                            : '';
-
-                        updateFields[`update.${index}`] = {
-                            title,
-                            image: delImg ? '' : imageValue,
-                            content,
-                        };
-                    }
-                }
-            }
-
-            const maxNews = parseInt(max_news, 10);
-            for (let i = 0; i < maxNews; i++) {
-                await updateFilesProcess(
-                    req.body[`title${i}`],
-                    req.body[`content${i}`],
-                    `image${i}`,
-                    req.body[`delImg${i}`],
-                    i
-                );
-                console.log('i', i);
-            }
-
-            console.log('max_news', max_news);
-
             await NewsModel.findOneAndUpdate(
-                { _id: news_id },
-                { $set: updateFields },
+                { _id: newsId },
+                { $set:
+                    updateFields,
+                    'mainContent.mainTitle': mainTitle,
+                    'mainContent.mainSummary': mainSummary,
+                },
                 { new: true }
             )
 
-            return res.redirect(`/admin/redaction-news/${news_id}`);
+            return res.status(200).json({ message: 'success' });
+            // return res.redirect(`/admin/redaction-news/${news_id}`);
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });
@@ -810,7 +875,21 @@ class PostController {
             const {news_id} = req.params;
             const user = req.user;
 
-            await NewsModel.findByIdAndDelete(news_id)
+            const newsInfo = await NewsModel.findById(news_id);
+
+            if (newsInfo) {
+                await NewsModel.findByIdAndDelete(news_id)
+
+                const filePath = path.join(__dirname, '..', 'public', 'uploads/newsImages', newsInfo.id);
+
+                fs.rmdir(filePath, { recursive: true, force: true }, (err) => {
+                    if (err) {
+                        console.error('Ошибка при удалении папки:', err);
+                        return;
+                    }
+                    console.log('Папка успешно удалена');
+                });
+            }
 
             return res.redirect(user.role === 'Admin' ? '/admin/list-news' : '/news');
         } catch (err) {

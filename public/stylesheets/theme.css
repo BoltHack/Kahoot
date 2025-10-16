@@ -260,6 +260,11 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         background: #16171d;
         border: 1px solid #313338;
+        color: var(--bp);
+    }
+    .mainImage {
+        background-color: var(--inputModalBackground);
+        color: var(--bp);
     }
     .questions-modal .card-edit a {
         color: #0096c7;

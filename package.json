@@ -21,6 +21,7 @@
     "express-fileupload": "^1.5.1",
     "fs": "^0.0.1-security",
     "geoip-lite": "^1.4.10",
+    "he": "^1.2.0",
     "http": "^0.0.1-security",
     "http-errors": "~1.6.3",
     "https": "^1.0.0",

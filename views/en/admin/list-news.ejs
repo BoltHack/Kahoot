@@ -86,7 +86,7 @@
             <% listNews.forEach(news => { %>
                 <li class="news-container" style="margin-top: 150px;">
                     <div class="news-card">
-                        <h2 class="news-title"><%= news.updateTitle %></h2>
+                        <h2 class="news-title"><%= news.mainContent.mainTitle %></h2>
                         <br>
                         <div class="news-meta">
                             <div class="news-author">
@@ -129,7 +129,7 @@
                                 <% } %>
                             </div>
 
-                            <% if (!news.update[0]) { %>
+                            <% if (!news.mainContent.mainSummary) { %>
                                 <a href="/admin/redaction-news/<%= news._id %>" class="not-posted" title="This article is not posted in the news list. Please fill it out.">
                                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
@@ -138,13 +138,20 @@
                             <% } %>
                         </div>
                         <div class="news-image">
-                            <% if (news.update[0] && news.update[0].image) {%>
-                                <img src="<%= news.update[0].image %>">
+                            <% if (news.mainContent.mainImage && news.mainContent.mainImage) {%>
+                                <img src="<%= news.mainContent.mainImage %>" loading="lazy">
                             <% } %>
                         </div>
-                        <% if (news.update && news.update.length > 0 && news.update[0].content) { %>
-                            <p class="news-summary"><%= news.update[0].content.length > 100 ? news.update[0].content.slice(0, 100) + '...' : news.update[0].content %></p>
-                        <% } %>
+                        <%
+                            function linkify(text) {
+                                const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+                                return text.replace(urlPattern, function(url) {
+                                    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+                                });
+                            }
+                            const linkedMessage = linkify(news.mainContent.mainSummary ? news.mainContent.mainSummary.length > 100 ? news.mainContent.mainSummary.slice(0, 100) + '...' : news.mainContent.mainSummary : '');
+                        %>
+                        <p class="news-summary"><%- linkedMessage %></p>
                         <br>
                         <br>
                         <div class="news-footer">
@@ -186,7 +193,7 @@
                                 <a href="/admin/redaction-news/<%= news._id %>" class="news-edit">Edit</a>
                                 <button type="submit" class="news-delete" data-id="<%= news._id %>">Delete</button>
                             </div>
-                            <% if (news.update[0]) { %>
+                            <% if (news.mainContent.mainSummary) { %>
                                 <form action="/viewNews/<%= news._id %>" method="POST">
                                     <button class="read-more">Read more</button>
                                 </form>
@@ -195,7 +202,7 @@
                     </div>
 
                     <div id="deleteMenu-<%= news._id %>" class="deleteNewsMenu" hidden>
-                        <p style="text-align: center; color: white; margin: 30px 0; padding: 10px;word-break: break-word">Delete attachment "<%= news.updateTitle.length > 50 ? news.updateTitle.slice(0, 30) + '...' : news.updateTitle %>"</p>
+                        <p style="text-align: center; color: white; margin: 30px 0; padding: 10px;word-break: break-word">Delete attachment "<%= news.mainContent.mainTitle ? news.mainContent.mainTitle.length > 30 ? news.mainContent.mainTitle.slice(0, 30) : news.mainContent.mainTitle : '' %>"</p>
                         <div class="yes-or-no">
                             <button class="no-btn" id="closeBtn-<%= news._id %>">Нет</button>
                             <form action="/admin/delete-news/<%= news._id %>" method="POST">
