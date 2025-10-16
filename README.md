@@ -1,4 +1,4 @@
-# Подробное описание
+# Kahoot | Подробное описание
 
 Онлайн-клон Kahoot с расширенными возможностями
 
@@ -108,10 +108,12 @@ PASS='lknghiutynoliunf'
 
 В английской версии:
 
-<img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/1428f3d5-edf8-4560-9f80-842285b38faf" />
+<img width="240" height="150" alt="admin-panel-EN" src="https://github.com/user-attachments/assets/1428f3d5-edf8-4560-9f80-842285b38faf" />
 
+##
 
 В русской версии:
 
-<img width="229" height="153" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/948c5165-f9b8-4c87-9d72-1b394aad7677" />
+<img width="240" height="150" alt="admin-panel-RU" src="https://github.com/user-attachments/assets/127a60b2-b3f5-4cae-80f7-1fc41344e811" />
+
 
