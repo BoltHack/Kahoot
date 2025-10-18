@@ -101,15 +101,15 @@
                         function linkifyAndPreserveBreaks(text) {
                             const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
 
-                            const lines = text.split('\n');
-
-                            const linkedLines = lines.map(line => {
-                                return line.replace(urlPattern, function(url) {
-                                    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
-                                });
-                            });
-
-                            return linkedLines.join('<br>');
+                            return text
+                                    .split('\n')
+                                    .map(line =>
+                                            line.replace(urlPattern, url =>
+                                                    `<a href="${url}" target="_blank" rel="noopener noreferrer" class="news-link">${url}</a>`
+                                            )
+                                            .replace(/---/g, `<div class="news-line"></div>`)
+                                    )
+                                    .join('<div></div>');
                         }
 
                         const linkedMessage = linkifyAndPreserveBreaks(readNews.content);
