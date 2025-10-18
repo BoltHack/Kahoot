@@ -425,7 +425,7 @@ class ViewController {
 
             const readNews = await NewsModel.findById(news_id);
 
-            if (!readNews.mainContent.mainSummary) {
+            if (!readNews.mainContent && !readNews.mainContent.mainSummary) {
                 const errorMsg = locale === 'en' ? 'Not found.' : 'Страница не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
