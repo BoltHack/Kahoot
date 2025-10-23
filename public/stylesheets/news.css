@@ -177,7 +177,6 @@ body {
     display: flex;
     gap: 10px;
     align-items: center;
-    width: 100%;
 }
 
 .news-link {

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 socket.emit('requestMyFriendsCount', sendId);
             } else {
                 console.error(`Socket or sendId is not defined.`);
-                showToast('error', localeType === 'en' ? "There was an error in the site. Restoring..." : 'Возникла ошибка в работе сайта. Идёт восстановление...');
+                showToast('error', localeType === 'en' ? "There was an error in the site. Restoring..." : 'Возникла ошибка в работе сайта. Идёт восстановление...', 6000);
                 setTimeout(function () {
                     window.location.reload();
                 }, 5000);
