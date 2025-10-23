@@ -449,6 +449,9 @@
         background: #313338;
         color: #ECF1FD;
     }
+    .news .share-news svg {
+        color: var(--bp);
+    }
     .news .tag {
         border: 1px solid #666;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

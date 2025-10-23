@@ -118,9 +118,9 @@ body {
 }
 
 .news-date {
-    /*margin-top: -5px;*/
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
 }
 .news-date span {
@@ -177,6 +177,7 @@ body {
     display: flex;
     gap: 10px;
     align-items: center;
+    width: 100%;
 }
 
 .news-link {
@@ -216,6 +217,22 @@ body {
     font-size: 16px;
     /*font-weight: 550;*/
 }
+
+.share-news {
+    display: block;
+    padding: 5px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+}
+.share-news svg {
+    width: 25px;
+    height: 25px;
+}
+.share-news:hover {
+    background: #636264;
+}
+
 .stats p {
     margin-top: 15px;
 }

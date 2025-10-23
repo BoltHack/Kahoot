@@ -4,8 +4,6 @@ const body = document.body, html = document.documentElement;
 const height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
 stickyHeight.style.height = `calc(${height}px - 731px)`;
 
-
-
 function likeNews(newsId) {
     console.log('like');
     socket.emit('requestLikeNews', newsId);
@@ -54,3 +52,14 @@ socket.on('reactionsCount', async (data) => {
         }
     }
 });
+
+function shareNews() {
+    navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+            console.log('URL страницы успешно скопирован в буфер обмена!');
+            showToast('success', localeType === 'en' ? 'The page address has been copied to the clipboard!' : 'Адрес страницы скопирован в буфер обмена!');
+        })
+        .catch(error => {
+            console.log('error', error);
+        })
+}
