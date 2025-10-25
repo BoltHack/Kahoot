@@ -455,10 +455,6 @@ body {
     .search-container {
         position: relative;
         margin-left: 0;
-        padding: 20px;
-        max-width: 780px;
-        width: 100%;
-        box-sizing: border-box;
     }
     .search {
         padding: 20px;
