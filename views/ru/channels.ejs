@@ -64,9 +64,11 @@
     <div class="chat-container">
         <div class="chat-header">
             <div class="chat-position">
-                <img class="avatar header-avatar" src="<%= companion.image %>" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')">
-                <span class="chat-name <%= companion.role === 'TechSupport' ? `tech-chat` : '' %>" onclick="window.open('/user-profile/<%= companion.id %>', '_blank')"><%= companion.role === 'TechSupport' ? 'Тех поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : companion.name %></span>
-                <span id="onlineMod"></span>
+                <div class="avatar-position" onclick="window.location.href = '/user-profile/<%= companion.id %>'">
+                    <img class="avatar header-avatar" src="<%= companion.image %>">
+                    <span class="chat-name <%= companion.role === 'TechSupport' ? `tech-chat` : '' %>"><%= companion.role === 'TechSupport' ? 'Тех поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : companion.name %></span>
+                </div>
+                <span id="onlineMod">Загрузка...</span>
                 <div class="channel-tools">
                     <div class="media-width">
                     <span onclick="channelsMenu()">

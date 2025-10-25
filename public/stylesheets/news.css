@@ -425,7 +425,9 @@ body {
 @media (max-width: 1400px) {
     .container {
         margin-left: 0;
-        width: 91.8%;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
     }
     .sticky-container {
         display: none;
@@ -455,8 +457,8 @@ body {
 @media (max-width: 1220px) {
     .news .search-container {
         position: relative;
-        max-width: 780px;
-        width: 100%;
+        /*max-width: 780px;*/
+        /*width: 100%;*/
         margin-left: 0;
     }
     .searchNews .info-card {
