@@ -21,10 +21,12 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
     Array.from(searchNews).forEach(news => {
         const newsTitleElement = news.querySelector('.news-title');
+        const newsSummaryElement = news.querySelector('.news-summary');
 
         const newsTitle = newsTitleElement ? newsTitleElement.textContent.toLowerCase() : '';
+        const newsSummary = newsSummaryElement ? newsSummaryElement.textContent.toLowerCase() : '';
 
-        if (newsTitle.includes(searchValue)) {
+        if (newsTitle.includes(searchValue) || newsSummary.includes(searchValue)) {
             showNews(news);
         }
         else {
