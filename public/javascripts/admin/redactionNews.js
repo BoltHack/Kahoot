@@ -119,8 +119,9 @@ editor.addEventListener('keydown', function(event) {
         const br = document.createElement('br');
         const textNode = document.createTextNode('\u200B');
 
-        range.insertNode(textNode);
         range.insertNode(br);
+        range.collapse(false);
+        range.insertNode(textNode);
 
         range.setStartAfter(textNode);
         range.collapse(true);
@@ -130,6 +131,23 @@ editor.addEventListener('keydown', function(event) {
 
         console.log('Enter вставил <br> в конце!');
     }
+
+    // if (event.key === 'Backspace') {
+    //     event.preventDefault();
+    //     const sel = window.getSelection();
+    //     if (!sel.rangeCount) return;
+    //
+    //     const range = sel.getRangeAt(0);
+    //     const node = range.startContainer;
+    //
+    //     if (node.nodeType === Node.TEXT_NODE && node.nodeValue.endsWith('\u200B')) {
+    //         // event.preventDefault();
+    //         node.nodeValue = node.nodeValue.slice(0, -1);
+    //         console.log('Удалил невидимый символ');
+    //         return;
+    //     }
+    //     console.log('Дальше');
+    // }
 });
 
 

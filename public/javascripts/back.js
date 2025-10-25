@@ -85,7 +85,7 @@ function pages(){
             <a class="between"> ❯ </a>
             <a href="${tags.tag ? `/news?page=${tags.page + '&tag=' + tags.tag}` : tags.page ? `/news?page=${tags.page}` : '/news'}" class="color-btn">${localeType === 'en' ? 'News' : 'Новости'}</a>
             <a class="between"> ❯ </a>
-            <a class="other-color">${newsTitle.length > 45 ? newsTitle.slice(0, 45) + '...' : newsTitle}</a>`
+            <a class="other-color" id="readNewsLength"></a>`
     }
     else if (page.startsWith('/admin/admin-panel')) {
         pageName.innerHTML = `
@@ -151,3 +151,22 @@ function pages(){
     }
 }
 pages();
+
+window.addEventListener('load', () => {
+    if (!window.location.pathname.startsWith('/read-news')) return;
+    readNewsLengthController();
+})
+window.addEventListener('resize', () => {
+    if (!window.location.pathname.startsWith('/read-news')) return;
+    readNewsLengthController();
+});
+
+function readNewsLengthController() {
+    const readNewsLength = document.getElementById('readNewsLength');
+
+    if (document.body.offsetWidth >= 1400) {
+        readNewsLength.textContent = newsTitle.length > 45 ? newsTitle.slice(0, 45) + '...' : newsTitle;
+    } else {
+        readNewsLength.textContent = newsTitle.length > 20 ? newsTitle.slice(0, 20) + '...' : newsTitle;
+    }
+}
