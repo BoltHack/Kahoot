@@ -234,6 +234,17 @@ textarea {
     word-break: break-word;
 }
 
+#editor::-webkit-scrollbar {
+    width: 8px;
+}
+#editor::-webkit-scrollbar-track {
+    background: #313338;
+}
+#editor::-webkit-scrollbar-thumb {
+    background: grey;
+    /*border-radius: 10px;*/
+}
+
 .save-img span {
     cursor: pointer;
     background: #242632;
