@@ -55,12 +55,12 @@ body {
 .send-review button:hover {
     background: #4450b5;
 }
+
 .reviews-info h1 {
     font-size: 2rem;
     margin-bottom: 15px;
     color: #222;
 }
-
 .reviews-info p {
     font-size: 18px;
     line-height: 1.6;
@@ -148,8 +148,8 @@ body {
 }
 
 .search {
-    /*max-width: 400px;*/
-    /*width: 100%;*/
+    max-width: 288px;
+    width: 100%;
     margin-top: 25px;
     background: #fff;
     padding: 20px;
@@ -383,11 +383,16 @@ input[type="button"]:hover {
 @media (max-width: 1400px) {
     .container {
         margin-left: 0;
-        width: 91.8%;
     }
 }
 
-@media (max-width: 1220px) {
+@media (max-width: 1300px) {
+    .container, .search {
+        padding: 20px;
+        max-width: 780px;
+        width: 100%;
+        box-sizing: border-box;
+    }
     .reviews-list {
         margin-left: 0;
         padding: 20px 0;
