@@ -502,6 +502,8 @@ ul {
 }
 .tools-svg svg:hover {
     background-color: #2a2f37;
+    color: #fff;
+    scale: 1.1;
 }
 .menu-trigger {
     padding: 3px;
