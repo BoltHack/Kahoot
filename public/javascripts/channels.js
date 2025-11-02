@@ -358,8 +358,12 @@ function checkPageHeight() {
             positionWarning.style.display = 'flex';
             positionWarning.classList.add('show');
             if (window.location.hash) {
+                positionWarning.querySelector('span').textContent = localeType === 'en' ? 'You are viewing the answer.' : 'Вы просматриваете ответ.';
                 positionWarningMessageBtn.textContent = localeType === 'en' ? 'Go to the original post' :  'Перейти к оригинальному сообщению';
-            } else positionWarningMessageBtn.textContent = localeType === 'en' ? 'Go to latest posts' : 'Перейди к последним сообщениям';
+            } else {
+                positionWarning.querySelector('span').textContent = localeType === 'en' ? 'You are viewing old messages.' : 'Вы просматриваете старые сообщения.';
+                positionWarningMessageBtn.textContent = localeType === 'en' ? 'Go to latest posts' : 'Перейди к последним сообщениям';
+            }
         }
         else {
             positionWarning.style.display = 'none';
