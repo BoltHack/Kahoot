@@ -361,7 +361,6 @@ function showToast(type = 'success', message = '', duration = 3000) {
     const randomNumbers = generateRandomNumber();
     const popupId = `${randomNumbers}`;
 
-
     const existing = Array.from(container.children).find(
         // toast => toast.dataset.message === message && toast.dataset.type === type
         toast => toast.dataset.id === popupId

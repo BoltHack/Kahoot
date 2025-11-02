@@ -343,17 +343,7 @@ socket.on('deleteMessage', async (deleteMessage) => {
 });
 
 socket.on('broadcastDeleteMsg', async () => {
-    Swal.fire({
-        text: localeType === 'en' ? 'message deleted!' : 'Сообщение удалено!',
-        icon: "success",
-        position: "top-end",
-        timer: 3000,
-        showConfirmButton: false,
-        toast: true,
-        customClass: {
-            popup: "small-alert"
-        }
-    });
+    showToast('success', localeType === 'en' ? 'message deleted!' : 'Сообщение удалено!');
 });
 
 
