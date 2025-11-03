@@ -1,120 +1,126 @@
-/*html, body {*/
-    /*height: 100%;*/
-    /*margin: 0;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-/*}*/
-.footer-container {
-    /*max-width: 900px;*/
-    /*width: 100%;*/
-    /*margin-left: 83px;*/
-    padding: 0 200px;
+#footerSection {
+    background: #16171d;
+    color: #d1d5db;
+    padding: 40px 0 20px;
+    font-family: "Inter", sans-serif;
+    border-top: 2px solid #313338;
 }
 
-.footer-container-logo{
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-links {
     display: flex;
-    gap: 5px;
-    z-index: 2;
-    margin-left: -3.5px;
-    align-items: center;
-    text-decoration: none;
-    max-width: 100px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.footer-our-company {
+    flex: 1 1 300px;
+    min-width: 250px;
+}
+
+.footer-container-logo {
+    max-width: 150px;
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #fff;
+    margin-bottom: 12px;
 }
+
 .footer-container-logo img {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
 }
+
 .footer-container-logo svg {
+    height: 40px;
     fill: rgba(132, 116, 254, 1);
 }
 
-.line{
-    border-top: 1px solid #666;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    /*width: 100%;*/
-}
-footer {
-    font-family: Arial, sans-serif;
-    background-color: #16171d;
-    color: white;
-    padding: 20px 0;
-    width: 100%;
-    margin-bottom: auto;
-}
-main {
-    flex: 1;
-}
-footer h3{
-    color: rgba(132, 116, 254, 1);;
-    font-weight: 750;
-}
-footer a {
-    color: #A9A9B3;
-    text-decoration: none;
-}
-footer a:hover{
-    color: #F2F2F2;
-}
-footer p {
-    color: #F2F2F2
-}
-.footer-links {
-    display: flex;
-    margin-top: 20px;
-}
-.footer-our-company{
-    width: 350px;
-    flex-wrap: wrap;
-    display: grid;
-}
 .footer-our-company p {
+    font-size: 14px;
+    line-height: 1.6;
     color: #c8c9ce;
-}
-.footer-info{
-    display: grid;
-    gap: 10px;
-    margin-left: 50px;
-    margin-top: -14.5px;
-}
-.footer-links a {
-    margin-right: 20px;
 }
 
-.footer-links a:last-child {
-    margin-right: 0;
+.footer-info {
+    flex: 1 1 200px;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
-.company-logo{
-    width: 30px;
-    height: 30px;
+
+.footer-info h3 {
+    color: rgba(132, 116, 254, 1);;
+    /*font-weight: 750;*/
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: 600;
 }
-.company-name{
-    color: #c8c9ce;
-    max-width: 700px;
+
+.footer-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.footer-info a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-info a:hover {
+    color: #facc15;
+    transform: translateX(4px);
+}
+
+.line {
+    height: 1px;
+    background: #1f2937;
+    margin: 30px 0 20px;
     width: 100%;
-    word-break: break-word;
 }
 
-@media (max-width: 1000px) {
-    .footer-container {
-        padding: 0 20px;
-        flex-direction: column;
-    }
+.company-name {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
     .footer-links {
-        display: block;
-        margin: 20px 30px;
-        max-width: 400px;
-        width: 100%;
-        word-break: break-word;
+        /*flex-direction: column;*/
+        /*display: block;*/
+        align-items: center;
+        /*text-align: center;*/
+        /*gap: 30px;*/
     }
-    .company-name {
-        margin: 20px 30px;
-        max-width: 300px;
-        width: 100%;
-        word-break: break-word;
+
+    /*.footer-info,*/
+    /*.footer-our-company {*/
+    /*    margin-top: 10px;*/
+    /*}*/
+
+    .footer-container-logo {
+        justify-content: center;
     }
-    .footer-info {
-        margin-bottom: 50px;
+
+    .footer-info a:hover {
+        transform: none;
     }
 }
