@@ -1,8 +1,8 @@
 const stickyHeight = document.getElementById('stickyHeight');
-const body = document.body, html = document.documentElement;
+const newsContainer = document.querySelector('.news-container');
 
-const height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
-stickyHeight.style.height = `calc(${height}px - 731px)`;
+const height = Math.max(newsContainer.scrollHeight, newsContainer.offsetHeight);
+stickyHeight.style.height = `${height}px`;
 
 function likeNews(newsId) {
     console.log('like');
