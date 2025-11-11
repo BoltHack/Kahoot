@@ -50,11 +50,11 @@ function techChat() {
                         showToast('error', error);
                         return;
                     }
-                    techChatBtn.hidden = false;
-                    loadingBtn.hidden = true;
                     if (data.id.toString() === sendId.toString()) {
                         showToast('error', localeType === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.');
                         console.log('Ничего не найдено.');
+                        techChatBtn.hidden = false;
+                        loadingBtn.hidden = true;
                         return;
                     }
                     checksChannel(`${data.id}`);

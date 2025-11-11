@@ -9,7 +9,6 @@ body {
 }
 
 .rules-container {
-    max-width: 800px;
     margin: 90px auto;
     padding: 20px;
 }
@@ -18,6 +17,7 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .rules-info h2 {
