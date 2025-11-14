@@ -127,7 +127,7 @@ html.lightTheme {
     transform-origin: top;
     transform: scaleY(0);
 }
-.dropdown-content a {
+.dropdown-content a, .dropdown-content-tools a {
     text-decoration: none;
     padding: var(--padding);
     font-size: 14px;
@@ -159,6 +159,18 @@ html.lightTheme {
 .dropdown-content-tools .setting-on-mode {
     color: #a2a8d3;
     background-color: #303740;
+}
+
+.media-settings-dropdown {
+    display: flex;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.media-dropdown-content, .dropdown-content-tools p {
+    color: #ECF1FD;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .locale {
@@ -497,11 +509,11 @@ html.lightTheme {
 }
 .media-width {
     display: none;
-    align-items: center;
-    font-size: 35px;
+    /*align-items: center;*/
+    /*font-size: 35px;*/
     cursor: pointer;
-    padding: 10px;
-    text-align: center;
+    padding: 15px;
+    /*text-align: center;*/
 }
 .burger {
     position: relative;
@@ -637,7 +649,7 @@ html.lightTheme {
     }
 }
 @media (max-width: 1080px) {
-    .header .header-container {
+    .header .header-tools, .header-settings-icon {
         display: none;
     }
     .media-width {
