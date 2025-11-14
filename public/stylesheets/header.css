@@ -75,7 +75,6 @@ html.lightTheme {
 }
 
 .dropdown {
-    /*height: auto;*/
     /*height: 100%;*/
     z-index: 1;
 }
@@ -86,11 +85,6 @@ html.lightTheme {
     margin-left: 10px;
     transition-duration: 0.2s;
 }
-/*.dropdown img{*/
-/*    width: 30px;*/
-/*    height: 30px;*/
-/*    border-radius: 50%;*/
-/*}*/
 .dropdown-title{
     position: relative;
     margin-bottom: var(--title-content-space);
@@ -176,16 +170,6 @@ html.lightTheme {
     display: flex;
     gap: 40px;
     z-index: 1;
-}
-
-.account-container {
-    gap: 20px;
-    display: flex;
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    margin-left: calc(100% - 70%);
-    z-index: 1;
-    /*margin-left: 1267px;*/
 }
 
 
