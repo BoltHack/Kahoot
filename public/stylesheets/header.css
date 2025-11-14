@@ -75,7 +75,8 @@ html.lightTheme {
 }
 
 .dropdown {
-    height: 100%;
+    /*height: auto;*/
+    /*height: 100%;*/
     z-index: 1;
 }
 .dropdown-title span {
@@ -85,19 +86,19 @@ html.lightTheme {
     margin-left: 10px;
     transition-duration: 0.2s;
 }
-.dropdown img{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
+/*.dropdown img{*/
+/*    width: 30px;*/
+/*    height: 30px;*/
+/*    border-radius: 50%;*/
+/*}*/
 .dropdown-title{
-    /*position: relative;*/
+    position: relative;
     margin-bottom: var(--title-content-space);
     background: none;
 }
 .dropdown-title::after{
     content: "";
-    /*position: absolute;*/
+    position: absolute;
     width: 100%;
     height: var(--title-content-space);
     bottom: 0;
