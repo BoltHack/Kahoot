@@ -66,7 +66,7 @@ router.post('/deleteAvatar', authenticateJWT, deleteAvatar);
 router.post('/changeBackgroundImage', authenticateJWT, changeBackgroundImage);
 router.post('/deleteBackgroundImage', authenticateJWT, deleteBackgroundImage);
 router.post('/changeLocale/:locale/:autoUpdate', changeLocale);
-router.post('/changeSettings', authenticateJWT, changeSettings);
+router.post('/changeSettings/:authType', changeSettings);
 router.post('/changeStatus', authenticateJWT, changeStatus);
 router.post('/changeAboutMe', authenticateJWT, changeAboutMe);
 

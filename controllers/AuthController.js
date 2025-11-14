@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
-const {GamesModel} = require("../models/GamesModel");
 function generateRandomNumber() {
     const min = 10000;
     const max = 99999;

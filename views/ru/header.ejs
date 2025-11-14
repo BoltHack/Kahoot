@@ -95,10 +95,27 @@
             <p onclick="window.location.href = '/auth/login'" class="ha">Войти</p>
         <% } %>
         <br>
-        <div class="dropdown">
-            <p class="ha dropdown-title">Русский<span>❯</span></p>
-            <div class="dropdown-content" style="width: 80px;">
-                <a onclick="changeLocaleEn();">English</a>
+        <div class="dropdown settings-dropdown-title">
+            <p class="ha dropdown-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                <span style="display: none;"></span>
+            </p>
+            <div class="dropdown-content">
+                <div class="dropdown-content-tools">
+                    <p>Язык</p>
+                    <ul>
+                        <li><a class="setting-on-mode" onclick="changeLocale('ru')">Русский</a></li>
+                        <li><a onclick="changeLocale('en')">English</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown-line"></div>
+                <div class="dropdown-content-tools">
+                    <p>Тема</p>
+                    <ul>
+                        <li><a class="<%= darkTheme === 'on' ? 'setting-on-mode' : '' %>" onclick="changeTheme('on')">Тёмная</a></li>
+                        <li><a class="<%= darkTheme === 'off' ? 'setting-on-mode' : '' %>" onclick="changeTheme('off')">Светлая</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 

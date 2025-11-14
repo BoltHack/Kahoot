@@ -153,3 +153,30 @@ function redirectPage(page){
         authMenu();
     }
 }
+
+
+function changeTheme(themeType) {
+    console.log('themeType', themeType)
+
+    const formData = new FormData();
+    formData.append('darkTheme', themeType);
+
+    fetch(`/changeSettings/notAuth`, {
+        method: "POST",
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+            else {
+                response.json().then(errorMessage => {
+                    console.log("Ошибка: " + errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.log('Произошла ошибка при отправке запроса:', error);
+            console.log("Произошла ошибка при отправке запроса: " + error.message);
+        });
+}

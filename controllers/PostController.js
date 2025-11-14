@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const geoip = require('geoip-lite');
 const sanitizeHtml = require("sanitize-html");
 const he = require('he');
+const {authenticateJWT} = require("../middlewares/jwtAuth");
 
 function cleanEditorContent(content) {
 
@@ -558,30 +559,41 @@ class PostController {
 
     static changeSettings = async (req, res, next) => {
         try {
-            const {notifications, soundTrack, mainEffects, darkTheme} = req.body;
-            const user = req.user;
+            const {authType} = req.params;
 
-            res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
-            res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
-            res.cookie('mainEffects', mainEffects ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
-            res.cookie('darkTheme', darkTheme ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+            if (authType === 'notAuth') {
+                const {darkTheme} = req.body;
+                console.log('darkTheme', darkTheme);
+                res.cookie('darkTheme', darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+                return res.status(200).json({ message: 'Тема изменена!' });
+            }
 
-            await UsersModel.findByIdAndUpdate(
-                user.id,
-                {
-                    $set: {
-                        'settings.notifications': notifications ? 'on' : 'off',
-                        'settings.soundTrack': soundTrack ? 'on' : 'off',
-                        'settings.mainEffects': mainEffects ? 'on' : 'off',
-                        'settings.darkTheme': darkTheme ? 'on' : 'off'
-                    }
-                },
-                { new: true }
-            );
+            await authenticateJWT(req, res, async () => {
+                const {notifications, soundTrack, mainEffects, darkTheme} = req.body;
+                const user = req.user;
 
-            setTimeout(function () {
-                return res.redirect('/settings');
-            }, 1000);
+                res.cookie('notifications', notifications ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+                res.cookie('soundTrack', soundTrack ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+                res.cookie('mainEffects', mainEffects ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+                res.cookie('darkTheme', darkTheme ? 'on' : 'off', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
+
+                await UsersModel.findByIdAndUpdate(
+                    user.id,
+                    {
+                        $set: {
+                            'settings.notifications': notifications ? 'on' : 'off',
+                            'settings.soundTrack': soundTrack ? 'on' : 'off',
+                            'settings.mainEffects': mainEffects ? 'on' : 'off',
+                            'settings.darkTheme': darkTheme ? 'on' : 'off'
+                        }
+                    },
+                    { new: true }
+                );
+
+                setTimeout(function () {
+                    return res.redirect('/settings');
+                }, 1000);
+            });
         } catch (err) {
             console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });

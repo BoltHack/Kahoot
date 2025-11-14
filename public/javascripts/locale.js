@@ -4,30 +4,9 @@ function getCookie(name) {
     return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
 }
 
-function changeLocaleRu() {
+function changeLocale(localeType) {
     document.body.style.cursor = 'wait';
-    fetch('/changeLocale/ru/false', {
-        method: "POST",
-    })
-        .then(response => {
-            if (response.ok) {
-                window.location.reload();
-            }
-            else {
-                response.json().then(errorMessage => {
-                    console.log("Ошибка: " + errorMessage);
-                });
-            }
-        })
-        .catch(error => {
-            console.log('Произошла ошибка при отправке запроса:', error);
-            console.log("Произошла ошибка при отправке запроса: " + error.message);
-        });
-}
-
-function changeLocaleEn() {
-    document.body.style.cursor = 'wait';
-    fetch('/changeLocale/en/false', {
+    fetch(`/changeLocale/${localeType}/false`, {
         method: "POST",
     })
         .then(response => {
@@ -65,11 +44,11 @@ function languageConfirmation () {
                             console.log('response', response);
                             if(response.status === 200) {
                                 setTimeout(function () {
-                                    changeLocaleRu();
+                                    changeLocale('ru');
                                 }, 500);
                             } else {
                                 setTimeout(function () {
-                                    changeLocaleEn()
+                                    changeLocale('en')
                                 }, 500);
                             }
                             document.cookie = `lc=true; max-age=${10 * 24 * 60 * 60}; path=/;`;
