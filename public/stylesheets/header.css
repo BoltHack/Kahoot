@@ -511,8 +511,8 @@ html.lightTheme {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
-    position: absolute;
-    right: 6%;
+    margin-left: auto;
+    margin-right: 15px;
 }
 .media-width {
     display: none;
