@@ -138,6 +138,7 @@ html.lightTheme {
 
 .settings-dropdown-title .dropdown-content-tools p {
     font-size: 15px;
+    color: #A9A9B3;
 }
 .dropdown-content-tools ul {
     display: flex;
