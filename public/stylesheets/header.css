@@ -650,15 +650,17 @@ html.lightTheme {
 }
 .media-border::-webkit-scrollbar-thumb {
     background: none;
-    /*border-radius: 10px;*/
 }
 
 @media (max-width: 2000px) {
     .media-body {
         display: none;
         background: none;
-        position: fixed;
-        z-index: 50;
+        position: absolute;
+        width: 0;
+        height: 0;
+        /*position: fixed;*/
+        /*z-index: 50;*/
     }
     .media-border {
         width: 350px;
