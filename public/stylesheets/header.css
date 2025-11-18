@@ -104,7 +104,7 @@ html.lightTheme {
     border-radius: var(--border-radius);
     background-color: var(--background-color);
     color: var(--color);
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 .dropdown-content a:hover{
     background-color: var(--hover-background-color);

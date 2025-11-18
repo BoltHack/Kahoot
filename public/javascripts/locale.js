@@ -58,6 +58,9 @@ function languageConfirmation () {
                     }, 500);
                 }
             })
+            .catch(error => {
+                console.log('Ошибка получения IP', error);
+            })
     }
 }
 languageConfirmation();
