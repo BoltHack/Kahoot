@@ -134,6 +134,7 @@ html.lightTheme {
     font-size: 14px;
     color: var(--color);
     border-radius: var(--border-radius);
+    cursor: pointer;
 }
 
 .settings-dropdown-title .dropdown-content-tools p {
