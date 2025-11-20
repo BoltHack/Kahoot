@@ -59,7 +59,7 @@ document.getElementById('closeIcon').addEventListener('click', () => {
     });
     tags.searchNews = '';
     sessionStorage.setItem('tags', JSON.stringify(tags));
-    document.getElementById('searchInput').dispatchEvent(new Event('input', {bubbles: true}))
+    document.getElementById('searchInput').dispatchEvent(new Event('input', {bubbles: true}));
 });
 
 

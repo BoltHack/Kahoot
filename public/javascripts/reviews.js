@@ -73,24 +73,30 @@ document.getElementById('searchInput').addEventListener('input', function() {
             hideReview(review);
         }
 
+        if (document.body.offsetHeight <= 1800) {
+            document.querySelector('.reviews-list').style.marginBottom = '400px';
+        } else document.querySelector('.reviews-list').style.marginBottom = '0';
+
         if (foundVisible) {
             searchNotFound.style.display = 'none';
         } else {
             searchNotFound.style.display = 'block';
         }
 
-        function showReview () {
+        function showReview (review) {
             foundVisible = true;
             review.style.display = 'block';
         }
 
-        function hideReview () {
+        function hideReview (review) {
             review.style.display = 'none';
+            // document.querySelector('.pagination').style.marginBottom = '0';
         }
 
         document.getElementById('clearIcon').addEventListener('click', () => {
             document.getElementById('searchInput').value = '';
             showReview();
+            document.getElementById('searchInput').dispatchEvent(new Event('input', {bubbles: true}));
         });
 
     });
