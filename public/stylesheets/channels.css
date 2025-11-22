@@ -147,6 +147,18 @@ body {
 .chat-name:hover {
     text-decoration: underline;
 }
+
+.chat-name-role {
+    margin-bottom: auto;
+    margin-left: -5px;
+}
+.chat-name-role svg {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    color: #b0c4b1;
+}
+
 .tech-chat {
     color: #a2a8d3;
 }
