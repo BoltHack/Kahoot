@@ -104,9 +104,12 @@ socket.on('broadcastUpdateMyFriends', async () => {
 let alreadyFriendAdd = [];
 
 function deleteFriend(deleteId, deleteName){
-    document.getElementById('barrier').hidden = false;
-
+    const barrier = document.getElementById('barrier');
     const deleteBorder = document.createElement('div');
+
+    barrier.hidden = false;
+    disableScroll();
+
     deleteBorder.innerHTML = `
     <div class="delete-border">
         <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Remove "${deleteName}" from friends?` : `Удалить "${deleteName}" из друзей?`}</h4>
@@ -115,19 +118,22 @@ function deleteFriend(deleteId, deleteName){
             <button id="closeDeleteBorder">${localeType === 'en' ? 'Cancel' : 'Отмена'}</button>
         </div>
     </div>`
+
     document.body.appendChild(deleteBorder);
     document.getElementById('closeDeleteBorder').addEventListener('click', () => {
         document.body.removeChild(deleteBorder);
-        document.getElementById('barrier').hidden = true;
-    })
+        barrier.hidden = true;
+        enableScroll();
+    });
 
     document.getElementById('requestDeleteFriend').addEventListener('click', () => {
         alreadyFriendAdd.slice(deleteId)
         console.log('delete', deleteId);
         socket.emit('delete-friend', {deleteData: {deleteId: deleteId, myId: sendId} });
         document.body.removeChild(deleteBorder);
-        document.getElementById('barrier').hidden = true;
-    })
+        barrier.hidden = true;
+        enableScroll();
+    });
 }
 
 
