@@ -9,16 +9,16 @@ function achievementsListMenu() {
 
     border.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
 
     border.querySelector('.close-btn').addEventListener('click', () => {
         border.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         border.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 }

@@ -14,17 +14,17 @@ sendReviewBtn.addEventListener('click', () => {
 
     sendReviewMenu.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
     maxReviewLength.textContent = `${review.value.length}/1000`
     sendReviewMenu.querySelector('.close-btn').addEventListener('click', () => {
         sendReviewMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         sendReviewMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 });
 review.addEventListener('input', () => {
@@ -142,11 +142,11 @@ document.getElementById('deleteReview').addEventListener('click', () => {
     document.getElementById('closeDeleteBorder').addEventListener('click', () => {
         barrier.hidden = true;
         document.body.removeChild(deleteMenu);
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         barrier.hidden = true;
         document.body.removeChild(deleteMenu);
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 });

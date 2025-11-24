@@ -81,22 +81,21 @@ function authMenu() {
     const barrier = document.getElementById('barrier');
     const closeAuthBorder = document.getElementById('closeAuthBorder');
 
-    const mainPage = window.location.pathname;
 
     authBorder.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
 
     closeAuthBorder.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = mainPage !== '/' ? 'auto' : 'hidden';
+        enableScroll();
 
     })
     barrier.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = mainPage !== '/' ? 'auto' : 'hidden';
+        enableScroll();
     })
 }
 
@@ -209,3 +208,27 @@ function changeTheme(themeType) {
 //         border.hidden = true;
 //     })
 // }
+
+
+function disableScroll() {
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    window.addEventListener('keydown', preventKeyScroll);
+}
+
+function enableScroll() {
+    window.removeEventListener('wheel', preventScroll);
+    window.removeEventListener('touchmove', preventScroll);
+    window.removeEventListener('keydown', preventKeyScroll);
+}
+
+function preventScroll(e) {
+    e.preventDefault();
+}
+
+function preventKeyScroll(e) {
+    const keys = [32, 33, 34, 35, 36, 38, 40];
+    if (keys.includes(e.keyCode)) {
+        e.preventDefault();
+    }
+}

@@ -11,17 +11,17 @@ document.addEventListener('DOMContentLoaded', function () {
     editImageBtn.addEventListener('click', () => {
         editImage.hidden = false;
         barrier.hidden = false;
-        document.body.style.overflowY = 'hidden';
+        disableScroll();
     })
     editImage.querySelector('.close-btn').addEventListener('click', () => {
         editImage.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         editImage.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 
 
@@ -102,17 +102,17 @@ const backgroundFile = document.getElementById('backgroundFile');
 editMainBackgroundBtn.addEventListener('click', () => {
     editMainMenu.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
 
     editMainMenu.querySelector('.close-btn').addEventListener('click', () => {
         editMainMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         editMainMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 
     backgroundFile.addEventListener('change', () => {
@@ -182,18 +182,18 @@ const editStatusMenu = document.getElementById('editStatusMenu');
 editStatusBtn.addEventListener('click', () => {
     editStatusMenu.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
     maxStatusLength.textContent = `${status.value.length}/90`;
 
     editStatusMenu.querySelector('.close-btn').addEventListener('click', () => {
         editStatusMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         editStatusMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 });
 
@@ -228,18 +228,18 @@ const editAboutMeMenu = document.getElementById('editAboutMeMenu');
 editAboutMeBtn.addEventListener('click', () => {
     editAboutMeMenu.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
     maxAboutMeLength.textContent = `${aboutMe.value.length}/200`;
 
     editAboutMeMenu.querySelector('.close-btn').addEventListener('click', () => {
         editAboutMeMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         editAboutMeMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 });
 document.getElementById('changeAboutMeBtn').addEventListener('click', () => {
@@ -272,17 +272,17 @@ const changePasswordMenu = document.getElementById('changePasswordMenu');
 changePasswordBtn.addEventListener('click', () => {
     changePasswordMenu.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
 
     changePasswordMenu.querySelector('.close-btn').addEventListener('click', () => {
         changePasswordMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         changePasswordMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 });
 
@@ -326,17 +326,17 @@ const deleteAccountMenu = document.getElementById('deleteAccountMenu');
 deleteAccountBtn.addEventListener('click', () => {
     deleteAccountMenu.hidden = false;
     barrier.hidden = false;
-    document.body.style.overflowY = 'hidden';
+    disableScroll();
 
     deleteAccountMenu.querySelector('.close-btn').addEventListener('click', () => {
         deleteAccountMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
     barrier.addEventListener('click', () => {
         deleteAccountMenu.hidden = true;
         barrier.hidden = true;
-        document.body.style.overflowY = 'auto';
+        enableScroll();
     });
 });
 
