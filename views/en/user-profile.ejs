@@ -125,7 +125,9 @@
                     <div class="badges">
                         <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
                             <% userInfo.games_info.achievements.forEach(ach => { %>
-                                <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Achievement: Reached level 5' : '' %>">
+                                <div class="badges-item">
+                                    <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Achievement: Reached level 5' : '' %>" onclick="achievementsListMenu()">
+                                </div>
                             <% }) %>
                         <% } else { %>
                             <a>No achievements</a>
@@ -136,13 +138,34 @@
         </div>
     </div>
 </main>
+
+<section id="achievementsListMenu" hidden>
+    <div style="display: block;">
+        <h2>Achievements</h2>
+
+        <div class="achievements-list">
+            <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
+                <% userInfo.games_info.achievements.forEach(ach => { %>
+                    <div class="card">
+                        <div class="card-image-container">
+                            <img src="<%= ach.aImage %>">
+                        </div>
+                        <p class="card-title"><%= ach.aName === 'achievement1' ? 'Firstborn!' : '' %></p>
+                        <br/>
+                        <p class="card-des">
+                            <%= ach.aName === 'achievement1' ? 'Reached level 5' : '' %>
+                        </p>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+    </div>
+    <button class="close-btn">X</button>
+</section>
+
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>
-<script>
-    socket.on('reloadOtherPage', async () => {
-        console.log('reload');
-        window.location.reload();
-    });
-</script>
+<script src="/javascripts/userProfile.js"></script>
 </body>
 </html>

@@ -111,6 +111,7 @@ function mediaMenu() {
     });
 }
 
+
 function findGame() {
     if (localStorage.getItem('token')) {
         const barrier = document.getElementById('barrier');
@@ -180,3 +181,31 @@ function changeTheme(themeType) {
             console.log("Произошла ошибка при отправке запроса: " + error.message);
         });
 }
+
+
+// function menuController(menuBorderId, menuCloserId, tokenPresence) {
+//     if (tokenPresence === true) {
+//         if (!localStorage.getItem('token')) {
+//             authMenu();
+//             return;
+//         }
+//     }
+//
+//     const barrier = document.getElementById('barrier');
+//
+//     const border = document.getElementById(menuBorderId);
+//     const close = document.getElementById(menuCloserId);
+//
+//     barrier.hidden = false;
+//     border.hidden = false;
+//     document.body.style.overflow = 'hidden';
+//
+//     barrier.addEventListener('click', () => {
+//         barrier.hidden = true;
+//         border.hidden = true;
+//     })
+//     close.addEventListener('click', () => {
+//         barrier.hidden = true;
+//         border.hidden = true;
+//     })
+// }

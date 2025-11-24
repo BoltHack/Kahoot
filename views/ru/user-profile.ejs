@@ -123,10 +123,12 @@
                     <div class="badges">
                         <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
                             <% userInfo.games_info.achievements.forEach(ach => { %>
-                               <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Ачивка: Получи 5-й уровень' : '' %>">
-                            <% }) %>
-                        <% } else { %>
-                            <a>Достижений нету</a>
+                                <div class="badges-item">
+                                    <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Ачивка: Получи 5-й уровень' : '' %>" onclick="achievementsListMenu()">
+                                </div>
+                                <% }) %>
+                            <% } else { %>
+                                <a>Достижений нету</a>
                             <% } %>
                     </div>
                 </div>
@@ -135,13 +137,34 @@
 
     </div>
 </main>
+
+<section id="achievementsListMenu" hidden>
+    <div style="display: block;">
+        <h2>Ачивки</h2>
+
+        <div class="achievements-list">
+            <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
+                <% userInfo.games_info.achievements.forEach(ach => { %>
+                    <div class="card">
+                        <div class="card-image-container">
+                            <img src="<%= ach.aImage %>">
+                        </div>
+                        <p class="card-title"><%= ach.aName === 'achievement1' ? 'Первенец!' : '' %></p>
+                        <br/>
+                        <p class="card-des">
+                            <%= ach.aName === 'achievement1' ? 'Получи 5-й уровень' : '' %>
+                        </p>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+    </div>
+    <button class="close-btn">X</button>
+</section>
+
 <div class="new-barrier" id="barrier" hidden></div>
 <script src="/javascripts/timer.js"></script>
-<script>
-    socket.on('reloadOtherPage', async () => {
-        console.log('reload');
-        window.location.reload();
-    });
-</script>
+<script src="/javascripts/userProfile.js"></script>
 </body>
 </html>
