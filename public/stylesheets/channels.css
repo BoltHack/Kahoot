@@ -11,6 +11,10 @@ body {
     overflow-x: hidden;
 }
 
+html.scroll-bar-off {
+    scrollbar-gutter: stable;
+}
+
 .chat-header {
     background: #1f2228;
     padding: 15px 20px;

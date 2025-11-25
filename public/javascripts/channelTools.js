@@ -45,3 +45,29 @@ function showCloseBtn(channelId) {
         deleteBtn.querySelector('.del-companion').style.display = 'none';
     });
 }
+
+
+function hasVerticalScrollbar() {
+    return document.documentElement.scrollHeight > document.documentElement.clientHeight;
+}
+
+function disableScroll() {
+    // window.addEventListener('wheel', preventScroll, { passive: false });
+    // window.addEventListener('touchmove', preventScroll, { passive: false });
+    // window.addEventListener('keydown', preventKeyScroll);
+    // window.addEventListener('scroll', preventKeyScroll);
+
+    if (hasVerticalScrollbar()) {
+        document.body.style.overflowY = 'hidden';
+        document.documentElement.classList.add('scroll-bar-off');
+    }
+}
+
+function enableScroll() {
+    // window.removeEventListener('wheel', preventScroll);
+    // window.removeEventListener('touchmove', preventScroll);
+    // window.removeEventListener('keydown', preventKeyScroll);
+    // window.removeEventListener('scroll', preventKeyScroll);
+    document.body.style.overflowY = '';
+    document.documentElement.classList.remove('scroll-bar-off');
+}
