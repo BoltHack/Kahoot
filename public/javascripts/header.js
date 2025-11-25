@@ -81,7 +81,6 @@ function authMenu() {
     const barrier = document.getElementById('barrier');
     const closeAuthBorder = document.getElementById('closeAuthBorder');
 
-
     authBorder.hidden = false;
     barrier.hidden = false;
     disableScroll();
@@ -91,12 +90,12 @@ function authMenu() {
         barrier.hidden = true;
         enableScroll();
 
-    })
+    });
     barrier.addEventListener('click', () => {
         authBorder.hidden = true;
         barrier.hidden = true;
         enableScroll();
-    })
+    });
 }
 
 function mediaMenu() {
@@ -211,24 +210,32 @@ function changeTheme(themeType) {
 
 
 function disableScroll() {
-    window.addEventListener('wheel', preventScroll, { passive: false });
-    window.addEventListener('touchmove', preventScroll, { passive: false });
-    window.addEventListener('keydown', preventKeyScroll);
+    // window.addEventListener('wheel', preventScroll, { passive: false });
+    // window.addEventListener('touchmove', preventScroll, { passive: false });
+    // window.addEventListener('keydown', preventKeyScroll);
+    // window.addEventListener('scroll', preventKeyScroll);
+    if (window.location.pathname === '/') return;
+
+    document.body.style.overflowY = 'hidden';
+    document.documentElement.classList.add('scroll-bar-off');
 }
 
 function enableScroll() {
-    window.removeEventListener('wheel', preventScroll);
-    window.removeEventListener('touchmove', preventScroll);
-    window.removeEventListener('keydown', preventKeyScroll);
+    // window.removeEventListener('wheel', preventScroll);
+    // window.removeEventListener('touchmove', preventScroll);
+    // window.removeEventListener('keydown', preventKeyScroll);
+    // window.removeEventListener('scroll', preventKeyScroll);
+    document.body.style.overflowY = '';
+    document.documentElement.classList.remove('scroll-bar-off');
 }
 
-function preventScroll(e) {
-    e.preventDefault();
-}
-
-function preventKeyScroll(e) {
-    const keys = [32, 33, 34, 35, 36, 38, 40];
-    if (keys.includes(e.keyCode)) {
-        e.preventDefault();
-    }
-}
+// function preventScroll(e) {
+//     e.preventDefault();
+// }
+//
+// function preventKeyScroll(e) {
+//     const keys = [32, 33, 34, 35, 36, 38, 40];
+//     if (keys.includes(e.keyCode)) {
+//         e.preventDefault();
+//     }
+// }
