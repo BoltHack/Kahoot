@@ -90,12 +90,10 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
         function hideReview (review) {
             review.style.display = 'none';
-            // document.querySelector('.pagination').style.marginBottom = '0';
         }
 
         document.getElementById('clearIcon').addEventListener('click', () => {
             document.getElementById('searchInput').value = '';
-            showReview();
             document.getElementById('searchInput').dispatchEvent(new Event('input', {bubbles: true}));
         });
 
