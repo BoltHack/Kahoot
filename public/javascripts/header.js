@@ -208,16 +208,20 @@ function changeTheme(themeType) {
 //     })
 // }
 
+function hasVerticalScrollbar() {
+    return document.documentElement.scrollHeight > document.documentElement.clientHeight;
+}
 
 function disableScroll() {
     // window.addEventListener('wheel', preventScroll, { passive: false });
     // window.addEventListener('touchmove', preventScroll, { passive: false });
     // window.addEventListener('keydown', preventKeyScroll);
     // window.addEventListener('scroll', preventKeyScroll);
-    if (window.location.pathname === '/') return;
 
-    document.body.style.overflowY = 'hidden';
-    document.documentElement.classList.add('scroll-bar-off');
+    if (hasVerticalScrollbar()) {
+        document.body.style.overflowY = 'hidden';
+        document.documentElement.classList.add('scroll-bar-off');
+    }
 }
 
 function enableScroll() {
