@@ -1350,6 +1350,39 @@ main {
     margin-top: -40px;
 }
 
+
+.media-border::-webkit-scrollbar {
+    width: 8px;
+}
+.media-border::-webkit-scrollbar-track {
+    background: none;
+}
+.media-border::-webkit-scrollbar-thumb {
+    background: none;
+}
+
+@media (max-width: 2000px) {
+    .media-body {
+        display: none;
+        background: none;
+        position: absolute;
+        width: 0;
+        height: 0;
+    }
+    .media-border {
+        width: 350px;
+        right: 0;
+        left: auto;
+        border: 3px solid #313338;
+    }
+    .media-header {
+        width: 390px;
+        right: 0;
+        left: auto;
+        border: 3px solid #313338;
+        height: 67px;
+    }
+}
 @media (max-width: 1200px) {
     #gameTimer {
         display: none;
@@ -1392,5 +1425,21 @@ main {
     }
     #usersCount, .users-online {
         width: 90%;
+    }
+}
+@media (max-width: 600px) {
+    .media-body {
+        display: block;
+    }
+    .media-border {
+        width: 100%;
+        height: 100vh;
+        border: none;
+        left: 0;
+    }
+    .media-header {
+        width: 100%;
+        border: none;
+        left: 0;
     }
 }

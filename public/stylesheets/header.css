@@ -663,8 +663,6 @@ html.scroll-bar-off {
         position: absolute;
         width: 0;
         height: 0;
-        /*position: fixed;*/
-        /*z-index: 50;*/
     }
     .media-border {
         width: 350px;

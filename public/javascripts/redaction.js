@@ -8,6 +8,7 @@ document.querySelectorAll('form').forEach(function(form) {
 
 function deleteQuestionMenu(gameId, questionId, questionNumber){
     document.getElementById('barrier').hidden = false;
+    disableScroll();
 
     const deleteBorder = document.createElement('div');
     deleteBorder.innerHTML = `
@@ -23,6 +24,7 @@ function deleteQuestionMenu(gameId, questionId, questionNumber){
     document.getElementById('closeDeleteBorder').addEventListener('click', () => {
         document.body.removeChild(deleteBorder);
         document.getElementById('barrier').hidden = true;
+        enableScroll();
     });
 
     document.getElementById('deleteQuestion').addEventListener('click', () => {

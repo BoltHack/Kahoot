@@ -71,12 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (type === 'Wait') {
             checkQuestionsContainer();
             loader.style.display = 'none';
+            waitAllPlayer.hidden = true;
             info.textContent =
                 localeType === 'en' ? 'Waiting for the game to start...' : 'Ожидание старта игры...';
         } else if (type === 'Default') {
             console.log('Онлайна мало');
             checkQuestionsContainer();
             loader.style.display = 'none';
+            waitAllPlayer.hidden = true;
             info.textContent =
                 localeType === 'en' ? 'Waiting for players...' : 'Ожидание игроков...';
             stopSound();
