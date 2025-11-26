@@ -220,6 +220,7 @@ function disableScroll() {
 
     if (hasVerticalScrollbar()) {
         document.body.style.overflowY = 'hidden';
+        document.body.style.userSelect = 'none';
         document.documentElement.classList.add('scroll-bar-off');
     }
 }
@@ -230,6 +231,7 @@ function enableScroll() {
     // window.removeEventListener('keydown', preventKeyScroll);
     // window.removeEventListener('scroll', preventKeyScroll);
     document.body.style.overflowY = '';
+    document.body.style.userSelect = '';
     document.documentElement.classList.remove('scroll-bar-off');
 }
 
