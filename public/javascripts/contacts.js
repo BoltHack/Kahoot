@@ -30,10 +30,10 @@ function openAnswerMenu(faqNumber) {
 function techChat() {
     if (localStorage.getItem('token')) {
         const techChatBtn = document.getElementById('techChatBtn');
-        const loadingBtn = document.getElementById('loadingBtn');
+        let initialText = localeType === 'en' ? 'Message' : 'Написать';
 
-        techChatBtn.hidden = true;
-        loadingBtn.hidden = false;
+        techChatBtn.disabled = true;
+        techChatBtn.textContent = 'Загрузка...';
 
         function requestTechSupport() {
             fetch('/requestTechSupport', {
@@ -45,23 +45,23 @@ function techChat() {
                 .then(data => {
                     const {error} = data;
                     if (error) {
-                        techChatBtn.hidden = false;
-                        loadingBtn.hidden = true;
+                        techChatBtn.disabled = false;
+                        techChatBtn.textContent = initialText;
                         showToast('error', error);
                         return;
                     }
                     if (data.id.toString() === sendId.toString()) {
                         showToast('error', localeType === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.');
                         console.log('Ничего не найдено.');
-                        techChatBtn.hidden = false;
-                        loadingBtn.hidden = true;
+                        techChatBtn.disabled = false;
+                        techChatBtn.textContent = initialText;
                         return;
                     }
                     checksChannel(`${data.id}`);
                 }).catch(error => {
-                techChatBtn.hidden = false;
-                loadingBtn.hidden = true;
-                console.log('error', error)
+                techChatBtn.disabled = true;
+                techChatBtn.disabled = 'Загрузка...';
+                console.log('error', error);
             })
         }
         requestTechSupport();

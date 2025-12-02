@@ -394,4 +394,9 @@ function showToast(type = 'success', message = '', duration = 3000) {
         toast.style.animation = `fadeOut 0.4s ease forwards`;
         setTimeout(() => toast.remove(), 400);
     }, duration);
+
+    toast.addEventListener('click', () => {
+        toast.style.animation = `fadeOut 0.4s ease forwards`;
+        setTimeout(() => toast.remove(), 400);
+    });
 }

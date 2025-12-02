@@ -54,6 +54,8 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+    font-size: 15px;
+    font-weight: 700;
 }
 .contact button:hover {
     opacity: 0.6;
