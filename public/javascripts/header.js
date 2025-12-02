@@ -57,9 +57,9 @@ checkGamePath();
 
 const dropdownContents = document.querySelectorAll('.dropdown-content');
 const dropdownTitles = document.querySelectorAll('.dropdown-title');
-const dropdown = document.querySelectorAll('.dropdown');
+const dropdownOpen = document.querySelectorAll('.dropdown-open');
 
-dropdown.forEach((title, index) => {
+dropdownOpen.forEach((title, index) => {
     title.addEventListener('mouseover', () => {
         dropdownContents[index].style.display = 'flex';
         dropdownContents[index].style.transform = 'scaleY(1)';
@@ -209,6 +209,9 @@ function changeTheme(themeType) {
 // }
 
 function hasVerticalScrollbar() {
+    // if (document.documentElement.scrollHeight > document.documentElement.clientHeight) {
+    //     console.log('scroll - присутствует');
+    // } else console.log('scroll - отсутствует');
     return document.documentElement.scrollHeight > document.documentElement.clientHeight;
 }
 

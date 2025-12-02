@@ -44,7 +44,7 @@
     <div class="header-container header-tools">
 
         <div id="news">
-            <div class="dropdown">
+            <div class="dropdown dropdown-open">
                 <p class="ha dropdown-title">News<span>❯</span></p>
                 <div class="dropdown-content">
                     <a href="/news?tag=Updates">Updates</a>
@@ -56,7 +56,7 @@
         </div>
 
         <div id="rules">
-            <div class="dropdown">
+            <div class="dropdown dropdown-open">
                 <p class="ha dropdown-title">Rules<span>❯</span></p>
                 <div class="dropdown-content">
                     <a href="/privacyPolicy">Privacy Policy</a>
@@ -66,7 +66,7 @@
         </div>
 
         <div id="aboutUs">
-            <div class="dropdown">
+            <div class="dropdown dropdown-open">
                 <p class="ha dropdown-title">About Us<span>❯</span></p>
                 <div class="dropdown-content">
                     <a href="/aboutUs">About company</a>
@@ -82,7 +82,7 @@
 
         <% if (user && user.name) { %>
             <div>
-                <div class="dropdown">
+                <div class="dropdown dropdown-open">
                     <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
                     <div class="dropdown-content">
                         <% if (user.role === 'Admin') {%>
@@ -93,11 +93,13 @@
                 </div>
             </div>
         <% } else {%>
-            <p onclick="window.location.href = '/auth/login'" class="ha">Sign in</p>
+            <div class="dropdown">
+                <p onclick="window.location.href = '/auth/login'" class="ha">Sign in</p>
+            </div>
         <% } %>
             <br>
             <div>
-                <div class="dropdown settings-dropdown-title header-settings-icon">
+                <div class="dropdown dropdown-open settings-dropdown-title header-settings-icon">
                     <p class="ha dropdown-title">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
                         <span style="display: none;"></span>
@@ -144,6 +146,7 @@
             </svg>
         </div>
         <div class="brutalist-card__alert">You are not logged in!</div>
+        <button class="close-btn" id="closeAuthBorder">X</button>
     </div>
     <div class="brutalist-card__message">
         <span>Sign in or create an account.</span>
@@ -155,7 +158,6 @@
         <button onclick="window.location.href = '/auth/login'" class="auth-btn">Log in</button>
         <button onclick="window.location.href = '/auth/register'" class="auth-btn">Create an account</button>
     </div>
-    <button class="close-btn" id="closeAuthBorder">X</button>
 </div>
 
 <div class="find-border" id="border" hidden>
