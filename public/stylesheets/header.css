@@ -189,7 +189,6 @@ html.scroll-bar-off {
 }
 
 .header-container {
-    margin-left: 200px;
     display: flex;
     gap: 40px;
     z-index: 1;
