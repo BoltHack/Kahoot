@@ -110,15 +110,20 @@
                                 <p>Language</p>
                                 <ul>
                                     <li><a onclick="changeLocale('ru')">Русский</a></li>
-                                    <li><a class="setting-on-mode" onclick="changeLocale('en')">English</a></li>
+                                    <li><a class="setting-on-mode">English</a></li>
                                 </ul>
                             </div>
                             <div class="dropdown-line"></div>
                             <div class="dropdown-content-tools">
                                 <p>Theme</p>
                                 <ul>
-                                    <li><a class="<%= darkTheme === 'on' ? 'setting-on-mode' : '' %>" onclick="changeTheme('on')">Dark</a></li>
-                                    <li><a class="<%= darkTheme === 'off' ? 'setting-on-mode' : '' %>" onclick="changeTheme('off')">Light</a></li>
+                                    <% if (darkTheme === 'on') { %>
+                                        <li><a class="setting-on-mode">Dark</a></li>
+                                        <li><a onclick="changeTheme('off')">Light</a></li>
+                                    <% } else { %>
+                                        <li><a onclick="changeTheme('on')">Dark</a></li>
+                                        <li><a class="setting-on-mode">Light</a></li>
+                                    <% } %>
                                 </ul>
                             </div>
                         </div>
@@ -187,15 +192,20 @@
                     <p>Язык</p>
                     <ul>
                         <li><a onclick="changeLocale('ru')">Русский</a></li>
-                        <li><a class="setting-on-mode" onclick="changeLocale('en')">English</a></li>
+                        <li><a class="setting-on-mode">English</a></li>
                     </ul>
                 </div>
 
                 <div class="dropdown-content-tools">
                     <p>Тема</p>
                     <ul>
-                        <li><a class="<%= darkTheme === 'on' ? 'setting-on-mode' : '' %>" onclick="changeTheme('on')">Dark</a></li>
-                        <li><a class="<%= darkTheme === 'off' ? 'setting-on-mode' : '' %>" onclick="changeTheme('off')">Light</a></li>
+                        <% if (darkTheme === 'on') { %>
+                            <li><a class="setting-on-mode">Dark</a></li>
+                            <li><a onclick="changeTheme('off')">Light</a></li>
+                        <% } else { %>
+                            <li><a onclick="changeTheme('on')">Dark</a></li>
+                            <li><a class="setting-on-mode">Light</a></li>
+                        <% } %>
                     </ul>
                 </div>
             </div>
