@@ -20,7 +20,7 @@
         <section class="section" id="profile">
             <h2>Профиль</h2>
             <div class="profile">
-                <img src="<%= userId.image %>" alt="Аватар пользователя" id="editImageBtn" title="Сменить аватарку" />
+                <img src="<%= userId.image %>" alt="Аватар пользователя" title="Сменить аватарку" onclick="editBackgroundImage('editImage', 'userImageView', 'attachFile', 'saveImageBtn', 'deleteImageBtn', 'avatarImage')" />
                 <div class="profile-info">
                     <div style="display: flex; gap: 10px;">
                         <h3><%= userId.name %></h3>
@@ -82,17 +82,17 @@
         <section class="section" id="extra-settings">
             <h2>Дополнительные настройки</h2>
             <div class="extra-settings">
-                <div class="extra-setting" id="editMainBackgroundBtn">
+                <div class="extra-setting" onclick="editBackgroundImage('editMainMenu', 'mainBackgroundView', 'backgroundFile', 'saveMainBackgroundBtn', 'deleteMainBackgroundBtn', 'backgroundImage')">
                     <h3>Фон главного меню</h3>
                     <p>При желании вы можете сменить фон главного меню игры.</p>
                 </div>
 
-                <div class="extra-setting" id="editStatusBtn">
+                <div class="extra-setting" onclick="editTextareaMenu('editStatusMenu', 'status', 'maxStatusLength', 'changeStatusBtn', 90, '/changeStatus', 'status')">
                     <h3>Статус профиля</h3>
                     <p>Создайте себе крутой статус, чтобы другие игроки могли увидеть!</p>
                 </div>
 
-                <div class="extra-setting" id="editAboutMeBtn">
+                <div class="extra-setting" onclick="editTextareaMenu('editAboutMeMenu', 'aboutMe', 'maxAboutMeLength', 'changeAboutMeBtn', 200, '/changeAboutMe', 'aboutMe')">
                     <h3>Обо мне</h3>
                     <p>Напишите что-нибудь о себе. Можно использовать ссылки.</p>
                 </div>
@@ -142,7 +142,7 @@
 
     <section id="editMainMenu" hidden>
         <label>
-            <img src="" class="main-pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
+            <img src="" class="pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
             <input type="file" name="file" id="backgroundFile" style="display: none">
         </label>
         <div class="edit-buttons">

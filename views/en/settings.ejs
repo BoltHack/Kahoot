@@ -20,7 +20,7 @@
         <section class="section" id="profile">
             <h2>Profile</h2>
             <div class="profile">
-                <img src="<%= userId.image %>" alt="User Avatar" id="editImageBtn" title="Change Avatar" />
+                <img src="<%= userId.image %>" alt="User Avatar" title="Change Avatar" onclick="editBackgroundImage('editImage', 'userImageView', 'attachFile', 'saveImageBtn', 'deleteImageBtn', 'avatarImage')" />
                 <div class="profile-info">
                     <div style="display: flex; gap: 10px;">
                         <h3><%= userId.name %></h3>
@@ -82,17 +82,17 @@
         <section class="section" id="extra-settings">
             <h2>Additional Settings</h2>
             <div class="extra-settings">
-                <div class="extra-setting" id="editMainBackgroundBtn">
+                <div class="extra-setting" onclick="editBackgroundImage('editMainMenu', 'mainBackgroundView', 'backgroundFile', 'saveMainBackgroundBtn', 'deleteMainBackgroundBtn', 'backgroundImage')">
                     <h3>Main menu background</h3>
                     <p>If you wish, you can change the background of the game's main menu.</p>
                 </div>
 
-                <div class="extra-setting" id="editStatusBtn">
+                <div class="extra-setting" onclick="editTextareaMenu('editStatusMenu', 'status', 'maxStatusLength', 'changeStatusBtn', 90, '/changeStatus', 'status')">
                     <h3>Profile Status</h3>
                     <p>Create a cool status for yourself for other players to see!</p>
                 </div>
 
-                <div class="extra-setting" id="editAboutMeBtn">
+                <div class="extra-setting" onclick="editTextareaMenu('editAboutMeMenu', 'aboutMe', 'maxAboutMeLength', 'changeAboutMeBtn', 200, '/changeAboutMe', 'aboutMe')">
                     <h3>About me</h3>
                     <p>Write something about yourself. You can use links.</p>
                 </div>
