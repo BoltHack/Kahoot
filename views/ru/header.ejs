@@ -48,9 +48,9 @@
             <div class="dropdown dropdown-open">
                 <p class="ha dropdown-title">Новости<span>❯</span></p>
                 <div class="dropdown-content">
-                    <a href="/news?tag=Updates">Обновление</a>
+                    <a href="/news?tag=Updates">Обновления</a>
                     <a href="/news?tag=AboutGame">Об игре</a>
-                    <a href="/news?tag=BugsErrors">Баги/Ошибки</a>
+                    <a href="/news?tag=BugsErrors">Баги / Ошибки</a>
                     <a href="/news">Все новости</a>
                 </div>
             </div>
@@ -58,9 +58,9 @@
 
         <div id="rules">
             <div class="dropdown dropdown-open">
-                <p class="ha dropdown-title">Правила<span class="dropdown-icon">❯</span></p>
+                <p class="ha dropdown-title">Правила<span>❯</span></p>
                 <div class="dropdown-content">
-                    <a href="/privacyPolicy">Правила конфиденциальности</a>
+                    <a href="/privacyPolicy">Политика конфиденциальности</a>
                     <a href="/rules">Условия использования</a>
                 </div>
             </div>
@@ -93,50 +93,50 @@
                     </div>
                 </div>
             <% } else {%>
-                    <div class="dropdown">
-                        <p onclick="window.location.href = '/auth/login'" class="ha dropdown-title">Войти</p>
-                    </div>
+                <div class="dropdown">
+                    <p onclick="window.location.href = '/auth/login'" class="ha">Войти</p>
+                </div>
             <% } %>
         </div>
-            <br>
-            <div id="settings">
-                <div class="dropdown dropdown-open settings-dropdown-title header-settings-icon">
-                    <p class="ha dropdown-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                        <span style="display: none;"></span>
-                    </p>
-                    <div class="dropdown-content">
-                        <div class="dropdown-content-tools">
-                            <p>Язык</p>
-                            <ul>
-                                <li><a class="setting-on-mode">Русский</a></li>
-                                <li><a onclick="changeLocale('en')">English</a></li>
-                            </ul>
-                        </div>
-                        <div class="dropdown-line"></div>
-                        <div class="dropdown-content-tools">
-                            <p>Тема</p>
-                            <ul>
-                                <% if (darkTheme === 'on') { %>
-                                    <li><a class="setting-on-mode">Тёмная</a></li>
-                                    <li><a onclick="changeTheme('off')">Светлая</a></li>
-                                <% } else { %>
-                                    <li><a onclick="changeTheme('on')">Тёмная</a></li>
-                                    <li><a class="setting-on-mode">Светлая</a></li>
-                                <% } %>
-                            </ul>
-                        </div>
+        <br>
+        <div id="settings">
+            <div class="dropdown dropdown-open settings-dropdown-title header-settings-icon">
+                <p class="ha dropdown-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    <span style="display: none;"></span>
+                </p>
+                <div class="dropdown-content">
+                    <div class="dropdown-content-tools">
+                        <p>Язык</p>
+                        <ul>
+                            <li><a class="setting-on-mode">Русский</a></li>
+                            <li><a onclick="changeLocale('en')">English</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown-line"></div>
+                    <div class="dropdown-content-tools">
+                        <p>Тема</p>
+                        <ul>
+                            <% if (darkTheme === 'on') { %>
+                                <li><a class="setting-on-mode">Тёмная</a></li>
+                                <li><a onclick="changeTheme('off')">Светлая</a></li>
+                            <% } else { %>
+                                <li><a onclick="changeTheme('on')">Тёмная</a></li>
+                                <li><a class="setting-on-mode">Светлая</a></li>
+                            <% } %>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-                <div class="media-width dropdown-title" style="background: none;" onclick="mediaMenu()">
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify">
-                            <path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/>
-                        </svg>
-                    </div>
-                </div>
+        <div class="media-width dropdown-title" style="background: none;" onclick="mediaMenu()">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify">
+                    <path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/>
+                </svg>
+            </div>
+        </div>
 
     </div>
 
@@ -155,31 +155,34 @@
         <button class="close-btn" id="closeAuthBorder">X</button>
     </div>
     <div class="brutalist-card__message">
-        <span>Войдите в учётную запись или создайте аккаунт.</span>
-        <br>
-        <br>
-        <span>Регистрируясь или авторизируясь, вы принимаете наши <a class="termsOfUse" href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Политику конфиденциальности</a>.</span>
+        <span>Войдите или создайте аккаунт.</span>
+        <br><br>
+        <span>
+            Регистрируясь или авторизуясь, вы соглашаетесь с нашими
+            <a class="termsOfUse" href="/rules" target="_blank">Условиями использования</a>
+            и
+            <a href="/privacyPolicy" target="_blank" class="privacyPolicy">Политикой конфиденциальности</a>.
+        </span>
     </div>
     <div class="brutalist-card__actions">
         <button onclick="window.location.href = '/auth/login'" class="auth-btn">Войти</button>
         <button onclick="window.location.href = '/auth/register'" class="auth-btn">Создать аккаунт</button>
     </div>
-
 </div>
 
 <div class="find-border" id="border" hidden>
     <h4 style="text-align: center">Куда отправимся?</h4>
     <div class="border-data">
-        <input type="text" name="text" placeholder="Введите код игры" class="find-input" id="infoInput" autocomplete="off">
-        <br>
-        <br>
-        <button type="submit" id="searchButton" class="find-button">Присоенидиться</button>
+        <input type="text" name="text" placeholder="Введите пин-код игры" class="find-input" id="infoInput" autocomplete="off">
+        <br><br>
+        <button type="submit" id="searchButton" class="find-button">Присоединиться</button>
     </div>
     <button class="close-btn" id="close">X</button>
 </div>
 
 <div class="media-body" id="mediaBorder">
     <div class="media-border">
+
         <div class="media-header">
             <a href="/">Kahoot</a>
             <button id="closeMediaBorder">X</button>
@@ -187,6 +190,7 @@
 
         <div class="media-scroller">
             <br/>
+
             <div class="settings-dropdown-title media-settings-dropdown">
                 <div class="dropdown-content-tools">
                     <p>Язык</p>
@@ -203,12 +207,13 @@
                             <li><a class="setting-on-mode">Тёмная</a></li>
                             <li><a onclick="changeTheme('off')">Светлая</a></li>
                         <% } else { %>
-                                <li><a onclick="changeTheme('on')">Тёмная</a></li>
-                                <li><a class="setting-on-mode">Светлая</a></li>
+                            <li><a onclick="changeTheme('on')">Тёмная</a></li>
+                            <li><a class="setting-on-mode">Светлая</a></li>
                         <% } %>
                     </ul>
                 </div>
             </div>
+
             <br/>
             <div class="media-line"></div>
             <br/>
@@ -216,9 +221,9 @@
             <div class="media-tool">
                 <p>Новости</p>
                 <ul>
-                    <li><a href="/news?tag=Updates">Обновление</a></li>
+                    <li><a href="/news?tag=Updates">Обновления</a></li>
                     <li><a href="/news?tag=AboutGame">Об игре</a></li>
-                    <li><a href="/news?tag=BugsErrors">Баги/Ошибки</a></li>
+                    <li><a href="/news?tag=BugsErrors">Баги / Ошибки</a></li>
                     <li><a href="/news">Все новости</a></li>
                 </ul>
                 <div class="media-line"></div>
@@ -227,7 +232,7 @@
             <div class="media-tool">
                 <p>Правила</p>
                 <ul>
-                    <li><a href="/privacyPolicy">Правила конфиденциальности</a></li>
+                    <li><a href="/privacyPolicy">Политика конфиденциальности</a></li>
                     <li><a href="/rules">Условия использования</a></li>
                 </ul>
                 <div class="media-line"></div>
@@ -236,7 +241,7 @@
             <div class="media-tool">
                 <p>О нас</p>
                 <ul>
-                    <li><a href="/aboutUs">О компании</a></li>
+                    <li><a href="/aboutUs">Компания</a></li>
                     <li><a href="/contacts">Контакты</a></li>
                     <li><a href="/reviews">Отзывы</a></li>
                 </ul>
@@ -244,6 +249,7 @@
             </div>
 
             <% if (user && user.id) { %>
+
                 <div class="media-tool media-b-btn">
                     <p onclick="redirectPage('/create-game')">Создать игру</p>
                     <div class="media-line"></div>
@@ -272,29 +278,30 @@
                 <div class="media-tool media-b-btn">
                     <p onclick="redirectPage('/support')">Поддержка</p>
                 </div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <br/><br/><br/><br/>
+
             <% } else { %>
+
                 <div class="media-tool media-b-btn">
                     <p onclick="authMenu()">Начать игру</p>
                     <div class="media-line"></div>
                 </div>
 
                 <div class="media-tool media-b-btn">
-                    <p onclick="window.location.href = '/support'">Поддржка</p>
+                    <p onclick="window.location.href = '/support'">Поддержка</p>
                     <div class="media-line"></div>
                 </div>
+
                 <br/>
+
                 <div class="media-tool media-b-btn">
                     <p onclick="authMenu()">Войти</p>
                 </div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+
+                <br/><br/><br/><br/>
+
             <% } %>
+
         </div>
 
     </div>

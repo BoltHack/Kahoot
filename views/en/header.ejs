@@ -11,6 +11,7 @@
             document.documentElement.classList.remove('darkTheme');
         }
     </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/stylesheets/header.css">
     <link rel="stylesheet" href="/stylesheets/theme.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
@@ -80,64 +81,62 @@
 
     <div class="header-container" style="margin-left: auto;">
 
-       <div id="account">
-           <% if (user && user.name) { %>
-               <div class="dropdown dropdown-open">
-                   <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
-                   <div class="dropdown-content">
-                       <% if (user.role === 'Admin') {%>
-                           <a href="/admin/admin-panel">Admin panel</a>
-                       <% } %>
-                       <a onclick="logout();">Sign out</a>
-                   </div>
-               </div>
-           <% } else {%>
-               <div class="dropdown">
-                   <p onclick="window.location.href = '/auth/login'" class="ha">Sign in</p>
-               </div>
-           <% } %>
-       </div>
-            <br>
-            <div id="settings">
-                <div>
-                    <div class="dropdown dropdown-open settings-dropdown-title header-settings-icon">
-                        <p class="ha dropdown-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                            <span style="display: none;"></span>
-                        </p>
-                        <div class="dropdown-content">
-                            <div class="dropdown-content-tools">
-                                <p>Language</p>
-                                <ul>
-                                    <li><a onclick="changeLocale('ru')">Русский</a></li>
-                                    <li><a class="setting-on-mode">English</a></li>
-                                </ul>
-                            </div>
-                            <div class="dropdown-line"></div>
-                            <div class="dropdown-content-tools">
-                                <p>Theme</p>
-                                <ul>
-                                    <% if (darkTheme === 'on') { %>
-                                        <li><a class="setting-on-mode">Dark</a></li>
-                                        <li><a onclick="changeTheme('off')">Light</a></li>
-                                    <% } else { %>
-                                        <li><a onclick="changeTheme('on')">Dark</a></li>
-                                        <li><a class="setting-on-mode">Light</a></li>
-                                    <% } %>
-                                </ul>
-                            </div>
-                        </div>
+        <div id="account">
+            <% if (user && user.name) { %>
+                <div class="dropdown dropdown-open">
+                    <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                    <div class="dropdown-content">
+                        <% if (user.role === 'Admin') {%>
+                            <a href="/admin/admin-panel">Admin panel</a>
+                        <% } %>
+                        <a onclick="logout();">Sign out</a>
+                    </div>
+                </div>
+            <% } else {%>
+                <div class="dropdown">
+                    <p onclick="window.location.href = '/auth/login'" class="ha">Sign in</p>
+                </div>
+            <% } %>
+        </div>
+        <br>
+        <div id="settings">
+            <div class="dropdown dropdown-open settings-dropdown-title header-settings-icon">
+                <p class="ha dropdown-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    <span style="display: none;"></span>
+                </p>
+                <div class="dropdown-content">
+                    <div class="dropdown-content-tools">
+                        <p>Language</p>
+                        <ul>
+                            <li><a onclick="changeLocale('ru')">Русский</a></li>
+                            <li><a class="setting-on-mode">English</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown-line"></div>
+                    <div class="dropdown-content-tools">
+                        <p>Theme</p>
+                        <ul>
+                            <% if (darkTheme === 'on') { %>
+                                <li><a class="setting-on-mode">Dark</a></li>
+                                <li><a onclick="changeTheme('off')">Light</a></li>
+                            <% } else { %>
+                                <li><a onclick="changeTheme('on')">Dark</a></li>
+                                <li><a class="setting-on-mode">Light</a></li>
+                            <% } %>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="media-width dropdown-title" style="background: none;" onclick="mediaMenu()">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify">
-                        <path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/>
-                    </svg>
-                </div>
+        <div class="media-width dropdown-title" style="background: none;" onclick="mediaMenu()">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify">
+                    <path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/>
+                </svg>
             </div>
+        </div>
 
     </div>
 
