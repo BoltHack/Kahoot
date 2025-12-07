@@ -10,7 +10,7 @@ const ngrokLink = process.env.ngrokLink;
 class ViewController {
     static mainView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const mainEffects = req.cookies['mainEffects'] || 'on';
             const acceptCookies = req.cookies['acceptCookies'];
@@ -21,12 +21,12 @@ class ViewController {
                     if (user && user.id) {
                         const getData = await UsersModel.findById(user.id);
                         const mainBackgroundImage = getData.settings.mainBackgroundImage;
-                        return res.render(resData.locale === 'en' ? 'en/main' : 'ru/main', { user, mainEffects, acceptCookies, mainBackgroundImage, backgroundImage: '', ...resData });
+                        return res.render(appData.locale === 'en' ? 'en/main' : 'ru/main', { user, mainEffects, acceptCookies, mainBackgroundImage, backgroundImage: '', ...appData });
                     }
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/main' : 'ru/main', { user: '', mainEffects, acceptCookies, mainBackgroundImage: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/main' : 'ru/main', { user: '', mainEffects, acceptCookies, mainBackgroundImage: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -35,22 +35,22 @@ class ViewController {
 
     static createGameView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const user = req.user;
-            return res.render(resData.locale === 'en' ? 'en/create-game' : 'ru/create-game', { user, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/create-game' : 'ru/create-game', { user, ...appData });
         } catch (err) {
             next(err);
         }
     }
     static gameView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const {game_id} = req.params;
 
             if (!mongoose.Types.ObjectId.isValid(game_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -63,7 +63,7 @@ class ViewController {
             const getId = checkId.map(doc => doc.id);
 
             if (!getId.includes(game_id)){
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -75,7 +75,7 @@ class ViewController {
             await UsersModel.findByIdAndUpdate(id, { $set: { current_game: game_id }, game: { game_id: user.id, game_name: user.name, game_answers: 0, game_correct_answers: 0 } });
             console.log('добавлен новый игрок:', game_id);
 
-            return res.render(resData.locale === 'en' ? 'en/game' : 'ru/game', { user, myGame, gameId, soundTrack, ngrokLink, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/game' : 'ru/game', { user, myGame, gameId, soundTrack, ngrokLink, ...appData });
         } catch (err) {
             next(err);
         }
@@ -83,13 +83,13 @@ class ViewController {
 
     static redactionView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const { game_id } = req.params;
 
             const game = await GamesModel.findById(game_id);
             if (game.game_online.online > 0){
-                const errorMsg = resData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
+                const errorMsg = appData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const user = req.user;
@@ -98,17 +98,17 @@ class ViewController {
             const myGamesInfo = getUserInfo.myGames.map(games => games.gameId.toString());
 
             if (!myGamesInfo.includes(game_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const gamesInfo = await GamesModel.findById(game_id);
             if (!gamesInfo) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(resData.locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, ...appData });
         } catch (err) {
             next(err);
         }
@@ -116,13 +116,13 @@ class ViewController {
 
     static createQuestionView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const {game_id} = req.params;
 
             const game = await GamesModel.findById(game_id);
             if (game.game_online.online > 0){
-                const errorMsg = resData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
+                const errorMsg = appData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const user = req.user;
@@ -131,13 +131,13 @@ class ViewController {
             const myGamesInfo = getUserInfo.myGames.map(games => games.gameId.toString());
 
             if (!myGamesInfo.includes(game_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const gamesInfo = await GamesModel.findById(game_id);
 
-            return res.render(resData.locale === 'en' ? 'en/create-questions' : 'ru/create-questions', { user, gamesInfo, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/create-questions' : 'ru/create-questions', { user, gamesInfo, ...appData });
         } catch (err) {
             next(err);
         }
@@ -145,46 +145,46 @@ class ViewController {
 
     static editQuestionView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const {game_id, question_id} = req.params;
 
             const game = await GamesModel.findById(game_id);
             if (!game) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
             if (game.game_online.online > 0) {
-                const errorMsg = resData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игроки.';
+                const errorMsg = appData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игроки.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
             const user = req.user;
             const userData = await UsersModel.findById(user.id);
             if (!userData) {
-                const errorMsg = resData.locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
+                const errorMsg = appData.locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const myGamesId = userData.myGames.find(g => g.gameId.toString() === game_id.toString());
             if (!myGamesId) {
-                const errorMsg = resData.locale === 'en' ? 'You do not have access to this game.' : 'У вас нет доступа к этой игре.';
+                const errorMsg = appData.locale === 'en' ? 'You do not have access to this game.' : 'У вас нет доступа к этой игре.';
                 return res.redirect(`/error?code=403&message=${encodeURIComponent(errorMsg)}`);
             }
 
             const gamesInfo = await GamesModel.findById(myGamesId.gameId);
             if (!gamesInfo) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const questionInfo = gamesInfo.game_questions.find(q => q.id.toString() === question_id.toString());
             if (!questionInfo) {
-                const errorMsg = resData.locale === 'en' ? 'Question not found.' : 'Вопрос не найден.';
+                const errorMsg = appData.locale === 'en' ? 'Question not found.' : 'Вопрос не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(resData.locale === 'en' ? `en/edit-question` : `ru/edit-question`, { user, game_id, questionInfo, ...resData });
+            return res.render(appData.locale === 'en' ? `en/edit-question` : `ru/edit-question`, { user, game_id, questionInfo, ...appData });
         } catch (err) {
             next(err);
         }
@@ -193,7 +193,7 @@ class ViewController {
 
     static myGamesView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const user = req.user;
 
@@ -202,7 +202,7 @@ class ViewController {
             const myGamesId = getUserId.myGames.map(games => games.gameId);
             const myGames = await GamesModel.find({ _id: { $in: myGamesId } });
 
-            return res.render(resData.locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, ...appData });
         } catch (err) {
             next(err);
         }
@@ -210,7 +210,7 @@ class ViewController {
 
     static settingsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const user = req.user;
             const userId = await UsersModel.findById(user.id);
@@ -219,7 +219,7 @@ class ViewController {
             const soundTrack = req.cookies['soundTrack'];
             const mainEffects = req.cookies['mainEffects'];
 
-            return res.render(resData.locale === 'en' ? 'en/settings' : 'ru/settings', { user, userId, theme, soundTrack, mainEffects, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/settings' : 'ru/settings', { user, userId, theme, soundTrack, mainEffects, ...appData });
         } catch (err) {
             next(err);
         }
@@ -227,8 +227,8 @@ class ViewController {
 
     static returnMenuView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
-            return res.render(resData.locale === 'en' ? 'en/return-menu' : 'ru/return-menu');
+            const appData = req.basicData;
+            return res.render(appData.locale === 'en' ? 'en/return-menu' : 'ru/return-menu');
         } catch (err) {
             next(err);
         }
@@ -236,16 +236,16 @@ class ViewController {
 
     static privacyPolicyView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -254,16 +254,16 @@ class ViewController {
 
     static rulesView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/rules' : 'ru/rules', { user, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/rules' : 'ru/rules', { user, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/rules' : 'ru/rules', { user: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/rules' : 'ru/rules', { user: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -272,16 +272,16 @@ class ViewController {
 
     static aboutUsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', { user, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', { user, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', { user: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', { user: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -290,16 +290,16 @@ class ViewController {
 
     static aboutDonatesView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -308,16 +308,16 @@ class ViewController {
 
     static supportView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/support' : 'ru/support', { user, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/support' : 'ru/support', { user, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/support' : 'ru/support', { user: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/support' : 'ru/support', { user: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -326,7 +326,7 @@ class ViewController {
 
     static newsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const tag = req.query.tag;
             const query = tag ? {"tags.tagName": tag} : {};
@@ -367,19 +367,19 @@ class ViewController {
                 currentPage: page,
                 totalPages: Math.ceil(totalNews / limit),
                 currentTag: tag,
-                locale: resData.locale,
-                notifications: resData.darkTheme,
-                darkTheme: resData.darkTheme,
+                locale: appData.locale,
+                notifications: appData.darkTheme,
+                darkTheme: appData.darkTheme,
             }
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData, ...resData});
+                    return res.render(appData.locale === 'en' ? 'en/news' : 'ru/news', {user, ...renderData, ...appData});
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/news' : 'ru/news', {user: '', ...renderData, ...resData});
+                return res.render(appData.locale === 'en' ? 'en/news' : 'ru/news', {user: '', ...renderData, ...appData});
             }
         } catch (err) {
             next(err);
@@ -389,25 +389,25 @@ class ViewController {
 
     static readNewsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const {news_id} = req.params;
 
             const pageUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
             if (!mongoose.Types.ObjectId.isValid(news_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const readNews = await NewsModel.findById(news_id);
 
             if (!readNews.mainContent && !readNews.mainContent.mainSummary) {
-                const errorMsg = resData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
             if (readNews.isVisibility === false) {
-                const errorMsg = resData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+                const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -417,11 +417,11 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, ngrokLink, pageUrl, ...resData});
+                    return res.render(appData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, ngrokLink, pageUrl, ...appData});
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, ngrokLink, pageUrl, ...resData});
+                return res.render(appData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, ngrokLink, pageUrl, ...appData});
             }
         } catch (err) {
             next(err);
@@ -430,12 +430,12 @@ class ViewController {
 
     static userProfileView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const {user_id} = req.params;
 
             if (!mongoose.Types.ObjectId.isValid(user_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Player not found.' : 'Игрок не найден.';
+                const errorMsg = appData.locale === 'en' ? 'Player not found.' : 'Игрок не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -445,12 +445,12 @@ class ViewController {
                     const user = req.user;
                     const myInfo = await UsersModel.findById(user.id);
                     if (user && user.id) {
-                        return res.render(resData.locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user, userInfo, myInfo, ...resData});
+                        return res.render(appData.locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user, userInfo, myInfo, ...appData});
                     }
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, ...resData});
+                return res.render(appData.locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, ...appData});
             }
         } catch (err) {
             next(err);
@@ -459,12 +459,12 @@ class ViewController {
 
     static channelsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const {channel_id} = req.params;
 
             if (!channel_id || !mongoose.Types.ObjectId.isValid(channel_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
+                const errorMsg = appData.locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -488,16 +488,16 @@ class ViewController {
                     },
                     { new: true }
                 )
-                const errorMsg = resData.locale === 'en' ? 'this channel has been deleted.' : 'Этот канал был удалён.';
+                const errorMsg = appData.locale === 'en' ? 'this channel has been deleted.' : 'Этот канал был удалён.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             if (!match || !companion) {
-                const errorMsg = resData.locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
+                const errorMsg = appData.locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(resData.locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, companion, myChannels, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, companion, myChannels, ...appData });
         } catch (err) {
             next(err);
         }
@@ -505,14 +505,14 @@ class ViewController {
 
     static channelsMeView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const user = req.user;
 
             const myData = await UsersModel.findById(user.id);
             const myChannels = myData.myChannels;
 
-            return res.render(resData.locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, myChannels, ...resData });
+            return res.render(appData.locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, myChannels, ...appData });
 
         } catch (err) {
             next(err);
@@ -521,16 +521,16 @@ class ViewController {
 
     static contactsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(resData.locale === 'en' ? 'en/contacts' : 'ru/contacts', { user, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/contacts' : 'ru/contacts', { user, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/contacts' : 'ru/contacts', { user: '', ...resData });
+                return res.render(appData.locale === 'en' ? 'en/contacts' : 'ru/contacts', { user: '', ...appData });
             }
         } catch (err) {
             next(err);
@@ -539,7 +539,7 @@ class ViewController {
 
     static reviewsView = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const appData = req.basicData;
 
             const usersLength = await UsersModel.countDocuments();
 
@@ -571,9 +571,9 @@ class ViewController {
                 currentPage: page,
                 totalPages: Math.ceil(totalReviews / limit),
                 usersLength,
-                locale: resData.locale,
-                notifications: resData.notifications,
-                darkTheme: resData.darkTheme
+                locale: appData.locale,
+                notifications: appData.notifications,
+                darkTheme: appData.darkTheme
             }
 
             if (req.cookies['token']) {
@@ -587,11 +587,11 @@ class ViewController {
                         review: userInfo.settings.myReview
                     }
 
-                    return res.render(resData.locale === 'en' ? 'en/reviews' : 'ru/reviews', {user, myInfo, ...renderData, ...resData });
+                    return res.render(appData.locale === 'en' ? 'en/reviews' : 'ru/reviews', {user, myInfo, ...renderData, ...appData });
                 });
             }
             else {
-                return res.render(resData.locale === 'en' ? 'en/reviews' : 'ru/reviews', { user: '', myInfo: '', ...renderData, ...resData });
+                return res.render(appData.locale === 'en' ? 'en/reviews' : 'ru/reviews', { user: '', myInfo: '', ...renderData, ...appData });
             }
         } catch (err) {
             next(err);

@@ -15,11 +15,11 @@ function cleanEditorContent(content) {
 
     let decoded = he.decode(content);
     // decoded = decoded
-        // .replace(/<div>(?:\s|<br>|&nbsp;)*<\/div>/g, '')
-        // .replace(/<span[^>]*>\s*(<ul>[\s\S]*?<\/ul>)\s*<\/span>/g, '$1')
-        // .replace(/<span[^>]*>\s*(<li[^>]*>[\s\S]*?<\/li>)\s*<\/span>/g, '$1')
-        // .replace(/<span[^>]*>([^<]+)<\/span>/g, '$1')
-        // .replace(/<br\s*\/?>/gi, '<span>&nbsp;</span>');
+    // .replace(/<div>(?:\s|<br>|&nbsp;)*<\/div>/g, '')
+    // .replace(/<span[^>]*>\s*(<ul>[\s\S]*?<\/ul>)\s*<\/span>/g, '$1')
+    // .replace(/<span[^>]*>\s*(<li[^>]*>[\s\S]*?<\/li>)\s*<\/span>/g, '$1')
+    // .replace(/<span[^>]*>([^<]+)<\/span>/g, '$1')
+    // .replace(/<br\s*\/?>/gi, '<span>&nbsp;</span>');
 
     const clean = sanitizeHtml(decoded, {
         allowedTags: ['ul','li','ol','p','b','i','u','strong','h1','h2','h3','h4','h5','h6','em','a','br','img'],
@@ -269,13 +269,13 @@ class PostController {
 
     static deleteQuestion = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const { game_id, question_id } = req.params;
             const game = await GamesModel.findById(game_id);
 
             if (game.game_online.online > 0){
-                const errorMsg = resData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
+                const errorMsg = bData.locale === 'en' ? 'You cannot edit a game that contains players.' : 'Вы не можете редактировать игру, в котором есть игрки.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const user = req.user;
@@ -283,13 +283,13 @@ class PostController {
             const getUserInfo = await UsersModel.findById(user.id);
             const myGamesInfo = getUserInfo.myGames.map(games => games.gameId.toString());
             if (!myGamesInfo.includes(game_id)) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = bData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const questionId = game.game_questions.find(q => q.id.toString() === question_id.toString());
             if (!questionId) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = bData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -311,14 +311,14 @@ class PostController {
 
     static deleteGame = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const { game_id } = req.params;
             const game = await GamesModel.findById(game_id);
             const user = req.user;
 
             if (game.game_online.online > 0){
-                const errorMsg = resData.locale === 'en' ? 'You cannot Delete a game that has players in it.' : 'Вы не можете Удалить игру, в котором есть игроки.';
+                const errorMsg = bData.locale === 'en' ? 'You cannot Delete a game that has players in it.' : 'Вы не можете Удалить игру, в котором есть игроки.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const userInfo = await UsersModel.findById(user.id);
@@ -326,7 +326,7 @@ class PostController {
             const notFound = !userInfo.myGames.some(g => g.gameId.toString() === game_id.toString());
 
             if (notFound) {
-                const errorMsg = resData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
+                const errorMsg = bData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
             await GamesModel.findByIdAndDelete(game_id);
@@ -391,7 +391,7 @@ class PostController {
 
     static changeAvatar = async (req, res, next)=> {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const { action_type } = req.params;
             const user = req.user;
@@ -409,16 +409,16 @@ class PostController {
             }
 
             if (!req.cookies['locale']) {
-                res.cookie('locale', resData.locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+                res.cookie('locale', bData.locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
             if (!req.files.image.mimetype.startsWith('image/')) {
-                const errorMsg = resData.locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
+                const errorMsg = bData.locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
             if (!req.files || !req.files.image){
-                const errorMsg = resData.locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
+                const errorMsg = bData.locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
@@ -474,7 +474,7 @@ class PostController {
 
     static changeBackgroundImage = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const { action_type } = req.params;
             const user = req.user;
@@ -499,16 +499,16 @@ class PostController {
             }
 
             if (!req.cookies['locale']) {
-                res.cookie('locale', resData.locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+                res.cookie('locale', bData.locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
             if (!req.files.image.mimetype.startsWith('image/')) {
-                const errorMsg = resData.locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
+                const errorMsg = bData.locale === 'en' ? 'Only image files are allowed.' : 'Разрешены только файлы изображений.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
 
             if(!req.files || !req.files.image){
-                const errorMsg = resData.locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
+                const errorMsg = bData.locale === 'en' ? 'Failed to load changes.' : 'Не удалось загрузить изменения.';
                 return res.redirect(`/error?code=409&message=${encodeURIComponent(errorMsg)}`);
             }
             const imageFile = req.files.image;
@@ -823,7 +823,7 @@ class PostController {
 
     static redactionNews = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const {newsId} = req.body;
 
@@ -838,7 +838,7 @@ class PostController {
             const dateOnly = `${day}.${month}.${year}`;
 
             if (!req.cookies['locale']) {
-                res.cookie('locale', resData.locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
+                res.cookie('locale', bData.locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000  });
             }
 
             const {mainTitle, mainSummary, updateDate, isVisibility} = req.body;
@@ -1071,7 +1071,7 @@ class PostController {
 
     static requestTechSupport = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const allAdmins = await UsersModel.find({role: 'TechSupport'});
 
@@ -1079,7 +1079,7 @@ class PostController {
 
             const randomId = getRandomId(adminId);
             if (!randomId) {
-                const errorMsg = resData.locale === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.'
+                const errorMsg = bData.locale === 'en' ? 'Failed to contact technical support. Please try again later.' : 'Не удалось связаться с тех. поддержкой. Пожалуйста, повторите попытку чуть позже.'
                 return res.status(404).json({error: errorMsg});
             }
 
@@ -1094,14 +1094,14 @@ class PostController {
 
     static addRole = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const {email, role} = req.body;
 
             const userInfo = await UsersModel.findOne({email});
 
             if (!userInfo) {
-                const errorMsg = resData.locale === 'en' ? 'User not found.' : 'Игрок не найден.';
+                const errorMsg = bData.locale === 'en' ? 'User not found.' : 'Игрок не найден.';
                 return res.status(404).json({error: errorMsg});
             }
 
@@ -1124,7 +1124,7 @@ class PostController {
 
     static sendReview = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const user = req.user;
             const userInfo = await UsersModel.findById(user.id);
@@ -1133,12 +1133,12 @@ class PostController {
             const currentDate = new Date();
 
             if (!review) {
-                const errorMsg = resData.locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.';
+                const errorMsg = bData.locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.';
                 return res.status(400).json({ error: errorMsg });
             }
 
             if (review === userInfo.settings.myReview.review && grade.toString() === userInfo.settings.myReview.grade.toString()) {
-                const errorMsg = resData.locale === 'en' ? 'No changes were found in the review.' : 'В отзыве не обнаружено никаких изменений.';
+                const errorMsg = bData.locale === 'en' ? 'No changes were found in the review.' : 'В отзыве не обнаружено никаких изменений.';
                 return res.status(400).json({ error: errorMsg });
             }
 
@@ -1154,7 +1154,7 @@ class PostController {
                 { new: true }
             );
 
-            const successMsg = resData.locale === 'en' ? 'Review successfully added!' : 'Отзыв успешно добавлен!';
+            const successMsg = bData.locale === 'en' ? 'Review successfully added!' : 'Отзыв успешно добавлен!';
             return res.status(200).json({ message: successMsg });
 
         } catch (err) {
@@ -1166,13 +1166,13 @@ class PostController {
 
     static deleteMyReview = async (req, res, next) => {
         try {
-            const resData = req.responseData;
+            const bData = req.basicData;
 
             const user = req.user;
 
             await UsersModel.findByIdAndUpdate(user.id, { $set: { 'settings.myReview': {} } });
 
-            const successMsg = resData.locale === 'en' ? 'Review successfully deleted!' : 'Отзыв успешно удалён!';
+            const successMsg = bData.locale === 'en' ? 'Review successfully deleted!' : 'Отзыв успешно удалён!';
             return res.status(200).json({ message: successMsg });
 
         } catch (err) {

@@ -9,77 +9,77 @@ const {
     reviewsView
 } = require('../controllers/ViewController');
 const {
-    createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar, deleteAvatar,
+    createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar,
     changeLocale, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
-    languageConfirmation, deleteBackgroundImage, changeStatus, changeAboutMe, checkChannel, deleteMyChannel,
+    languageConfirmation, changeStatus, changeAboutMe, checkChannel, deleteMyChannel,
     createQuestion, editQuestion, deleteQuestion, requestTechSupport, sendReview, deleteMyReview
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
 const {refreshToken} = require('../middlewares/updateRefreshToken');
 const {checkAccountPermissions} = require('../middlewares/checkAccountPermissions');
-const {defaultResponses} = require("../middlewares/defaultResponses");
+const {appData} = require("../middlewares/appData");
 
 const router = express.Router();
 
-router.get('/', checkAccountPermissions, defaultResponses, mainView);
-router.get('/create-game', authenticateJWT, checkAccountPermissions, defaultResponses, createGameView);
-router.get('/game/:game_id', authenticateJWT, checkAccountPermissions, defaultResponses, gameView);
-router.get('/redaction/:game_id', authenticateJWT, checkAccountPermissions, defaultResponses, redactionView);
-router.get('/edit-question/:game_id/:question_id', authenticateJWT, checkAccountPermissions, defaultResponses, editQuestionView);
-router.get('/create-questions/:game_id', authenticateJWT, checkAccountPermissions, defaultResponses, createQuestionView);
-router.get('/my-games', authenticateJWT, checkAccountPermissions, defaultResponses, myGamesView);
+router.get('/', checkAccountPermissions, appData, mainView);
+router.get('/create-game', authenticateJWT, checkAccountPermissions, appData, createGameView);
+router.get('/game/:game_id', authenticateJWT, checkAccountPermissions, appData, gameView);
+router.get('/redaction/:game_id', authenticateJWT, checkAccountPermissions, appData, redactionView);
+router.get('/edit-question/:game_id/:question_id', authenticateJWT, checkAccountPermissions, appData, editQuestionView);
+router.get('/create-questions/:game_id', authenticateJWT, checkAccountPermissions, appData, createQuestionView);
+router.get('/my-games', authenticateJWT, checkAccountPermissions, appData, myGamesView);
 
-router.get('/settings', authenticateJWT, checkAccountPermissions, defaultResponses, settingsView);
+router.get('/settings', authenticateJWT, checkAccountPermissions, appData, settingsView);
 
 router.get('/return-menu', returnMenuView);
 
-router.get('/privacyPolicy', checkAccountPermissions, defaultResponses, privacyPolicyView);
-router.get('/rules', checkAccountPermissions, defaultResponses, rulesView);
-router.get('/aboutUs', checkAccountPermissions, defaultResponses, aboutUsView);
-router.get('/contacts', checkAccountPermissions, defaultResponses, contactsView);
-router.get('/reviews', checkAccountPermissions, defaultResponses, reviewsView);
-router.get('/about-donates', checkAccountPermissions, defaultResponses, aboutDonatesView);
+router.get('/privacyPolicy', checkAccountPermissions, appData, privacyPolicyView);
+router.get('/rules', checkAccountPermissions, appData, rulesView);
+router.get('/aboutUs', checkAccountPermissions, appData, aboutUsView);
+router.get('/contacts', checkAccountPermissions, appData, contactsView);
+router.get('/reviews', checkAccountPermissions, appData, reviewsView);
+router.get('/about-donates', checkAccountPermissions, appData, aboutDonatesView);
 
-router.get('/support', checkAccountPermissions, defaultResponses, supportView);
-router.get('/news', checkAccountPermissions, defaultResponses, newsView);
-router.get('/read-news/:news_id', checkAccountPermissions, defaultResponses, readNewsView);
-router.get('/user-profile/:user_id', checkAccountPermissions, defaultResponses, userProfileView);
+router.get('/support', checkAccountPermissions, appData, supportView);
+router.get('/news', checkAccountPermissions, appData, newsView);
+router.get('/read-news/:news_id', checkAccountPermissions, appData, readNewsView);
+router.get('/user-profile/:user_id', checkAccountPermissions, appData, userProfileView);
 
-router.get('/channels/@me', authenticateJWT, checkAccountPermissions, defaultResponses, channelsMeView);
-router.get('/channels/@me/:channel_id', authenticateJWT, checkAccountPermissions, defaultResponses, channelsView);
+router.get('/channels/@me', authenticateJWT, checkAccountPermissions, appData, channelsMeView);
+router.get('/channels/@me/:channel_id', authenticateJWT, checkAccountPermissions, appData, channelsView);
 
 
-router.post('/create-game', authenticateJWT, defaultResponses, createGame);
-router.post('/delete-game/:game_id', authenticateJWT, defaultResponses, deleteGame);
-router.post('/redaction/:game_id', authenticateJWT, defaultResponses, redaction);
-router.post('/edit-question/:game_id/:question_id', authenticateJWT, defaultResponses, editQuestion);
-router.post('/delete-question/:game_id/:question_id', authenticateJWT, defaultResponses, deleteQuestion);
-router.post('/create-questions/:game_id', authenticateJWT, defaultResponses, createQuestion);
+router.post('/create-game', authenticateJWT, appData, createGame);
+router.post('/delete-game/:game_id', authenticateJWT, appData, deleteGame);
+router.post('/redaction/:game_id', authenticateJWT, appData, redaction);
+router.post('/edit-question/:game_id/:question_id', authenticateJWT, appData, editQuestion);
+router.post('/delete-question/:game_id/:question_id', authenticateJWT, appData, deleteQuestion);
+router.post('/create-questions/:game_id', authenticateJWT, appData, createQuestion);
 
-router.post('/deleteAllGames', authenticateJWT, defaultResponses, deleteAllGames);
+router.post('/deleteAllGames', authenticateJWT, appData, deleteAllGames);
 
-router.post('/getData/:game_id', authenticateJWT, defaultResponses, getData);
-router.post('/getUserData', authenticateJWT, defaultResponses, getUserData);
-router.post('/languageConfirmation', defaultResponses, languageConfirmation);
+router.post('/getData/:game_id', authenticateJWT, appData, getData);
+router.post('/getUserData', authenticateJWT, appData, getUserData);
+router.post('/languageConfirmation', appData, languageConfirmation);
 
-router.post('/changeAvatar/:action_type', authenticateJWT, defaultResponses, changeAvatar);
-router.post('/changeBackgroundImage/:action_type', authenticateJWT, defaultResponses, changeBackgroundImage);
-router.post('/changeLocale/:locale/:autoUpdate', defaultResponses, changeLocale);
-router.post('/changeSettings/:authType', defaultResponses, changeSettings);
-router.post('/changeStatus', authenticateJWT, defaultResponses, changeStatus);
-router.post('/changeAboutMe', authenticateJWT, defaultResponses, changeAboutMe);
+router.post('/changeAvatar/:action_type', authenticateJWT, appData, changeAvatar);
+router.post('/changeBackgroundImage/:action_type', authenticateJWT, appData, changeBackgroundImage);
+router.post('/changeLocale/:locale/:autoUpdate', appData, changeLocale);
+router.post('/changeSettings/:authType', appData, changeSettings);
+router.post('/changeStatus', authenticateJWT, appData, changeStatus);
+router.post('/changeAboutMe', authenticateJWT, appData, changeAboutMe);
 
-router.post('/review-send', authenticateJWT, defaultResponses, sendReview);
-router.post('/review-delete', authenticateJWT, defaultResponses, deleteMyReview);
+router.post('/review-send', authenticateJWT, appData, sendReview);
+router.post('/review-delete', authenticateJWT, appData, deleteMyReview);
 
-router.post('/sendContacts', defaultResponses, sendContacts);
+router.post('/sendContacts', appData, sendContacts);
 
-router.post('/viewNews/:news_id', defaultResponses, viewNews);
+router.post('/viewNews/:news_id', appData, viewNews);
 
-router.post('/checkChannel/:user_id', authenticateJWT, defaultResponses, checkChannel);
-router.post('/deleteMyChannel/:channel_id', authenticateJWT, defaultResponses, deleteMyChannel);
-router.post('/requestTechSupport', authenticateJWT, defaultResponses, requestTechSupport);
+router.post('/checkChannel/:user_id', authenticateJWT, appData, checkChannel);
+router.post('/deleteMyChannel/:channel_id', authenticateJWT, appData, deleteMyChannel);
+router.post('/requestTechSupport', authenticateJWT, appData, requestTechSupport);
 
 router.post('/accessToken', accessToken);
 router.post('/refreshToken', refreshToken);

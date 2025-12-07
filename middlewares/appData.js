@@ -1,6 +1,6 @@
-const defaultResponses = async (req, res, next) => {
+const appData = async (req, res, next) => {
 
-    req.responseData = {
+    req.basicData = {
         locale: req.cookies['locale'] || 'en',
         notifications: req.cookies['notifications'] || 'on',
         darkTheme: req.cookies['darkTheme'] || 'on',
@@ -9,4 +9,4 @@ const defaultResponses = async (req, res, next) => {
     next();
 }
 
-module.exports = { defaultResponses };
+module.exports = { appData };
