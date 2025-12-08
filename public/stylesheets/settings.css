@@ -164,6 +164,7 @@ input:checked + .slider::before {
     transition: background 0.3s ease;
     cursor: pointer;
     margin-top: 20px;
+    user-select: none;
 }
 .extra-setting:hover {
     background: #eaeaea;
