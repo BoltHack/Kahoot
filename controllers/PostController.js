@@ -452,26 +452,6 @@ class PostController {
         }
     }
 
-    static deleteAvatar = async (req, res, next) => {
-        try {
-            const user = req.user;
-
-            const userInfo = await UsersModel.findById(user.id);
-
-            if (!userInfo || !userInfo.image) {
-                return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
-            }
-
-            await UsersModel.findByIdAndUpdate(userInfo._id, { $set: { image: "/images/defaultUser.png" } });
-
-            return res.status(200).json('Картинка успешно удалена');
-        } catch (err) {
-            console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    }
-
     static changeBackgroundImage = async (req, res, next) => {
         try {
             const bData = req.basicData;
@@ -543,33 +523,6 @@ class PostController {
             return res.status(200).json('Изменения успешно загружены' );
         } catch (err){
             console.log(err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    }
-
-    static deleteBackgroundImage = async (req, res, next) => {
-        try {
-            const user = req.user;
-
-            const userId = await UsersModel.findById(user.id);
-            if (!userId || !userId.image) {
-                return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
-            }
-
-            await UsersModel.findByIdAndUpdate(
-                user.id,
-                {
-                    $set: {
-                        'settings.mainBackgroundImage': "/images/kahoot2.png"
-                    }
-                },
-                { new: true }
-            );
-
-            return res.status(200).json('Картинка успешно удалена');
-        } catch (err) {
-            console.error('Ошибка:', err);
             res.status(500).json({ error: err.message });
             next(err);
         }
@@ -1125,9 +1078,17 @@ class PostController {
     static sendReview = async (req, res, next) => {
         try {
             const bData = req.basicData;
+            const { action_type } = req.params;
 
             const user = req.user;
             const userInfo = await UsersModel.findById(user.id);
+
+            if (action_type === 'delete') {
+                await UsersModel.findByIdAndUpdate(userInfo.id, { $set: { 'settings.myReview': {} } });
+
+                const successMsg = bData.locale === 'en' ? 'Review successfully deleted!' : 'Отзыв успешно удалён!';
+                return res.status(200).json({ message: successMsg });
+            }
 
             const {review, grade} = req.body;
             const currentDate = new Date();
@@ -1155,24 +1116,6 @@ class PostController {
             );
 
             const successMsg = bData.locale === 'en' ? 'Review successfully added!' : 'Отзыв успешно добавлен!';
-            return res.status(200).json({ message: successMsg });
-
-        } catch (err) {
-            console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
-        }
-    }
-
-    static deleteMyReview = async (req, res, next) => {
-        try {
-            const bData = req.basicData;
-
-            const user = req.user;
-
-            await UsersModel.findByIdAndUpdate(user.id, { $set: { 'settings.myReview': {} } });
-
-            const successMsg = bData.locale === 'en' ? 'Review successfully deleted!' : 'Отзыв успешно удалён!';
             return res.status(200).json({ message: successMsg });
 
         } catch (err) {

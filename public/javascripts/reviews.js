@@ -32,7 +32,7 @@ review.addEventListener('input', () => {
 })
 
 document.getElementById('sendReview').addEventListener('click', () => {
-    fetch('/review-send',{
+    fetch('/changeReview/save',{
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ document.getElementById('deleteReview').addEventListener('click', () => {
     document.body.appendChild(deleteMenu);
 
     document.getElementById('requestBtn').addEventListener('click', () => {
-        fetch('/review-delete',{
+        fetch('/changeReview/delete',{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
