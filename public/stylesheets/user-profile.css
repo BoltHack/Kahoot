@@ -183,6 +183,7 @@ body {
 }
 #achievementsListMenu {
     max-width: 500px;
+    min-width: 400px;
     max-height: 500px;
     overflow-y: auto;
     flex-direction: column;
@@ -216,7 +217,7 @@ body {
 .achievements-list {
     display: flex;
     gap: 30px;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
 }
 

@@ -709,7 +709,7 @@ html.scroll-bar-off {
 }
 
 @media (max-width: 600px) {
-    .header .container-logo svg {
+    .header .container-logo svg, #account {
         display: none;
     }
     .header .container-logo {
