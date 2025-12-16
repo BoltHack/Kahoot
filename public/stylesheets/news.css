@@ -127,6 +127,9 @@ body {
     font-size: 17px;
     font-weight: 700;
 }
+.news-date svg {
+    margin-top: -2px;
+}
 .news-meta {
     display: flex;
     align-items: center;
