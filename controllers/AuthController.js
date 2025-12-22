@@ -332,7 +332,8 @@ class AuthController {
             let locale = req.cookies['locale'] || 'en';
             const darkTheme = req.cookies['darkTheme'] || 'on';
             let email = req.cookies['email'];
-            if (req.cookies['token'] && req.cookies['refreshToken'] && !req.cookies['email']){
+
+            if (req.cookies['token'] || req.cookies['refreshToken'] || !email){
                 return res.redirect('/')
             }
             else {
