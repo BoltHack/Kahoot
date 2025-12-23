@@ -3,10 +3,13 @@ const {ForgottenPasswordsModel} = require("../models/ForgottenPasswords");
 const {AddressRecoveryRequestsModel} = require("../models/Address-recovery-requests");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const express = require('express');
+const router = express.Router();
 
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
+const crypto = require("crypto");
 function generateRandomNumber() {
     const min = 10000;
     const max = 99999;
@@ -108,6 +111,9 @@ class AuthController {
             const user = await UsersModel.findOne({ email });
             const userId = await UsersModel.findById(user._id);
 
+            const pageUrl = req.protocol + '://' + req.get('host');
+            console.log('pageUrl', pageUrl);
+
             let locale = req.cookies['locale'] || 'en';
             let previousPage = req.cookies['previousPage'] || '/';
 
@@ -125,7 +131,7 @@ class AuthController {
                 return res.status(401).json({ error: "Неверный адрес или пароль." });
             }
 
-            const payload = {
+            const payloadA = {
                 id: user._id,
                 email: user.email,
                 name: user.name,
@@ -134,11 +140,22 @@ class AuthController {
                 ip: user.ip
             };
 
-            const accessToken = jwt.sign(payload, JWTSecret, { expiresIn: '15m' });
-            const refreshToken = jwt.sign(payload, refreshTokenSecret, { expiresIn: '10d' });
+            const payloadR = {
+                id: user._id,
+                role: user.role,
+                tokenVersion: user.tokenVersion
+            };
 
-            user.refreshToken = refreshToken;
-            await user.save();
+            const accessToken = jwt.sign(payloadA, JWTSecret, { expiresIn: '15m' });
+            const refreshToken = jwt.sign(payloadR, refreshTokenSecret, { expiresIn: '10d' });
+
+            const hash = crypto
+                .createHash('sha256')
+                .update(refreshToken)
+                .digest('hex');
+            console.log('auth hash', hash);
+            user.refreshTokenHash = hash;
+            user.save();
 
             const id = user._id;
 

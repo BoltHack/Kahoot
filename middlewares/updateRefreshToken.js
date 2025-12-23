@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const { UsersModel } = require("../models/UsersModel");
 const { JWTSecret, refreshTokenSecret } = process.env;
 
@@ -34,16 +35,35 @@ async function refreshToken(req, res, next) {
                 return res.sendStatus(403);
             }
 
+            const pastHash = crypto
+                .createHash('sha256')
+                .update(refreshToken)
+                .digest('hex');
+            console.log('pastHash', pastHash)
+            if (pastHash !== user.refreshTokenHash) {
+                console.log('pastHash', pastHash)
+                console.log('refreshTokenHash', user.refreshTokenHash);
+                console.log('token hash error');
+                return res.sendStatus(403);
+            }
+            if (decoded.tokenVersion !== user.tokenVersion) {
+                console.log('token version error');
+                return res.sendStatus(403);
+            }
+
             const newRefreshToken = jwt.sign({
                 id: user._id,
-                email: user.email,
-                name: user.name,
-                registerDate: user.registerDate,
                 role: user.role,
-                ip: user.ip,
+                tokenVersion: user.tokenVersion
             }, refreshTokenSecret, { expiresIn: '10d' });
 
-            user.refreshToken = newRefreshToken;
+            const hash = crypto
+                .createHash('sha256')
+                .update(newRefreshToken)
+                .digest('hex');
+            user.refreshTokenHash = hash;
+            console.log('update hash', hash);
+            user.tokenVersion = newRefreshToken.tokenVersion;
             await user.save();
 
             const newAccessToken = jwt.sign({
@@ -55,8 +75,8 @@ async function refreshToken(req, res, next) {
                 ip: user.ip
             }, JWTSecret, { expiresIn: '15m' });
 
-            await res.cookie('token', newAccessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });
-            await res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('10d') });
+            await res.cookie('token', newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: parseMaxAge('15m') });
+            await res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: parseMaxAge('10d') });
 
             return res.json({ token: newAccessToken, newRefreshToken });
         });

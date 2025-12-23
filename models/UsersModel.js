@@ -77,8 +77,13 @@ const UsersSchema = new Schema({
         type: String,
         default: dateOnly
     },
-    refreshToken: {
-        type: String
+    refreshTokenHash: {
+        type: String,
+        default: null
+    },
+    tokenVersion: {
+        type: Number,
+        default: 0
     },
     role: {
         type: String,
