@@ -47,6 +47,7 @@ async function refreshToken(req, res, next) {
                 return res.sendStatus(403);
             }
             if (decoded.tokenVersion !== user.tokenVersion) {
+                console.log('token version', user.tokenVersion);
                 console.log('token version error');
                 return res.sendStatus(403);
             }
@@ -63,7 +64,8 @@ async function refreshToken(req, res, next) {
                 .digest('hex');
             user.refreshTokenHash = hash;
             console.log('update hash', hash);
-            user.tokenVersion = newRefreshToken.tokenVersion;
+            console.log('newRefreshToken', newRefreshToken);
+            user.tokenVersion = decoded.tokenVersion;
             await user.save();
 
             const newAccessToken = jwt.sign({

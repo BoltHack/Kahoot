@@ -155,6 +155,7 @@ class AuthController {
                 .digest('hex');
             console.log('auth hash', hash);
             user.refreshTokenHash = hash;
+            user.tokenVersion = payloadR.tokenVersion;
             user.save();
 
             const id = user._id;
