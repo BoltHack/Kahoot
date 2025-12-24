@@ -35,24 +35,35 @@
                 Создайте себе аккаунт!
             </p>
             <div class="card__form">
-                <p class="text">Никнейм</p>
-                <input type="text" id="name" name="name" class="card__form-input" placeholder="Придуймайте никнейм" required>
-                <p class="text">Эл. адрес</p>
-                <input type="email" id="email" name="email" class="card__form-input" placeholder="Введите свой Эл. адрес" required>
-                <p class="text">Пароль</p>
-                <div class="input-wrapper">
-                    <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Придумайте пароль" required>                    <div class="toggle-password">
-                        <span class="icon" id="showPassword" onclick="togglePassword()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
-                        </span>
-                        <span class="icon" id="hidePassword" onclick="togglePassword()" hidden>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
-                        </span>
+                <div>
+                    <p class="text">Никнейм</p>
+                    <input type="text" id="name" name="name" class="card__form-input" placeholder="Придуймайте никнейм" required>
+                </div>
+                <div>
+                    <p class="text">Эл. адрес</p>
+                    <input type="email" id="email" name="email" class="card__form-input" placeholder="Введите свой Эл. адрес" required>
+                </div>
+                <div>
+                    <p class="text">Пароль</p>
+                    <div class="input-wrapper">
+                        <input type="password" id="pwd" name="password" class="card__form-input" placeholder="Придумайте пароль" required>
+                        <div class="svg-wrapper" id="showPassword" onclick="togglePassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off">
+                                <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>
+                            </svg>
+                        </div>
+
+                        <div class="svg-wrapper" style="display: none;" id="hidePassword" onclick="togglePassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+                                <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <p class="text">Повтор пароля</p>
-                <input type="password" id="cpwd" name="confirmPassword" class="card__form-input" placeholder="Повтор пароля" required>
-
+                <div>
+                    <p class="text">Повтор пароля</p>
+                    <input type="password" id="cpwd" name="confirmPassword" class="card__form-input" placeholder="Повтор пароля" required>
+                </div>
 
                 <div class="rules">
                     <span>Регистрируясь, вы принимаете наши <a href="/rules" target="_blank">Условия использования</a> и <a href="/privacyPolicy" target="_blank">Политику конфиденциальности.</a></span>

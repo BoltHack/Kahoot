@@ -83,13 +83,10 @@ body {
 
 .card__form-input {
     padding: 10px 0;
-    /*padding-right: 40px;*/
     border: 3px solid #000;
-    /*font-size: 16px;*/
     font-family: inherit;
     transition: transform 0.3s;
-    width: 99.5%;
-    margin-top: -14px;
+    width: 100%;
     text-indent: 10px;
     color: black;
 }
@@ -116,24 +113,26 @@ body {
 }
 
 .input-wrapper {
-    position: sticky;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .toggle-password {
     position: absolute;
-    top: 49%;
     right: 10px;
-    transform: translateY(-50%);
-    z-index: 2;
 }
 
-.icon {
-    color: #000;
+.svg-wrapper {
+    position: absolute;
+    display: flex;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    right: 10px;
+    fill: #000;
 }
-.icon svg {
-    width: 20px;
-    height: 20px;
+.svg-wrapper svg {
     cursor: pointer;
     user-select: none;
 }
