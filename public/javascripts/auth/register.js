@@ -97,11 +97,11 @@ function togglePassword() {
     pwd.type = isVisible ? 'text' : 'password';
     cpwd.type = isVisible ? 'text' : 'password';
     if (isVisible) {
-        showPassword.style.display = 'none';
-        hidePassword.style.display = 'flex';
-    } else {
         showPassword.style.display = 'flex';
         hidePassword.style.display = 'none';
+    } else {
+        showPassword.style.display = 'none';
+        hidePassword.style.display = 'flex';
     }
 }
 
