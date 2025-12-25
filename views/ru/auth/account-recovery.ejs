@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="/stylesheets/login-register.css">
     <link rel="stylesheet" href="/stylesheets/theme.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
-    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 <main class="auth">
@@ -31,27 +30,46 @@
                 Мы отправили код подтверждения на почту: <%= email %>
             </p>
             <div class="card__form">
-                <p class="text">Код подтвеждения</p>
-                <input type="text" id="code" name="code" class="card__form-input" placeholder="Введите код подтвеждения" autocomplete="off" required>
-                <p class="text">Новый пароль</p>
-                <div class="input-wrapper">
-                    <input type="password" id="password" name="password" class="card__form-input" placeholder="Введите новый пароль" required>
-                    <div class="toggle-password">
-                        <i data-lucide="eye-off" class="icon" id="tp" onclick="togglePassword()"></i>
+                <div>
+                    <p class="text">Код подтвеждения</p>
+                    <input type="text" id="code" name="code" class="card__form-input" placeholder="Введите код подтвеждения" autocomplete="off" required>
+                </div>
+                <div>
+                    <p class="text">Новый пароль</p>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" class="card__form-input" placeholder="Введите новый пароль" required>
+                        <div class="svg-wrapper" id="showPassword" onclick="togglePassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off">
+                                <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>
+                            </svg>
+                        </div>
+
+                        <div class="svg-wrapper" style="display: none;" id="hidePassword" onclick="togglePassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+                                <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <p class="text">Повтор пароля</p>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="card__form-input" placeholder="Повторите пароль" required>
-                <br/>
-                <button type="submit" class="card__button" id="changePasswordBtn">Сменить пароль</button>
-                <button class="card__button" id="loaderButton" hidden onclick="return false">
-                    <section class="dots-container">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </section>
-                </button>
+                <div>
+                    <p class="text">Повтор пароля</p>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="card__form-input" placeholder="Повторите пароль" required>
+                </div>
+                <div>
+                    <button type="submit" class="card__button" id="changePasswordBtn">Сменить пароль</button>
+                    <button class="card__button" id="loaderButton" hidden onclick="return false">
+                        <section class="dots-container">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </section>
+                    </button>
+                </div>
+            </div>
+            <div class="login-register-a">
+                <a href="/auth/login">Войти</a>
+                <a href="/auth/register">Зарегистрироваться</a>
             </div>
         </div>
     </form>

@@ -44,14 +44,18 @@ let isVisible  = false;
 function togglePassword() {
     const pwd = document.getElementById('password');
     const cpwd = document.getElementById('confirmPassword');
-    const eye = document.getElementById('tp');
 
     isVisible  = !isVisible ;
 
     pwd.type = isVisible ? 'text' : 'password';
     cpwd.type = isVisible ? 'text' : 'password';
-    eye.setAttribute('data-lucide', isVisible ? 'eye' : 'eye-off');
-    lucide.createIcons();
+    if (isVisible) {
+        showPassword.style.display = 'none';
+        hidePassword.style.display = 'flex';
+    } else {
+        showPassword.style.display = 'flex';
+        hidePassword.style.display = 'none';
+    }
 }
 
 lucide.createIcons();
