@@ -82,7 +82,7 @@
     <div class="header-container" style="margin-left: auto;">
 
         <div id="account">
-            <% if (user && user.id) { %>
+            <% if (user && user.name) { %>
                 <div class="dropdown dropdown-open">
                     <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
                     <div class="dropdown-content">
