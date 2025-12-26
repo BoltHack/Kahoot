@@ -131,23 +131,19 @@ class AuthController {
                 return res.status(401).json({ error: "Неверный адрес или пароль." });
             }
 
-            const payloadA = {
+            const payloadAccess = {
                 id: user._id,
-                email: user.email,
                 name: user.name,
-                registerDate: user.registerDate,
                 role: user.role,
-                ip: user.ip
-            };
+            }
 
-            const payloadR = {
+            const payloadRefresh = {
                 id: user._id,
-                role: user.role,
                 tokenVersion: user.tokenVersion
-            };
+            }
 
-            const accessToken = jwt.sign(payloadA, JWTSecret, { expiresIn: '15m' });
-            const refreshToken = jwt.sign(payloadR, refreshTokenSecret, { expiresIn: '10d' });
+            const accessToken = jwt.sign(payloadAccess, JWTSecret, { expiresIn: '15m' });
+            const refreshToken = jwt.sign(payloadRefresh, refreshTokenSecret, { expiresIn: '10d' });
 
             const hash = crypto
                 .createHash('sha256')
@@ -155,7 +151,7 @@ class AuthController {
                 .digest('hex');
             console.log('auth hash', hash);
             user.refreshTokenHash = hash;
-            user.tokenVersion = payloadR.tokenVersion;
+            user.tokenVersion = payloadAccess.tokenVersion;
             user.save();
 
             const id = user._id;
@@ -496,7 +492,7 @@ class AuthController {
 
             const mainOptions = {
                 from: process.env.USER,
-                to: user.email,
+                to: userInfo.email,
                 subject: locale === 'en'
                     ? 'Your HFFreelancers Account: Account Recovery'
                     : 'Ваш аккаунт HFFreelancers: Восстановление аккаунта',
@@ -539,7 +535,7 @@ class AuthController {
 
                 const sendCode = new AddressRecoveryRequestsModel({
                     id: user.id,
-                    email: user.email,
+                    email: userInfo.email,
                     code: code,
                     ip: user.ip,
                     expiresInMinutes: 10

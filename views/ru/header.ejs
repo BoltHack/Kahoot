@@ -46,7 +46,7 @@
 
         <div id="news">
             <div class="dropdown dropdown-open">
-                <p class="ha dropdown-title">Новости<span>❯</span></p>
+                <p class="ha dropdown-title">Новости<span class="dropdown-content-mode">❯</span></p>
                 <div class="dropdown-content">
                     <a href="/news?tag=Updates">Обновления</a>
                     <a href="/news?tag=AboutGame">Об игре</a>
@@ -58,7 +58,7 @@
 
         <div id="rules">
             <div class="dropdown dropdown-open">
-                <p class="ha dropdown-title">Правила<span>❯</span></p>
+                <p class="ha dropdown-title">Правила<span class="dropdown-content-mode">❯</span></p>
                 <div class="dropdown-content">
                     <a href="/privacyPolicy">Политика конфиденциальности</a>
                     <a href="/rules">Условия использования</a>
@@ -68,7 +68,7 @@
 
         <div id="aboutUs">
             <div class="dropdown dropdown-open">
-                <p class="ha dropdown-title">О нас<span>❯</span></p>
+                <p class="ha dropdown-title">О нас<span class="dropdown-content-mode">❯</span></p>
                 <div class="dropdown-content">
                     <a href="/aboutUs">О компании</a>
                     <a href="/contacts">Контакты</a>
@@ -82,9 +82,9 @@
     <div class="header-container" style="margin-left: auto;">
 
         <div id="account">
-            <% if (user && user.name) { %>
+            <% if (user && user.id) { %>
                 <div class="dropdown dropdown-open">
-                    <p class="ha dropdown-title"><%= user.name.length > 4 ? user.name.slice(0, 4) + '...' : user.name %><span>❯</span></p>
+                    <p class="ha dropdown-title"><span class="dropdown-username"></span><span class="dropdown-content-mode">❯</span></p>
                     <div class="dropdown-content">
                         <% if (user.role === 'Admin') {%>
                             <a href="/admin/admin-panel">Админка</a>
@@ -103,7 +103,7 @@
             <div class="dropdown dropdown-open settings-dropdown-title header-settings-icon">
                 <p class="ha dropdown-title">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                    <span style="display: none;"></span>
+                    <span class="dropdown-content-mode" style="display: none;"></span>
                 </p>
                 <div class="dropdown-content">
                     <div class="dropdown-content-tools">

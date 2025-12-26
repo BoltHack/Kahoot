@@ -39,23 +39,13 @@ function getRandomId(ids) {
     return ids[randomId];
 }
 
-function generateRandomSymbols() {
-    let result = '';
-    let symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!№;%:?*()_+=";
-    for (let i = 0; i < 200; i++) {
-        result += symbols.charAt(Math.floor(Math.random() * symbols.length));
-    }
-    return result;
-}
-
 class PostController {
     static createGame = async (req, res, next) => {
         try {
             const {game_name} = req.body;
             const user = req.user;
-            const serverKey = generateRandomSymbols();
 
-            const userId = await UsersModel.findById(user.id);
+            const userInfo = await UsersModel.findById(user.id);
 
             const newGame = new GamesModel({
                 game_name,
@@ -63,8 +53,8 @@ class PostController {
                 game_expiresInSeconds: 100,
                 expiresInMinutes: 60,
                 game_author: {
-                    name: user.name,
-                    email: user.email,
+                    name: userInfo.name,
+                    email: userInfo.email,
                     id: user.id
                 },
                 game_online: {
@@ -73,12 +63,11 @@ class PostController {
                 },
                 game_type: 'Open',
                 game_start_type: 'Auto',
-                server_key: serverKey
             })
             await newGame.save();
 
-            userId.myGames.push({gameId: newGame._id});
-            await userId.save();
+            userInfo.myGames.push({gameId: newGame._id});
+            await userInfo.save();
 
             return res.redirect(`/redaction/${newGame._id}`);
         } catch (err){

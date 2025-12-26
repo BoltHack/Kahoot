@@ -16,7 +16,7 @@
             <form>
                 <% if (user && user.id) {%>
                     <input type="text" name="name" value="<%= user.name %>" readonly>
-                    <input type="email" name="email" value="<%= user.email %>" readonly>
+                    <input type="email" name="email" value="<%= userEmail %>" readonly>
                 <% } else { %>
                     <input type="text" name="name" placeholder="Your name" required>
                     <input type="email" name="email" placeholder="Your Email" required>

@@ -63,14 +63,14 @@ dropdownOpen.forEach((title, index) => {
     title.addEventListener('mouseover', () => {
         dropdownContents[index].style.display = 'flex';
         dropdownContents[index].style.transform = 'scaleY(1)';
-        dropdownTitles[index].querySelector('span').style.transform = 'rotate(0)';
+        dropdownTitles[index].querySelector('.dropdown-content-mode').style.transform = 'rotate(0)';
         dropdownTitles[index].style.backgroundColor = '#303740';
     });
 
     title.addEventListener('mouseout', () => {
         dropdownContents[index].style.display = 'none';
         dropdownContents[index].style.transform = 'scaleY(0)';
-        dropdownTitles[index].querySelector('span').style.transform = 'rotate(90deg)';
+        dropdownTitles[index].querySelector('.dropdown-content-mode').style.transform = 'rotate(90deg)';
         dropdownTitles[index].style.backgroundColor = '#1C2025';
     });
 });
@@ -209,18 +209,10 @@ function changeTheme(themeType) {
 // }
 
 function hasVerticalScrollbar() {
-    // if (document.documentElement.scrollHeight > document.documentElement.clientHeight) {
-    //     console.log('scroll - присутствует');
-    // } else console.log('scroll - отсутствует');
     return document.documentElement.scrollHeight > document.documentElement.clientHeight;
 }
 
 function disableScroll() {
-    // window.addEventListener('wheel', preventScroll, { passive: false });
-    // window.addEventListener('touchmove', preventScroll, { passive: false });
-    // window.addEventListener('keydown', preventKeyScroll);
-    // window.addEventListener('scroll', preventKeyScroll);
-
     if (hasVerticalScrollbar()) {
         document.body.style.overflowY = 'hidden';
         document.body.style.userSelect = 'none';
@@ -229,22 +221,14 @@ function disableScroll() {
 }
 
 function enableScroll() {
-    // window.removeEventListener('wheel', preventScroll);
-    // window.removeEventListener('touchmove', preventScroll);
-    // window.removeEventListener('keydown', preventKeyScroll);
-    // window.removeEventListener('scroll', preventKeyScroll);
     document.body.style.overflowY = '';
     document.body.style.userSelect = '';
     document.documentElement.classList.remove('scroll-bar-off');
 }
 
-// function preventScroll(e) {
-//     e.preventDefault();
-// }
-//
-// function preventKeyScroll(e) {
-//     const keys = [32, 33, 34, 35, 36, 38, 40];
-//     if (keys.includes(e.keyCode)) {
-//         e.preventDefault();
-//     }
-// }
+function showUsername() {
+    if (!sendId) return;
+    const username = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    document.querySelector('.dropdown-username').textContent = username.name.length > 4 ? username.name.slice(0, 4) + '...' : username.name;
+}
+showUsername();

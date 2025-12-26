@@ -25,11 +25,8 @@ async function accessToken(req, res, next) {
 
         const newAccessToken = jwt.sign({
             id: user._id,
-            email: user.email,
             name: user.name,
-            registerDate: user.registerDate,
-            role: user.role,
-            ip: user.ip,
+            role: user.role
         }, JWTSecret, { expiresIn: '15m' });
 
         res.cookie('token', newAccessToken, { httpOnly: true, secure: true, maxAge: 15 * 60 * 1000 });

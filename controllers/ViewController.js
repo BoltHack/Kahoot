@@ -313,7 +313,8 @@ class ViewController {
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    return res.render(appData.locale === 'en' ? 'en/support' : 'ru/support', { user, ...appData });
+                    const userInfo = await UsersModel.findById(user.id);
+                    return res.render(appData.locale === 'en' ? 'en/support' : 'ru/support', { user, userEmail: userInfo.email, ...appData });
                 });
             }
             else {

@@ -54,7 +54,6 @@ async function refreshToken(req, res, next) {
 
             const newRefreshToken = jwt.sign({
                 id: user._id,
-                role: user.role,
                 tokenVersion: user.tokenVersion
             }, refreshTokenSecret, { expiresIn: '10d' });
 
@@ -70,11 +69,8 @@ async function refreshToken(req, res, next) {
 
             const newAccessToken = jwt.sign({
                 id: user._id,
-                email: user.email,
                 name: user.name,
-                registerDate: user.registerDate,
-                role: user.role,
-                ip: user.ip
+                role: user.role
             }, JWTSecret, { expiresIn: '15m' });
 
             await res.cookie('token', newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: parseMaxAge('15m') });
