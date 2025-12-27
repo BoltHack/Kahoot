@@ -312,6 +312,7 @@ main {
     align-items: center;
 }
 .media-correct-answers-count svg {
+    color: #1c7430;
     width: 20px;
     height: 20px;
 }
