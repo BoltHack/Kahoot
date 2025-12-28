@@ -118,7 +118,6 @@ function findGame() {
 
         barrier.hidden = false;
         border.hidden = false;
-        document.body.style.overflow = 'hidden';
 
         barrier.addEventListener('click', () => {
             barrier.hidden = true;

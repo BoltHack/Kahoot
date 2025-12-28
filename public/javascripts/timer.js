@@ -49,7 +49,7 @@ function storedTime(tokenType) {
 }
 
 if (localStorage.getItem('token')) {
-    console.log('Работа с токенами.');
+    console.log('Работа с токенами...');
     storedTime('accessTokenEndTime');
     storedTime('refreshTokenEndTime');
 }
