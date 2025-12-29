@@ -643,7 +643,8 @@ html.scroll-bar-off {
 .media-line {
     height: 1px;
     background: #1f2937;
-    margin: 10px 20px 10px;
+    margin: 10px 0 10px;
+    margin-right: 20px;
 }
 .media-dropdowns .dropdown {
     max-width: 100px;

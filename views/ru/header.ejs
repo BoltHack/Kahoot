@@ -214,9 +214,11 @@
                 </div>
             </div>
 
-            <br/>
-            <div class="media-line"></div>
-            <br/>
+            <div class="media-tool">
+                <br/>
+                <div class="media-line"></div>
+                <br/>
+            </div>
 
             <div class="media-tool">
                 <p>Новости</p>
@@ -277,6 +279,17 @@
 
                 <div class="media-tool media-b-btn">
                     <p onclick="redirectPage('/support')">Поддержка</p>
+                    <div class="media-line"></div>
+                </div>
+
+                <div class="media-tool">
+                    <p><span class="dropdown-username"></span></p>
+                    <ul>
+                        <% if (user.role === 'Admin') {%>
+                            <li><a href="/admin/admin-panel">Админка</a></li>
+                        <% } %>
+                        <li><a href="#" onclick="logout()">Выйти</a></li>
+                    </ul>
                 </div>
                 <br/><br/><br/><br/>
 

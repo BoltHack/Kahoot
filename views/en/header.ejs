@@ -271,10 +271,18 @@
                 <div class="media-tool media-b-btn">
                     <p onclick="redirectPage('/support')">Support</p>
                 </div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+
+                <div class="media-tool">
+                    <p><span class="dropdown-username"></span></p>
+                    <ul>
+                        <% if (user.role === 'Admin') {%>
+                            <li><a href="/admin/admin-panel">Admin-panel</a></li>
+                        <% } %>
+                        <li><a href="#" onclick="logout()">Log out</a></li>
+                    </ul>
+                </div>
+                <br/><br/><br/><br/>
+
             <% } else { %>
                 <div class="media-tool media-b-btn">
                     <p onclick="authMenu()">Start Game</p>

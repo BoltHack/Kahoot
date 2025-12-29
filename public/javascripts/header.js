@@ -229,6 +229,8 @@ function showUsername() {
     const username = JSON.parse(localStorage.getItem('userInfo') || '{}');
     if (!sendId || !username.id || sendId.toString() !== username.id.toString()) return;
 
-    document.querySelector('.dropdown-username').textContent = username.name.length > 4 ? username.name.slice(0, 4) + '...' : username.name;
+    document.querySelectorAll('.dropdown-username').forEach(getName => {
+        getName.textContent = username.name.length > 4 ? username.name.slice(0, 4) + '...' : username.name;
+    })
 }
 showUsername();
