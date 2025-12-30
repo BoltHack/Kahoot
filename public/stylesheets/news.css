@@ -315,6 +315,7 @@ body {
     cursor: pointer;
     text-decoration: none;
     color: black;
+    word-break: break-word;
 }
 .search-tag:hover {
     background: #343a40;

@@ -177,7 +177,7 @@ html.scroll-bar-off {
 .media-settings-dropdown {
     display: flex;
     gap: 20px;
-    padding: 0 20px;
+    /*padding: 0 10px;*/
 }
 
 .media-dropdown-content, .dropdown-content-tools p {
@@ -594,6 +594,7 @@ html.scroll-bar-off {
 }
 .media-border {
     background: #121518;
+    min-height: 400px;
     width: 100%;
     height: 100vh;
     flex-direction: column;
@@ -612,11 +613,12 @@ html.scroll-bar-off {
     to {transform: translateY(0); opacity: 1;}
 }
 .media-scroller {
-    padding-top: 70px;
+    padding: 70px 20px;
+    /*padding-top: 70px;*/
     flex: 1;
 }
 .media-tool {
-    padding: 0 20px;
+    padding: 0 10px;
 }
 .media-tool p {
     color: #ECF1FD;
@@ -643,8 +645,8 @@ html.scroll-bar-off {
 .media-line {
     height: 1px;
     background: #1f2937;
-    margin: 10px 0 10px;
-    margin-right: 20px;
+    /*margin: 10px 0 10px;*/
+    padding: 0 10px 0 10px;
 }
 .media-dropdowns .dropdown {
     max-width: 100px;
@@ -723,6 +725,9 @@ html.scroll-bar-off {
         display: block;
     }
     .media-border {
+        /*max-width: 400px;*/
+        margin: 0;
+        padding: 0;
         width: 100%;
         height: 100vh;
         border: none;
