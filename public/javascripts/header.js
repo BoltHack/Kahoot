@@ -230,7 +230,8 @@ function showUsername() {
     if (!sendId || !username.id || sendId.toString() !== username.id.toString()) return;
 
     document.querySelectorAll('.dropdown-username').forEach(getName => {
-        getName.textContent = username.name.length > 4 ? username.name.slice(0, 4) + '...' : username.name;
+        const usernameLength = getName.getAttribute('data-usernameLength');
+        getName.textContent = username.name.length > Number(usernameLength) ? username.name.slice(0, Number(usernameLength)) + '...' : username.name;
     })
 }
 showUsername();

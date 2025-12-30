@@ -84,7 +84,7 @@
         <div id="account">
             <% if (user && user.name) { %>
                 <div class="dropdown dropdown-open">
-                    <p class="ha dropdown-title"><span class="dropdown-username"></span><span class="dropdown-content-mode">❯</span></p>
+                    <p class="ha dropdown-title"><span class="dropdown-username" data-usernameLength="4"></span><span class="dropdown-content-mode">❯</span></p>
                     <div class="dropdown-content">
                         <% if (user.role === 'Admin') {%>
                             <a href="/admin/admin-panel">Admin panel</a>
@@ -273,7 +273,7 @@
                 </div>
 
                 <div class="media-tool">
-                    <p><span class="dropdown-username"></span></p>
+                    <p><span class="dropdown-username" data-usernameLength="10"></span></p>
                     <ul>
                         <% if (user.role === 'Admin') {%>
                             <li><a href="/admin/admin-panel">Admin-panel</a></li>
