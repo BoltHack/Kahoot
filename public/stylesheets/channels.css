@@ -872,11 +872,11 @@ ul {
     to {transform: translateY(0); opacity: 1;}
 }
 .media-scroller {
-    padding-top: 70px;
+    padding: 70px 20px;
     flex: 1;
 }
 .media-tool {
-    padding: 0 20px;
+    padding: 0 10px;
 }
 .media-tool p {
     color: #ECF1FD;
@@ -902,9 +902,9 @@ ul {
     padding-top: 10px;
 }
 .media-line {
-    border: 1px solid #2b2640;
-    border-radius: 5px;
-    width: 95%;
+    height: 1px;
+    background: #1f2937;
+    padding: 0 10px 0 10px;
 }
 .media-dropdowns .dropdown {
     max-width: 100px;
@@ -950,6 +950,7 @@ ul {
         height: 67px;
     }
 }
+
 @media (max-width: 1000px) {
     .media-width {
         display: block;
@@ -983,7 +984,13 @@ ul {
         margin-top: 60px;
     }
     .chat-messages {
-        margin-top: 65px;
+        margin-top: 80px;
+        padding-bottom: 135px;
+        width: 100%;
+    }
+    .media-chat-info {
+        position: fixed;
+        bottom: 0;
         width: 100%;
     }
     .message {
@@ -1024,6 +1031,8 @@ ul {
         display: block;
     }
     .media-border {
+        margin: 0;
+        padding: 0;
         width: 100%;
         height: 100vh;
         border: none;
@@ -1033,5 +1042,15 @@ ul {
         width: 100%;
         border: none;
         left: 0;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+        display: none;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+        display: none;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+        display: none;
     }
 }
