@@ -24,7 +24,7 @@ input, textarea {
     text-indent: 10px;
 }
 textarea {
-    min-width: 600px;
+    /*min-width: 600px;*/
     max-width: 600px;
     width: 100%;
     min-height: 150px;
