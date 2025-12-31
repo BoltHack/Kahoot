@@ -273,6 +273,7 @@ function openToolsMenu(msgId) {
         message.style.backgroundColor = '';
         toolsId.style.display = 'none';
         toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+        document.querySelector('.chat-messages').style.paddingBottom = '135px';
     }
 }
 
