@@ -212,13 +212,11 @@ function showTools(msgData) {
                 toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
             }
         });
-    }
-}
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.body.offsetWidth < 700) {
+    } else {
         document.querySelectorAll('.message').forEach(msg => {
             const msgId = msg.dataset.id;
             msg.querySelector('.tools-settings').style.display = 'none';
+            document.querySelector('.chat-messages').style.paddingBottom = '135px';
 
             if (!msg.dataset.holdListenerAdded) {
                 msg.dataset.holdListenerAdded = "true";
@@ -229,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+}
 function openToolsMenu(msgId) {
     const message = document.getElementById('message-'+msgId);
     const toolsId = document.getElementById('tools-'+msgId);
@@ -253,20 +251,29 @@ function openToolsMenu(msgId) {
 
     document.addEventListener('click', (e) => {
         if (!toolsId.contains(e.target)) {
-            toolsId.querySelector('.dropdown-menu').style.display = 'none';
-            message.style.backgroundColor = '';
-            toolsId.style.display = 'none';
-            toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+            closeToolsMenu();
         }
     });
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', () => {
-            toolsId.querySelector('.dropdown-menu').style.display = 'none';
-            message.style.backgroundColor = '';
-            toolsId.style.display = 'none';
-            toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+            closeToolsMenu();
         });
     });
+    if (document.body.offsetWidth < 700) {
+        window.addEventListener('popstate',  (e) => {
+            if (dropdownMenu.style.display === 'flex') {
+                e.preventDefault();
+                closeToolsMenu();
+            }
+        })
+    }
+
+    function closeToolsMenu() {
+        toolsId.querySelector('.dropdown-menu').style.display = 'none';
+        message.style.backgroundColor = '';
+        toolsId.style.display = 'none';
+        toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
+    }
 }
 
 function addHoldListener(element, delay, callback) {
