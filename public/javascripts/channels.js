@@ -36,6 +36,23 @@ input.addEventListener('keydown', function(event) {
     }
 });
 
+const messagesBlock = document.getElementById('messages');
+
+let isWindowScrolling = true;
+let scrollTimeout;
+messagesBlock.addEventListener('scroll', function () {
+    isWindowScrolling = true;
+    // console.log("Блок прокручивается...");
+
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        isWindowScrolling = false;
+        // console.log("Скролл остановился");
+    }, 150);
+});
+
+// document.addEventListener('click', () => console.log('scroll', isWindowScrolling));
+
 function findLastMessage() {
     const hash = window.location.hash;
 
@@ -91,7 +108,7 @@ socket.on('showMessages', async (showMessagesData) => {
                 <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}" src="${showMessagesData.image}">
                 <div class="message-content">
                 ${showMessagesData.reply.id ? `
-                <a href="#message-${showMessagesData.reply.msgId}" class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}')">
+                <a class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}', 'find')">
                     <div class="reply-line-wrapper">
                         <div class="reply-line"></div>
                         <img class="reply-avatar" src="${showMessagesData.reply.image}">
@@ -192,6 +209,7 @@ socket.on('showMessages', async (showMessagesData) => {
     scrollToBottom();
 });
 
+
 function showTools(msgData) {
     const message = document.getElementById('message-'+msgData.msgId);
     const toolsId = document.getElementById('tools-'+msgData.msgId);
@@ -216,7 +234,7 @@ function showTools(msgData) {
         document.querySelectorAll('.message').forEach(msg => {
             const msgId = msg.dataset.id;
             msg.querySelector('.tools-settings').style.display = 'none';
-            document.querySelector('.chat-messages').style.paddingBottom = '135px';
+            // document.querySelector('.chat-messages').style.paddingBottom = '135px';
 
             if (!msg.dataset.holdListenerAdded) {
                 msg.dataset.holdListenerAdded = "true";
@@ -273,7 +291,8 @@ function openToolsMenu(msgId) {
         message.style.backgroundColor = '';
         toolsId.style.display = 'none';
         toolsId.querySelector('.menu-trigger').style.backgroundColor = '';
-        document.querySelector('.chat-messages').style.paddingBottom = '135px';
+        // document.querySelector('.chat-messages').style.paddingBottom = '135px';
+        // document.querySelector('.chat-messages').style.marginTop = '80px';
     }
 }
 
@@ -575,14 +594,25 @@ function msgReplyMenu(msgId, msgName) {
         setTimeout(() => toolsId.style.display = 'none', 100);
     }
 }
-
-function findReplyMsg(msgId) {
+function findReplyMsg(msgId, type) {
     const message = document.querySelectorAll('.message');
     const msg = document.getElementById('message-'+msgId);
 
     message.forEach(msgs => {
         msgs.style.backgroundColor = '';
-    })
+    });
+
+    msg.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    if (type === 'find') {
+        window.history.replaceState({}, "", '#message-' + msgId);
+    } else {
+        history.pushState(null, null, location.href.split('#')[0]);
+    }
+
     setTimeout(() => msg.style.backgroundColor = '#363a53', msg.style.transitionDuration = '0.3s', 100);
     setTimeout(() => msg.style.backgroundColor = '', 2000);
 }

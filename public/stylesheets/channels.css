@@ -104,6 +104,7 @@ html.scroll-bar-off {
 .message:hover {
     background-color: #212429;
 }
+
 .message-container {
     display: flex;
     gap: 15px;
@@ -986,16 +987,26 @@ ul {
     .chat-header {
         z-index: 5;
     }
+    .chat-container {
+        position: fixed;
+    }
     .chat-messages {
-        position: sticky;
-        margin-top: 80px;
-        padding-bottom: 135px;
-        width: 100%;
+        /*position: fixed;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        margin-top: 82px;
+        /*margin-bottom: 20px;*/
+        /*padding-bottom: 0;*/
+        /*height: 100%;*/
+        /*padding-bottom: 135px;*/
+        /*padding-bottom: 20px;*/
+        /*width: 100%;*/
     }
     .media-chat-info {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
+        /*display: none;*/
+        /*position: fixed;*/
+        /*bottom: 0;*/
+        /*width: 100%;*/
     }
     .message {
         user-select: none;
@@ -1051,13 +1062,13 @@ ul {
         left: 0;
     }
 
-    .chat-messages::-webkit-scrollbar {
-        display: none;
-    }
-    .chat-messages::-webkit-scrollbar-track {
-        display: none;
-    }
-    .chat-messages::-webkit-scrollbar-thumb {
-        display: none;
-    }
+    /*.chat-messages::-webkit-scrollbar {*/
+    /*    display: none;*/
+    /*}*/
+    /*.chat-messages::-webkit-scrollbar-track {*/
+    /*    display: none;*/
+    /*}*/
+    /*.chat-messages::-webkit-scrollbar-thumb {*/
+    /*    display: none;*/
+    /*}*/
 }
