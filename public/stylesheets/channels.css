@@ -99,10 +99,15 @@ html.scroll-bar-off {
     padding: 10px 20px 10px;
     /*border-radius: 5px;*/
     /*transition-duration: 0.3s;*/
-
+    transition: background-color 0.3s ease;
 }
 .message:hover {
     background-color: #212429;
+}
+.message.reply-highlight {
+
+    transition-duration: 0.3s;
+    background-color: #363a53;
 }
 
 .message-container {

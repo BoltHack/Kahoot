@@ -40,17 +40,30 @@ const messagesBlock = document.getElementById('messages');
 
 let isWindowScrolling = true;
 let scrollTimeout;
-messagesBlock.addEventListener('scroll', function () {
-    isWindowScrolling = true;
-    // console.log("Блок прокручивается...");
+let isMsgFind = false;
 
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-        isWindowScrolling = false;
-        // console.log("Скролл остановился");
-    }, 150);
-});
+function windowScrollingActions(msgId) {
+    const msg = document.getElementById('message-' + msgId);
 
+    messagesBlock.addEventListener('scroll', function () {
+        isWindowScrolling = true;
+        console.log('Блок прокручивается...');
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            isWindowScrolling = false;
+            console.log('Скролл остановился.');
+            if (msgId && isMsgFind === true) {
+                msg.classList.add('reply-highlight');
+                setTimeout(() => {
+                    msg.classList.remove('reply-highlight');
+                    isMsgFind = false;
+                }, 2000);
+            }
+        }, 100);
+    });
+}
+// windowScrollingActions();
 // document.addEventListener('click', () => console.log('scroll', isWindowScrolling));
 
 function findLastMessage() {
@@ -598,6 +611,8 @@ function findReplyMsg(msgId, type) {
     const message = document.querySelectorAll('.message');
     const msg = document.getElementById('message-'+msgId);
 
+    if (!msg) return;
+
     message.forEach(msgs => {
         msgs.style.backgroundColor = '';
     });
@@ -610,11 +625,24 @@ function findReplyMsg(msgId, type) {
     if (type === 'find') {
         window.history.replaceState({}, "", '#message-' + msgId);
     } else {
-        history.pushState(null, null, location.href.split('#')[0]);
+        window.history.pushState(null, null, location.href.split('#')[0]);
     }
 
-    setTimeout(() => msg.style.backgroundColor = '#363a53', msg.style.transitionDuration = '0.3s', 100);
-    setTimeout(() => msg.style.backgroundColor = '', 2000);
+    msg.classList.remove('reply-highlight');
+    setTimeout(() => {
+        if (isWindowScrolling) {
+            windowScrollingActions(msgId);
+            void msg.offsetWidth;
+            isMsgFind = true;
+        } else {
+            void msg.offsetWidth;
+            msg.classList.add('reply-highlight');
+            setTimeout(() => {
+                msg.classList.remove('reply-highlight');
+                isMsgFind = false;
+            }, 2000);
+        }
+    }, 200);
 }
 
 

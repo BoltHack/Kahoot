@@ -99,7 +99,7 @@ function checksChannel(friendId) {
 
 socket.on('broadcastUpdateMyFriends', async () => {
     showToast('success', localeType === 'en' ? 'Player accepted your request' : 'Игрок принял ваш запрос!');
-})
+});
 
 let alreadyFriendAdd = [];
 
