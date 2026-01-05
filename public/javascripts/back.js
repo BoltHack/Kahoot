@@ -165,7 +165,7 @@ function readNewsLengthController() {
     const readNewsLength = document.getElementById('readNewsLength');
 
     if (document.body.offsetWidth >= 1400) {
-        readNewsLength.textContent = newsTitle.length > 45 ? newsTitle.slice(0, 45) + '...' : newsTitle;
+        readNewsLength.textContent = newsTitle.length > 30 ? newsTitle.slice(0, 30) + '...' : newsTitle;
     } else {
         readNewsLength.textContent = newsTitle.length > 20 ? newsTitle.slice(0, 20) + '...' : newsTitle;
     }
