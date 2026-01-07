@@ -41,36 +41,41 @@ const messagesBlock = document.getElementById('messages');
 let isWindowScrolling = true;
 let scrollTimeout;
 let isMsgFind = false;
+let currentTargetMsgId = null;
 
+
+messagesBlock.addEventListener('scroll', function () {
+    isWindowScrolling = true;
+    // console.log('Блок прокручивается...');
+
+    clearTimeout(scrollTimeout);
+
+    scrollTimeout = setTimeout(() => {
+        isWindowScrolling = false;
+
+        if (currentTargetMsgId && isMsgFind === true) {
+            const msg = document.getElementById('message-' + currentTargetMsgId);
+
+            isMsgFind = false;
+            console.log('light msg', currentTargetMsgId);
+            msg.classList.add('reply-highlight');
+            setTimeout(() => msg.classList.remove('reply-highlight'), 2000);
+        }
+        currentTargetMsgId = null;
+    }, 200);
+});
 function windowScrollingActions(msgId) {
-    const msg = document.getElementById('message-' + msgId);
-
-    messagesBlock.addEventListener('scroll', function () {
-        isWindowScrolling = true;
-        console.log('Блок прокручивается...');
-
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            isWindowScrolling = false;
-            console.log('Скролл остановился.');
-            if (msgId && isMsgFind === true) {
-                msg.classList.add('reply-highlight');
-                setTimeout(() => {
-                    msg.classList.remove('reply-highlight');
-                    isMsgFind = false;
-                }, 2000);
-            }
-        }, 50);
-    });
+    currentTargetMsgId = msgId;
+    console.log('currentTargetMsgId', msgId);
 }
-// windowScrollingActions();
-// document.addEventListener('click', () => console.log('scroll', isWindowScrolling));
 
 function findLastMessage() {
     const hash = window.location.hash;
 
     if (hash) {
+        // const replyMsgId = window.location.hash.slice(9, 33);
         const msgId = window.location.hash.slice(46);
+
         document.getElementById('message-' + msgId).scrollIntoView({
             behavior: 'smooth',
             block: 'center'
@@ -82,9 +87,9 @@ function findLastMessage() {
         const totalPageHeight = document.documentElement.scrollHeight;
 
         if (windowHeight + scrollPosition >= totalPageHeight) {
-            setTimeout(() => {
+            // setTimeout(() => {
                 findReplyMsg(msgId);
-            }, 1500);
+            // }, 100);
         }
     } else {
         scrollToBottom();
@@ -606,7 +611,10 @@ function msgReplyMenu(msgId, msgName) {
         setTimeout(() => toolsId.style.display = 'none', 100);
     }
 }
+
+let findMsgFunc;
 function findReplyMsg(replyMsgId, msgId, type) {
+    // console.log('replyMsgId', replyMsgId, 'msgId', msgId);
     const message = document.querySelectorAll('.message');
     const replyMsg = document.getElementById('message-'+replyMsgId);
 
@@ -622,18 +630,22 @@ function findReplyMsg(replyMsgId, msgId, type) {
     });
 
     if (type === 'find') {
+        console.log('find');
         window.history.replaceState({}, "", '#message-' + replyMsgId + '#origMessage-' + msgId);
     } else {
         window.history.pushState(null, null, location.href.split('#')[0]);
     }
 
     replyMsg.classList.remove('reply-highlight');
-    setTimeout(() => {
+    clearTimeout(findMsgFunc);
+    findMsgFunc = setTimeout(() => {
         if (isWindowScrolling) {
+            console.log('scroll - yes');
             windowScrollingActions(replyMsgId);
             void replyMsg.offsetWidth;
             isMsgFind = true;
         } else {
+            console.log('scroll - no');
             void replyMsg.offsetWidth;
             replyMsg.classList.add('reply-highlight');
             setTimeout(() => {
