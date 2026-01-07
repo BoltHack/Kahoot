@@ -60,7 +60,7 @@ function windowScrollingActions(msgId) {
                     isMsgFind = false;
                 }, 2000);
             }
-        }, 100);
+        }, 50);
     });
 }
 // windowScrollingActions();
@@ -70,12 +70,11 @@ function findLastMessage() {
     const hash = window.location.hash;
 
     if (hash) {
-        const msgId = window.location.hash.slice(9);
+        const msgId = window.location.hash.slice(46);
         document.getElementById('message-' + msgId).scrollIntoView({
             behavior: 'smooth',
             block: 'center'
         });
-
         history.pushState(null, null, location.href.split('#')[0]);
 
         const windowHeight = window.innerHeight;
@@ -121,7 +120,7 @@ socket.on('showMessages', async (showMessagesData) => {
                 <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}" src="${showMessagesData.image}">
                 <div class="message-content">
                 ${showMessagesData.reply.id ? `
-                <a class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}', 'find')">
+                <a class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}', '${showMessagesData._id}', 'find')">
                     <div class="reply-line-wrapper">
                         <div class="reply-line"></div>
                         <img class="reply-avatar" src="${showMessagesData.reply.image}">
@@ -607,38 +606,38 @@ function msgReplyMenu(msgId, msgName) {
         setTimeout(() => toolsId.style.display = 'none', 100);
     }
 }
-function findReplyMsg(msgId, type) {
+function findReplyMsg(replyMsgId, msgId, type) {
     const message = document.querySelectorAll('.message');
-    const msg = document.getElementById('message-'+msgId);
+    const replyMsg = document.getElementById('message-'+replyMsgId);
 
-    if (!msg) return;
+    if (!replyMsg) return;
 
     message.forEach(msgs => {
         msgs.style.backgroundColor = '';
     });
 
-    msg.scrollIntoView({
+    replyMsg.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
     });
 
     if (type === 'find') {
-        window.history.replaceState({}, "", '#message-' + msgId);
+        window.history.replaceState({}, "", '#message-' + replyMsgId + '#origMessage-' + msgId);
     } else {
         window.history.pushState(null, null, location.href.split('#')[0]);
     }
 
-    msg.classList.remove('reply-highlight');
+    replyMsg.classList.remove('reply-highlight');
     setTimeout(() => {
         if (isWindowScrolling) {
-            windowScrollingActions(msgId);
-            void msg.offsetWidth;
+            windowScrollingActions(replyMsgId);
+            void replyMsg.offsetWidth;
             isMsgFind = true;
         } else {
-            void msg.offsetWidth;
-            msg.classList.add('reply-highlight');
+            void replyMsg.offsetWidth;
+            replyMsg.classList.add('reply-highlight');
             setTimeout(() => {
-                msg.classList.remove('reply-highlight');
+                replyMsg.classList.remove('reply-highlight');
                 isMsgFind = false;
             }, 2000);
         }

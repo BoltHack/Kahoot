@@ -151,7 +151,7 @@
                                 <% if (msg.reply && msg.reply.length > 0) { %>
                                     <% let msgEdited = channel.messages.find(m => m._id.toString() === msg.reply[0].msgId.toString()) %>
                                     <% if (msgEdited && !msgEdited.edited) { %>
-                                        <a class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>', 'find')">
+                                        <a class="reply-container" data-msgId="<%= msg.reply[0].msgId %>" id="replyContainer-<%= msg.reply[0].msgId %>" onclick="findReplyMsg('<%= msg.reply[0].msgId %>', '<%= msg._id %>', 'find')">
                                             <div class="reply-line-wrapper">
                                                 <div class="reply-line"></div>
                                                 <img class="reply-avatar" src="<%= msg.reply[0].toWho === myData.id ? myData.image : companion.image %>">
