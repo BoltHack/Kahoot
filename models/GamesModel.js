@@ -1,4 +1,6 @@
 const {Schema, model} = require("mongoose");
+const path = require("path");
+const fs = require("fs/promises");
 
 const QuestionsSchema = new Schema({
     question_title: {
@@ -145,7 +147,7 @@ const GamesSchema = new Schema({
     },
     expiresAt: {
         type: Date,
-        index: { expires: 0 }
+        index: true
     },
 });
 
@@ -156,8 +158,34 @@ GamesSchema.pre('save', function(next) {
     next();
 });
 
-GamesSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-
 const GamesModel = model('games', GamesSchema);
 
-module.exports = {GamesModel}
+let isRunning = false;
+setInterval(async () => {
+    if (isRunning) return;
+    isRunning = true;
+
+    try {
+        const now = new Date();
+
+        const expiredGames = await GamesModel.find({
+            expiresAt: { $lte: now },
+        }).limit(50);
+
+        console.log('one minute');
+
+        for (const game of expiredGames) {
+            const filePath = path.join(__dirname, '..', 'public', 'uploads', 'gameImages', game._id.toString());
+
+            await fs.rm(filePath, { recursive: true, force: true });
+            await GamesModel.findOneAndDelete({ _id: game._id });
+            console.log('game Id', game._id);
+        }
+    } catch (err) {
+        console.error('Ошибка:', err);
+    } finally {
+        isRunning = false;
+    }
+}, 60 * 1000);
+
+module.exports = {GamesModel};

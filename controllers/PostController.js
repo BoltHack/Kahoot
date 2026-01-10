@@ -69,6 +69,13 @@ class PostController {
             userInfo.myGames.push({gameId: newGame._id});
             await userInfo.save();
 
+            const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'gameImages');
+            const gameDir = path.join(uploadDir, newGame.id);
+
+            if (!fs.existsSync(gameDir)) {
+                fs.mkdirSync(gameDir, { recursive: true });
+            }
+
             return res.redirect(`/redaction/${newGame._id}`);
         } catch (err){
             console.error(err);
@@ -128,9 +135,9 @@ class PostController {
 
                 const fileExt = path.extname(imageFile.name);
                 const safeFileName = `${gameId.id + '-' + uuidv4()}${fileExt}`;
-                imagePath = `/uploads/gameImages/${safeFileName}`;
+                imagePath = `/uploads/gameImages/${gameId.id}/${safeFileName}`;
 
-                const uploadDir = path.join(__dirname, '..', 'public', 'uploads/gameImages');
+                const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'gameImages', gameId.id);
                 const savePath = path.join(uploadDir, safeFileName);
 
                 if (!fs.existsSync(uploadDir)) {
@@ -196,9 +203,9 @@ class PostController {
 
                 const fileExt = path.extname(imageFile.name);
                 const safeFileName = `${gameId.id + '-' + uuidv4()}${fileExt}`;
-                imagePath = `/uploads/gameImages/${safeFileName}`;
+                imagePath = `/uploads/gameImages/${gameId.id}/${safeFileName}`;
 
-                const uploadDir = path.join(__dirname, '..', 'public', 'uploads/gameImages');
+                const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'gameImages', gameId.id);
                 const savePath = path.join(uploadDir, safeFileName);
 
                 if (!fs.existsSync(uploadDir)) {
