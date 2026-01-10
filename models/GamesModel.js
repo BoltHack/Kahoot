@@ -162,7 +162,8 @@ const GamesModel = model('games', GamesSchema);
 
 let isRunning = false;
 setInterval(async () => {
-    if (isRunning) return;
+    const allGames = await GamesModel.find();
+    if (isRunning || allGames.length < 1) return;
     isRunning = true;
 
     try {

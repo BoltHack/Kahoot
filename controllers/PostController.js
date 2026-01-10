@@ -325,6 +325,15 @@ class PostController {
                 const errorMsg = bData.locale === 'en' ? 'Game not found.' : 'Игра не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
+            const filePath = path.join(__dirname, '..', 'public', 'uploads/gameImages', game_id);
+
+            fs.rm(filePath, { recursive: true, force: true }, (err) => {
+                if (err) {
+                    console.error('Ошибка при удалении папки:', err);
+                    return;
+                }
+                console.log('Папка успешно удалена');
+            });
             await GamesModel.findByIdAndDelete(game_id);
             return res.status(200).json('Игра успешно удалена!');
         } catch (err) {
@@ -876,11 +885,11 @@ class PostController {
             const newsInfo = await NewsModel.findById(news_id);
 
             if (newsInfo) {
-                await NewsModel.findByIdAndDelete(news_id)
+                await NewsModel.findByIdAndDelete(news_id);
 
                 const filePath = path.join(__dirname, '..', 'public', 'uploads/newsImages', newsInfo.id);
 
-                fs.rmdir(filePath, { recursive: true, force: true }, (err) => {
+                fs.rm(filePath, { recursive: true, force: true }, (err) => {
                     if (err) {
                         console.error('Ошибка при удалении папки:', err);
                         return;
