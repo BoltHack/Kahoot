@@ -473,3 +473,8 @@ body {
         display: none;
     }
 }
+@media (max-width: 600px) {
+    .news-image img {
+        height: 300px;
+    }
+}
