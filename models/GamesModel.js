@@ -162,18 +162,16 @@ const GamesModel = model('games', GamesSchema);
 
 let isRunning = false;
 setInterval(async () => {
-    const allGames = await GamesModel.find();
-    if (isRunning || allGames.length < 1) return;
+    if (isRunning) return;
     isRunning = true;
 
     try {
+        console.log('Проверка...');
         const now = new Date();
 
         const expiredGames = await GamesModel.find({
             expiresAt: { $lte: now },
         }).limit(50);
-
-        console.log('one minute');
 
         for (const game of expiredGames) {
             const filePath = path.join(__dirname, '..', 'public', 'uploads', 'gameImages', game._id.toString());
