@@ -1,3 +1,9 @@
+// document.body.addEventListener('resize', () => {
+//     if (document.querySelector('.sidebar').display === 'none') {
+//         document.querySelector('.chat-messages').style.width = `${document.body.offsetWidth}px`;
+//     }
+// })
+
 function sendMessage() {
     const chatReply = document.querySelector('.chat-reply');
     const message = document.getElementById('message');

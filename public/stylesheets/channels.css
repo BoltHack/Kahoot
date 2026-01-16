@@ -972,8 +972,8 @@ ul {
         display: block;
     }
     .chat-container {
-        max-width: 800px;
-        width: 100%;
+        /*max-width: 800px;*/
+        /*width: 100%;*/
     }
     .chat-header {
         width: 100%;
@@ -1000,6 +1000,12 @@ ul {
         /*top: 0;*/
         /*left: 0;*/
         margin-top: 82px;
+        margin-left: 0;
+        margin-right: 0;
+        /*box-sizing: border-box;*/
+        /*width: 948px;*/
+        /*display: block;*/
+        /*width: 100%;*/
         /*margin-bottom: 20px;*/
         /*padding-bottom: 0;*/
         /*height: 100%;*/

@@ -79,14 +79,14 @@ document.addEventListener('DOMContentLoaded', function (){
 });
 
 
-let isVisible  = false;
+let isVisible = false;
 
 function togglePassword() {
     const pwd = document.getElementById('pwd');
     const showPassword = document.getElementById('showPassword');
     const hidePassword = document.getElementById('hidePassword');
 
-    isVisible  = !isVisible;
+    isVisible = !isVisible;
 
     pwd.type = isVisible ? 'text' : 'password';
     if (isVisible) {

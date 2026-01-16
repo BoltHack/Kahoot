@@ -97,16 +97,17 @@ function authMenu() {
         enableScroll();
     });
 }
-
 function mediaMenu() {
+    const checkIcon = document.getElementById('check-icon');
     const mediaBorder = document.getElementById('mediaBorder');
-    const closeMediaBorder = document.getElementById('closeMediaBorder');
 
-    mediaBorder.style.display = 'block';
-
-    closeMediaBorder.addEventListener('click', () => {
+    if (checkIcon.checked) {
+        mediaBorder.style.display = 'block';
+        document.querySelector('header').style.zIndex = '100';
+    } else {
         mediaBorder.style.display = 'none';
-    });
+        document.querySelector('header').style.zIndex = '1';
+    }
 }
 
 
