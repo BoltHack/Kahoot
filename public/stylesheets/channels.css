@@ -972,8 +972,8 @@ ul {
         display: block;
     }
     .chat-container {
-        /*max-width: 800px;*/
-        /*width: 100%;*/
+        position: fixed;
+        width: 100%;
     }
     .chat-header {
         width: 100%;
@@ -991,9 +991,6 @@ ul {
     }
     .chat-header {
         z-index: 5;
-    }
-    .chat-container {
-        position: fixed;
     }
     .chat-messages {
         /*position: fixed;*/
