@@ -496,7 +496,7 @@ html.scroll-bar-off {
 
 .media-width {
     display: none;
-    cursor: pointer;
+    /*cursor: pointer;*/
     padding: 20px;
 }
 .icon-menu {
@@ -575,13 +575,30 @@ html.scroll-bar-off {
     padding: 0 20px;
     z-index: 3;
     overflow-y: scroll;
-    animation-name: openMediaBorderAnimation;
+    transform: translateY(-100%);
+    opacity: 0;
+    /*animation-name: openMediaBorderAnimation;*/
     animation-duration: 0.4s;
+    animation-timing-function: ease-out;
+}
+.media-border.openMediaMenu {
+    animation-name: openMediaBorderAnimation;
+    animation-fill-mode: forwards;
+}
+.media-border.closeMediaMenu {
+    animation-name: closeMediaBorderAnimation;
+    animation-fill-mode: forwards;
 }
 @keyframes openMediaBorderAnimation {
     from {transform: translateY(-100%); opacity: 0;}
     to {transform: translateY(0); opacity: 1;}
 }
+@keyframes closeMediaBorderAnimation {
+    from {transform: translateY(0); opacity: 1;}
+    to {transform: translateY(-100%); opacity: 0;}
+}
+
+
 .media-scroller {
     padding: 70px 20px;
     /*padding: 10px 20px;*/

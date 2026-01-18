@@ -97,16 +97,27 @@ function authMenu() {
         enableScroll();
     });
 }
+
+
 function mediaMenu() {
     const checkIcon = document.getElementById('check-icon');
     const mediaBorder = document.getElementById('mediaBorder');
 
     if (checkIcon.checked) {
-        mediaBorder.style.display = 'block';
+        mediaBorder.style.display = 'flex';
+
+        mediaBorder.querySelector('.media-border').classList.remove('closeMediaMenu');
+        mediaBorder.querySelector('.media-border').classList.add('openMediaMenu');
+
+        document.querySelector('header').style.position = 'fixed';
         document.querySelector('header').style.zIndex = '100';
     } else {
-        mediaBorder.style.display = 'none';
+        mediaBorder.querySelector('.media-border').classList.remove('openMediaMenu');
+        mediaBorder.querySelector('.media-border').classList.add('closeMediaMenu');
+
+        document.querySelector('header').style.position = 'absolute';
         document.querySelector('header').style.zIndex = '1';
+        setTimeout(() => mediaBorder.style.display = 'none', 100);
     }
 }
 
