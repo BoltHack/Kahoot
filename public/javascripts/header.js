@@ -115,9 +115,12 @@ function mediaMenu() {
         mediaBorder.querySelector('.media-border').classList.remove('openMediaMenu');
         mediaBorder.querySelector('.media-border').classList.add('closeMediaMenu');
 
-        document.querySelector('header').style.position = 'absolute';
-        document.querySelector('header').style.zIndex = '1';
-        setTimeout(() => mediaBorder.style.display = 'none', 100);
+        setTimeout(() => {
+            mediaBorder.style.display = 'none';
+            document.querySelector('header').style.position = 'absolute';
+            document.querySelector('header').style.zIndex = '1';
+        }, 100);
+
     }
 }
 
