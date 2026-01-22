@@ -2,7 +2,15 @@ const stickyHeight = document.getElementById('stickyHeight');
 const newsContainer = document.querySelector('.news-container');
 
 const height = Math.max(newsContainer.scrollHeight, newsContainer.offsetHeight);
-stickyHeight.style.height = `${height}px`;
+
+function setNewsContainerPosition() {
+    stickyHeight.style.height = `${height}px`;
+}
+setNewsContainerPosition();
+
+window.addEventListener('resize', () => {
+    setNewsContainerPosition();
+});
 
 function likeNews(newsId) {
     console.log('like');
