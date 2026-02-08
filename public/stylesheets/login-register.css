@@ -295,3 +295,8 @@ body {
         margin-top: 5px;
     }
 }
+@media (max-width: 600px) {
+    .card__content, .card__form-input {
+        font-family: Arial, sans-serif;
+    }
+}
