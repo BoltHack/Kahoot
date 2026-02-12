@@ -655,10 +655,7 @@
         background: #101114;
     }
     .game .answer-message {
-        color: var(--bp);
-    }
-    .game .answer-emoji svg {
-        background: none;
+        color: #03071e;
     }
     .checkUser .userName {
         border: 1px solid #313338;

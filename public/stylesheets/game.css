@@ -836,6 +836,8 @@ main {
     font-size: 2rem;
     font-weight: bold;
     color: black;
+    animation: pulse 1.4s ease-in-out infinite;
+    padding: 5px;
 }
 .answer-emoji-container {
     text-align: center;
@@ -846,32 +848,50 @@ main {
     transform: translate(-50%, -50%);
     background: none;
 }
-.answer-emoji svg {
-    width: 50px;
-    height: 50px;
+.answer-emoji {
+    /*width: 100px;*/
+    /*height: 100px;*/
     /*font-size: 5rem;*/
     margin-top: 20px;
-    background: none;
-    animation: pulse 1.5s infinite;
+    /*box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);*/
+}
+.answer-emoji svg {
+    animation: pulseOpacity  1.5s infinite;
+    /*transform-origin: center;*/
+}
+@keyframes pulseOpacity {
+    0%, 100% {
+        filter: drop-shadow(0 0 0px #a7c957);
+    }
+    50% {
+        filter: drop-shadow(0 0 12px #a7c957);
+    }
+}
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.12);
+    }
 }
 
 .emoji-correct-answer svg {
-    fill: green;
-    background: none;
+    /*fill: #a7c957;*/
+    stroke: #a7c957;
 }
 .emoji-wrong-answer svg {
-    fill: red;
-    background: none;
+    /*fill: #9d0208;*/
+    stroke: #9d0208;
 }
 .emoji-time-answer svg {
-    fill: yellow;
-    background: none;
+    /*fill: #ffd60a;*/
+    stroke: #ffd60a;
 }
+/*svg {*/
+    /*shape-rendering: geometricPrecision;*/
+/*}*/
 
-@keyframes pulse {
-    0%, 100% { transform: scaleX(1); }
-    50% { transform: scaleX(1.2); }
-}
 @keyframes shake {
     0% { transform: translateX(0) translate(-50%, -50%) }
     25% { transform: translateX(-10px) translate(-50%, -50%) }

@@ -394,3 +394,15 @@ function gameToolsPositionUpdate() {
         document.querySelector('.media-timer').style.display = 'none';
     }
 }
+
+
+function copyGameIdFunc(copyGameId) {
+    navigator.clipboard.writeText(copyGameId)
+        .then(() => {
+            showToast('success', 'Код игры скопирован в буфер обмена!');
+            console.log('id', copyGameId);
+        })
+        .catch(error => {
+            console.log('Ошибка', error);
+        })
+}
