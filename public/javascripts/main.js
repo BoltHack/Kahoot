@@ -1,10 +1,4 @@
 
-document.getElementById('searchButton').addEventListener('click', () => {
-    const infoInput = document.getElementById('infoInput').value;
-    if (infoInput !== ''){
-        window.location.href = `/game/${infoInput}`;
-    }
-})
 sessionStorage.removeItem("redirectAfterReload");
 
 const acceptCookiesFooter = document.getElementById('acceptCookiesFooter');

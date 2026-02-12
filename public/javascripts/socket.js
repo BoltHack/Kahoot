@@ -195,7 +195,7 @@ const socket = io();
     socket.on('updateGameTypeCount', async (gameTypeCount) => {
         console.log('updateGameTypeCount', gameTypeCount);
         if (gameTypeCount === 'Close') {
-            const gameTypeMsg = localeType === 'en' ? 'This game has already begun.' : 'Данная игра уже началась.';
+            const gameTypeMsg = localeType === 'en' ? 'This game is not over yet.' : 'Данная игра ещё не закончилась.';
             window.location.replace(`/error?code=409&message=${encodeURIComponent(gameTypeMsg)}`);
         }
     });

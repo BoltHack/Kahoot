@@ -657,6 +657,9 @@
     .game .answer-message {
         color: var(--bp);
     }
+    .game .answer-emoji svg {
+        background: none;
+    }
     .checkUser .userName {
         border: 1px solid #313338;
         background: var(--inputModalBackground);

@@ -466,7 +466,7 @@ html.scroll-bar-off {
     color: red;
 }
 
-.find-button{
+.find-button {
     display: inline-block;
     padding: 12px;
     background-color: #468faf;
@@ -476,6 +476,7 @@ html.scroll-bar-off {
     text-decoration: none;
     cursor: pointer;
     transition-duration: 0.3s;
+    text-decoration: none;
 }
 .find-button:hover {
     opacity: 0.8;

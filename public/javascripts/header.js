@@ -142,6 +142,12 @@ function findGame() {
             barrier.hidden = true;
             border.hidden = true;
         })
+        document.getElementById('searchButton').addEventListener('click', () => {
+            const infoInput = document.getElementById('infoInput').value;
+            if (infoInput !== ''){
+                window.location.href = `/game/${infoInput}`;
+            }
+        })
     }
     else {
         authMenu();

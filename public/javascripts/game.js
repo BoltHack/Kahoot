@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const leaderB = document.getElementById('leaderBoard');
 
         if (leaderBoard && leaderBoard.length > 0) {
+            window.removeEventListener("beforeunload", handler);
             leaderB.innerHTML = '';
             const fragment = document.createDocumentFragment();
 

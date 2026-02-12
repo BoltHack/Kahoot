@@ -844,12 +844,30 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background: none;
 }
-.answer-emoji {
-    font-size: 5rem;
+.answer-emoji svg {
+    width: 50px;
+    height: 50px;
+    /*font-size: 5rem;*/
     margin-top: 20px;
+    background: none;
     animation: pulse 1.5s infinite;
 }
+
+.emoji-correct-answer svg {
+    fill: green;
+    background: none;
+}
+.emoji-wrong-answer svg {
+    fill: red;
+    background: none;
+}
+.emoji-time-answer svg {
+    fill: yellow;
+    background: none;
+}
+
 @keyframes pulse {
     0%, 100% { transform: scaleX(1); }
     50% { transform: scaleX(1.2); }
