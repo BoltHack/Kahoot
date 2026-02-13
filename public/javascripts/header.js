@@ -41,6 +41,8 @@ function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('session');
             localStorage.removeItem('sessionEndTime');
+            localStorage.removeItem('accessTokenEndTime');
+            localStorage.removeItem('refreshTokenEndTime');
             window.location.href = "/auth/login";
             return;
         }

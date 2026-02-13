@@ -591,8 +591,8 @@ class AuthController {
             req.cookies.user = null;
             res.clearCookie('token');
             res.clearCookie('refreshToken');
-            res.clearCookie('accessTokenEndTime');
-            res.clearCookie('refreshTokenEndTime');
+            // res.clearCookie('accessTokenEndTime');
+            // res.clearCookie('refreshTokenEndTime');
             return res.json({status: "Успешный выход!"});
         }catch (err){
             next(err)

@@ -1,38 +1,53 @@
-function getCookie(name) {
-    const cookies = document.cookie.split('; ');
-    const cookie = cookies.find(row => row.startsWith(`${name}=`));
-    return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
-}
+// function getCookie(name) {
+//     const cookies = document.cookie.split('; ');
+//     const cookie = cookies.find(row => row.startsWith(`${name}=`));
+//     return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+// }
 
 const ACCESS_TIMER_DURATION = 900000;
 const REFRESH_TIMER_DURATION = 777600000;
 function startTokenTimer (duration, tokenType) {
     const startTime = Date.now();
     const endTime = startTime + duration;
-    const maxAge = duration / 1000;
+    // const maxAge = duration / 1000;
 
-    document.cookie = `${tokenType}=${endTime}; max-age=${maxAge}; path=/;`;
+    localStorage.setItem(tokenType, endTime)
+    // document.cookie = `${tokenType}=${endTime}; max-age=${maxAge}; path=/;`;
 
     updateTokenTimer(tokenType);
 }
 
-function updateTokenTimer(tokenType) {
-    const endTime = parseInt(getCookie(tokenType), 10);
+const timers = {
+    accessTokenEndTime: null,
+    refreshTokenEndTime: null,
+    sessionEndTime: null
+}
 
-    const interval = setInterval(() => {
+function updateTokenTimer(tokenType) {
+    // const endTime = parseInt(getCookie(tokenType), 10);
+    const endTime = parseInt(localStorage.getItem(tokenType), 10);
+    if (!endTime) return;
+
+    if (timers[tokenType]) {
+        clearInterval(timers[tokenType])
+    }
+
+    timers[tokenType] = setInterval(() => {
         const currentTime = Date.now();
         const remainingTime = endTime - currentTime;
 
         if (remainingTime <= 0) {
-            clearInterval(interval);
+            clearInterval(timers[tokenType]);
             getToken(tokenType);
-            document.cookie = `${tokenType}=; max-age=0; path=/;`;
+            // document.cookie = `${tokenType}=; max-age=0; path=/;`;
+            localStorage.removeItem(tokenType);
         }
     }, 1000);
 }
 
 function storedTime(tokenType) {
-    const storedEndTime = getCookie(tokenType);
+    // const storedEndTime = getCookie(tokenType);
+    const storedEndTime = localStorage.getItem(tokenType);
 
     if (storedEndTime) {
         updateTokenTimer(tokenType);
@@ -55,6 +70,10 @@ if (localStorage.getItem('token')) {
 }
 
 async function getToken(tokenType) {
+    if (localStorage.getItem('isRefreshing') === 'true') {
+        return;
+    }
+
     if (!['accessTokenEndTime', 'refreshTokenEndTime'].includes(tokenType)) {
         console.error(`Неизвестный тип токена: ${tokenType}`);
         return;
@@ -68,6 +87,8 @@ async function getToken(tokenType) {
     const setTokenType = tokenType === 'accessTokenEndTime' ? '/accessToken' : '/refreshToken';
 
     try {
+        localStorage.setItem('isRefreshing', 'true')
+
         const response = await fetch(setTokenType, {
             method: 'POST',
             credentials: 'include'
@@ -100,8 +121,21 @@ async function getToken(tokenType) {
             console.log('Повторная попытка получить access токен...');
             getToken(tokenType);
         }, 5000);
+    } finally {
+        localStorage.removeItem('isRefreshing');
     }
 }
+
+window.addEventListener('storage', (event) => {
+    if (event.key === 'accessTokenEndTime' || event.key === 'refreshTokenEndTime') {
+        console.log('Обновление токена...');
+        updateTokenTimer(event.key);
+    }
+
+    if (event.key === 'sessionEndTime' && !event.newValue) {
+        sessionLogout();
+    }
+})
 
 
 
@@ -121,13 +155,18 @@ function sessionTimerStart(duration) {
 
 function sessionUpdateTimer() {
     const endTime = parseInt(localStorage.getItem('sessionEndTime'), 10);
+    if (!endTime) return;
 
-    const interval = setInterval(() => {
+    if (timers.sessionEndTime) {
+        clearInterval(timers.sessionEndTime);
+    }
+
+    timers.sessionEndTime = setInterval(() => {
         const currentTime = Date.now();
         const remainingTime = endTime - currentTime;
 
         if (remainingTime <= 0) {
-            clearInterval(interval);
+            clearInterval(timers.sessionEndTime);
             sessionLogout();
             localStorage.removeItem('sessionEndTime');
         }
@@ -138,9 +177,6 @@ const sessionEndTime = localStorage.getItem('sessionEndTime');
 
 if (sessionEndTime) {
     sessionUpdateTimer();
-}
-if (sessionEndTime === typeof String){
-    sessionTimerStart(SESSION_TIMER_DURATION);
 }
 else {
     sessionTimerStart(SESSION_TIMER_DURATION);
@@ -164,6 +200,8 @@ function sessionLogout() {
             localStorage.removeItem('token');
             localStorage.removeItem('session');
             localStorage.removeItem('sessionEndTime');
+            localStorage.removeItem('accessTokenEndTime');
+            localStorage.removeItem('refreshTokenEndTime');
             window.location.href = "/auth/sessionExpired";
             return;
         }
