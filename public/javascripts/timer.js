@@ -80,7 +80,7 @@ async function getToken(tokenType) {
     }
 
     if (!navigator.onLine) {
-        console.warn('Нет интернета. Пропускаем получение токена.');
+        console.warn('Нет интернета. Соединение потеряно.');
         return;
     }
 
@@ -103,22 +103,22 @@ async function getToken(tokenType) {
         const { token } = data;
 
         if (!token) {
-            console.warn('Токен отсутствует в ответе сервера.');
+            console.warn('Токен отсутствует.');
             return;
         }
 
         if (tokenType === 'accessTokenEndTime') {
             startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime');
-            console.log('Access-токен выдан и таймер запущен.');
+            console.log('Access-токен выдан.\nТаймер запущен.');
         } else {
             startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
-            console.log('Refresh-токен выдан и таймер запущен.');
+            console.log('Refresh-токен выдан.\nТаймер запущен.');
         }
         localStorage.setItem('token', token);
     } catch (error) {
         console.error('Ошибка при запросе токена:', error.message || error);
         setTimeout(() => {
-            console.log('Повторная попытка получить access токен...');
+            console.log(`Повторная попытка получить ${tokenType} токен...`);
             getToken(tokenType);
         }, 5000);
     } finally {
