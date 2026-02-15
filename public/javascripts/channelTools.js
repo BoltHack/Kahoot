@@ -21,16 +21,38 @@ function deleteMyChannel(channelId) {
         });
 }
 
-function channelsMenu() {
-    const channelsMenu = document.getElementById('channelsMenu');
-    const closeChannelsMenu = document.getElementById('closeMediaBorder');
+function mediaMenu() {
+    const checkIcon = document.getElementById('check-icon');
+    const mediaBorder = document.getElementById('mediaBorder');
 
-    channelsMenu.style.display = 'block';
+    if (checkIcon.checked) {
+        mediaBorder.style.display = 'flex';
 
-    closeChannelsMenu.addEventListener('click', () => {
-        channelsMenu.style.display = 'none';
-    });
+        mediaBorder.querySelector('.media-border').classList.remove('closeMediaMenu');
+        mediaBorder.querySelector('.media-border').classList.add('openMediaMenu');
+
+        document.querySelector('.chat-header').style.position = 'relative';
+        document.querySelector('.chat-header').style.zIndex = '100';
+    } else {
+        mediaBorder.querySelector('.media-border').classList.remove('openMediaMenu');
+        mediaBorder.querySelector('.media-border').classList.add('closeMediaMenu');
+
+        setTimeout(() => {
+            mediaBorder.style.display = 'none';
+            document.querySelector('.chat-header').style.position = '';
+            document.querySelector('.chat-header').style.zIndex = '1';
+        }, 100);
+
+    }
 }
+
+// window.addEventListener('resize', () => {
+//     // console.log('mediaBorder', document.getElementById('mediaBorder').style.display === 'flex');
+//     if (document.querySelector('.media-border').style.display === 'flex') {
+//         console.log('height');
+//         document.querySelector('.chat-messages').style.marginTop = document.querySelector('.chat-header').offsetHeight + 'px';
+//     }
+// });
 
 function showCloseBtn(channelId) {
     const chatLink = document.querySelectorAll('.chat-link');

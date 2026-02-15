@@ -5,8 +5,8 @@ function pages(){
 
     if (page.startsWith('/create-game')){
         pageName.innerHTML = `
-<a class="between"> ❯ </a>
-<a class="other-color">${localeType === 'en' ? 'Game creation' : 'Создание игры'}</a>`
+            <a class="between"> ❯ </a>
+            <a class="other-color">${localeType === 'en' ? 'Game creation' : 'Создание игры'}</a>`
     } else if (page.startsWith('/redaction')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>

@@ -62,10 +62,14 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
         </div>
         <div class="friend-name user-name">${friends.name}</div>
         ${window.location.pathname === '/channels/@me' ?
-                    `<a class="friend-btn" onclick="checksChannel('${friends.id}')">${localeType === 'en' ? 'Message' : 'Написать'}</a>` : ''}
+                    `<a class="friend-btn" onclick="checksChannel('${friends.id}')">
+                        <svg class="icon_f8fa06" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22a10 10 0 1 0-8.45-4.64c.13.19.11.44-.04.61l-2.06 2.37A1 1 0 0 0 2.2 22H12Z" class=""></path></svg>
+                    </a>` : ''}
         ${window.location.pathname.startsWith('/game/') ?
                     `<a class="friend-btn" onclick="inviteFriend('${friends.id}')">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>` : ''}
-        <a class="friend-btn delete" onclick="deleteFriend('${friends.id}', '${friends.name}')">${localeType === 'en' ? 'Delete' : 'Удалить'}</a>
+        <a class="friend-btn delete" onclick="deleteFriend('${friends.id}', '${friends.name}')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </a>
     </div>
 </div>
 </span>
@@ -179,11 +183,13 @@ socket.on('updatePage', async () => {
 const addFriendBtn = document.querySelectorAll('.addFriendBtn');
 const friendsContainerBtn = document.querySelectorAll('.friendsContainerBtn');
 
-const channelMenu = document.getElementById('channelsMenu');
+const mediaBorder = document.getElementById('mediaBorder');
 
 const friendsContainerMenu = document.getElementById('friendsContainerMenu');
 const addFriendMenu = document.getElementById('addFriendMenu');
 const chatName = document.getElementById('chatName');
+
+const checkIcon = document.getElementById('check-icon');
 
 const menus = JSON.parse(sessionStorage.getItem('menus') || '{}');
 
@@ -192,7 +198,8 @@ function addFriendFunc() {
     window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
     addFriendMenuOpen();
     friendsContainerMenuClose();
-    channelMenu.style.display = channelMenu.style.display === 'block' ? 'none' : '';
+    mediaBorder.style.display = mediaBorder.style.display === 'block' ? 'none' : '';
+    if (checkIcon.checked) checkIcon.checked = false;
 }
 
 function friendsContainerFunc() {
@@ -200,7 +207,9 @@ function friendsContainerFunc() {
     window.location.pathname !== '/channels/@me' ? window.location.href = '/channels/@me' : '';
     addFriendMenuClose();
     friendsContainerMenuOpen();
-    channelMenu.style.display = channelMenu.style.display === 'block' ? 'none' : '';
+    mediaBorder.style.display = mediaBorder.style.display === 'block' ? 'none' : '';
+    if (checkIcon.checked) checkIcon.checked = false;
+
 }
 
 function addFriendMenuOpen() {

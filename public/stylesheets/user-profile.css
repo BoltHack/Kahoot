@@ -380,3 +380,8 @@ body {
         flex-direction: column;
     }
 }
+@media (max-width: 600px) {
+    .banner-info h1 {
+        font-size: 18px;
+    }
+}
