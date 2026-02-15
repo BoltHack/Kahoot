@@ -109,10 +109,10 @@ async function getToken(tokenType) {
 
         if (tokenType === 'accessTokenEndTime') {
             startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime');
-            console.log('Access-токен выдан.\nТаймер запущен.');
+            console.log('\nAccess-токен выдан.\nТаймер запущен.\n');
         } else {
             startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
-            console.log('Refresh-токен выдан.\nТаймер запущен.');
+            console.log('\nRefresh-токен выдан.\nТаймер запущен.\n');
         }
         localStorage.setItem('token', token);
     } catch (error) {
