@@ -6,18 +6,26 @@ const windowParams = new URLSearchParams(window.location.search);
 
 document.getElementById('searchInput').addEventListener('input', function() {
     const searchValue = this.value.trim().toLowerCase();
-    const newsList = document.getElementById('newsList');
-    const searchNews = newsList.getElementsByTagName('li');
+    const currentUrl = new URL(window.location.href);
+
+    // const newsList = document.getElementById('newsList');
+    // const searchNews = newsList.getElementsByTagName('li');
+    const searchNews = document.querySelectorAll('#newsList li');
 
     let foundVisible = false;
 
-    const url = new URL(window.location.href);
+    // const url = new URL(window.location.href);
 
-    tags.searchNews = searchValue;
+    if (!searchValue) {
+        currentUrl.searchParams.delete('searchNews');
+        window.history.pushState({}, '', currentUrl);
+        tags.searchNews = '';
+    } else {
+        tags.searchNews = searchValue;
+        currentUrl.searchParams.set("searchNews", searchValue);
+        window.history.replaceState({}, "", currentUrl);
+    }
     sessionStorage.setItem('tags', JSON.stringify(tags));
-
-    url.searchParams.set("searchNews", searchValue);
-    window.history.replaceState({}, "", url);
 
     Array.from(searchNews).forEach(news => {
         const newsTitleElement = news.querySelector('.news-title');
@@ -27,39 +35,34 @@ document.getElementById('searchInput').addEventListener('input', function() {
         const newsSummary = newsSummaryElement ? newsSummaryElement.textContent.toLowerCase() : '';
 
         if (newsTitle.includes(searchValue) || newsSummary.includes(searchValue)) {
-            showNews(news);
-        }
-        else {
-            hideNews(news);
-        }
-
-        if (foundVisible) {
-            searchNotFound.style.display = 'none';
-        } else {
-            searchNotFound.style.display = 'block';
-        }
-
-        function showNews () {
             foundVisible = true;
             news.style.display = 'block';
         }
-
-        function hideNews () {
+        else {
             news.style.display = 'none';
         }
     });
+    searchNotFound.style.display = foundVisible ? 'none' : 'block';
 });
-document.getElementById('closeIcon').addEventListener('click', () => {
-    document.getElementById('searchInput').value = '';
+document.getElementById('clearIcon').addEventListener('click', () => {
+    const searchInput = document.getElementById('searchInput');
+    const currentUrl = new URL(window.location.href);
+
+    searchInput.value = '';
     const newsList = document.getElementById('newsList');
     const searchNews = newsList.getElementsByTagName('li');
     Array.from(searchNews).forEach(news => {
         news.style.display = 'block';
         searchContainer.classList.remove('searchMode');
     });
+
+    currentUrl.searchParams.delete('searchNews');
+    window.history.pushState({}, '', currentUrl);
+
     tags.searchNews = '';
     sessionStorage.setItem('tags', JSON.stringify(tags));
-    document.getElementById('searchInput').dispatchEvent(new Event('input', {bubbles: true}));
+
+    // searchInput.dispatchEvent(new Event('input', {bubbles: true}));
 });
 
 
