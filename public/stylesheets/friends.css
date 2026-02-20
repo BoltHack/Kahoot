@@ -206,3 +206,125 @@
 .delete-modal button:hover {
     opacity: 0.8;
 }
+
+
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    text-shadow: none;
+}
+
+.help-button {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.help-button:hover,
+.help-button:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip {
+    position: absolute;
+    transform: translateX(-50%) translateY(10px);
+    /*padding: 12px 20px;*/
+    padding: 5px;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /*color: #1f2937;*/
+    color: #000000;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(229, 231, 235, 1);
+}
+.tooltip.t-top {
+    bottom: calc(100% + 15px);
+    left: 50%;
+}
+.tooltip.t-bottom {
+    top: calc(100% + 15px);
+    left: 50%;
+}
+.tooltip.t-top::after {
+    top: 100%;
+    border-style: solid;
+    border-color: #ffffff transparent transparent transparent;
+}
+.tooltip.t-bottom::after {
+    bottom: 100%;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+}
+
+/*.tooltip-container:hover .tooltip,*/
+.tooltip-btn:hover + .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(99, 102, 241, 0.7);
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    }
+}
+
+.tooltip strong {
+    animation: glow 2s infinite;
+    font-weight: 600;
+}
+
+.tooltip i {
+    margin-right: 6px;
+    color: #6366f1;
+}
+
+@media (max-width: 768px) {
+    .tooltip {
+        font-size: 13px;
+        padding: 10px 16px;
+    }
+
+    /*.help-button {*/
+    /*    padding: 10px 20px;*/
+    /*    font-size: 14px;*/
+    /*}*/
+}
+@media (max-width: 480px) {
+    .tooltip {
+        left: 50%;
+        transform: translateX(-50%);
+        width: max-content;
+        max-width: calc(100vw - 40px);
+    }
+}
