@@ -62,14 +62,30 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
         </div>
         <div class="friend-name user-name">${friends.name}</div>
         ${window.location.pathname === '/channels/@me' ?
-                    `<a class="friend-btn" onclick="checksChannel('${friends.id}')">
-                        <svg class="icon_f8fa06" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22a10 10 0 1 0-8.45-4.64c.13.19.11.44-.04.61l-2.06 2.37A1 1 0 0 0 2.2 22H12Z" class=""></path></svg>
-                    </a>` : ''}
+                    `
+                    <div class="tooltip-container">
+                        <a class="friend-btn" onclick="checksChannel('${friends.id}')">
+                            <div class="tooltip-btn">
+                                <svg class="icon_f8fa06" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22a10 10 0 1 0-8.45-4.64c.13.19.11.44-.04.61l-2.06 2.37A1 1 0 0 0 2.2 22H12Z" class=""></path></svg>
+                            </div>
+                            <div role="tooltip" class="tooltip t-top">
+                                <span>${localeType === 'en' ? 'Message' : 'Сообщение'}</span>
+                            </div>
+                        </a>
+                    </div>
+                    ` : ''}
         ${window.location.pathname.startsWith('/game/') ?
                     `<a class="friend-btn" onclick="inviteFriend('${friends.id}')">${localeType === 'en' ? 'Invite' : 'Пригласить'}</a>` : ''}
-        <a class="friend-btn delete" onclick="deleteFriend('${friends.id}', '${friends.name}')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        </a>
+        <div class="tooltip-container">
+            <a class="friend-btn delete" onclick="deleteFriend('${friends.id}', '${friends.name}')">
+                <div class="tooltip-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </div>
+                <div role="tooltip" class="tooltip t-top">
+                    <span>${localeType === 'en' ? 'Delete' : 'Удалить'}</span>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 </span>
