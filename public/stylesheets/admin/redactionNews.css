@@ -272,3 +272,16 @@ textarea {
     width: 200px;
     height: 200px;
 }
+
+.code-text {
+    font-size: 14px;
+}
+.code-inline {
+    padding: 2px 5px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95em;
+    color: #4ec9b0;
+    background-color: #1e1e1e;
+    border-radius: 3px;
+    border: 1px solid #333;
+}
