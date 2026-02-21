@@ -985,6 +985,19 @@ ul {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+.media-li-btn {
+    color: #ced4da;
+    text-decoration: none;
+    padding: 8px 10px;
+    display: block;
+    border-radius: 6px;
+    /*background-color: #2a2f37;*/
+    transition: background-color 0.3s ease;
+    word-break: break-word;
+    /*font-weight: 700;*/
+    cursor: pointer;
+    /*margin-top: 5px;*/
+}
 .media-line {
     height: 1px;
     background: #1f2937;

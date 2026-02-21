@@ -275,6 +275,8 @@ textarea {
 
 .code-text {
     font-size: 14px;
+    justify-content: center;
+    align-items: center;
 }
 .code-inline {
     padding: 2px 5px;

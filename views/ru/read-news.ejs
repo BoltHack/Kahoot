@@ -105,13 +105,19 @@
 
                             return text
                                     .split('\n')
-                                    .map(line =>
-                                            line.replace(urlPattern, url =>
-                                                    `<a href="${url}" target="_blank" rel="noopener noreferrer" class="news-link">${url}</a>`
-                                            )
-                                            .replace(/---/g, `<div class="news-line"></div>`)
-                                    )
-                                    .join('<div></div>');
+                                    .map(line => {
+                                        let replacedLine = line.replace(urlPattern, url =>
+                                                `<a href="${url}" target="_blank" rel="noopener noreferrer" class="news-link">${url}</a>`
+                                        );
+                                        replacedLine = replacedLine.replace(/---/g, `<div class="news-line"></div>`);
+                                        replacedLine = replacedLine.replace(/(#{1,2})\s*([^#\n]+)/g, (match, hashes, content) => {
+                                            const hLvl = hashes.length;
+                                            return `<h${hLvl}>${content}</h${hLvl}>`
+                                        });
+
+                                        return `<div style="display: flex; align-items: center">${replacedLine}</div>`;
+                                    })
+                                    .join('');
                         }
 
                         const linkedMessage = linkifyAndPreserveBreaks(readNews.content);
@@ -175,10 +181,21 @@
                             <p><%= readNews.views %></p>
                         </div>
 
-                        <div class="share-news" title="Поделиться" onclick="shareNews()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-icon lucide-share">
-                                <path d="M12 2v13"/><path d="m16 6-4-4-4 4"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                            </svg>
+                        <div class="share-news" onclick="shareNews()">
+                            <div class="tooltip-container">
+                                <a class="friend-btn delete">
+                                    <div class="tooltip-btn">
+                                        <div class="share-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-icon lucide-share">
+                                                <path d="M12 2v13"/><path d="m16 6-4-4-4 4"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div role="tooltip" class="tooltip t-top">
+                                        <span style="color: #000000">Поделиться</span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
 
                     </div>

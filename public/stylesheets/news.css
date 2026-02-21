@@ -221,17 +221,19 @@ body {
 }
 
 .share-news {
-    display: block;
-    padding: 5px 5px;
-    border-radius: 5px;
-    cursor: pointer;
     margin-left: auto;
 }
-.share-news svg {
+.share-icon {
+    display: block;
+    border-radius: 5px;
+    padding: 5px 5px;
+    cursor: pointer;
+}
+.share-icon svg {
     width: 25px;
     height: 25px;
 }
-.share-news:hover {
+.share-icon:hover {
     background: #636264;
 }
 

@@ -106,6 +106,7 @@ function saveNewsFunc() {
         .catch(console.error);
 }
 
+
 editor.addEventListener('keydown', function(event) {
     if (event.key === 'Enter' || event.keyCode === 13) {
         event.preventDefault();
@@ -129,25 +130,36 @@ editor.addEventListener('keydown', function(event) {
         sel.removeAllRanges();
         sel.addRange(range);
 
-        console.log('Enter вставил <br> в конце!');
+        console.log('Автоматический пробел');
     }
 
-    // if (event.key === 'Backspace') {
-    //     event.preventDefault();
-    //     const sel = window.getSelection();
-    //     if (!sel.rangeCount) return;
-    //
-    //     const range = sel.getRangeAt(0);
-    //     const node = range.startContainer;
-    //
-    //     if (node.nodeType === Node.TEXT_NODE && node.nodeValue.endsWith('\u200B')) {
-    //         // event.preventDefault();
-    //         node.nodeValue = node.nodeValue.slice(0, -1);
-    //         console.log('Удалил невидимый символ');
-    //         return;
-    //     }
-    //     console.log('Дальше');
-    // }
+    if (event.key === 'Backspace' || event.keyCode === 0) {
+        const sel = window.getSelection();
+        if (!sel.rangeCount) return;
+
+        const range = sel.getRangeAt(0);
+        const node = range.startContainer;
+        const offset = range.startOffset;
+
+        if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+
+            const charBefore = text[offset - 1];
+
+            if (charBefore === '\u200B') {
+                // event.preventDefault();
+                console.log('Двойной Backspace');
+                const newText = text.slice(0, offset) + text.slice(offset);
+                node.nodeValue = newText;
+
+                const newRange = document.createRange();
+                newRange.setStart(node, offset - 1);
+                newRange.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(newRange);
+            }
+        }
+    }
 });
 
 
