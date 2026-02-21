@@ -757,6 +757,16 @@
     .not-found {
         color: var(--f);
     }
+    .tooltip {
+        background: linear-gradient(135deg, #ffffff, #f8f9fa);
+        color: #000000;
+    }
+    .tooltip.t-top::after {
+        border-color: #ffffff transparent transparent transparent;
+    }
+    .tooltip.t-bottom::after {
+        border-color: transparent transparent #ffffff transparent;
+    }
 }
 
 .darkTheme body {

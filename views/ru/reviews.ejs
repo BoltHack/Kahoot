@@ -89,8 +89,17 @@
                     <li class="review-card">
                         <div class="review-header">
                             <div class="review-user">
-                                <div class="avatar" onclick="window.open('/user-profile/<%= reviews.id %>', '_blank')" title="Посмотреть профиль">
-                                    <img src="<%= reviews.image %>">
+                                <div class="tooltip-container">
+                                    <a class="friend-btn delete">
+                                        <div class="tooltip-btn">
+                                            <div class="avatar" onclick="window.open('/user-profile/<%= reviews.id %>', '_blank')">
+                                                <img src="<%= reviews.image %>">
+                                            </div>
+                                        </div>
+                                        <div role="tooltip" class="tooltip t-top">
+                                            <span>Посмотреть профиль</span>
+                                        </div>
+                                    </a>
                                 </div>
                                 <div class="user-info">
                                     <span class="user-name"><%= reviews.name %></span>
