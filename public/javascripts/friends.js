@@ -53,7 +53,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
             friendsLoaderSvg.style.display = 'none';
             myFriendsCount.innerHTML = updateMyFriendsCount
                 .map(friends => `
-<span>
+<span class="user-section">
 <div class="friend-container" id="friend-container">
     <div class="friend-info-row">
         <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}" onclick="window.open('/user-profile/${friends.id}', '_blank')">
@@ -292,7 +292,7 @@ if (window.location.pathname === '/channels/@me') {
     searchInput.addEventListener('input', function() {
         const searchValue = this.value.trim().toLowerCase();
         const userList = document.getElementById('myFriendsCount');
-        const users = userList.getElementsByTagName('span');
+        const users = userList.getElementsByClassName('user-section');
 
         Array.from(users).forEach(user => {
             const userNameElement = user.querySelector('.user-name');
