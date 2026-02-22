@@ -128,10 +128,10 @@
                                 <div class="badges-item">
                                     <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Achievement: Reached level 5' : '' %>" onclick="achievementsListMenu()">
                                 </div>
-                            <% }) %>
-                        <% } else { %>
-                            <a>No achievements</a>
-                        <% } %>
+                                <% }) %>
+                            <% } else { %>
+                                <a><%= userInfo.name %> has no achievements.</a>
+                            <% } %>
                     </div>
                 </div>
             </div>
