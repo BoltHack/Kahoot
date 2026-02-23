@@ -1,19 +1,9 @@
-// function getCookie(name) {
-//     const cookies = document.cookie.split('; ');
-//     const cookie = cookies.find(row => row.startsWith(`${name}=`));
-//     return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
-// }
-
 const ACCESS_TIMER_DURATION = 900000;
 const REFRESH_TIMER_DURATION = 777600000;
 function startTokenTimer (duration, tokenType) {
-    const startTime = Date.now();
-    const endTime = startTime + duration;
-    // const maxAge = duration / 1000;
+    const endTime = Date.now() + duration;
 
     localStorage.setItem(tokenType, endTime)
-    // document.cookie = `${tokenType}=${endTime}; max-age=${maxAge}; path=/;`;
-
     updateTokenTimer(tokenType);
 }
 
@@ -24,7 +14,6 @@ const timers = {
 }
 
 function updateTokenTimer(tokenType) {
-    // const endTime = parseInt(getCookie(tokenType), 10);
     const endTime = parseInt(localStorage.getItem(tokenType), 10);
     if (!endTime) return;
 
@@ -38,27 +27,19 @@ function updateTokenTimer(tokenType) {
 
         if (remainingTime <= 0) {
             clearInterval(timers[tokenType]);
+            timers[tokenType] = null;
             getToken(tokenType);
-            // document.cookie = `${tokenType}=; max-age=0; path=/;`;
             localStorage.removeItem(tokenType);
         }
     }, 1000);
 }
 
 function storedTime(tokenType) {
-    // const storedEndTime = getCookie(tokenType);
-    const storedEndTime = localStorage.getItem(tokenType);
+    const storedEndTime = parseInt(localStorage.getItem(tokenType), 10);
 
     if (storedEndTime) {
         updateTokenTimer(tokenType);
-        return;
-    }
-    if (!Number(storedEndTime)){
-        console.log('Значение токена было изменено. Выдаю новый токен...');
-        getToken(tokenType);
-    }
-    else if (localStorage.getItem('token') && !storedEndTime){
-        console.log('Выдаю токен');
+    } else {
         getToken(tokenType);
     }
 }
@@ -70,29 +51,29 @@ if (localStorage.getItem('token')) {
 }
 
 async function getToken(tokenType) {
-    if (localStorage.getItem('isRefreshing') === 'true') {
-        return;
-    }
+    if (localStorage.getItem('isRefreshing') === "true") return;
 
     if (!['accessTokenEndTime', 'refreshTokenEndTime'].includes(tokenType)) {
         console.error(`Неизвестный тип токена: ${tokenType}`);
         return;
     }
 
-    if (!navigator.onLine) {
-        console.warn('Нет интернета. Соединение потеряно.');
-        return;
-    }
+    if (!navigator.onLine) return;
 
     const setTokenType = tokenType === 'accessTokenEndTime' ? '/accessToken' : '/refreshToken';
 
     try {
-        localStorage.setItem('isRefreshing', 'true')
+        localStorage.setItem('isRefreshing', 'true');
 
         const response = await fetch(setTokenType, {
             method: 'POST',
             credentials: 'include'
         });
+
+        if (response.status === 401 || response.status === 403) {
+            sessionLogout();
+            return;
+        }
 
         if (!response.ok) {
             console.error(`Ошибка: ${response.status} ${response.statusText}`);
@@ -107,28 +88,23 @@ async function getToken(tokenType) {
             return;
         }
 
-        if (tokenType === 'accessTokenEndTime') {
-            startTokenTimer(ACCESS_TIMER_DURATION, 'accessTokenEndTime');
-            console.log('\nAccess-токен выдан.\nТаймер запущен.\n');
-        } else {
-            startTokenTimer(REFRESH_TIMER_DURATION, 'refreshTokenEndTime');
-            console.log('\nRefresh-токен выдан.\nТаймер запущен.\n');
-        }
+        const duration = tokenType === 'accessTokenEndTime' ? ACCESS_TIMER_DURATION : REFRESH_TIMER_DURATION;
+        startTokenTimer(duration, tokenType);
         localStorage.setItem('token', token);
+        console.log(`[${tokenType}] Токен успешно обновлен.`);
     } catch (error) {
         console.error('Ошибка при запросе токена:', error.message || error);
-        setTimeout(() => {
-            console.log(`Повторная попытка получить ${tokenType} токен...`);
-            getToken(tokenType);
-        }, 5000);
+        // setTimeout(() => {
+        // console.log(`Повторная попытка получить токен...`);
+        // getToken(tokenType);
+        // }, 5000);
     } finally {
         localStorage.removeItem('isRefreshing');
     }
 }
 
 window.addEventListener('storage', (event) => {
-    if (event.key === 'accessTokenEndTime' || event.key === 'refreshTokenEndTime') {
-        console.log('Обновление токена...');
+    if (['accessTokenEndTime', 'refreshTokenEndTime'].includes(event.key)) {
         updateTokenTimer(event.key);
     }
 
@@ -143,10 +119,9 @@ window.addEventListener('storage', (event) => {
 const SESSION_TIMER_DURATION = 86400000;
 const session = localStorage.getItem('session');
 function sessionTimerStart(duration) {
-    const startTime = Date.now();
-    const endTime = startTime + duration;
+    const endTime = Date.now() + duration;
 
-    if (session === 'false' && localStorage.getItem('token')) {
+    if (session === "false" && localStorage.getItem('token')) {
         localStorage.setItem('sessionEndTime', endTime);
     }
 
@@ -162,13 +137,9 @@ function sessionUpdateTimer() {
     }
 
     timers.sessionEndTime = setInterval(() => {
-        const currentTime = Date.now();
-        const remainingTime = endTime - currentTime;
-
-        if (remainingTime <= 0) {
+        if (endTime - Date.now() <= 0) {
             clearInterval(timers.sessionEndTime);
             sessionLogout();
-            localStorage.removeItem('sessionEndTime');
         }
     }, 1000);
 }
@@ -178,7 +149,7 @@ const sessionEndTime = localStorage.getItem('sessionEndTime');
 if (sessionEndTime) {
     sessionUpdateTimer();
 }
-else {
+else if (!sessionEndTime && localStorage.getItem('token')) {
     sessionTimerStart(SESSION_TIMER_DURATION);
 }
 
@@ -190,12 +161,10 @@ function sessionLogout() {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     }).then(res => res.json()).then((res) => {
-        const {status, error} = res;
+        const {error} = res;
         if (error) {
-            return;
-        }
-
-        if (status) {
+            console.log('Ошибка очистки данных:', error);
+        } else {
             localStorage.removeItem('userInfo');
             localStorage.removeItem('token');
             localStorage.removeItem('session');
@@ -203,7 +172,10 @@ function sessionLogout() {
             localStorage.removeItem('accessTokenEndTime');
             localStorage.removeItem('refreshTokenEndTime');
             window.location.href = "/auth/sessionExpired";
-            return;
         }
-    });
+
+    }).catch(error => {
+        console.log('Ошибка выдачи сессии', error);
+        logout();
+    })
 }
