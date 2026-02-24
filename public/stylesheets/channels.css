@@ -474,6 +474,29 @@ html.scroll-bar-off {
     transition: background 0.3s;
 }
 
+.search-friend {
+    display: flex;
+    justify-content: end;
+}
+.clear-icon {
+    position: absolute;
+    /*right: 2.5%;*/
+    /*margin-left: -20px;*/
+    /*align-items: end;*/
+    margin-right: 10px;
+    margin-top: 8px;
+    background-color: #dad7cd;
+    color: #000000;
+    padding: 1px 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: none;
+}
+.clear-icon:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0.6;
+}
+
 .search-friend input {
     background-color: #121518;
     padding: 10px 0;

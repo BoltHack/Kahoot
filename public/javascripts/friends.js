@@ -294,12 +294,20 @@ if (window.location.pathname === '/channels/@me') {
         const userList = document.getElementById('myFriendsCount');
         const users = userList.getElementsByClassName('user-section');
 
+        const clearIcon = document.querySelector('.clear-icon');
+
         Array.from(users).forEach(user => {
             const userNameElement = user.querySelector('.user-name');
 
             const userName = userNameElement ? userNameElement.textContent.toLowerCase() : '';
 
             user.style.display = (userName.includes(searchValue)) ? '' : 'none';
+            clearIcon.style.display = searchValue.length ? 'flex' : 'none';
+        });
+
+        clearIcon.addEventListener('click', () => {
+            searchInput.value = '';
+            clearIcon.style.display = 'none';
         });
     });
 }
