@@ -308,6 +308,7 @@ if (window.location.pathname === '/channels/@me') {
         clearIcon.addEventListener('click', () => {
             searchInput.value = '';
             clearIcon.style.display = 'none';
+            searchInput.dispatchEvent(new Event('input', {bubbles: true}));
         });
     });
 }

@@ -171,7 +171,7 @@ setInterval(async () => {
 
         const expiredGames = await GamesModel.find({
             expiresAt: { $lte: now },
-        }).limit(50);
+        }).limit(50).lean();
 
         for (const game of expiredGames) {
             const filePath = path.join(__dirname, '..', 'public', 'uploads', 'gameImages', game._id.toString());
