@@ -102,11 +102,6 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
 });
 
 function checksChannel(friendId) {
-    const message = document.getElementById('message');
-    const messageSpan = message.querySelector('span');
-
-    messageSpan.textContent = localeType === 'en' ? 'Loading...' : 'Загрузка...';
-    message.disabled = true;
     console.log('friendId', friendId);
     fetch(`/checkChannel/${friendId}`,{
         method: "POST",
@@ -119,8 +114,6 @@ function checksChannel(friendId) {
         })
         .catch(error => {
             console.error('Ошибка:', error);
-            messageSpan.textContent = localeType === 'en' ? 'Message' : 'Написать';
-            message.disabled = false;
         });
 }
 

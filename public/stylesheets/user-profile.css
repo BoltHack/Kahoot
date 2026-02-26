@@ -109,6 +109,7 @@ body {
     width: 35%;
     background: #334155;
     padding: 20px;
+    /*margin-left: 20px;*/
     text-align: center;
 }
 
@@ -126,6 +127,7 @@ body {
 }
 .profile-buttons {
     display: flex;
+    /*width: 90%;*/
 }
 .btn {
     background: #3b82f6;
@@ -372,22 +374,16 @@ body {
     .profile-container {
         margin-top: 120px;
     }
-    /*.profile-info {*/
-    /*    flex-direction: column;*/
-    /*    align-items: start;*/
-    /*}*/
-    .profile-buttons {
-        flex-direction: column;
-    }
 }
-@media (max-width: 600px) {
-    /*.banner-info h1 {*/
-    /*    font-size: 18px;*/
-    /*}*/
+@media (max-width: 800px) {
     .profile-card {
         display: block;
     }
     .avatar-section, .info-section {
         width: 100%;
+    }
+    .profile-buttons {
+        flex-direction: column;
+        padding-right: 40px;
     }
 }

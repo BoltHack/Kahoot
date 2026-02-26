@@ -1301,10 +1301,11 @@ ul {
     color: #6366f1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .tooltip {
-        font-size: 13px;
-        padding: 2px;
+        /*font-size: 13px;*/
+        /*padding: 2px;*/
+        display: none;
     }
 
     /*.help-button {*/
