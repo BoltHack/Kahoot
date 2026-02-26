@@ -372,16 +372,22 @@ body {
     .profile-container {
         margin-top: 120px;
     }
-    .profile-info {
-        flex-direction: column;
-        align-items: start;
-    }
+    /*.profile-info {*/
+    /*    flex-direction: column;*/
+    /*    align-items: start;*/
+    /*}*/
     .profile-buttons {
         flex-direction: column;
     }
 }
 @media (max-width: 600px) {
-    .banner-info h1 {
-        font-size: 18px;
+    /*.banner-info h1 {*/
+    /*    font-size: 18px;*/
+    /*}*/
+    .profile-card {
+        display: block;
+    }
+    .avatar-section, .info-section {
+        width: 100%;
     }
 }

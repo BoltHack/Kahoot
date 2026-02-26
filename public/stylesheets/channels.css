@@ -1304,7 +1304,7 @@ ul {
 @media (max-width: 768px) {
     .tooltip {
         font-size: 13px;
-        padding: 10px 16px;
+        padding: 2px;
     }
 
     /*.help-button {*/
