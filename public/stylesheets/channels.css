@@ -1083,9 +1083,9 @@ ul {
         width: 0;
         padding: 0;
     }
-    /*.chat-input button {*/
-    /*    display: block;*/
-    /*}*/
+    .chat-input button {
+        display: block;
+    }
     /*.chat-container {*/
     /*    position: fixed;*/
     /*    width: 100%;*/

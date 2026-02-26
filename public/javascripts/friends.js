@@ -145,6 +145,11 @@ function deleteFriend(deleteId, deleteName){
         barrier.hidden = true;
         enableScroll();
     });
+    barrier.addEventListener('click', () => {
+        document.body.removeChild(deleteBorder);
+        barrier.hidden = true;
+        enableScroll();
+    });
 
     document.getElementById('requestDeleteFriend').addEventListener('click', () => {
         alreadyFriendAdd.slice(deleteId)
