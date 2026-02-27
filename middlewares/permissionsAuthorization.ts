@@ -22,9 +22,9 @@ export function verifyPermissions(role: string) {
             res.cookie('locale', locale, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
         }
         const errorPageLocale = locale === 'en' ? 'en/error' : 'ru/error';
+        const errorMsg = locale === 'en' ? 'Not Found' : 'Страница не найдена.';
 
         if (!token) {
-            const errorMsg = locale === 'en' ? 'Not Found' : 'Страница не найдена.';
             return res.render(errorPageLocale, { code: '404', message: errorMsg });
         }
 
@@ -34,22 +34,20 @@ export function verifyPermissions(role: string) {
             decoded = jwt.verify(token, JWTSecret) as UserData;
         } catch (err) {
             console.log(err)
-            return res.render(errorPageLocale, { code: '404', message: '' });
+            return res.render(errorPageLocale, { code: '404', message: errorMsg });
         }
 
         if (!decoded || typeof decoded !== 'object' || !('role' in decoded)) {
-            return res.render(errorPageLocale, { code: '404', message: '' });
+            return res.render(errorPageLocale, { code: '404', message: errorMsg });
         }
 
         const userData = decoded as UserData;
 
         if (!userData.role || userData.role !== role) {
-            return res.render(errorPageLocale, { code: '404', message: '' });
+            return res.render(errorPageLocale, { code: '404', message: errorMsg });
         }
 
         req.user = userData;
         next();
     };
 }
-
-// module.exports = {verifyPermissions};

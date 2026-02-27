@@ -21,6 +21,10 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
         let token = req.cookies.token;
         let refreshToken = req.cookies.refreshToken;
 
+        if (!token && !refreshToken) {
+            return res.redirect('/auth/login');
+        }
+
         const locale = req.cookies['locale'] ?? 'en';
 
         const errorPageLocale = locale === 'en' ? 'en/error' : 'ru/error';
