@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/stylesheets/friends.css">
     <link rel="stylesheet" href="/stylesheets/theme.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
+    <link rel="stylesheet" href="/stylesheets/tooltips/message-tooltips.css">
     <noscript>
         <%- include('./tools/noscript.ejs') %>
     </noscript>
@@ -134,7 +135,7 @@
     </div>
 
     <div class="overlay" id="overlayFriendListMenu">
-        <div id="friendListMenu">
+        <div id="friendListMenu" class="media-menu-border">
             <h2 style="text-align: center">Список друзей</h2>
             <svg class="loaderSvg" viewBox="25 25 50 50" id="friendsLoaderSvg">
                 <circle r="20" cy="50" cx="50"></circle>
@@ -147,8 +148,8 @@
     </div>
     <% if (gameId.game_author.id === user.id) {%>
         <div class="overlay" id="overlayBannedUsersMenu">
-            <div id="bannedPlayersMenu">
-                <h2 style="text-align: center">Список забаненных игроков</h2>
+            <div id="bannedPlayersMenu" class="media-menu-border">
+                <h2 style="text-align: center; word-break: break-word">Банлист</h2>
                 <svg class="loaderSvg" viewBox="25 25 50 50" id="banLoaderSvg">
                     <circle r="20" cy="50" cx="50"></circle>
                 </svg>

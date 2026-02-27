@@ -131,7 +131,7 @@ function deleteFriend(deleteId, deleteName){
     disableScroll();
 
     deleteBorder.innerHTML = `
-    <div class="delete-border">
+    <div class="delete-border media-menu-border">
         <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Remove "${deleteName}" from friends?` : `Удалить "${deleteName}" из друзей?`}</h4>
         <div class="delete-modal">
             <button id="requestDeleteFriend">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>

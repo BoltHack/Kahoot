@@ -19,13 +19,13 @@ router.get('/post-news', verifyPermissions('Admin'), authenticateJWT, appData, n
 router.get('/redaction-news/:news_id',
     verifyPermissions('Admin'),
     authenticateJWT,
-    upload.fields([
-        { name: 'image0' },
-        { name: 'image1' },
-        { name: 'image2' },
-        { name: 'image3' },
-        { name: 'image4' }
-    ]),
+    // upload.fields([
+    //     { name: 'image0' },
+    //     { name: 'image1' },
+    //     { name: 'image2' },
+    //     { name: 'image3' },
+    //     { name: 'image4' }
+    // ]),
     redactionNewsViewAdmin);
 router.get('/list-news', verifyPermissions('Admin'), authenticateJWT, appData, listNewsViewAdmin);
 

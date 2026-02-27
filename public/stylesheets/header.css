@@ -703,4 +703,14 @@ html.scroll-bar-off {
         border: none;
         left: 0;
     }
+    .media-menu-border {
+        max-width: 600px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        /*display: flex !important;*/
+        transform: translateY(calc(100dvh - 100%)) !important;
+    }
 }

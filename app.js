@@ -10,7 +10,7 @@ const http = require("http");
 const socketIo = require('socket.io');
 const sanitizeHtml = require("sanitize-html");
 const axios = require('axios');
-const errorHandler = require('./middlewares/errorHandler');
+import { errorHandler } from './middlewares/errorHandler';
 const { GamesModel } = require('./models/GamesModel');
 const { UsersModel } = require('./models/UsersModel');
 const { ChannelsModel } = require('./models/ChannelsModel');

@@ -157,7 +157,7 @@
 </main>
 
 <section id="sendReviewMenu" hidden>
-    <div class="review-container">
+    <div class="review-container media-menu-border">
         <button class="close-btn">X</button>
         <h2>Write a Review</h2>
         <% if (myInfo && myInfo.review.review) { %>
@@ -170,7 +170,6 @@
                 <option value="4" <%= myInfo.review.grade === '4' ? 'selected' : '' %> >⭐⭐⭐⭐ 4 stars</option>
                 <option value="5" <%= myInfo.review.grade === '5' ? 'selected' : '' %> >⭐⭐⭐⭐⭐ 5 stars</option>
             </select>
-            <a id="deleteReview">Delete</a>
         <% } else { %>
             <textarea name="review" id="review" placeholder="Enter your text" maxlength="1000" required></textarea>
             <a id="maxReviewLength">0/1000</a>
@@ -184,6 +183,7 @@
         <% } %>
         <div class="edit-buttons">
             <input type="button" value="Submit" id="sendReview">
+            <input type="button" value="Delete" id="deleteReview" style="background: #CB3427;">
         </div>
     </div>
 </section>

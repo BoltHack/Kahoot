@@ -105,7 +105,7 @@ document.getElementById('deleteReview').addEventListener('click', () => {
     const barrier = document.getElementById('barrier');
 
     deleteMenu.innerHTML = `
-    <div class="delete-border">
+    <div class="delete-border media-menu-border">
         <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Are you sure you want to delete your review?` : `Вы действительно хотите удалить свой отзыв?`}</h4>
         <div class="delete-modal">
             <button id="requestBtn">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>

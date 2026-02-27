@@ -486,6 +486,7 @@ main {
 
 .info-container {
     position: absolute;
+    /*max-width: 200px;*/
     /*top: 10.2%;*/
     /*left: 2%*/
     margin: 80px 50px;
@@ -518,9 +519,10 @@ main {
     user-select: none;
 }
 .userImage {
-    position: sticky;
-    display: block;
+    /*position: sticky;*/
+    /*display: block;*/
     margin-bottom: 10px;
+    /*z-index: 1;*/
 }
 
 .avatar-wrapper {
@@ -544,7 +546,7 @@ main {
 }
 
 .userName {
-    position: absolute;
+    position: fixed;
     /*left: 50%;*/
     /*transform: translate(-50%);*/
     background-color: rgba(0, 0, 0, 0.8);
@@ -554,6 +556,7 @@ main {
     font-size: 14px;
     white-space: nowrap;
     user-select: text;
+    z-index: 5;
 }
 
 
@@ -764,7 +767,7 @@ main {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transform: translateY(-50px);
+    transform: translateY(50px);
     opacity: 0;
     transition: transform 0.4s ease, opacity 0.4s ease;
     overflow-y: auto;
@@ -775,10 +778,12 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    width: 500px;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(-50px);
+    width: 100%;
+    /*width: 500px;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+    text-align: center;
+    /*transform: translateY(-50px);*/
 }
 #bannedPlayersMenu.active, #friendListMenu.active {
     transform: translateY(0);
@@ -1279,7 +1284,7 @@ main {
     padding: 0;
     margin: 0;
     width: 100%;
-    height: 100%;
+    height: 100dvh;
     overflow: hidden;
 }
 .media-header {
@@ -1481,4 +1486,31 @@ main {
         border: none;
         left: 0;
     }
+    .media-menu-border {
+        max-width: 600px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        transform: translateY(calc(100dvh - 100%)) !important;
+    }
+    .userName {
+        z-index: 10;
+    }
+}
+
+.new-barrier{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    inset: 0;
+    background: black;
+    /*background-color: rgba(0, 0, 0, 0.4);*/
+    /*backdrop-filter: blur(0.5rem);*/
+    opacity: 0.6;
+    z-index: 1;
 }
