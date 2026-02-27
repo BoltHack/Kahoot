@@ -1,19 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import jwt from "jsonwebtoken";
-
-function parseMaxAge(duration: string): number {
-    const unit = duration.slice(-1);
-    const amount = parseInt(duration.slice(0, -1), 10);
-
-    switch (unit) {
-        case 's': return amount * 1000;
-        case 'm': return amount * 60 * 1000;
-        case 'h': return amount * 60 * 60 * 1000;
-        case 'd': return amount * 24 * 60 * 60 * 1000;
-        default: throw new Error('Выбраное время не найдено');
-    }
-}
+import { UsersModel } from "../models/UsersModel";
 
 interface JwtPayload {
     id: string;
@@ -30,8 +18,13 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
         const JWTSecret = process.env.JWTSecret!;
         const refreshTokenSecret = process.env.refreshTokenSecret!;
 
+        let token = req.cookies.token;
+        let refreshToken = req.cookies.refreshToken;
+
         const locale = req.cookies['locale'] ?? 'en';
+
         const errorPageLocale = locale === 'en' ? 'en/error' : 'ru/error';
+        const errorMsg = locale === "en" ? "Invalid token." : "Недействительный токен.";
 
         const verifyToken = (token: string, secretKey: string) => {
             return new Promise<JwtPayload>((resolve, reject) => {
@@ -42,7 +35,6 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             });
         }
 
-        let token = req.cookies.token;
         const authHeader = req.headers.authorization;
         if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
             token = authHeader.split(" ")[1];
@@ -57,31 +49,39 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
                 console.log('Проблемы с Access токеном.');
             }
         }
-        const refreshToken = req.cookies.refreshToken;
+
         if (!refreshToken) {
-            return res.redirect("/auth/login");
+            res.clearCookie('token');
+            res.clearCookie('refreshToken');
+            return res.render(errorPageLocale, { code: '403', message: errorMsg });
         }
 
         try {
-            const user = await verifyToken(refreshToken, refreshTokenSecret!);
+            const decoded  = await verifyToken(refreshToken, refreshTokenSecret);
 
-            const newAccessToken = jwt.sign(user, JWTSecret, {
+            const user = await UsersModel.findById(decoded.id);
+
+            const payload = jwt.sign({ id: user.id, name: user.name, role: user.role }, JWTSecret, {
                 expiresIn: "15m"
             });
 
-            res.cookie("token", newAccessToken, {
+            res.cookie("token", payload, {
                 httpOnly: true,
                 secure: true,
                 maxAge: 15 * 60 * 1000,
             });
 
-            req.user = user;
+            req.user = {
+                id: user._id.toString(),
+                name: user.name,
+                role: user.role
+            };
             return next();
         } catch (error) {
-            const errorMsg = locale === "en" ? "Invalid refresh token." : "Недействительный refresh-токен.";
-            return res.render(errorPageLocale, { code: '403', message: errorMsg })
+            res.clearCookie('token');
+            res.clearCookie('refreshToken');
+            return res.render(errorPageLocale, { code: '403', message: errorMsg });
         }
-
     } catch (error) {
         next(error);
     }
