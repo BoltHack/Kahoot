@@ -6,7 +6,7 @@ function deleteGameMenu(gameId) {
     const deleteBorder = document.createElement('div');
     barrier.hidden = false;
     deleteBorder.innerHTML = `
-    <div class="delete-border">
+    <div class="delete-border media-menu-border">
         <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Are you sure you want to delete this game?` : `Вы уверены, что хотите удалить эту игру?`}</h4>
         <div class="delete-modal">
             <button id="requestBtn">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>

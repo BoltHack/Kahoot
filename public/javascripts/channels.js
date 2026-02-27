@@ -668,7 +668,7 @@ function msgDeleteMenu(channelId, msgId) {
     const barrier = document.getElementById('barrier');
 
     deleteMenu.innerHTML = `
-    <div class="delete-border">
+    <div class="delete-border media-menu-border">
         <h4 style="text-align: center; color: white;">${localeType === 'en' ? `Are you sure you want to delete this message?` : `Вы действительно хотите удалить это сообщение?`}</h4>
         <div class="delete-modal">
             <button id="requestBtn">${localeType === 'en' ? 'Delete' : 'Удалить'}</button>

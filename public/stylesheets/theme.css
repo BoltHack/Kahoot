@@ -680,6 +680,9 @@
         background: #16171d;
         border: 1px solid #313338;
     }
+    #bannedUsersCount {
+        color: #ffffff;
+    }
 
     /*accountDeletionProcess*/
     .accountDeletionProcess .container {

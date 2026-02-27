@@ -24,10 +24,9 @@ const socket = io();
         <img class="avatar" src="${user.userImage}" onmouseover="showUserName(event);">
     </div>
     
-    <div id="userName-${user.userId}" class="userName" hidden>
-      
+    <div id="userName-${user.userId}" class="userName media-menu-border" hidden>
         <div class="profile-tool">
-        ${user.userId === id ? `
+            ${user.userId === id ? `
                 <p>${localeType === 'en' ? 'You' : 'Вы'}</p>
                 <ul>
                     <li onclick="window.open('/user-profile/${user.userId}', '_blank')"><a>${localeType === 'en' ? 'Profile' : 'Профиль'}</a></li>
@@ -118,7 +117,7 @@ const socket = io();
             }
             if (!bannedUsersCount || !bannedUsersCount.length) {
                 banLoaderSvg.style.display = 'none';
-                users.innerHTML = `<p class="not-found">${localeType === 'en' ? 'No banned players.' : 'Нет забаненных игроков.'}</p>`;
+                users.textContent = localeType === 'en' ? 'No banned players.' : 'Нет забаненных игроков.';
             }
         });
 
