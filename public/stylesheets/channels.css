@@ -1308,10 +1308,16 @@ ul {
         display: none;
     }
 
-    /*.help-button {*/
-    /*    padding: 10px 20px;*/
-    /*    font-size: 14px;*/
-    /*}*/
+    .media-menu-border {
+        max-width: 600px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        /*display: flex !important;*/
+        transform: translateY(calc(100dvh - 100%)) !important;
+    }
 }
 @media (max-width: 480px) {
     .tooltip {
