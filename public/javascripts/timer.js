@@ -171,7 +171,7 @@ function sessionLogout() {
             localStorage.removeItem('sessionEndTime');
             localStorage.removeItem('accessTokenEndTime');
             localStorage.removeItem('refreshTokenEndTime');
-            window.location.href = "/auth/sessionExpired";
+            window.location.href = "/auth/login";
         }
 
     }).catch(error => {
