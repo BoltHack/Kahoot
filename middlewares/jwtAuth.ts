@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { UsersModel } from "../models/UsersModel";
 
 interface JwtPayload {
@@ -9,8 +10,22 @@ interface JwtPayload {
     role: string;
 }
 
+interface RefreshPayload {
+    id: string;
+    tokenVersion: number;
+}
+
 interface CustomRequest extends Request{
     user?: JwtPayload;
+}
+
+const verifyToken = <T>(token: string, secretKey: string): Promise<T> => {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) return reject(err);
+            resolve(decoded as T);
+        });
+    });
 }
 
 export const authenticateJWT = async (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -25,28 +40,14 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             return res.redirect('/auth/login');
         }
 
-        const locale = req.cookies['locale'] ?? 'en';
-
-        const errorPageLocale = locale === 'en' ? 'en/error' : 'ru/error';
-        const errorMsg = locale === "en" ? "Invalid token." : "Недействительный токен.";
-
-        const verifyToken = (token: string, secretKey: string) => {
-            return new Promise<JwtPayload>((resolve, reject) => {
-                jwt.verify(token, secretKey, (err, decoded) => {
-                    if (err) return reject(err);
-                    resolve(decoded as JwtPayload);
-                });
-            });
-        }
-
-        const authHeader = req.headers.authorization;
-        if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
-            token = authHeader.split(" ")[1];
-        }
+        // const authHeader = req.headers.authorization;
+        // if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
+        //     token = authHeader.split(" ")[1];
+        // }
 
         if (token) {
             try {
-                const user = await verifyToken(token, JWTSecret);
+                const user = await verifyToken<JwtPayload>(token, JWTSecret);
                 req.user = user;
                 return next();
             } catch {
@@ -54,24 +55,35 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             }
         }
 
+        // if (refreshToken.tokenVersion !== req.user.tokenVersion) {
+        //     res.clearCookie('token');
+        //     return res.redirect('/auth/login');
+        // }
+
         if (!refreshToken) {
             res.clearCookie('token');
-            res.clearCookie('refreshToken');
-            return res.render(errorPageLocale, { code: '403', message: errorMsg });
+            return res.redirect('/auth/login');
         }
 
         try {
-            const decoded  = await verifyToken(refreshToken, refreshTokenSecret);
-
+            const decoded  = await verifyToken<RefreshPayload>(refreshToken, refreshTokenSecret);
             const user = await UsersModel.findById(decoded.id);
 
-            const payload = jwt.sign({ id: user.id, name: user.name, role: user.role }, JWTSecret, {
+            const currentHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
+
+            if (!user || user.refreshTokenHash !== currentHash || user.tokenVersion !== decoded.tokenVersion) {
+                res.clearCookie('token');
+                res.clearCookie('refreshToken');
+                return res.status(403).json({ message: 'Session compromised' });
+            }
+
+            const payload = jwt.sign({ id: user._id.toString(), name: user.name, role: user.role }, JWTSecret, {
                 expiresIn: "15m"
             });
 
             res.cookie("token", payload, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 maxAge: 15 * 60 * 1000,
             });
 
@@ -84,7 +96,9 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
         } catch (error) {
             res.clearCookie('token');
             res.clearCookie('refreshToken');
-            return res.render(errorPageLocale, { code: '403', message: errorMsg });
+            console.log('logout');
+            return res.redirect('/auth/login');
+            // next(error);
         }
     } catch (error) {
         next(error);

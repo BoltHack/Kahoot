@@ -22,7 +22,7 @@ function parseMaxAge(duration: string): number {
     }
 }
 
-export async function refreshToken(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+export async function RefreshToken(req: Request, res: Response, next: NextFunction) {
     try {
         const JWTSecret = process.env.JWTSecret!;
         const refreshTokenSecret = process.env.refreshTokenSecret!;
@@ -48,8 +48,7 @@ export async function refreshToken(req: Request, res: Response, next: NextFuncti
             .update(refreshToken)
             .digest('hex');
 
-        if (pastHash !== user.refreshTokenHash) return res.sendStatus(403);
-        if (decoded.tokenVersion !== user.tokenVersion) return res.sendStatus(403);
+        if (pastHash !== user.refreshTokenHash || decoded.tokenVersion !== user.tokenVersion) return res.sendStatus(403);
 
         user.tokenVersion += 1;
         const newRefreshToken = jwt.sign({
@@ -69,8 +68,8 @@ export async function refreshToken(req: Request, res: Response, next: NextFuncti
             role: user.role
         }, JWTSecret, { expiresIn: '15m' });
 
-        res.cookie('token', newAccessToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: parseMaxAge('15m') });
-        res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: parseMaxAge('10d') });
+        res.cookie('token', newAccessToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('15m') });
+        res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('10d') });
 
         return res.json({ token: newAccessToken, newRefreshToken });
     } catch (err) {

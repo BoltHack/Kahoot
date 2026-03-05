@@ -47,7 +47,7 @@ export async function accessToken(req: Request, res: Response, next: NextFunctio
             role: user.role
         }, JWTSecret, { expiresIn: '15m' });
 
-        res.cookie('token', newAccessToken, { httpOnly: true, secure: true, maxAge: 15 * 60 * 1000 });
+        res.cookie('token', newAccessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000 });
 
         return res.json({ token: newAccessToken });
     } catch (err) {

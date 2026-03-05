@@ -10,5 +10,3 @@ export function errorHandler (err: any, req: Request, res: Response, next: NextF
 
     res.status(err.status || 500).render(locale === 'en' ? 'en/error' : 'ru/error', { code , message });
 }
-
-// module.exports = errorHandler;

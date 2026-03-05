@@ -20,5 +20,3 @@ export const appData = async (req: CustomRequest, res: Response, next: NextFunct
 
     next();
 }
-
-// module.exports = { appData };

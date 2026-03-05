@@ -1,28 +1,15 @@
-const Joi = require('@hapi/joi');
-const { UsersModel } = require("../models/UsersModel");
-const bcrypt = require('bcrypt');
+import {Request, Response, NextFunction} from "express";
 
-const validateRegister = async (req, res, next) => {
+import Joi from "joi";
+import bcrypt from "bcrypt";
+import { UsersModel } from "../models/UsersModel";
+
+export const validateRegister = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { email, name } = req.body;
-
-        let locale = req.cookies['locale'] || 'en';
+        let locale = req.cookies['locale'] ?? 'en';
 
         if (!req.cookies['locale']) {
             res.cookie('locale', locale, { httpOnly: true });
-        }
-
-        const existingUser = await UsersModel.findOne({ email });
-        const existingUsername = await UsersModel.findOne({ name });
-
-        if (existingUser) {
-            const errorMsg = locale === 'en' ? 'This Email address is already registered.' : 'Этот адрес электронной почты уже зарегистрирован.';
-            return res.status(400).json({ error: errorMsg });
-        }
-
-        if (existingUsername) {
-            const errorMsg = locale === 'en' ? 'The nickname is already taken.' : 'Никнейм уже занят.';
-            return res.status(400).json({ error: errorMsg });
         }
 
         let Schema = Joi.object({
@@ -46,26 +33,37 @@ const validateRegister = async (req, res, next) => {
         let { error } = Schema.validate(req.body);
         console.log('validation error', error);
         if (error) {
-            return res.json({ error: error.message });
+            return res.status(400).json({ error: error.message });
+        }
+
+        const { email, name } = req.body;
+
+        const existingUser = await UsersModel.findOne({ email });
+        const existingUsername = await UsersModel.findOne({ name });
+
+        if (existingUser) {
+            const errorMsg = locale === 'en' ? 'This Email address is already registered.' : 'Этот адрес электронной почты уже зарегистрирован.';
+            return res.status(400).json({ error: errorMsg });
+        }
+
+        if (existingUsername) {
+            const errorMsg = locale === 'en' ? 'The nickname is already taken.' : 'Никнейм уже занят.';
+            return res.status(400).json({ error: errorMsg });
         }
 
         next();
-    } catch (e) {
-        next(e);
-        return res.json({ error: e.message });
+    } catch (error: any) {
+        console.log('validate error:', error);
+        return res.status(500).json({ error: error.message });
     }
 }
 
-const validateLogin = async (req, res, next) => {
+export const validateLogin = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { email, password } = req.body;
-
-        let locale = req.cookies['locale'] || 'en';
+        let locale = req.cookies['locale'] ?? 'en';
         if (!req.cookies['locale']) {
             res.cookie('locale', locale, { httpOnly: true });
         }
-
-        const existingUser = await UsersModel.findOne({ email });
 
         const Schema = Joi.object({
             email: Joi.string().min(5).max(50).required()
@@ -76,6 +74,14 @@ const validateLogin = async (req, res, next) => {
         }).messages({
             'any.required': locale === 'en' ? 'Please fill in all input fields.' : 'Пожалуйста, заполните все поля ввода.',
         });
+        const { error } = Schema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        const { email, password } = req.body;
+
+        const existingUser = await UsersModel.findOne({ email });
 
         if (!existingUser) {
             const errorMsg = locale === 'en' ? 'Email address not found.' : 'Адрес электронной почты не найден.';
@@ -88,16 +94,9 @@ const validateLogin = async (req, res, next) => {
             return res.status(401).json({ error: errorMsg });
         }
 
-        const { error } = Schema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.message });
-        }
-
         next();
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ error: e.message });
+    } catch (error: any) {
+        console.error('validate error:', error);
+        return res.status(500).json({ error: error.message });
     }
 };
-
-module.exports = { validateRegister, validateLogin };

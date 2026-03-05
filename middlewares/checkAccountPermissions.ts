@@ -1,6 +1,5 @@
 import {Request, Response, NextFunction} from "express";
 
-const {authenticateJWT} = require("./jwtAuth");
 const {UsersModel} = require("../models/UsersModel");
 
 interface CustomRequest extends Request {
@@ -17,30 +16,21 @@ export const checkAccountPermissions = async (req: CustomRequest, res: Response,
             return next();
         }
 
-        await new Promise<void>((resolve, reject) => {
-            authenticateJWT(req, res, (err: any) => {
-                if (err) return resolve();
-                resolve();
-            });
-        });
+        if (!req.user || !req.user.id) return next();
 
-        if (!req.user || !req.user.id) {
-            return next();
-        }
-
-        const userInfo: any = await UsersModel.findById(req.user.id).lean();
+        const userInfo = await UsersModel.findById(req.user.id).lean();
 
         if (userInfo && userInfo.expiresAt) {
             if (req.originalUrl !== "/auth/account-deletion-process") {
-                console.log('name:', userInfo.name);
-                return res.redirect("/auth/account-deletion-process");
+                return res.status(403).json({
+                    message: "Access denied: account is scheduled for deletion",
+                    code: "ACCOUNT_DELETION_PENDING"
+                });
             }
         }
         next();
 
-    } catch (e) {
-        next(e);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
 }
-
-// module.exports = { checkAccountPermissions };

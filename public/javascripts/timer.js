@@ -1,10 +1,11 @@
 const ACCESS_TIMER_DURATION = 900000;
 const REFRESH_TIMER_DURATION = 777600000;
-function startTokenTimer (duration, tokenType) {
-    const endTime = Date.now() + duration;
+const SESSION_TIMER_DURATION = 86400000;
+function startTokenTimer (tokenType, tokenTimerType, tokenTimerDuration) {
+    const endTime = Date.now() + tokenTimerDuration;
 
-    localStorage.setItem(tokenType, endTime)
-    updateTokenTimer(tokenType);
+    localStorage.setItem(tokenTimerType, endTime)
+    updateTokenTimer(tokenType, tokenTimerType, tokenTimerDuration);
 }
 
 const timers = {
@@ -13,59 +14,58 @@ const timers = {
     sessionEndTime: null
 }
 
-function updateTokenTimer(tokenType) {
-    const endTime = parseInt(localStorage.getItem(tokenType), 10);
+function updateTokenTimer(tokenType, tokenTimerType, tokenTimerDuration) {
+    const endTime = parseInt(localStorage.getItem(tokenTimerType), 10);
     if (!endTime) return;
 
-    if (timers[tokenType]) {
-        clearInterval(timers[tokenType])
+    if (timers[tokenTimerType]) {
+        clearInterval(timers[tokenTimerType])
     }
 
-    timers[tokenType] = setInterval(() => {
+    timers[tokenTimerType] = setInterval(() => {
         const currentTime = Date.now();
         const remainingTime = endTime - currentTime;
 
-        if (remainingTime <= 0) {
-            clearInterval(timers[tokenType]);
-            timers[tokenType] = null;
-            getToken(tokenType);
-            localStorage.removeItem(tokenType);
+        // if (timers[tokenTimerType]) clearInterval(timers[tokenTimerType]);
+        if (remainingTime <= 30000) {
+            clearInterval(timers[tokenTimerType]);
+            timers[tokenTimerType] = null;
+            getToken(tokenType, tokenTimerType, tokenTimerDuration);
+            localStorage.removeItem(tokenTimerType);
         }
     }, 1000);
 }
 
-function storedTime(tokenType) {
-    const storedEndTime = parseInt(localStorage.getItem(tokenType), 10);
+function storedTime(tokenType, tokenTimerType, tokenTimerDuration) {
+    const storedEndTime = parseInt(localStorage.getItem(tokenTimerType), 10);
 
     if (storedEndTime) {
-        updateTokenTimer(tokenType);
+        updateTokenTimer(tokenType, tokenTimerType, tokenTimerDuration);
     } else {
-        getToken(tokenType);
+        getToken(tokenType, tokenTimerType, tokenTimerDuration);
     }
 }
 
 if (localStorage.getItem('token')) {
     console.log('Работа с токенами...');
-    storedTime('accessTokenEndTime');
-    storedTime('refreshTokenEndTime');
+    storedTime('accessToken', 'accessTokenEndTime', ACCESS_TIMER_DURATION);
+    storedTime('refreshToken', 'accessTokenEndTime', REFRESH_TIMER_DURATION);
 }
 
-async function getToken(tokenType) {
+async function getToken(tokenType, tokenTimerType, tokenTimerDuration) {
     if (localStorage.getItem('isRefreshing') === "true") return;
 
-    if (!['accessTokenEndTime', 'refreshTokenEndTime'].includes(tokenType)) {
+    if (!['accessToken', 'refreshToken'].includes(tokenType)) {
         console.error(`Неизвестный тип токена: ${tokenType}`);
         return;
     }
 
     if (!navigator.onLine) return;
 
-    const setTokenType = tokenType === 'accessTokenEndTime' ? '/accessToken' : '/refreshToken';
-
     try {
         localStorage.setItem('isRefreshing', 'true');
 
-        const response = await fetch(setTokenType, {
+        const response = await fetch('/' + tokenType, {
             method: 'POST',
             credentials: 'include'
         });
@@ -88,8 +88,7 @@ async function getToken(tokenType) {
             return;
         }
 
-        const duration = tokenType === 'accessTokenEndTime' ? ACCESS_TIMER_DURATION : REFRESH_TIMER_DURATION;
-        startTokenTimer(duration, tokenType);
+        startTokenTimer(tokenType, tokenTimerType, tokenTimerDuration);
         localStorage.setItem('token', token);
         console.log(`[${tokenType}] Токен успешно обновлен.`);
     } catch (error) {
@@ -104,19 +103,20 @@ async function getToken(tokenType) {
 }
 
 window.addEventListener('storage', (event) => {
-    if (['accessTokenEndTime', 'refreshTokenEndTime'].includes(event.key)) {
-        updateTokenTimer(event.key);
-    }
+    if (localStorage.getItem('isRefreshing') === "true") return;
+
+    // if (['accessTokenEndTime', 'refreshTokenEndTime'].includes(event.key)) {
+    //     updateTokenTimer(event.key);
+    // }
 
     if (event.key === 'sessionEndTime' && !event.newValue) {
         sessionLogout();
     }
-})
+});
 
 
 
 
-const SESSION_TIMER_DURATION = 86400000;
 const session = localStorage.getItem('session');
 function sessionTimerStart(duration) {
     const endTime = Date.now() + duration;

@@ -3,8 +3,6 @@ const {ForgottenPasswordsModel} = require("../models/ForgottenPasswords");
 const {AddressRecoveryRequestsModel} = require("../models/Address-recovery-requests");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const express = require('express');
-const router = express.Router();
 
 require('dotenv').config();
 
@@ -109,7 +107,8 @@ class AuthController {
             const { email, password } = req.body;
             const {ip} = req.params;
             const user = await UsersModel.findOne({ email });
-            const userId = await UsersModel.findById(user._id);
+
+            if (!user) return;
 
             const pageUrl = req.protocol + '://' + req.get('host');
             console.log('pageUrl', pageUrl);
@@ -131,19 +130,17 @@ class AuthController {
                 return res.status(401).json({ error: "Неверный адрес или пароль." });
             }
 
-            const payloadAccess = {
+            const accessToken = jwt.sign({
                 id: user._id,
                 name: user.name,
                 role: user.role,
-            }
+            }, JWTSecret, { expiresIn: '15m' });
 
-            const payloadRefresh = {
+            user.tokenVersion = (user.tokenVersion || 0) + 1;
+            const refreshToken = jwt.sign({
                 id: user._id,
                 tokenVersion: user.tokenVersion
-            }
-
-            const accessToken = jwt.sign(payloadAccess, JWTSecret, { expiresIn: '15m' });
-            const refreshToken = jwt.sign(payloadRefresh, refreshTokenSecret, { expiresIn: '10d' });
+            }, refreshTokenSecret, { expiresIn: '10d' });
 
             const hash = crypto
                 .createHash('sha256')
@@ -151,25 +148,18 @@ class AuthController {
                 .digest('hex');
             console.log('auth hash', hash);
             user.refreshTokenHash = hash;
-            user.tokenVersion = payloadAccess.tokenVersion;
-            user.save();
 
-            const id = user._id;
+            user.ip = ip;
+            await user.save();
 
-            await UsersModel.findByIdAndUpdate(
-                id,
-                { $set: { ip: ip } },
-                { new: true }
-            );
-
-            res.cookie('token', accessToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('15m') });
-            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: parseMaxAge('10d') });
+            res.cookie('token', accessToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('15m') });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('10d') });
             res.cookie('acceptCookies', 'true', { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 });
 
-            req.cookies['notifications'] !== userId.settings.notifications ? res.cookie('notifications', userId.settings.notifications, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            req.cookies['soundTrack'] !== userId.settings.soundTrack ? res.cookie('soundTrack', userId.settings.soundTrack, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            req.cookies['mainEffects'] !== userId.settings.mainEffects ? res.cookie('mainEffects', userId.settings.mainEffects, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
-            req.cookies['darkTheme'] !== userId.settings.darkTheme ? res.cookie('darkTheme', userId.settings.darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['notifications'] !== user.settings.notifications ? res.cookie('notifications', user.settings.notifications, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['soundTrack'] !== user.settings.soundTrack ? res.cookie('soundTrack', user.settings.soundTrack, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['mainEffects'] !== user.settings.mainEffects ? res.cookie('mainEffects', user.settings.mainEffects, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
+            req.cookies['darkTheme'] !== user.settings.darkTheme ? res.cookie('darkTheme', user.settings.darkTheme, { httpOnly: true, maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }) : '';
 
             return res.json({ token: accessToken, refreshToken, user, locale, previousPage });
         } catch (err) {
@@ -584,17 +574,12 @@ class AuthController {
 
     static logout = async (req, res, next) => {
         try {
-            const id = req.user.id;
-            await UsersModel.findByIdAndUpdate(id, {
-                refreshToken: '',
-            })
             req.cookies.user = null;
             res.clearCookie('token');
             res.clearCookie('refreshToken');
-            // res.clearCookie('accessTokenEndTime');
-            // res.clearCookie('refreshTokenEndTime');
+            console.log('Выход...');
             return res.json({status: "Успешный выход!"});
-        }catch (err){
+        } catch (err){
             next(err)
         }
     }

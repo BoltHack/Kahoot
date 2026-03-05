@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
 import jwt from "jsonwebtoken";
-import HttpErrors from "http-errors";
 
 interface UserData {
     role: string;

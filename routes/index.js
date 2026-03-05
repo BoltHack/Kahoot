@@ -16,7 +16,7 @@ const {
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
-const {refreshToken} = require('../middlewares/updateRefreshToken');
+const {RefreshToken} = require('../middlewares/updateRefreshToken');
 const {checkAccountPermissions} = require('../middlewares/checkAccountPermissions');
 const {appData} = require("../middlewares/appData");
 
@@ -81,7 +81,7 @@ router.post('/deleteMyChannel/:channel_id', authenticateJWT, appData, deleteMyCh
 router.post('/requestTechSupport', authenticateJWT, appData, requestTechSupport);
 
 router.post('/accessToken', accessToken);
-router.post('/refreshToken', refreshToken);
+router.post('/refreshToken', RefreshToken);
 router.post('/checkToken', checkToken);
 
 router.use('/auth', AuthRouter);
