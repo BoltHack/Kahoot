@@ -164,18 +164,19 @@ function sessionLogout() {
         const {error} = res;
         if (error) {
             console.log('Ошибка очистки данных:', error);
-        } else {
-            localStorage.removeItem('userInfo');
-            localStorage.removeItem('token');
-            localStorage.removeItem('session');
-            localStorage.removeItem('sessionEndTime');
-            localStorage.removeItem('accessTokenEndTime');
-            localStorage.removeItem('refreshTokenEndTime');
-            window.location.href = "/auth/login";
         }
+        // else {
+        //     localStorage.removeItem('userInfo');
+        //     localStorage.removeItem('token');
+        //     localStorage.removeItem('session');
+        //     localStorage.removeItem('sessionEndTime');
+        //     localStorage.removeItem('accessTokenEndTime');
+        //     localStorage.removeItem('refreshTokenEndTime');
+        //     window.location.href = "/auth/login";
+        // }
 
     }).catch(error => {
         console.log('Ошибка выдачи сессии', error);
-        logout();
+        // logout();
     })
 }

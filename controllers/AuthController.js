@@ -205,11 +205,35 @@ class AuthController {
                 return res.status(401).json({ error: errorMsg });
             }
 
+            const accessToken = jwt.sign({
+                id: userInfo._id,
+                name: userInfo.name,
+                role: userInfo.role,
+            }, JWTSecret, { expiresIn: '15m' });
+
+            userInfo.tokenVersion = (userInfo.tokenVersion || 0) + 1;
+            const refreshToken = jwt.sign({
+                id: userInfo._id,
+                tokenVersion: userInfo.tokenVersion
+            }, refreshTokenSecret, { expiresIn: '10d' });
+
+            const hash = crypto
+                .createHash('sha256')
+                .update(refreshToken)
+                .digest('hex');
+            console.log('auth hash', hash);
+            userInfo.refreshTokenHash = hash;
+
+            res.cookie('token', accessToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('15m') });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('10d') });
+
             const hashedPassword = await bcrypt.hash(newPassword, 10);
 
             const updatePassword = await UsersModel.findByIdAndUpdate(
-                user.id,
-                { password: hashedPassword },
+                { _id: userInfo._id },
+                {
+                    $set: { password: hashedPassword, tokenVersion: userInfo.tokenVersion },
+                },
                 { new: true }
             );
 

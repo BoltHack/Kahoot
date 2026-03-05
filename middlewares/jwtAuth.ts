@@ -40,14 +40,35 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             return res.redirect('/auth/login');
         }
 
-        // const authHeader = req.headers.authorization;
-        // if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
-        //     token = authHeader.split(" ")[1];
-        // }
+        let decodedRefresh: RefreshPayload | null = null;
+        try {
+            if (refreshToken) {
+                decodedRefresh  = await verifyToken<RefreshPayload>(refreshToken, refreshTokenSecret);
+            }
+        } catch (error) {
+            res.clearCookie('token');
+            res.clearCookie('refreshToken');
+            console.log('logout');
+            return res.redirect('/auth/login');
+        }
 
-        if (token) {
+        const authHeader = req.headers.authorization;
+        if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
+            token = authHeader.split(" ")[1];
+        }
+
+        if (token && decodedRefresh) {
             try {
                 const user = await verifyToken<JwtPayload>(token, JWTSecret);
+
+                const userInfo = await UsersModel.findById(user.id).select('tokenVersion');
+
+                if (!userInfo || userInfo.tokenVersion !== decodedRefresh.tokenVersion) {
+                    res.clearCookie('token');
+                    res.clearCookie('refreshToken');
+                    return res.status(403).json({ message: 'Session compromised' });
+                }
+
                 req.user = user;
                 return next();
             } catch {
@@ -55,51 +76,37 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             }
         }
 
-        // if (refreshToken.tokenVersion !== req.user.tokenVersion) {
-        //     res.clearCookie('token');
-        //     return res.redirect('/auth/login');
-        // }
-
-        if (!refreshToken) {
+        if (!decodedRefresh || !refreshToken) {
             res.clearCookie('token');
             return res.redirect('/auth/login');
         }
 
-        try {
-            const decoded  = await verifyToken<RefreshPayload>(refreshToken, refreshTokenSecret);
-            const user = await UsersModel.findById(decoded.id);
+        const userInfo = await UsersModel.findById(decodedRefresh.id);
 
-            const currentHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
+        const currentHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
 
-            if (!user || user.refreshTokenHash !== currentHash || user.tokenVersion !== decoded.tokenVersion) {
-                res.clearCookie('token');
-                res.clearCookie('refreshToken');
-                return res.status(403).json({ message: 'Session compromised' });
-            }
-
-            const payload = jwt.sign({ id: user._id.toString(), name: user.name, role: user.role }, JWTSecret, {
-                expiresIn: "15m"
-            });
-
-            res.cookie("token", payload, {
-                httpOnly: true,
-                secure: false,
-                maxAge: 15 * 60 * 1000,
-            });
-
-            req.user = {
-                id: user._id.toString(),
-                name: user.name,
-                role: user.role
-            };
-            return next();
-        } catch (error) {
+        if (!userInfo || userInfo.refreshTokenHash !== currentHash || userInfo.tokenVersion !== decodedRefresh.tokenVersion) {
             res.clearCookie('token');
             res.clearCookie('refreshToken');
-            console.log('logout');
-            return res.redirect('/auth/login');
-            // next(error);
+            return res.status(403).json({ message: 'Session compromised' });
         }
+
+        const payload = jwt.sign({ id: userInfo._id.toString(), name: userInfo.name, role: userInfo.role }, JWTSecret, {
+            expiresIn: "15m"
+        });
+
+        res.cookie("token", payload, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 15 * 60 * 1000,
+        });
+
+        req.user = {
+            id: userInfo._id.toString(),
+            name: userInfo.name,
+            role: userInfo.role
+        };
+        return next();
     } catch (error) {
         next(error);
     }
