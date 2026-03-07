@@ -126,7 +126,16 @@
                         <% if (userInfo.games_info.achievements && userInfo.games_info.achievements.length) { %>
                             <% userInfo.games_info.achievements.forEach(ach => { %>
                                 <div class="badges-item">
-                                    <img src="<%= ach.aImage %>" title="<%= ach.aName === 'achievement1' ? 'Achievement: Reached level 5' : '' %>" onclick="achievementsListMenu()">
+                                    <div class="tooltip-container">
+                                        <a class="friend-btn delete">
+                                            <div class="tooltip-btn">
+                                                <img src="<%= ach.aImage %>" onclick="achievementsListMenu()">
+                                            </div>
+                                            <div role="tooltip" class="tooltip t-top">
+                                                <span><%= ach.aName === 'achievement1' ? 'Achievement: Firstborn' : '' %></span>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                                 <% }) %>
                             <% } else { %>

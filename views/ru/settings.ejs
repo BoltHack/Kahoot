@@ -128,10 +128,10 @@
 </main>
 
 <div class="edit-menus">
-    <section id="editImage" hidden>
+    <section id="editImage" class="media-menu-border" hidden>
         <label>
             <img src="" class="profile-pic-edit" id="userImageView">
-            <input type="file" name="file" id="attachFile" style="display: none">
+            <input type="file" name="file" id="attachFile" style="display: none;">
         </label>
         <div class="edit-buttons">
             <input type="button" value="Сохранить" id="saveImageBtn">
@@ -140,10 +140,10 @@
         <button class="close-btn">X</button>
     </section>
 
-    <section id="editMainMenu" hidden>
+    <section id="editMainMenu" class="media-menu-border" hidden>
         <label>
             <img src="" class="pic-edit" id="mainBackgroundView" title="Нажми, чтобы изменить фон">
-            <input type="file" name="file" id="backgroundFile" style="display: none">
+            <input type="file" name="file" id="backgroundFile" style="display: none;">
         </label>
         <div class="edit-buttons">
             <input type="button" value="Сохранить" id="saveMainBackgroundBtn">
@@ -152,7 +152,7 @@
         <button class="close-btn">X</button>
     </section>
 
-    <section id="editStatusMenu" hidden>
+    <section id="editStatusMenu" class="media-menu-border" hidden>
         <div style="display: block; margin-top: -15px;">
             <h2>Сменить статус профиля</h2>
             <textarea name="status" id="status" placeholder="Введите желаемый статус" maxlength="90" required><%= userId.settings.status %></textarea>
@@ -164,7 +164,7 @@
         <button class="close-btn">X</button>
     </section>
 
-    <section id="editAboutMeMenu" hidden>
+    <section id="editAboutMeMenu" class="media-menu-border" hidden>
         <div style="display: block; margin-top: -15px;">
             <h2>Напишите что-нибудь о себе</h2>
             <textarea name="aboutMe" id="aboutMe" placeholder="Введите желаемый текст" maxlength="200" required><%= userId.settings.aboutMe %></textarea>
@@ -176,7 +176,7 @@
         <button class="close-btn">X</button>
     </section>
 
-    <section id="changePasswordMenu" hidden>
+    <section id="changePasswordMenu" class="media-menu-border" hidden>
         <div style="display: block; margin-top: -15px;">
             <h2>Смена пароля</h2>
             <div class="form-tools" id="changePasswordForm">
@@ -196,7 +196,7 @@
         <button class="close-btn">X</button>
     </section>
 
-    <section id="deleteAccountMenu" hidden>
+    <section id="deleteAccountMenu" class="media-menu-border" hidden>
         <div style="display: block; margin-top: -15px;">
             <h2>Удалить аккаунт<br/><%= userId.email %></h2>
             <span>Введите свой текущий пароль для удаления аккаунта.</span>

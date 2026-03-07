@@ -1,8 +1,10 @@
-// document.body.addEventListener('resize', () => {
-//     if (document.querySelector('.sidebar').display === 'none') {
-//         document.querySelector('.chat-messages').style.width = `${document.body.offsetWidth}px`;
-//     }
-// })
+const secretKey = "wBHC*QtE6ga%7tM1qE54T=pXVLI№iL";
+
+// function encryptData(data, secretKey) {
+//     const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();
+//     return ciphertext;
+// }
+
 
 function sendMessage() {
     const chatReply = document.querySelector('.chat-reply');
@@ -572,6 +574,13 @@ socket.on('editedMsg', async (editMsg) => {
                 </div>`
         }
     });
+
+    // const dataToEncrypt = linkify(editMsg.editMessage);
+    // const encrypted = encryptData(dataToEncrypt, secretKey);
+    // console.log('Зашифровано:', encrypted);
+    //
+    // const decrypted = CryptoJS.AES.decrypt(encrypted, secretKey).toString(CryptoJS.enc.Utf8);
+    // console.log("Расшифровано:", decrypted);
 });
 
 
