@@ -20,13 +20,8 @@ export const checkAccountPermissions = async (req: CustomRequest, res: Response,
 
         const userInfo = await UsersModel.findById(req.user.id).lean();
 
-        if (userInfo && userInfo.expiresAt) {
-            if (req.originalUrl !== "/auth/account-deletion-process") {
-                return res.status(403).json({
-                    message: "Access denied: account is scheduled for deletion",
-                    code: "ACCOUNT_DELETION_PENDING"
-                });
-            }
+        if (userInfo && userInfo.expiresAt && req.originalUrl !== "/auth/account-deletion-process") {
+            return res.redirect('/auth/account-deletion-process');
         }
         next();
 

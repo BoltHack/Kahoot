@@ -18,10 +18,13 @@ class ViewController {
             if (req.cookies['refreshToken']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
-                    if (user && user.id) {
-                        const getData = await UsersModel.findById(user.id);
+                    const getData = await UsersModel.findById(user.id);
+                    if (getData && getData.id && !getData.expiresAt) {
                         const mainBackgroundImage = getData.settings.mainBackgroundImage;
                         return res.render(appData.locale === 'en' ? 'en/main' : 'ru/main', { user, mainEffects, acceptCookies, mainBackgroundImage, backgroundImage: '', ...appData });
+                    }
+                    else if (getData && getData.expiresAt && req.originalUrl !== "/auth/account-deletion-process") {
+                        return res.redirect('/auth/account-deletion-process');
                     }
                 });
             }
