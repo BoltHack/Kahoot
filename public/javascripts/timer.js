@@ -71,6 +71,7 @@ async function getToken(tokenType, tokenTimerType, tokenTimerDuration) {
         });
 
         if (response.status === 401 || response.status === 403) {
+            console.log('error 401 || 403', response.status);
             sessionLogout();
             return;
         }
@@ -140,16 +141,17 @@ function sessionUpdateTimer() {
         if (endTime - Date.now() <= 0) {
             clearInterval(timers.sessionEndTime);
             sessionLogout();
+            console.log('g45fd56g465df4g65df465g4d65');
         }
     }, 1000);
 }
 
 const sessionEndTime = localStorage.getItem('sessionEndTime');
 
-if (sessionEndTime) {
+if (sessionEndTime && localStorage.getItem('session') === 'false') {
     sessionUpdateTimer();
 }
-else if (!sessionEndTime && localStorage.getItem('token')) {
+else if (!sessionEndTime && localStorage.getItem('token') && localStorage.getItem('session') === 'false') {
     sessionTimerStart(SESSION_TIMER_DURATION);
 }
 
@@ -165,15 +167,15 @@ function sessionLogout() {
         if (error) {
             console.log('Ошибка очистки данных:', error);
         }
-        // else {
-        //     localStorage.removeItem('userInfo');
-        //     localStorage.removeItem('token');
-        //     localStorage.removeItem('session');
-        //     localStorage.removeItem('sessionEndTime');
-        //     localStorage.removeItem('accessTokenEndTime');
-        //     localStorage.removeItem('refreshTokenEndTime');
-        //     window.location.href = "/auth/login";
-        // }
+        else {
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('token');
+            localStorage.removeItem('session');
+            localStorage.removeItem('sessionEndTime');
+            localStorage.removeItem('accessTokenEndTime');
+            localStorage.removeItem('refreshTokenEndTime');
+            window.location.href = "/auth/login";
+        }
 
     }).catch(error => {
         console.log('Ошибка выдачи сессии', error);
