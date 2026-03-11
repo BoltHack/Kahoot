@@ -186,21 +186,6 @@ footer button {
     transform: translateX(10px) translateY(2px);
 }
 
-.missed-messages {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: -10px;
-    margin-right: -10px;
-    background: #4caf50;
-    color: #ffffff;
-    padding: 5px 5px;
-    border-radius: 8px;
-    font-size: 13px;
-    text-align: center;
-    display: none;
-}
-
 .home-friends {
     display: flex;
 }

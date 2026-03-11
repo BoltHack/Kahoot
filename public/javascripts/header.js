@@ -261,10 +261,12 @@ showUsername();
 socket.on('sendMissedMessage', async (msgData) => {
     const missedMessagesCount = msgData.flatMap(link => link.missedMessages).reduce((sum, current) => sum + current, 0);
 
-    if (Number(missedMessagesCount) < 1) {
-        document.querySelector('.missed-messages').style.display = 'none';
-        return;
-    }
-    document.querySelector('.missed-messages').style.display = 'flex';
-    document.querySelector('.missed-messages').textContent = missedMessagesCount;
+    document.querySelectorAll('.missed-messages').forEach(mm => {
+        if (Number(missedMessagesCount) < 1) {
+            mm.style.display = 'none';
+            return;
+        }
+        mm.style.display = 'flex';
+        mm.textContent = missedMessagesCount;
+    });
 });
