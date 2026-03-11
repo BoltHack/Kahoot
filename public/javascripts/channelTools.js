@@ -84,3 +84,23 @@ function enableScroll() {
     document.body.style.overflowY = '';
     document.documentElement.classList.remove('scroll-bar-off');
 }
+
+let isSent = false;
+socket.on('sendMissedMessage', async (msgData) => {
+    isSent = true;
+    console.log('msgData', msgData);
+
+    msgData.forEach(link => {
+        document.querySelectorAll('.missed-messages-count-' + link.channelId).forEach(mm => {
+            if (link.missedMessages > 0) {
+                if (window.location.pathname.slice(14).toString() === link.channelId.toString() && isSent) {
+                    socket.emit('readMessages', link.channelId);
+                    isSent = false;
+                    return;
+                }
+                mm.querySelector('.missed-messages').style.display = 'flex';
+                mm.querySelector('.missed-messages').textContent = link.missedMessages;
+            }
+        });
+    });
+});

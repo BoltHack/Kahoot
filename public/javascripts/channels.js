@@ -1,4 +1,4 @@
-const secretKey = "wBHC*QtE6ga%7tM1qE54T=pXVLI№iL";
+// const secretKey = "wBHC*QtE6ga%7tM1qE54T=pXVLI№iL";
 
 // function encryptData(data, secretKey) {
 //     const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();
@@ -358,10 +358,16 @@ socket.on('onlineMod', async (data) => {
 });
 
 if (window.location.pathname.startsWith('/channels/')) {
-    socket.emit('joinRoom', channelId);
+    socket.emit('joinRoom', {
+        sendId,
+        channelId
+    });
 }
 else {
-    socket.emit('leaveRoom', channelId);
+    socket.emit('leaveRoom', {
+        sendId,
+        channelId
+    });
 }
 socket.on('deleteMessage', async (deleteMessage) => {
     console.log('deleteMessage', deleteMessage);

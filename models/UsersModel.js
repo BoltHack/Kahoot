@@ -16,6 +16,7 @@ const MyChannelsSchema = new Schema({
     channelId: { type: String },
     companionId: { type: String },
     companionName: { type: String },
+    missedMessages: { type: Number }
 });
 
 const MyFriendsSchema = new Schema({

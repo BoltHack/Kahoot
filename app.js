@@ -719,6 +719,24 @@ io.on('connection', async (socket) => {
 
 const clients = {};
 io.on('connection', async (socket) => {
+
+    async function user_channel_missed_messages(socketId, userId) {
+        try {
+            const userInfo = await UsersModel.findById(userId);
+
+            if (!userInfo) return;
+
+            const missedMessagesCount = userInfo.myChannels.map(channel => ({
+                channelId: channel.channelId,
+                missedMessages: channel.missedMessages || 0
+            }));
+
+            io.to(socketId).emit('sendMissedMessage', missedMessagesCount);
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
     socket.on('registerUser', async (userId) => {
         try {
             socket.userId = userId;
@@ -738,6 +756,8 @@ io.on('connection', async (socket) => {
                     }
                 }, 3000);
             }
+
+            await user_channel_missed_messages(clients[userId], userId);
         } catch (error) {
             console.error(`Ошибка при регистрации пользователя ${userId}:`, error);
         }
@@ -968,12 +988,29 @@ io.on('connection', async (socket) => {
         }
     });
 
-    socket.on('joinRoom', (channelId) => {
+    socket.on('joinRoom', async (data) => {
+        const { sendId, channelId } = data
+        clients[sendId] = socket.id;
+
+        await UsersModel.findByIdAndUpdate(
+            sendId,
+            {
+                $set: { 'myChannels.$[elem].missedMessages': 0 }
+            },
+            {
+                arrayFilters: [{ 'elem.channelId': channelId }],
+                new: true
+            }
+        )
+        await user_channel_missed_messages(clients[sendId], sendId);
+
         console.log(socket.id, 'зашёл в чат', channelId);
         socket.join(channelId);
     });
 
-    socket.on('leaveRoom', (channelId) => {
+    socket.on('leaveRoom', async (data) => {
+        const { channelId } = data
+
         console.log(socket.id, 'покинул чат', channelId);
         socket.leave(channelId);
     });
@@ -1040,19 +1077,56 @@ io.on('connection', async (socket) => {
                         message: replyId ? replyId.message : null
                     },
                     date: new Date
-                })
-                io.to(companionSocketId).emit('sendMissedMessage', {
-                    id: messageData.id,
-                    name: messageData.name,
-                    message: cleanMessage,
-                    image: userInfo.image,
-                    channelId: messageData.channelId
                 });
+                // io.to(companionSocketId).emit('sendMissedMessage', {
+                //     id: messageData.id,
+                //     name: messageData.name,
+                //     message: cleanMessage,
+                //     image: userInfo.image,
+                //     channelId: messageData.channelId
+                // });
+                await UsersModel.findByIdAndUpdate(
+                    messageData.companionId,
+                    {
+                        $inc: { 'myChannels.$[elem].missedMessages': 1 }
+                    },
+                    {
+                        arrayFilters: [{ 'elem.channelId': messageData.channelId }],
+                        new: true
+                    }
+                )
+
+                await user_channel_missed_messages(companionSocketId, messageData.companionId);
+
             }
         } catch (error) {
             console.log('error', error);
         }
     });
+
+    socket.on('readMessages', async (channelId) => {
+        const { userId } = socket;
+        try {
+            const userInfo = await UsersModel.findById(userId);
+            if (!userInfo) return;
+            clients[userInfo.id] = socket.id;
+
+            await UsersModel.findByIdAndUpdate(
+                userInfo.id,
+                {
+                    $set: { 'myChannels.$[elem].missedMessages': 0 }
+                },
+                {
+                    arrayFilters: [{ 'elem.channelId': channelId }],
+                    new: true
+                }
+            )
+
+            await user_channel_missed_messages(clients[userInfo.id], userInfo.id);
+        } catch (error) {
+            console.log('error', error);
+        }
+    })
 
     socket.on('deleteMsg', async (msgData) => {
         try {

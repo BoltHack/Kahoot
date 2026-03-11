@@ -374,6 +374,7 @@ html.scroll-bar-off {
 }
 
 .chat-link {
+    position: relative;
     color: #adb5bd;
     text-decoration: none;
     padding: 10px 12px;
@@ -408,6 +409,21 @@ html.scroll-bar-off {
 }
 .chat-link span:hover {
     color: white;
+}
+.missed-messages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: -10px;
+    margin-right: -10px;
+    background: #4caf50;
+    color: #ffffff;
+    padding: 3px 3px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+    display: none;
+    z-index: 5;
 }
 
 .chat-selected {
