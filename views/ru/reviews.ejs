@@ -192,7 +192,9 @@
         <% } %>
         <div class="edit-buttons">
             <input type="button" value="Отправить" id="sendReview">
-            <input type="button" value="Удалить" id="deleteReview" style="background: #CB3427;">
+            <% if (myInfo && myInfo.review.review) { %>
+                <input type="button" value="Удалить" id="deleteReview" style="background: #CB3427;">
+            <% } %>
         </div>
     </div>
 </section>
