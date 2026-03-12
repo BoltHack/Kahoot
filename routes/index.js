@@ -9,10 +9,11 @@ const {
     reviewsView
 } = require('../controllers/ViewController');
 const {
-    createGame, redaction, deleteGame, deleteAllGames, getData, getUserData, changeAvatar,
-    changeLocale, changeSettings, sendContacts, viewNews, checkToken, changeBackgroundImage,
-    languageConfirmation, changeStatus, changeAboutMe, checkChannel, deleteMyChannel,
-    createQuestion, editQuestion, deleteQuestion, requestTechSupport, sendReview
+    createGame, redaction, deleteGame, deleteAllGames, getData,
+    getUserData, changeAvatar, changeLocale, changeSettings, sendContacts,
+    viewNews, checkToken, changeBackgroundImage, languageConfirmation, changeStatus,
+    changeAboutMe, checkChannel, deleteMyChannel, createQuestion, editQuestion,
+    deleteQuestion, requestTechSupport, sendReview, findPlayer
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -79,6 +80,8 @@ router.post('/viewNews/:news_id', appData, viewNews);
 router.post('/checkChannel/:user_id', authenticateJWT, appData, checkChannel);
 router.post('/deleteMyChannel/:channel_id', authenticateJWT, appData, deleteMyChannel);
 router.post('/requestTechSupport', authenticateJWT, appData, requestTechSupport);
+
+router.post('/find-player', appData, findPlayer);
 
 router.post('/accessToken', accessToken);
 router.post('/refreshToken', RefreshToken);

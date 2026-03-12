@@ -77,10 +77,9 @@ class PostController {
             }
 
             return res.redirect(`/redaction/${newGame._id}`);
-        } catch (err){
+        } catch (err) {
             console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -112,8 +111,7 @@ class PostController {
 
             return res.redirect(`/redaction/${game_id}`);
         } catch (err) {
-            console.error(err);
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -181,7 +179,7 @@ class PostController {
 
         } catch (err) {
             console.error(err);
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -259,7 +257,7 @@ class PostController {
 
         } catch (err) {
             console.error(err);
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -301,7 +299,7 @@ class PostController {
             return res.status(200).json('Изменения успешно загружены' );
         } catch (err) {
             console.error(err);
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -338,7 +336,7 @@ class PostController {
             return res.status(200).json('Игра успешно удалена!');
         } catch (err) {
             console.error(err);
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -352,10 +350,9 @@ class PostController {
                 },
                 { new: true }
             )
-        }catch(err){
+        } catch(err){
             console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -371,8 +368,7 @@ class PostController {
             }
         }catch (err){
             console.error('Ошибка:', err);
-            res.status(500).json({error: err.message});
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -389,8 +385,7 @@ class PostController {
             }
         }catch (err){
             console.error('Ошибка:', err);
-            res.status(500).json({error: err.message});
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -452,8 +447,7 @@ class PostController {
             return res.status(200).json('Изменения успешно загружены' );
         } catch (err){
             console.log(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -528,8 +522,7 @@ class PostController {
             return res.status(200).json('Изменения успешно загружены' );
         } catch (err){
             console.log(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -546,8 +539,7 @@ class PostController {
             }
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -590,8 +582,7 @@ class PostController {
             });
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -616,8 +607,7 @@ class PostController {
 
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -646,8 +636,7 @@ class PostController {
 
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -665,8 +654,7 @@ class PostController {
             return res.redirect('/support');
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -705,8 +693,7 @@ class PostController {
             return res.redirect(`/admin/redaction-news/${postNews._id}`);
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -774,8 +761,7 @@ class PostController {
             }
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -850,8 +836,7 @@ class PostController {
             // return res.redirect(`/admin/redaction-news/${news_id}`);
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -872,8 +857,7 @@ class PostController {
             return res.redirect(`/read-news/${news_id}`);
         }catch (err){
             console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -901,8 +885,7 @@ class PostController {
             return res.redirect(user.role === 'Admin' ? '/admin/list-news' : '/news');
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -914,8 +897,7 @@ class PostController {
             return res.redirect('/admin/list-users');
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -926,8 +908,7 @@ class PostController {
             res.json({token});
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -948,8 +929,7 @@ class PostController {
             }
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -1000,8 +980,7 @@ class PostController {
             }
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -1022,8 +1001,7 @@ class PostController {
             return res.status(200).json('Канал успешно удалён!');
         } catch (err){
             console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -1044,8 +1022,7 @@ class PostController {
             return res.status(200).json({id: randomId});
         } catch (err){
             console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -1075,8 +1052,7 @@ class PostController {
             return res.status(200).json('Роль успешно изменена!');
         } catch (err){
             console.error(err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -1125,8 +1101,7 @@ class PostController {
 
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -1136,7 +1111,7 @@ class PostController {
             const userInfo = await UsersModel.findById(review_id);
 
             if (!userInfo) {
-                return res.status(404).json({ error: 'Пользователь или изображение не найдено' });
+                return res.status(404).json({ error: 'Пользователь не найдено' });
             }
 
             await UsersModel.findByIdAndUpdate(userInfo._id, { $set: { 'settings.myReview': {} } });
@@ -1144,8 +1119,26 @@ class PostController {
             return res.redirect('/admin/list-reviews')
         } catch (err) {
             console.error('Ошибка:', err);
-            res.status(500).json({ error: err.message });
-            next(err);
+            return res.status(500).json({ error: err.message });
+        }
+    }
+
+    static findPlayer = async (req, res, next) => {
+        try {
+            const bData = req.basicData;
+
+            const { user_name } = req.body;
+            const userInfo = await UsersModel.findOne({ name: user_name });
+
+            if (!userInfo) {
+                const errorMsg = bData.locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
+                return res.status(404).json({ error: errorMsg });
+            }
+
+            return res.status(200).json({ id: userInfo.id });
+        } catch (err) {
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
