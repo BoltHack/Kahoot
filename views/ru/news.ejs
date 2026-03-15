@@ -181,9 +181,7 @@
                                     <p><%= news.views %></p>
                                 </div>
                             </div>
-                            <form action="/viewNews/<%= news._id %>" method="POST">
-                                <button class="read-more">Читать полностью</button>
-                            </form>
+                            <a href="/read-news/<%= news._id %>" class="read-more">Читать полностью</a>
                         </div>
                     </article>
                 </li>

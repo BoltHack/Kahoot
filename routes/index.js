@@ -3,17 +3,18 @@ const AuthRouter = require('./AuthRouter');
 const AdminRouter = require('./AdminRouter');
 
 const {
-    mainView, createGameView, gameView, redactionView, myGamesView, settingsView, returnMenuView,
-    privacyPolicyView, rulesView, aboutUsView, supportView, newsView, readNewsView, aboutDonatesView,
-    userProfileView, channelsView, channelsMeView, createQuestionView, editQuestionView, contactsView,
+    mainView, createGameView, gameView, redactionView, myGamesView,
+    settingsView, returnMenuView, privacyPolicyView, rulesView, aboutUsView,
+    supportView, newsView, readNewsView, aboutDonatesView, userProfileView,
+    channelsView, channelsMeView, createQuestionView, editQuestionView, contactsView,
     reviewsView
 } = require('../controllers/ViewController');
 const {
     createGame, redaction, deleteGame, deleteAllGames, getData,
     getUserData, changeAvatar, changeLocale, changeSettings, sendContacts,
-    viewNews, checkToken, changeBackgroundImage, languageConfirmation, changeStatus,
-    changeAboutMe, checkChannel, deleteMyChannel, createQuestion, editQuestion,
-    deleteQuestion, requestTechSupport, sendReview, findPlayer
+    checkToken, changeBackgroundImage, languageConfirmation, changeStatus, changeAboutMe,
+    checkChannel, deleteMyChannel, createQuestion, editQuestion, deleteQuestion,
+    requestTechSupport, sendReview, findPlayer
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -74,8 +75,6 @@ router.post('/changeAboutMe', authenticateJWT, appData, changeAboutMe);
 router.post('/changeReview/:action_type', authenticateJWT, appData, sendReview);
 
 router.post('/sendContacts', appData, sendContacts);
-
-router.post('/viewNews/:news_id', appData, viewNews);
 
 router.post('/checkChannel/:user_id', authenticateJWT, appData, checkChannel);
 router.post('/deleteMyChannel/:channel_id', authenticateJWT, appData, deleteMyChannel);

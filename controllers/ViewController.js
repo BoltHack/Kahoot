@@ -409,37 +409,39 @@ class ViewController {
     static readNewsView = async (req, res, next) => {
         try {
             const appData = req.basicData;
+            const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
 
             const {news_id} = req.params;
 
-            const pageUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-
             if (!mongoose.Types.ObjectId.isValid(news_id)) {
-                const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            const readNews = await NewsModel.findById(news_id);
+            let readNews = await NewsModel.findByIdAndUpdate(
+                news_id,
+                { $inc: { 'views': 1 } },
+                { new: true }
+            )
 
-            if (!readNews.mainContent && !readNews.mainContent.mainSummary) {
-                const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+            if (!readNews || readNews.isVisibility === false) {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
-            if (readNews.isVisibility === false) {
-                const errorMsg = appData.locale === 'en' ? 'Not found.' : 'Страница не найдена.';
+
+            if (!readNews.mainContent || !readNews.mainContent.mainSummary) {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
             const authorId = await UsersModel.findById(readNews.author.authorId);
-            const authorImage = authorId.image;
+            const authorImage = authorId?.image || null;
+
+            const pageUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
             if (req.cookies['token']) {
                 await authenticateJWT(req, res, async () => {
                     const user = req.user;
                     return res.render(appData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user, readNews, authorImage, ngrokLink, pageUrl, ...appData});
                 });
-            }
-            else {
+            } else {
                 return res.render(appData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, ngrokLink, pageUrl, ...appData});
             }
         } catch (err) {

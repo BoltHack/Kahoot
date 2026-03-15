@@ -840,27 +840,6 @@ class PostController {
         }
     };
 
-    static viewNews = async (req, res, next) => {
-        try {
-            const {news_id} = req.params;
-            const viewNews = await NewsModel.findById(news_id);
-
-            await NewsModel.findOneAndUpdate(
-                { _id: news_id },
-                {
-                    $set: {
-                        views: viewNews.views + 1
-                    },
-                },
-                { new: true }
-            )
-            return res.redirect(`/read-news/${news_id}`);
-        }catch (err){
-            console.error(err);
-            return res.status(500).json({ error: err.message });
-        }
-    }
-
     static deleteNews = async (req, res, next) => {
         try {
             const {news_id} = req.params;

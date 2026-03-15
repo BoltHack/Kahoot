@@ -276,6 +276,7 @@ body {
 }
 
 .read-more {
+    font-size: 14px;
     border: 1px solid #007bff;
     color: #007bff;
     background: #fff;
@@ -285,6 +286,7 @@ body {
     cursor: pointer;
     margin-top: 20px;
     transition-duration: 0.2s;
+    text-decoration: none;
 }
 .read-more:hover {
     background: #007bff;
