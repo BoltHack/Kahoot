@@ -1,13 +1,14 @@
-const stickyHeight = document.getElementById('stickyHeight');
-const newsContainer = document.querySelector('.news-container');
-
-const height = Math.max(newsContainer.scrollHeight, newsContainer.offsetHeight);
-
 function setNewsContainerPosition() {
+    const stickyHeight = document.getElementById('stickyHeight');
+    const newsContainer = document.querySelector('.news-container');
+
+    const height = Math.max(newsContainer.scrollHeight, newsContainer.offsetHeight);
+
     stickyHeight.style.height = `${height}px`;
 }
-setNewsContainerPosition();
-
+window.addEventListener('load', () => {
+    setNewsContainerPosition();
+});
 window.addEventListener('resize', () => {
     setNewsContainerPosition();
 });
