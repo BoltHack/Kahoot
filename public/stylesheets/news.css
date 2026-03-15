@@ -482,6 +482,11 @@ body {
     .searchNews .info-card {
         display: none;
     }
+    .news .read-more {
+        display: flex;
+        margin-top: 20px;
+        justify-content: center;
+    }
 }
 @media (max-width: 600px) {
     .news-image img {
