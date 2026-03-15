@@ -17,7 +17,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/user-contacts' : 'ru/admin/user-contacts', {user, userContacts, locale, darkTheme});
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -33,7 +34,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/post-news' : 'ru/admin/post-news', {user, locale, darkTheme});
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -55,7 +57,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/redaction-news' : 'ru/admin/redaction-news', { newsInfo, user, locale, darkTheme });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -83,7 +86,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/list-news' : 'ru/admin/list-news', {user, listNews: enrichedNews, locale, darkTheme});
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -101,7 +105,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/list-users' : 'ru/admin/list-users', {user, allUsers, locale, darkTheme});
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -119,7 +124,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/admin-panel' : 'ru/admin/admin-panel', {user, allStaff, locale, darkTheme});
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -146,7 +152,8 @@ class AdminController{
 
             return res.render(locale === 'en' ? 'en/admin/list-reviews' : 'ru/admin/list-reviews', { user, allReviews: reviews, darkTheme, locale })
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 

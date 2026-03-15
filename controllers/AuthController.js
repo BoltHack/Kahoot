@@ -54,7 +54,8 @@ class AuthController {
                 return res.render(locale === 'en' ? 'en/auth/register' : 'ru/auth/register', { locale, darkTheme });
             }
         } catch (err) {
-            next(err)
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -77,8 +78,8 @@ class AuthController {
             await newUser.save();
             return res.json({href: "/auth/login", message: "Успешная регистрация!"});
         } catch (err) {
-            console.error(err);
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -98,7 +99,8 @@ class AuthController {
                 return res.render(locale === 'en' ? 'en/auth/login' : 'ru/auth/login', { locale, darkTheme });
             }
         } catch (err) {
-            next(err)
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -163,8 +165,8 @@ class AuthController {
 
             return res.json({ token: accessToken, refreshToken, user, locale, previousPage });
         } catch (err) {
-            console.log(err);
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -245,8 +247,8 @@ class AuthController {
             const successMessage = locale === 'en' ? 'Password successfully changed!' : 'Пароль успешно изменён!';
             return res.status(200).json({ message: successMessage });
         } catch (err) {
-            console.log(err);
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -265,8 +267,9 @@ class AuthController {
                 res.set('Cache-Control', 'no-store');
                 return res.render(locale === 'en' ? 'en/auth/sessionExpired' : 'ru/auth/sessionExpired', { locale, darkTheme });
             }
-        }catch (err){
-            next(err)
+        } catch (err){
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     };
 
@@ -284,7 +287,8 @@ class AuthController {
                 return res.render(locale === 'en' ? 'en/auth/forget-password' : 'ru/auth/forget-password', { darkTheme });
             }
         } catch (err) {
-            next(err)
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -351,7 +355,8 @@ class AuthController {
             });
 
         } catch (err){
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -369,7 +374,8 @@ class AuthController {
                 return res.render(locale === 'en' ? 'en/auth/account-recovery' : 'ru/auth/account-recovery', { email, darkTheme });
             }
         } catch (err) {
-            next(err)
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -419,7 +425,8 @@ class AuthController {
             updatePassword.save();
             return res.status(400).json('Пароль успешно изменён!');
         } catch (err) {
-            next(err)
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -458,8 +465,9 @@ class AuthController {
                 { new: true }
             )
             return res.status(200).json({ message: 'Аккаунт успешно переводен на стадию удаления!' });
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -479,8 +487,9 @@ class AuthController {
             } else {
                 return res.redirect('/');
             }
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -559,8 +568,9 @@ class AuthController {
 
                 return res.status(200).json({ message: 'Письмо отправлено!' })
             });
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -590,8 +600,9 @@ class AuthController {
             }
 
             return res.render(locale === 'en' ? 'en/auth/account-recover' : 'ru/auth/account-recover');
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -604,7 +615,8 @@ class AuthController {
             console.log('Выход...');
             return res.json({status: "Успешный выход!"});
         } catch (err){
-            next(err)
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 

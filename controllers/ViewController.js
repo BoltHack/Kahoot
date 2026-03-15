@@ -32,7 +32,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/main' : 'ru/main', { user: '', mainEffects, acceptCookies, mainBackgroundImage: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -43,7 +44,8 @@ class ViewController {
             const user = req.user;
             return res.render(appData.locale === 'en' ? 'en/create-game' : 'ru/create-game', { user, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
     static gameView = async (req, res, next) => {
@@ -80,7 +82,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? 'en/game' : 'ru/game', { user, myGame, gameId, soundTrack, ngrokLink, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -113,7 +116,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? 'en/redaction' : 'ru/redaction', { user, game_id, gamesInfo, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -142,7 +146,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? 'en/create-questions' : 'ru/create-questions', { user, gamesInfo, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -189,7 +194,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? `en/edit-question` : `ru/edit-question`, { user, game_id, questionInfo, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -207,7 +213,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? 'en/my-games' : 'ru/my-games', {user, getUserId, myGames, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -224,7 +231,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? 'en/settings' : 'ru/settings', { user, userId, theme, soundTrack, mainEffects, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -233,7 +241,8 @@ class ViewController {
             const appData = req.basicData;
             return res.render(appData.locale === 'en' ? 'en/return-menu' : 'ru/return-menu');
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -251,7 +260,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/privacyPolicy' : 'ru/privacyPolicy', {user: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -269,7 +279,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/rules' : 'ru/rules', { user: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -287,7 +298,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/aboutUs' : 'ru/aboutUs', { user: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -305,7 +317,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/about-donates' : 'ru/about-donates', {user: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -324,7 +337,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/support' : 'ru/support', { user: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -386,7 +400,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/news' : 'ru/news', {user: '', ...renderData, ...appData});
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -428,7 +443,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/read-news' : 'ru/read-news', {user: '', readNews, authorImage, ngrokLink, pageUrl, ...appData});
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -457,7 +473,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/user-profile' : 'ru/user-profile', {user: '', userInfo, ...appData});
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -503,7 +520,8 @@ class ViewController {
 
             return res.render(appData.locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, companion, myChannels, ...appData });
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -519,7 +537,8 @@ class ViewController {
             return res.render(appData.locale === 'en' ? 'en/channelsMe' : 'ru/channelsMe', { myData, myChannels, ...appData });
 
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -537,7 +556,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/contacts' : 'ru/contacts', { user: '', ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 
@@ -598,7 +618,8 @@ class ViewController {
                 return res.render(appData.locale === 'en' ? 'en/reviews' : 'ru/reviews', { user: '', myInfo: '', ...renderData, ...appData });
             }
         } catch (err) {
-            next(err);
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
         }
     }
 }
