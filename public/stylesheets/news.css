@@ -485,6 +485,8 @@ body {
     .news .read-more {
         display: flex;
         margin-top: 20px;
+        /*font-size: 16px;*/
+        /*font-weight: 550;*/
         justify-content: center;
     }
 }
