@@ -37,6 +37,10 @@ const messagesSchema = new Schema({
     date: {
         type: String,
         default: currentDate
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -59,7 +63,7 @@ const ChannelSchema = new Schema({
     date: {
         type: String,
         default: currentDate
-    },
+    }
 });
 
 const ChannelsModel = model('channel', ChannelSchema);

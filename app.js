@@ -1015,6 +1015,153 @@ io.on('connection', async (socket) => {
         socket.leave(channelId);
     });
 
+    let isProcessing = false;
+    let lastBeforeId  = null;
+
+    socket.on('loadMoreMessages', async (data) => {
+        try {
+            if (isProcessing) return;
+            isProcessing = true
+
+            const { sendId, channelId, beforeId } = data;
+
+            if (lastBeforeId  === beforeId) return;
+
+            const limit = 100;
+
+            const [channel, myData] = await Promise.all([
+                ChannelsModel.findById(channelId).lean(),
+                UsersModel.findById(sendId).lean()
+            ]);
+
+            if (!channel || !myData) return;
+
+            const match = myData.myChannels.find(c => c.channelId === channelId);
+            const companion = match ? await UsersModel.findById(match.companionId).lean() : null;
+
+            let messagesToSend = [];
+            let isMore = false;
+
+            if (!beforeId) {
+                messagesToSend = channel.messages.slice(-limit);
+                isMore = channel.messages.length > limit;
+            } else {
+                const index = channel.messages.findIndex(m => m._id.toString() === beforeId.toString());
+                if (index !== -1) {
+                    const start = Math.max(0, index - limit);
+                    messagesToSend = channel.messages.slice(start, index);
+                    isMore = start > 0;
+                }
+            }
+
+            socket.emit('loadMessages-front', {
+                myData: {
+                    _id: myData._id,
+                    id: myData.id,
+                    image: myData.image,
+                },
+                companion: companion?.image || null,
+                messages: messagesToSend,
+                isMore,
+                isScrollLoad: !!beforeId
+            });
+
+            lastBeforeId  = beforeId;
+        } catch (error) {
+            console.error('Socket error (loadMoreMessages):', error);
+        } finally {
+            isProcessing = false;
+        }
+    });
+
+    socket.on('loadMessages', async (data) => {
+        try {
+            const { sendId, channelId } = data;
+            const limit = 100;
+
+            const [channel, myData] = await Promise.all([
+                ChannelsModel.findById(channelId).lean(),
+                UsersModel.findById(sendId).lean()
+            ]);
+
+            if (!channel || !myData) return;
+
+            const match = myData.myChannels.find(c => c.channelId === channelId);
+            const companion = match ? await UsersModel.findById(match.companionId).lean() : null;
+
+            const messagesToSend = channel.messages.slice(-limit);
+            const isMore = channel.messages.length > limit;
+
+            socket.emit('loadMessages-front', {
+                myData: {
+                    _id: myData._id,
+                    id: myData.id,
+                    image: myData.image,
+                },
+                companion: companion.image,
+                messages: messagesToSend,
+                isMore,
+                isScrollLoad: false
+            });
+
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+
+    socket.on('find-notLoaded-message', async (data) => {
+        try {
+            console.log('Бэкенд: получен запрос на поиск', data.msgId);
+
+            const { channelId, msgId, msg_id, sendId } = data;
+            const [channel, myData] = await Promise.all([
+                ChannelsModel.findById(channelId).lean(),
+                UsersModel.findById(sendId).lean()
+            ]);
+
+            if (!channel || !myData) return;
+
+            // const match = myData.myChannels.find(c => c.channelId.toString() === channelId.toString());
+
+            let loadReplyMessage = channel.messages.find(m => m._id.toString() === msgId.toString());
+            const companion = await UsersModel.findById(loadReplyMessage.id).select('image').lean();
+            // loadReplyMessage.isDeleted = false;
+
+            // console.log('loadReplyMessage', loadReplyMessage);
+            console.log('companion', companion.image);
+
+            // const index = channel.messages.findIndex(m => m._id.toString() === msg_id.toString());
+            // console.log('Бэкенд: индекс сообщения =', index);
+            //
+            // if (index !== -1) {
+            //     console.log('Бэкенд: отправляем loadJumpMessages-front');
+            //     const range = 20;
+            //     const start = Math.max(0, index - range);
+            //     const end = index + range + 1;
+            //     const messagesToSend = channel.messages.slice(start, end);
+            //
+                socket.emit('loadMessages-front', {
+                    myData: {
+                        _id: loadReplyMessage._id,
+                        id: loadReplyMessage.id,
+                        image: loadReplyMessage.image,
+                    },
+                    companion: companion.image,
+                    messages: [loadReplyMessage],
+                    isMore: false,
+                    // isJump: true
+                    // isScrollLoad: !!beforeId
+                });
+
+                socket.emit('findReply_msg', { msgId, msg_id })
+            // } else {
+            //     console.log('Бэкенд: сообщение НЕ найдено в массиве');
+            // }
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+
     socket.on('sendMessage', async (messageData) => {
         try {
             const companionSocketId = clients[messageData.companionId]
@@ -1143,15 +1290,32 @@ io.on('connection', async (socket) => {
                 io.to(msgData.channelId).emit('deleteMessage', {
                     msgId: findDeleteMsg._id
                 })
+                // await ChannelsModel.findOneAndUpdate(
+                //     { _id: msgData.channelId },
+                //     {
+                //         $pull: {
+                //             'messages': {_id: findDeleteMsg._id}
+                //         },
+                //     },
+                //     { new: true }
+                // )
                 await ChannelsModel.findOneAndUpdate(
                     { _id: msgData.channelId },
                     {
-                        $pull: {
-                            'messages': {_id: findDeleteMsg._id}
-                        },
+                        $set: {
+                            'messages.$[elem].id': '',
+                            'messages.$[elem].name': '',
+                            'messages.$[elem].message': '',
+                            'messages.$[elem].date': '',
+                            'messages.$[elem].reply': [],
+                            'messages.$[elem].isDeleted': true
+                        }
                     },
-                    { new: true }
-                )
+                    {
+                        arrayFilters: [{ 'elem._id': findDeleteMsg._id }],
+                        new: true
+                    }
+                );
                 console.log('Сообщение удалено!');
                 socket.emit('broadcastDeleteMsg');
             }

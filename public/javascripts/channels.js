@@ -81,10 +81,16 @@ function findLastMessage() {
     const hash = window.location.hash;
 
     if (hash) {
-        // const replyMsgId = window.location.hash.slice(9, 33);
         const msgId = window.location.hash.slice(46);
+        const message = document.getElementById('message-' + msgId);
+        // const replyMsgId = window.location.hash.slice(9, 33);
 
-        document.getElementById('message-' + msgId).scrollIntoView({
+        if (!message) {
+            socket.emit('loadMessages', { sendId, channelId });
+            return;
+        }
+
+        message.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
         });
@@ -112,8 +118,10 @@ function scrollToBottom() {
 }
 
 window.addEventListener('load', () => {
+    socket.emit('loadMessages', { sendId, channelId });
     scrollToBottom();
     checkOnline();
+    setInterval(() => isChecking = true, 500);
 });
 
 socket.on('showMessages', async (showMessagesData) => {
@@ -410,9 +418,12 @@ function checkPageHeight() {
     const positionWarning = document.getElementById('positionWarning');
     const positionWarningMessageBtn = document.getElementById('positionWarningMessageBtn');
 
-    const messageDivScroll = messagesDiv.scrollTop;
+    // const messageDivScroll = messagesDiv.scrollTop;
     messagesDiv.addEventListener('scroll', function() {
-        if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
+        const scrollFromBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
+
+        // if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
+        if (scrollFromBottom > 30000) {
             positionWarning.style.display = 'flex';
             positionWarning.classList.add('show');
             if (window.location.hash) {
@@ -427,7 +438,7 @@ function checkPageHeight() {
             positionWarning.style.display = 'none';
             positionWarning.classList.remove('show');
         }
-    })
+    }, {passive: true});
 }
 function msgRedactionMenu(msgId) {
     const message = document.getElementById('msg-'+msgId);
@@ -635,9 +646,10 @@ function msgReplyMenu(msgId, msgName) {
 
 let findMsgFunc;
 function findReplyMsg(replyMsgId, msgId, type) {
+    console.log('find reply', replyMsgId, msgId);
     // console.log('replyMsgId', replyMsgId, 'msgId', msgId);
     const message = document.querySelectorAll('.message');
-    const replyMsg = document.getElementById('message-'+replyMsgId);
+    const replyMsg = document.getElementById('message-' + replyMsgId);
 
     if (!replyMsg) return;
 
@@ -709,3 +721,450 @@ function msgDeleteMenu(channelId, msgId) {
         document.body.removeChild(deleteMenu);
     });
 }
+
+function scrollToTop(channelId, msgId, msg_id, sendId) {
+    const topMessage = chatContainer.querySelector('.message');
+    if (!topMessage) return;
+    const beforeId = topMessage.dataset.id;
+    console.log('channelId', channelId);
+    socket.emit('find-notLoaded-message', { channelId, msgId, msg_id, sendId });
+    // const container = document.getElementById('messages');
+    //
+    // const interval = setInterval(() => {
+    //     const targetMsg = document.getElementById('message-', msgId);
+    //     const hash = window.location.hash
+    //
+    //     if (targetMsg) {
+    //         clearInterval(interval);
+    //         targetMsg.scrollIntoView({ behavior: 'smooth' });
+    //         return;
+    //     }
+    //
+    //     container.scrollBy(0, -10000);
+    //
+    //     findReplyMsg(msgId, msg_id);
+    //
+    //     createMessageElement(msg, myData, companion, allMessages);
+    //
+    //     // const activeReply = document.getElementById('replyContainer-' + msgId);
+    //     //
+    //     // activeReply.style.display = 'flex';
+    //     // activeReply.setAttribute('data-msgId', msgId);
+    //     // activeReply.id = `replyContainer-${msgId}`;
+    //     //
+    //     // activeReply.querySelector('.reply-avatar').src = replyData.toWho === myData.id ? myData.image : companion.image;
+    //     // activeReply.querySelector('.reply-name').textContent = replyData.name;
+    //
+    //     if (container.scrollTop === 0) {
+    //         console.log("Достигли начала истории, сообщение не найдено");
+    //         clearInterval(interval);
+    //     }
+    // }, 100);
+}
+
+let currentMode;
+let isMoreAbove;
+let isMoreBelow;
+socket.on('loadJumpMessages-front', (data) => {
+    console.log('Фронтенд: получили данные для прыжка!', data);
+
+    const { myData, messages, companion, isScrollLoad: isLoadStep, isJump } = data;
+
+    const chatContainer = document.getElementById('messages');
+
+    chatContainer.innerHTML = '';
+
+    if (messages && messages.length > 0) {
+        const oldHeight = chatContainer.scrollHeight;
+        const fragment = document.createDocumentFragment();
+
+        messages.forEach(msg => {
+            if (msg.isDeleted === true) {
+                return;
+            }
+
+            const node = createMessageElement(msg, myData, companion, messages);
+            fragment.appendChild(node);
+        });
+
+        if (isLoadStep) {
+            const infoBlock = chatContainer.querySelector('.companion-info');
+            infoBlock.after(fragment);
+            chatContainer.scrollTop = chatContainer.scrollHeight - oldHeight;
+        } else {
+            chatContainer.appendChild(fragment);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+
+    isMoreMessages = data.isMore;
+});
+
+socket.on('findReply_msg', async (data) => {
+    const { msgId, msg_id } = data;
+    console.log('find', msgId, msg_id);
+    setTimeout(() => findReplyMsg(msgId, msg_id, 'find'), 500);
+});
+
+let isMoreMessages = true;
+
+socket.on('loadMessages-front', async (data) => {
+    isLoading = false;
+    // isLoading = true;
+    // const loaderMessages = document.querySelector('.loaderMessages');
+    // loaderMessages.style.display = 'none';
+    console.log('data', data);
+    const { myData, messages, companion, isScrollLoad: isLoadStep } = data;
+
+    const chatContainer = document.getElementById('messages');
+
+    if (!isLoadStep) {
+        chatContainer.querySelectorAll('.message').forEach(el => el.remove());
+    }
+
+    // if (chatContainer.innerHTML.trim() === '') {
+    //     console.log('Контейнер действительно пуст', document.getElementById('message-template'));
+    // }
+    checkPageHeight();
+
+    if (messages && messages.length > 0) {
+        const oldHeight = chatContainer.scrollHeight;
+        const fragment = document.createDocumentFragment();
+
+        messages.forEach(msg => {
+            if (msg.isDeleted === true) return;
+
+            const node = createMessageElement(msg, myData, companion, messages);
+            fragment.appendChild(node);
+        });
+
+        if (isLoadStep) {
+            const infoBlock = chatContainer.querySelector('.companion-info');
+            infoBlock.after(fragment);
+            chatContainer.scrollTop = chatContainer.scrollHeight - oldHeight;
+        } else {
+            chatContainer.appendChild(fragment);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+
+    isMoreMessages = data.isMore;
+    // isLoading = true;
+});
+function createMessageElement(msg, myData, companion, allMessages) {
+    const template = document.getElementById('message-template');
+
+    if (!template) {
+        console.error("Ошибка: Шаблон 'message-template' не найден на странице!");
+        return document.createElement('div');
+    }
+
+    // chatContainer.innerHTML = '';
+
+    const clone = template.content.cloneNode(true);
+
+    const msgEl = clone.querySelector('.message');
+    // const isMyMsg = msg.id === myData.id;
+
+    msgEl.setAttribute('data-id', msg._id);
+    msgEl.id = `message-${msg._id}`;
+    // msgEl.onmouseover = () => showTools({msgId: msg._id, myId: msg.id});
+    msgEl.onmouseover = () => {
+        if (typeof showTools === 'function') {
+            showTools({
+                msgId: msg._id.toString(),
+                myId: msg.id
+            });
+        }
+    }
+
+    const avatar = clone.querySelector('.avatar');
+    const isMe = String(msg.id) === String(myData._id || myData.id);
+    avatar.src = isMe ? myData.image : companion;
+
+    if (!msg.isDeleted && msg.reply && msg.reply.length > 0) {
+        msgEl.classList.add('reply');
+        avatar.classList.add('reply-avatarTop');
+        const replyWrapper = clone.querySelector('.reply-wrapper');
+        replyWrapper.style.display = 'block';
+
+        const replyData = msg.reply[0];
+        // const msgEdited = allMessages.find(m => m._id.toString() === replyData.msgId.toString());
+        // const msgEdited = allMessages.find(m => m && m._id && m._id.toString() === replyData.msgId.toString());
+        // if (msgEdited && !msgEdited.isDeleted) {
+        //     const activeReply = clone.querySelector('.reply-active');
+        //     activeReply.style.display = 'flex';
+        //     activeReply.setAttribute('data-msgId', replyData.msgId);
+        //     activeReply.id = `replyContainer-${replyData.msgId}`;
+        //
+        //     clone.querySelector('.reply-avatar').src = replyData.toWho === myData.id ? myData.image : companion;
+        //     clone.querySelector('.reply-name').textContent = replyData.name;
+        //
+        //     const replyTextEl = clone.querySelector('.reply-text');
+        //     if (!msgEdited.edited) {
+        //         replyTextEl.textContent = msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message;
+        //         activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
+        //     } else {
+        //         replyTextEl.innerHTML = `${msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message} ${msgEdited.message.length >= 50 ? '<br/>' : ''} <span class="edited-msg">(Изменено)</span>`;
+        //         activeReply.onclick = () => findReplyMsg(replyData.msgId);
+        //         activeReply.href = `#message-${replyData.msgId}`;
+        //     }
+        // }
+        // else if (msgEdited && msgEdited.isDeleted) {
+        //     clone.querySelector('.reply-deleted').style.display = 'flex';
+        // } else {
+        //     clone.querySelector('.reply-not-loaded').style.display = 'flex';
+        //     const loadedReply = clone.querySelector('.reply-not-loaded');
+        //     loadedReply.id = `replyContainer-${replyData.msgId}`;
+        //     loadedReply.setAttribute('data-msgId', replyData.msgId);
+        //     loadedReply.onclick = () => scrollToTop(channelId, msg._id, sendId);
+        //     loadedReply.href = `#message-${replyData.msgId}`;
+        // }
+
+        const activeReply = clone.querySelector('.reply-active');
+        const deletedReply = clone.querySelector('.reply-deleted');
+        const notLoadedReply = clone.querySelector('.reply-not-loaded');
+
+        activeReply.style.display = 'none';
+        deletedReply.style.display = 'none';
+        notLoadedReply.style.display = 'none';
+
+        const msgEdited = allMessages.find(m => m && m._id && m._id.toString() === replyData.msgId.toString());
+
+        if (msgEdited && !msgEdited.isDeleted) {
+            activeReply.style.display = 'flex';
+            activeReply.setAttribute('data-msgId', replyData.msgId);
+            activeReply.id = `replyContainer-${replyData.msgId}`;
+
+            clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
+            clone.querySelector('.reply-name').textContent = replyData.name;
+
+            const replyTextEl = clone.querySelector('.reply-text');
+
+            if (!msgEdited.edited) {
+                replyTextEl.textContent = msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message;
+                activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
+            } else {
+                replyTextEl.innerHTML = `${msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message} <span class="edited-msg">(Изменено)</span>`;
+                activeReply.onclick = () => findReplyMsg(replyData.msgId);
+            }
+        }
+        else if (msgEdited && msgEdited.isDeleted) {
+            deletedReply.style.display = 'flex';
+        }
+        else {
+            notLoadedReply.style.display = 'flex';
+            notLoadedReply.setAttribute('data-msgId', replyData.msgId);
+            notLoadedReply.id = `replyContainer-${replyData.msgId}`;
+
+            // clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
+            // clone.querySelector('.reply-name').textContent = replyData.name;
+
+            notLoadedReply.onclick = () => scrollToTop(channelId, replyData.msgId, msg._id, sendId);
+        }
+    }
+
+    clone.querySelector('.username').textContent = msg.name;
+    clone.querySelector('.timestamp').textContent = formatChatDate(msg.date);
+
+    const textEl = clone.querySelector('.text');
+    textEl.id = `msg-${msg._id}`;
+    textEl.innerHTML = linkify(msg.message);
+
+    if (msg.edited) {
+        const ed = clone.querySelector('.edited-msg');
+        ed.id = `edited-${msg._id}`;
+        ed.style.display = 'inline';
+    }
+
+    const tools = clone.querySelector('.tools');
+    tools.id = `tools-${msg._id}`;
+
+    const menuTrigger = tools.querySelector('.menu-trigger');
+    const toolsSvg = tools.querySelector('.tools-svg')
+    const dropdownMenu = tools.querySelector('.dropdown-menu')
+
+    menuTrigger.onclick = () => openToolsMenu(`${msg._id}`);
+
+    toolsSvg.innerHTML = `
+        ${isMe ? `
+            <div onclick="msgRedactionMenu('${msg._id}')">
+                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z"></path>
+                </svg>
+            </div>
+        ` : `
+<!--        <div class="menu-trigger" onclick="openToolsMenu('${msg._id}')">⋯</div>-->
+        `}
+        <div onclick="msgReplyMenu('${msg._id}', '${msg.name}')">
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+        </div>
+            `;
+
+    dropdownMenu.innerHTML = `
+        <button onclick="msgReplyMenu('${msg._id}', '${msg.name}')">
+            ${localeType === 'en' ? 'Reply' : 'Ответить'}
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+        </button>
+        ${isMe ? `
+        <button onclick="msgReplyMenu('${msg._id}', '${msg.name}')">
+            ${localeType === 'en' ? 'Edit' : 'Редактировать'}
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path>
+            </svg>
+        </button>
+        <div class="tools-line"></div>
+        <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${msg._id}')">
+            ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M3 1a1 1 0 0 1 1 1v.82l8.67-1.45A2 2 0 0 1 15 3.35v1.47l5.67-.95A2 2 0 0 1 23 5.85v7.3a2 2 0 0 1-1.67 1.98l-9 1.5a2 2 0 0 1-1.78-.6c-.2-.21-.08-.54.18-.68a5.01 5.01 0 0 0 1.94-1.94c.18-.32-.1-.66-.46-.6L4 14.18V21a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1Z" class=""></path>
+            </svg>
+        </button>
+    ` : ''}
+       
+    `
+    // }
+
+    return clone;
+}
+
+function linkify(text) {
+    const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+    return text.replace(urlPattern, url => `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`);
+}
+
+function formatChatDate(dateStr) {
+    const d = new Date(dateStr);
+    const now = new Date();
+    const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
+    const yesterday = new Date(); yesterday.setDate(now.getDate() - 1);
+
+    if (localeType === 'en') {
+        if (isSameDay(d, now)) {
+            return 'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+        } else if (isSameDay(d, yesterday)) {
+            return 'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+        } else {
+            return d.toLocaleString('en-US', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+    } else {
+        if (isSameDay(d, now)) {
+            return 'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+        } else if (isSameDay(d, yesterday)) {
+            return 'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+        } else {
+            return d.toLocaleString('ru-RU', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+    }
+    // if (isSameDay(d, now)) return 'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+    // if (isSameDay(d, yesterday)) return 'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+    // return d.toLocaleString('ru-RU', {day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+}
+
+
+const chatContainer = document.getElementById('messages');
+let isLoading = false;
+let isChecking = false;
+let lastScrollTop = 0;
+let downscrollObserver = null;
+let currentTarget = null;
+
+function initDownscroll(container) {
+    if (downscrollObserver) downscrollObserver.disconnect();
+
+    downscrollObserver = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !isLoading) {
+            isLoading = true;
+            console.log('Порог достигнут.');
+
+            downscrollObserver.unobserve(entry.target);
+            currentTarget = null;
+        }
+    }, { root: container, threshold: 0.1 });
+}
+
+
+chatContainer.addEventListener('scroll', () => {
+    const currentScroll = chatContainer.scrollTop;
+
+    if (currentScroll <= 50 && !isLoading) {
+        const topMessage = chatContainer.querySelector('.message');
+        if (topMessage) {
+            isLoading = true;
+            const beforeId = topMessage.dataset.id;
+
+            console.log('Загрузка старых сообщений...');
+            socket.emit('loadMoreMessages', { sendId, channelId, beforeId });
+        }
+    }
+
+    // if (!isChecking) return;
+
+    if (currentScroll > lastScrollTop) {
+        const messages = chatContainer.querySelectorAll('.message');
+
+        const lastMessage = messages[messages.length - 20];
+
+        if (currentTarget !== lastMessage && isChecking) {
+            if (currentTarget) downscrollObserver.unobserve(currentTarget);
+
+            console.log('lastMessage', lastMessage);
+            currentTarget = lastMessage;
+            // downscrollObserver.observe(lastMessage);
+            // initDownscroll(chatContainer);
+            initDownscroll()
+        }
+
+        // const observer = new IntersectionObserver((entries) => {
+        //     entries.forEach(entry => {
+        //         if (entry.isIntersecting) {
+        //             console.log("Элемент в поле зрения!");
+        //         }
+        //     });
+        // });
+
+        // const targetMessage = topMessage[80];
+
+        // console.log('test', messageId);
+
+
+        // const target = document.getElementById(targetMessage);
+
+        // downscrollObserver.observe(targetMessage);
+        // observer.observe(target);
+
+        // scrollDownObserver.disconnect();
+
+        // scrollDownObserver.observe(target);
+        // const lastId = topMessage.dataset.id;
+
+        // console.log('messages.length', messages.length);
+
+        // if (currentTarget !== messages[80]) {
+        //     if (currentTarget) downscrollObserver.unobserve(currentTarget);
+        //
+        //     currentTarget = messages[80];
+        //     downscrollObserver.observe(currentTarget);
+        //
+        //     console.log('Установлена точка подгрузки на 80-е сообщение', currentTarget);
+        // }
+        // console.log('currentTarget', currentTarget);
+        console.log('Листаем ВНИЗ');
+    } else {
+        console.log('Листаем ВВЕРХ');
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+});

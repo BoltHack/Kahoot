@@ -492,7 +492,9 @@ class ViewController {
             }
 
             const user = req.user;
-            const channel = await ChannelsModel.findById(channel_id);
+            const channel = await ChannelsModel.findById(channel_id, {
+                messages: { $slice: 50 }
+            });
 
             const myData = await UsersModel.findById(user.id);
             const myChannels = myData.myChannels;
@@ -520,7 +522,7 @@ class ViewController {
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(appData.locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, companion, myChannels, ...appData });
+            return res.render(appData.locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, messages: channel.messages, companion, myChannels, ...appData });
         } catch (err) {
             console.error('Ошибка:', err);
             return res.status(500).json({ error: err.message });
