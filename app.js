@@ -1017,15 +1017,16 @@ io.on('connection', async (socket) => {
 
     let isProcessing = false;
     let lastBeforeId  = null;
+    let lastAfterId  = null;
 
-    socket.on('loadMoreMessages', async (data) => {
+    socket.on('loadMessages', async (data) => {
         try {
             if (isProcessing) return;
             isProcessing = true
 
             const { sendId, channelId, beforeId } = data;
 
-            if (lastBeforeId  === beforeId) return;
+            if (beforeId && lastBeforeId  === beforeId) return;
 
             const limit = 100;
 
@@ -1063,6 +1064,7 @@ io.on('connection', async (socket) => {
                 companion: companion?.image || null,
                 messages: messagesToSend,
                 isMore,
+                direction: 'top',
                 isScrollLoad: !!beforeId
             });
 
@@ -1074,9 +1076,15 @@ io.on('connection', async (socket) => {
         }
     });
 
-    socket.on('loadMessages', async (data) => {
+    socket.on('loadMessages-bottom', async (data) => {
         try {
-            const { sendId, channelId } = data;
+            if (isProcessing) return;
+            isProcessing = true
+
+            const { sendId, channelId, afterId } = data;
+
+            if (afterId && lastAfterId === afterId) return;
+
             const limit = 100;
 
             const [channel, myData] = await Promise.all([
@@ -1089,8 +1097,16 @@ io.on('connection', async (socket) => {
             const match = myData.myChannels.find(c => c.channelId === channelId);
             const companion = match ? await UsersModel.findById(match.companionId).lean() : null;
 
-            const messagesToSend = channel.messages.slice(-limit);
-            const isMore = channel.messages.length > limit;
+            let messagesToSend = [];
+            let hasMore = false;
+            let end;
+
+            const index = channel.messages.findIndex(m => m._id.toString() === afterId.toString());
+            if (index !== -1) {
+                end = Math.min(channel.messages.length, index + 1 + limit);
+                messagesToSend = channel.messages.slice(index + 1, end);
+                hasMore = end < channel.messages.length;
+            }
 
             socket.emit('loadMessages-front', {
                 myData: {
@@ -1100,20 +1116,23 @@ io.on('connection', async (socket) => {
                 },
                 companion: companion.image,
                 messages: messagesToSend,
-                isMore,
-                isScrollLoad: false
+                isMore: hasMore,
+                direction: 'bottom',
+                isScrollLoad: !!afterId
             });
 
+            lastAfterId  = afterId;
         } catch (error) {
             console.log('error', error);
+        } finally {
+            isProcessing = false;
         }
     });
 
     socket.on('find-notLoaded-message', async (data) => {
         try {
-            console.log('Бэкенд: получен запрос на поиск', data.msgId);
-
             const { channelId, msgId, msg_id, sendId } = data;
+
             const [channel, myData] = await Promise.all([
                 ChannelsModel.findById(channelId).lean(),
                 UsersModel.findById(sendId).lean()
@@ -1121,42 +1140,36 @@ io.on('connection', async (socket) => {
 
             if (!channel || !myData) return;
 
-            // const match = myData.myChannels.find(c => c.channelId.toString() === channelId.toString());
+            let index = channel.messages.findIndex(m => m._id.toString() === msgId.toString());
 
-            let loadReplyMessage = channel.messages.find(m => m._id.toString() === msgId.toString());
-            const companion = await UsersModel.findById(loadReplyMessage.id).select('image').lean();
-            // loadReplyMessage.isDeleted = false;
+            if (index !== -1) {
+                const range = 50;
 
-            // console.log('loadReplyMessage', loadReplyMessage);
-            console.log('companion', companion.image);
+                const start = Math.max(0, index - range);
+                const end = Math.min(channel.messages.length, index + range + 1);
 
-            // const index = channel.messages.findIndex(m => m._id.toString() === msg_id.toString());
-            // console.log('Бэкенд: индекс сообщения =', index);
-            //
-            // if (index !== -1) {
-            //     console.log('Бэкенд: отправляем loadJumpMessages-front');
-            //     const range = 20;
-            //     const start = Math.max(0, index - range);
-            //     const end = index + range + 1;
-            //     const messagesToSend = channel.messages.slice(start, end);
-            //
+                const messagesToSend = channel.messages.slice(start, end);
+
+                const hasMoreStart = start > 0;
+                const hasMoreEnd = end < channel.messages.length;
+
+                const targetMsg = channel.messages[index];
+
+                const companion = await UsersModel.findById(targetMsg.id).select('image').lean();
+
                 socket.emit('loadMessages-front', {
                     myData: {
-                        _id: loadReplyMessage._id,
-                        id: loadReplyMessage.id,
-                        image: loadReplyMessage.image,
+                        _id: myData._id,
+                        id: myData.id,
+                        image: myData.image,
                     },
-                    companion: companion.image,
-                    messages: [loadReplyMessage],
-                    isMore: false,
-                    // isJump: true
-                    // isScrollLoad: !!beforeId
+                    companion: companion.image || null,
+                    messages: messagesToSend,
+                    isMore: hasMoreStart || hasMoreEnd,
+                    direction: 'top'
                 });
-
-                socket.emit('findReply_msg', { msgId, msg_id })
-            // } else {
-            //     console.log('Бэкенд: сообщение НЕ найдено в массиве');
-            // }
+                socket.emit('findReply_msg', { msgId, msg_id });
+            }
         } catch (error) {
             console.log('error', error);
         }

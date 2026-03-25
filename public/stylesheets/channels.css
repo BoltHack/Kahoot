@@ -92,8 +92,10 @@ html.scroll-bar-off {
     flex-direction: column;
     min-height: 0;
 }
-
-.message {
+#messages {
+    overflow-anchor: auto;
+}
+.message, .load-message {
     /*margin-bottom: 18px;*/
     animation: fadeIn 0.4s ease;
     padding: 10px 20px 10px;
@@ -105,7 +107,6 @@ html.scroll-bar-off {
     background-color: #212429;
 }
 .message.reply-highlight {
-
     transition-duration: 0.3s;
     background-color: #363a53;
 }
@@ -117,6 +118,15 @@ html.scroll-bar-off {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+#bottom-sentinel {
+    /*height: 1px;*/
+    /*position: fixed;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+    /*display: none;*/
 }
 
 
@@ -1372,10 +1382,10 @@ ul {
     100% { opacity: 0.1; }
 }
 
-.message.is-loading .avatar,
-.message.is-loading .username,
-.message.is-loading .timestamp,
-.message.is-loading .text {
+.load-message.is-loading .avatar,
+.load-message.is-loading .username,
+.load-message.is-loading .timestamp,
+.load-message.is-loading .text {
     background-color: #4e5058;
     border-radius: 4px;
     color: transparent !important;
@@ -1384,15 +1394,15 @@ ul {
     animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
-.message.is-loading .avatar {
+.load-message.is-loading .avatar {
     background-color: #313338;
 }
 
-.message.is-loading .username { width: 120px; height: 16px; display: inline-block; }
-.message.is-loading .timestamp { width: 60px; height: 12px; display: inline-block; margin-left: 8px; }
-.message.is-loading .text { width: 80%; height: 14px; margin-top: 8px; }
+.load-message.is-loading .username { width: 120px; height: 16px; display: inline-block; }
+.load-message.is-loading .timestamp { width: 60px; height: 12px; display: inline-block; margin-left: 8px; }
+.load-message.is-loading .text { width: 80%; height: 14px; margin-top: 8px; }
 
-.message.is-loading .tools,
-.message.is-loading .edited-msg {
+.load-message.is-loading .tools,
+.load-message.is-loading .edited-msg {
     display: none !important;
 }

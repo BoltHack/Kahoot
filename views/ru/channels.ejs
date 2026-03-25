@@ -63,7 +63,7 @@
         <% } %>
     </div>
 
-    <div class="chat-container">
+    <div class="chat-container" id="chat-container">
         <div class="chat-header">
             <div class="chat-position">
                 <div class="avatar-position" onclick="window.location.href = '/user-profile/<%= companion.id %>'">
@@ -166,10 +166,11 @@
                     </span>
                     <div></div>
                 </div>
+
+                <div id="top-sentinel"></div>
             </div>
-
             <div class="loaderMessages">
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -184,7 +185,7 @@
                     </div>
                 </div>
 
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -198,7 +199,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -212,7 +213,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -226,7 +227,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -240,7 +241,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -254,7 +255,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -268,7 +269,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -282,7 +283,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -296,7 +297,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="message is-loading">
+                <div class="load-message is-loading">
                     <div class="message-container">
                         <div class="avatar"></div>
                         <div class="message-content">
@@ -383,6 +384,8 @@
             </template>
 
         </div>
+
+        <div id="bottom-sentinel"></div>
 
         <div class="media-chat-info">
             <div class="positionWarning" id="positionWarning">
