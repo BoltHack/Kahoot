@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= companion.role === 'TechSupport' ? 'Tech support - ' + companion.name : companion.role === 'Admin' ? 'Admin - ' + companion.name : 'Chat with ' + companion.name %></title>
+    <title> <%= companion.role === 'TechSupport' ? 'Tech support - ' + companion.name : companion.role === 'Admin' ? 'Admin - ' + companion.name : 'Chat with ' + companion.name %> </title>
     <link rel="stylesheet" href="/stylesheets/channels.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
@@ -42,7 +42,9 @@
                             <a class="chat-link chat-selected">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more-icon lucide-message-circle-more"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
                                 <span class="link-companion"><%= channels.companionName %></span>
-                                <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">x</span>
+                                <span class="del-companion" onclick="deleteMyChannel('<%= channels.channelId %>')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                </span>
                                 <span class="missed-messages"></span>
                             </a>
                         <% } else { %>
@@ -61,7 +63,7 @@
         <% } %>
     </div>
 
-    <div class="chat-container">
+    <div class="chat-container" id="chat-container">
         <div class="chat-header">
             <div class="chat-position">
                 <div class="avatar-position" onclick="window.location.href = '/user-profile/<%= companion.id %>'">
@@ -128,11 +130,11 @@
             <div class="companion-info">
                 <img src="<%= companion.image %>">
                 <h2><%= companion.name %></h2>
-                <p>This is the beginning of the history of your personal messages with <strong><%= companion.name %></strong>.</p>
+                <p>Это начало истории ваших личных сообщений с <strong><%= companion.name %></strong>.</p>
                 <% if ( myData.myFriends.some(friend => friend.id.toString() === companion.id.toString()) ) { %>
-                    <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>', '<%= companion.name %>')">➖ Remove Friend</button>
+                    <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>', '<%= companion.name %>')">➖ Remove from friends</button>
                 <% } else { %>
-                    <button class="btn" id="addFriend" onclick="addFriend('<%= companion.name %>')">➕ Add Friend</button>
+                    <button class="btn" id="addFriend" onclick="addFriend('<%= companion.name %>')">➕ Add as friend</button>
                 <% } %>
                 <div class="chat-line">
                     <div></div>
@@ -164,9 +166,8 @@
                     </span>
                     <div></div>
                 </div>
-
-                <div id="top-sentinel"></div>
             </div>
+
             <div class="loaderMessages">
                 <div class="load-message is-loading">
                     <div class="message-container">
@@ -309,6 +310,8 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="top-sentinel"></div>
             </div>
 
             <template id="message-template">
@@ -336,7 +339,7 @@
                                         <br/>
                                     </div>
                                     <div class="reply-text-container">
-                                        <div class="reply-text">The original message has been deleted.</div>
+                                        <div class="reply-text">The original message has been deleted</div>
                                     </div>
                                 </a>
 
@@ -382,6 +385,8 @@
             </template>
 
         </div>
+
+        <div id="bottom-sentinel"></div>
 
         <div class="media-chat-info">
             <div class="positionWarning" id="positionWarning">
@@ -463,6 +468,7 @@
 <div class="toast-container" id="toast-container"></div>
 
 <div class="new-barrier" id="barrier" hidden></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();

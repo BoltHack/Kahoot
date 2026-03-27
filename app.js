@@ -1026,7 +1026,7 @@ io.on('connection', async (socket) => {
 
             const { sendId, channelId, beforeId } = data;
 
-            if (beforeId && lastBeforeId  === beforeId) return;
+            if (beforeId && lastBeforeId === beforeId) return;
 
             const limit = 100;
 
@@ -1054,6 +1054,8 @@ io.on('connection', async (socket) => {
                     isMore = start > 0;
                 }
             }
+
+            if (!isMore) socket.emit('no-data-to-scroll');
 
             const enrichedMessages = await Promise.all(messagesToSend.map(async (msg) => {
                 if (msg.reply && msg.reply[0] && msg.reply[0].msgId && !msg.reply[0].message) {

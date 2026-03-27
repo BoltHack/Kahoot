@@ -737,52 +737,12 @@ socket.on('findReply_msg', async (data) => {
     setTimeout(() => findReplyMsg(msgId, msg_id, 'find'), 500);
 });
 
+socket.on('no-data-to-scroll', async () => {
+    document.querySelector('.loaderMessages').style.display = 'none';
+    document.querySelector('.companion-info').style.display = 'block';
+});
+
 let isMoreMessages = true;
-
-// socket.on('loadMessages-front', (data) => {
-//     isLoading = false;
-//     const { messages, myData, companion, isMore, direction } = data;
-//     const chatContainer = document.getElementById('messages');
-//     const loaderMessages = document.querySelector('.loaderMessages');
-//
-//     if (!direction || direction === 'init') {
-//         chatContainer.innerHTML = '';
-//     }
-//
-//     loaderMessages.style.display = 'none';
-//
-//     if (messages && messages.length > 0) {
-//         const oldHeight = chatContainer.scrollHeight;
-//         // const oldScrollTop = chatContainer.scrollTop;
-//         const fragment = document.createDocumentFragment();
-//
-//         messages.forEach(msg => {
-//             if (msg.isDeleted) return;
-//             const node = createMessageElement(msg, myData, companion, messages);
-//             fragment.appendChild(node);
-//         });
-//
-//         if (direction === 'top') {
-//             const infoBlock = chatContainer.querySelector('.companion-info');
-//             if (infoBlock) {
-//                 infoBlock.after(fragment);
-//             } else {
-//                 chatContainer.prepend(fragment);
-//             }
-//             chatContainer.scrollTop = chatContainer.scrollHeight - oldHeight;
-//
-//         } else if (direction === 'bottom') {
-//             chatContainer.appendChild(fragment);
-//
-//         } else {
-//             chatContainer.appendChild(fragment);
-//             chatContainer.scrollTop = chatContainer.scrollHeight;
-//         }
-//     }
-//
-//     isMoreMessages = isMore;
-// });
-
 
 socket.on('loadMessages-front', async (data) => {
     isLoading = false;
@@ -790,13 +750,10 @@ socket.on('loadMessages-front', async (data) => {
     const { myData, messages, companion, isScrollLoad: isLoadStep, isMore, direction } = data;
 
     const chatContainer = document.getElementById('messages');
-    const loaderMessages = document.querySelector('.loaderMessages');
 
     if (!direction || direction === 'init') {
         chatContainer.innerHTML = '';
     }
-
-    loaderMessages.style.display = 'none';
 
     if (!isLoadStep) {
         chatContainer.querySelectorAll('.message').forEach(el => el.remove());
@@ -826,32 +783,6 @@ socket.on('loadMessages-front', async (data) => {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     }
-
-    // const allNotLoaded = chatContainer.querySelectorAll('.reply-not-loaded[style*="display: flex"]');
-    //
-    // allNotLoaded.forEach(notLoadedBlock => {
-    //     const replyMsgId = notLoadedBlock.getAttribute('data-msgId');
-    //     // Ищем, не появилось ли это сообщение в обновленном общем списке
-    //     const foundMsg = messages.find(m => m._id.toString() === replyMsgId.toString());
-    //
-    //     if (foundMsg && !foundMsg.isDeleted) {
-    //         const parentMessage = notLoadedBlock.closest('.message');
-    //         const activeBlock = parentMessage.querySelector('.reply-active');
-    //
-    //         // Скрываем "загрузку", показываем "активный"
-    //         notLoadedBlock.style.display = 'none';
-    //         activeBlock.style.display = 'flex';
-    //
-    //         // Обновляем текст и аватарку в активном блоке
-    //         activeBlock.querySelector('.reply-name').textContent = foundMsg.name;
-    //         const textEl = activeBlock.querySelector('.reply-text');
-    //         const truncated = foundMsg.message.length > 50 ? foundMsg.message.slice(0, 50) + '...' : foundMsg.message;
-    //         textEl.textContent = truncated;
-    //
-    //         // Не забудь обновить клик
-    //         activeBlock.onclick = () => findReplyMsg(replyMsgId, parentMessage.getAttribute('data-id'), 'find');
-    //     }
-    // });
 
     isMoreMessages = isMore;
 });
