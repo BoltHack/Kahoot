@@ -737,10 +737,6 @@ socket.on('findReply_msg', async (data) => {
     setTimeout(() => findReplyMsg(msgId, msg_id, 'find'), 500);
 });
 
-socket.on('no-data-to-scroll', async () => {
-    document.querySelector('.loaderMessages').style.display = 'none';
-    document.querySelector('.companion-info').style.display = 'block';
-});
 
 let isMoreMessages = true;
 
@@ -785,6 +781,11 @@ socket.on('loadMessages-front', async (data) => {
     }
 
     isMoreMessages = isMore;
+
+    if (!isMoreMessages) {
+        document.querySelector('.loaderMessages').style.display = 'none';
+        document.querySelector('.companion-info').style.display = 'block';
+    }
 });
 
 function createMessageElement(msg, myData, companion, allMessages) {

@@ -1055,8 +1055,6 @@ io.on('connection', async (socket) => {
                 }
             }
 
-            if (!isMore) socket.emit('no-data-to-scroll');
-
             const enrichedMessages = await Promise.all(messagesToSend.map(async (msg) => {
                 if (msg.reply && msg.reply[0] && msg.reply[0].msgId && !msg.reply[0].message) {
                     const replyData = msg.reply[0];
