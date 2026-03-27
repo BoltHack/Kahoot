@@ -651,7 +651,10 @@ function findReplyMsg(replyMsgId, msgId, type) {
     const message = document.querySelectorAll('.message');
     const replyMsg = document.getElementById('message-' + replyMsgId);
 
-    if (!replyMsg) return;
+    if (!replyMsg) {
+        scrollToTop(channelId, replyMsgId, msgId, sendId)
+        return;
+    }
 
     message.forEach(msgs => {
         msgs.style.backgroundColor = '';
@@ -824,6 +827,32 @@ socket.on('loadMessages-front', async (data) => {
         }
     }
 
+    // const allNotLoaded = chatContainer.querySelectorAll('.reply-not-loaded[style*="display: flex"]');
+    //
+    // allNotLoaded.forEach(notLoadedBlock => {
+    //     const replyMsgId = notLoadedBlock.getAttribute('data-msgId');
+    //     // Ищем, не появилось ли это сообщение в обновленном общем списке
+    //     const foundMsg = messages.find(m => m._id.toString() === replyMsgId.toString());
+    //
+    //     if (foundMsg && !foundMsg.isDeleted) {
+    //         const parentMessage = notLoadedBlock.closest('.message');
+    //         const activeBlock = parentMessage.querySelector('.reply-active');
+    //
+    //         // Скрываем "загрузку", показываем "активный"
+    //         notLoadedBlock.style.display = 'none';
+    //         activeBlock.style.display = 'flex';
+    //
+    //         // Обновляем текст и аватарку в активном блоке
+    //         activeBlock.querySelector('.reply-name').textContent = foundMsg.name;
+    //         const textEl = activeBlock.querySelector('.reply-text');
+    //         const truncated = foundMsg.message.length > 50 ? foundMsg.message.slice(0, 50) + '...' : foundMsg.message;
+    //         textEl.textContent = truncated;
+    //
+    //         // Не забудь обновить клик
+    //         activeBlock.onclick = () => findReplyMsg(replyMsgId, parentMessage.getAttribute('data-id'), 'find');
+    //     }
+    // });
+
     isMoreMessages = isMore;
 });
 
@@ -840,6 +869,7 @@ function createMessageElement(msg, myData, companion, allMessages) {
     const clone = template.content.cloneNode(true);
 
     const msgEl = clone.querySelector('.message');
+    // const messagesCount = msgEl.querySelector('.reply-container');
     // const isMyMsg = msg.id === myData.id;
 
     msgEl.setAttribute('data-id', msg._id);
@@ -865,37 +895,6 @@ function createMessageElement(msg, myData, companion, allMessages) {
         replyWrapper.style.display = 'block';
 
         const replyData = msg.reply[0];
-        // const msgEdited = allMessages.find(m => m._id.toString() === replyData.msgId.toString());
-        // const msgEdited = allMessages.find(m => m && m._id && m._id.toString() === replyData.msgId.toString());
-        // if (msgEdited && !msgEdited.isDeleted) {
-        //     const activeReply = clone.querySelector('.reply-active');
-        //     activeReply.style.display = 'flex';
-        //     activeReply.setAttribute('data-msgId', replyData.msgId);
-        //     activeReply.id = `replyContainer-${replyData.msgId}`;
-        //
-        //     clone.querySelector('.reply-avatar').src = replyData.toWho === myData.id ? myData.image : companion;
-        //     clone.querySelector('.reply-name').textContent = replyData.name;
-        //
-        //     const replyTextEl = clone.querySelector('.reply-text');
-        //     if (!msgEdited.edited) {
-        //         replyTextEl.textContent = msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message;
-        //         activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
-        //     } else {
-        //         replyTextEl.innerHTML = `${msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message} ${msgEdited.message.length >= 50 ? '<br/>' : ''} <span class="edited-msg">(Изменено)</span>`;
-        //         activeReply.onclick = () => findReplyMsg(replyData.msgId);
-        //         activeReply.href = `#message-${replyData.msgId}`;
-        //     }
-        // }
-        // else if (msgEdited && msgEdited.isDeleted) {
-        //     clone.querySelector('.reply-deleted').style.display = 'flex';
-        // } else {
-        //     clone.querySelector('.reply-not-loaded').style.display = 'flex';
-        //     const loadedReply = clone.querySelector('.reply-not-loaded');
-        //     loadedReply.id = `replyContainer-${replyData.msgId}`;
-        //     loadedReply.setAttribute('data-msgId', replyData.msgId);
-        //     loadedReply.onclick = () => scrollToTop(channelId, msg._id, sendId);
-        //     loadedReply.href = `#message-${replyData.msgId}`;
-        // }
 
         const activeReply = clone.querySelector('.reply-active');
         const deletedReply = clone.querySelector('.reply-deleted');
@@ -905,39 +904,89 @@ function createMessageElement(msg, myData, companion, allMessages) {
         deletedReply.style.display = 'none';
         notLoadedReply.style.display = 'none';
 
-        const msgEdited = allMessages.find(m => m && m._id && m._id.toString() === replyData.msgId.toString());
+        // const replyMsgId  = replyData.msgId.toString();
+        // let msgEdited = allMessages.find(m => m && m._id && m._id.toString() === replyMsgId);
 
-        if (msgEdited && !msgEdited.isDeleted) {
+        // console.log('replyData.msgId', replyData.msgId.toString());
+        // console.log('msg.reply[0].msgId', msg.reply[0].msgId.toString());
+
+        // if (!msgEdited) {
+        //     const existingMsgEl = document.getElementById(`message-${replyMsgId}`);
+        //     if (existingMsgEl) {
+        //         msgEdited = {
+        //             message: existingMsgEl.querySelector('.text').innerText,
+        //             name: existingMsgEl.querySelector('.username').textContent,
+        //             isDeleted: false,
+        //             edited: !!existingMsgEl.querySelector('.edited-msg')
+        //         };
+        //     }
+        // }
+
+        // console.log('replyData', replyData);
+
+        if (replyData.isDeleted) {
+            deletedReply.style.display = 'flex';
+        } else if (replyData.message && !replyData.isDeleted) {
             activeReply.style.display = 'flex';
             activeReply.setAttribute('data-msgId', replyData.msgId);
             activeReply.id = `replyContainer-${replyData.msgId}`;
 
+            // const myCurrentId = myData.id || myData._id.toString();
+            // const isToMe = String(replyData.toWho) === String(myCurrentId);
+            // console.log('test', replyData.toWho, myData.id);
             clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
             clone.querySelector('.reply-name').textContent = replyData.name;
 
             const replyTextEl = clone.querySelector('.reply-text');
 
-            if (!msgEdited.edited) {
-                replyTextEl.textContent = msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message;
+            if (!replyData.edited) {
+                replyTextEl.textContent = replyData.message.length > 50 ? replyData.message.slice(0, 50) + '...' : replyData.message;
                 activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
             } else {
-                replyTextEl.innerHTML = `${msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message} <span class="edited-msg">(Изменено)</span>`;
+                replyTextEl.innerHTML = `${replyData.message.length > 100 ? replyData.message.slice(0, 100) + '...' : replyData.message} <span class="edited-msg">(Изменено)</span>`;
                 activeReply.onclick = () => findReplyMsg(replyData.msgId);
             }
-        }
-        else if (msgEdited && msgEdited.isDeleted) {
-            deletedReply.style.display = 'flex';
-        }
-        else {
+        } else {
             notLoadedReply.style.display = 'flex';
             notLoadedReply.setAttribute('data-msgId', replyData.msgId);
             notLoadedReply.id = `replyContainer-${replyData.msgId}`;
 
-            // clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
+            // const myCurrentId = myData.id || myData._id.toString();
+            // const isToMe = String(replyData.toWho) === String(myCurrentId);
+            clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
             // clone.querySelector('.reply-name').textContent = replyData.name;
 
             notLoadedReply.onclick = () => scrollToTop(channelId, replyData.msgId, msg._id, sendId);
         }
+
+        // if (msgEdited) {
+        //     if (msgEdited.isDeleted) {
+        //         deletedReply.style.display = 'flex';
+        //     } else {
+        //         activeReply.style.display = 'flex';
+        //         activeReply.setAttribute('data-msgId', replyData.msgId);
+        //         activeReply.id = `replyContainer-${replyData.msgId}`;
+        //
+        //         clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
+        //         clone.querySelector('.reply-name').textContent = replyData.name;
+        //
+        //         const replyTextEl = clone.querySelector('.reply-text');
+        //
+        //         if (!msgEdited.edited) {
+        //             replyTextEl.textContent = msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message;
+        //             activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
+        //         } else {
+        //             replyTextEl.innerHTML = `${msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message} <span class="edited-msg">(Изменено)</span>`;
+        //             activeReply.onclick = () => findReplyMsg(replyData.msgId);
+        //         }
+        //     }
+        // } else {
+        //     notLoadedReply.style.display = 'flex';
+        //     notLoadedReply.setAttribute('data-msgId', replyData.msgId);
+        //     notLoadedReply.id = `replyContainer-${replyData.msgId}`;
+        //
+        //     notLoadedReply.onclick = () => scrollToTop(channelId, replyData.msgId, msg._id, sendId);
+        // }
     }
 
     clone.querySelector('.username').textContent = msg.name;

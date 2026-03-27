@@ -26,12 +26,12 @@ const messagesSchema = new Schema({
             id: {
                 type: String
             },
-            name: {
-                type: String,
-            },
-            message: {
-                type: String,
-            }
+            // name: {
+            //     type: String,
+            // },
+            // message: {
+            //     type: String,
+            // }
         }
     ],
     date: {

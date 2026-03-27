@@ -1055,14 +1055,43 @@ io.on('connection', async (socket) => {
                 }
             }
 
+            const enrichedMessages = await Promise.all(messagesToSend.map(async (msg) => {
+                if (msg.reply && msg.reply[0] && msg.reply[0].msgId && !msg.reply[0].message) {
+                    const replyData = msg.reply[0];
+                    const originalMsg = await ChannelsModel.findOne(
+                        { _id: channelId, "messages._id": replyData.msgId },
+                        { "messages.$": 1 }
+                    );
+
+                    if (originalMsg && originalMsg.messages[0]) {
+                        const origin = originalMsg.messages[0];
+                        const limit = !origin.edited ? 50 : 100;
+                        if (origin.isDeleted) {
+                            replyData.message = "";
+                            replyData.isDeleted = true;
+                        } else {
+                            const text = origin.message || "";
+                            replyData.message = text.slice(0, limit);
+                            replyData.isDeleted = false;
+                        }
+                        // replyData.message = origin.message.slice(0, limit);
+                        replyData.id = origin.id;
+                        replyData.name = origin.name;
+                        // replyData.isDeleted = origin.isDeleted || false;
+                        replyData.edited = origin.edited || false;
+                    }
+                }
+                return msg;
+            }));
+
             socket.emit('loadMessages-front', {
                 myData: {
                     _id: myData._id,
-                    id: myData.id,
+                    id: myData._id.toString(),
                     image: myData.image,
                 },
                 companion: companion?.image || null,
-                messages: messagesToSend,
+                messages: enrichedMessages,
                 isMore,
                 direction: 'top',
                 isScrollLoad: !!beforeId
@@ -1108,14 +1137,35 @@ io.on('connection', async (socket) => {
                 hasMore = end < channel.messages.length;
             }
 
+            const enrichedMessages = await Promise.all(messagesToSend.map(async (msg) => {
+                if (msg.reply && msg.reply[0] && msg.reply[0].msgId && !msg.reply[0].message) {
+                    const replyData = msg.reply[0];
+                    const originalMsg = await ChannelsModel.findOne(
+                        { _id: channelId, "messages._id": replyData.msgId },
+                        { "messages.$": 1 }
+                    );
+
+                    if (originalMsg && originalMsg.messages[0]) {
+                        const origin = originalMsg.messages[0];
+                        const limit = !origin.edited ? 50 : 100;
+                        replyData.message = origin.message.slice(0, limit);
+                        replyData.id = origin.id;
+                        replyData.name = origin.name;
+                        replyData.isDeleted = origin.isDeleted || false;
+                        replyData.edited = origin.edited || false;
+                    }
+                }
+                return msg;
+            }));
+
             socket.emit('loadMessages-front', {
                 myData: {
                     _id: myData._id,
-                    id: myData.id,
+                    id: myData._id.toString(),
                     image: myData.image,
                 },
                 companion: companion.image,
-                messages: messagesToSend,
+                messages: enrichedMessages,
                 isMore: hasMore,
                 direction: 'bottom',
                 isScrollLoad: !!afterId
@@ -1138,7 +1188,9 @@ io.on('connection', async (socket) => {
                 UsersModel.findById(sendId).lean()
             ]);
 
-            if (!channel || !myData) return;
+            const findMsgId = channel.messages.find(f => f._id.toString() === msgId.toString());
+
+            if (!channel || !myData || findMsgId.isDeleted) return;
 
             let index = channel.messages.findIndex(m => m._id.toString() === msgId.toString());
 
@@ -1157,14 +1209,31 @@ io.on('connection', async (socket) => {
 
                 const companion = await UsersModel.findById(targetMsg.id).select('image').lean();
 
+                const enrichedMessages = await Promise.all(messagesToSend.map(async (msg) => {
+                    if (msg.reply && msg.reply[0] && msg.reply[0].msgId && !msg.reply[0].message) {
+                        const replyData = msg.reply[0];
+                        const origin = channel.messages.find(m => m._id.toString() === replyData.msgId.toString());
+
+                        if (origin) {
+                            const limit = !origin.edited ? 50 : 100;
+                            replyData.message = origin.message.slice(0, limit);
+                            replyData.id = origin.id;
+                            replyData.name = origin.name;
+                            replyData.isDeleted = origin.isDeleted || false;
+                            replyData.edited = origin.edited || false;
+                        }
+                    }
+                    return msg;
+                }));
+
                 socket.emit('loadMessages-front', {
                     myData: {
                         _id: myData._id,
-                        id: myData.id,
+                        id: myData._id.toString(),
                         image: myData.image,
                     },
                     companion: companion.image || null,
-                    messages: messagesToSend,
+                    messages: enrichedMessages,
                     isMore: hasMoreStart || hasMoreEnd,
                     direction: 'top'
                 });
@@ -1201,8 +1270,8 @@ io.on('connection', async (socket) => {
                             msgId: replyId._id,
                             toWho: replyId.id,
                             id: messageData.id,
-                            name: replyId.name,
-                            message: replyId.message
+                            // name: replyId.name,
+                            // message: replyId.message
                         }
                     };
                 } else {
@@ -1316,11 +1385,11 @@ io.on('connection', async (socket) => {
                     { _id: msgData.channelId },
                     {
                         $set: {
-                            'messages.$[elem].id': '',
-                            'messages.$[elem].name': '',
-                            'messages.$[elem].message': '',
-                            'messages.$[elem].date': '',
-                            'messages.$[elem].reply': [],
+                            // 'messages.$[elem].id': '',
+                            // 'messages.$[elem].name': '',
+                            // 'messages.$[elem].message': '',
+                            // 'messages.$[elem].date': '',
+                            // 'messages.$[elem].reply': [],
                             'messages.$[elem].isDeleted': true
                         }
                     },
@@ -1623,4 +1692,14 @@ server.listen(3000, async () => {
     }
 
     getNgrokUrl();
+
+    await ChannelsModel.updateMany(
+        {},
+        {
+            $unset: {
+                "messages.$[].reply.$[].name": "",
+                "messages.$[].reply.$[].message": ""
+            }
+        }
+    );
 });
