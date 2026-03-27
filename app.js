@@ -1692,14 +1692,4 @@ server.listen(3000, async () => {
     }
 
     getNgrokUrl();
-
-    await ChannelsModel.updateMany(
-        {},
-        {
-            $unset: {
-                "messages.$[].reply.$[].name": "",
-                "messages.$[].reply.$[].message": ""
-            }
-        }
-    );
 });
