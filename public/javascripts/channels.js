@@ -112,14 +112,21 @@ function findLastMessage() {
 
 function scrollToBottom() {
     const messagesDiv = document.getElementById('messages');
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    const lastMessage = messagesDiv.lastElementChild;
+
+    // if (lastMessage) {
+    //     lastMessage.scrollIntoView({ behavior: 'auto', block: 'end' });
+    // } else {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // }
+
     history.pushState(null, null, location.href.split('#')[0]);
     checkPageHeight();
 }
-
+let isScrollType = false;
 window.addEventListener('load', () => {
     socket.emit('loadMessages', { sendId, channelId });
-    scrollToBottom();
+    isScrollType = true;
     checkOnline();
     setInterval(() => isChecking = true, 1000);
 });
@@ -782,6 +789,8 @@ socket.on('loadMessages-front', async (data) => {
 
     isMoreMessages = isMore;
 
+    if (isScrollType) scrollToBottom();
+
     if (!isMoreMessages) {
         document.querySelector('.loaderMessages').style.display = 'none';
         document.querySelector('.companion-info').style.display = 'block';
@@ -1085,21 +1094,19 @@ chatContainer.addEventListener('scroll', () => {
         isBottomMsgLoadingPerm = true;
         const messages = chatContainer.querySelectorAll('.message');
 
-        // const targetIndex = messages.length > 20 ? messages.length - 20 : messages.length - 1;
         const targetIndex = Math.max(0, messages.length - 20);
         const targetElement = messages[targetIndex];
 
-        if (targetElement && targetElement !== currentObservedElement || messages.length <= 20) {
+        if (targetElement && targetElement !== currentObservedElement || messages.length < 20) {
             if (currentObservedElement) observerBottom.unobserve(currentObservedElement);
 
             observerBottom.observe(targetElement);
             currentObservedElement = targetElement;
-            console.log('Следим за сообщением:', targetElement.id);
+            // console.log('Следим за сообщением:', targetElement.id);
         }
     } else {
         isBottomMsgLoadingPerm = false;
     }
 
-    // lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
     lastScrollTop = Math.max(0, currentScroll);
 });
