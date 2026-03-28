@@ -123,10 +123,10 @@ function scrollToBottom() {
     history.pushState(null, null, location.href.split('#')[0]);
     checkPageHeight();
 }
-let isScrollType = false;
+let isScrollingUpdate = false;
 window.addEventListener('load', () => {
     socket.emit('loadMessages', { sendId, channelId });
-    isScrollType = true;
+    isScrollingUpdate = true;
     checkOnline();
     setInterval(() => isChecking = true, 1000);
 });
@@ -789,7 +789,7 @@ socket.on('loadMessages-front', async (data) => {
 
     isMoreMessages = isMore;
 
-    if (isScrollType) scrollToBottom();
+    if (isScrollingUpdate) scrollToBottom();
 
     if (!isMoreMessages) {
         document.querySelector('.loaderMessages').style.display = 'none';
@@ -1092,12 +1092,13 @@ chatContainer.addEventListener('scroll', () => {
 
     if (currentScroll > lastScrollTop) {
         isBottomMsgLoadingPerm = true;
+        isScrollingUpdate = false;
         const messages = chatContainer.querySelectorAll('.message');
 
         const targetIndex = Math.max(0, messages.length - 20);
         const targetElement = messages[targetIndex];
 
-        if (targetElement && targetElement !== currentObservedElement || messages.length < 20) {
+        if (targetElement && targetElement !== currentObservedElement) {
             if (currentObservedElement) observerBottom.unobserve(currentObservedElement);
 
             observerBottom.observe(targetElement);
