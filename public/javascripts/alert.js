@@ -187,17 +187,7 @@ function requestFriendMenu(requestData) {
         socket.emit('requestMyFriendsCount', dataSenderId);
 
         if (alreadyFriendAdd.includes(dataSenderId)) {
-            Swal.fire({
-                text: localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже есть в вашем списке друзей.',
-                icon: "error",
-                position: "top-end",
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
+            showToast('error', localeType === 'en' ? 'This player is already on your friends list.' : 'Данный игрок уже есть в вашем списке друзей.');
             successCard.classList.add('back-show');
             setTimeout(() => {
                 if (alert && alert.parentNode) {
@@ -226,19 +216,8 @@ function requestFriendMenu(requestData) {
                     document.body.removeChild(alert);
                 }
             }, 2000);
-
-            Swal.fire({
-                text: localeType === 'en' ? 'Friend request accepted!' : 'Запрос на дружбу принят!',
-                icon: "success",
-                position: "top-end",
-                timer: 4000,
-                showConfirmButton: false,
-                toast: true,
-                customClass: {
-                    popup: "small-alert"
-                }
-            });
         }
+        showToast('success', localeType === 'en' ? 'Friend request accepted!' : 'Запрос на дружбу принят!');
     })
 }
 

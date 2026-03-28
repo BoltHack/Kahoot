@@ -1085,17 +1085,21 @@ chatContainer.addEventListener('scroll', () => {
         isBottomMsgLoadingPerm = true;
         const messages = chatContainer.querySelectorAll('.message');
 
-        const targetIndex = messages.length > 20 ? messages.length - 20 : messages.length - 1;
+        // const targetIndex = messages.length > 20 ? messages.length - 20 : messages.length - 1;
+        const targetIndex = Math.max(0, messages.length - 20);
         const targetElement = messages[targetIndex];
 
-        if (targetElement && targetElement !== currentObservedElement) {
+        if (targetElement && targetElement !== currentObservedElement || messages.length <= 20) {
             if (currentObservedElement) observerBottom.unobserve(currentObservedElement);
 
             observerBottom.observe(targetElement);
             currentObservedElement = targetElement;
             console.log('Следим за сообщением:', targetElement.id);
         }
-    } else isBottomMsgLoadingPerm = false;
+    } else {
+        isBottomMsgLoadingPerm = false;
+    }
 
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    // lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    lastScrollTop = Math.max(0, currentScroll);
 });
