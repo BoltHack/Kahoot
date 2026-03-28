@@ -1038,7 +1038,7 @@ io.on('connection', async (socket) => {
             if (!channel || !myData) return;
 
             const match = myData.myChannels.find(c => c.channelId === channelId);
-            const companion = match ? await UsersModel.findById(match.companionId).lean() : null;
+            const companion = match ? await UsersModel.findById(match.companionId).select('image').lean() : null;
 
             let messagesToSend = [];
             let isMore = false;
@@ -1124,7 +1124,7 @@ io.on('connection', async (socket) => {
             if (!channel || !myData) return;
 
             const match = myData.myChannels.find(c => c.channelId === channelId);
-            const companion = match ? await UsersModel.findById(match.companionId).lean() : null;
+            const companion = match ? await UsersModel.findById(match.companionId).select('image').lean() : null;
 
             let messagesToSend = [];
             let hasMore = false;
@@ -1205,9 +1205,10 @@ io.on('connection', async (socket) => {
                 const hasMoreStart = start > 0;
                 const hasMoreEnd = end < channel.messages.length;
 
-                const targetMsg = channel.messages[index];
+                // const targetMsg = channel.messages[index];
 
-                const companion = await UsersModel.findById(targetMsg.id).select('image').lean();
+                const match = myData.myChannels.find(c => c.channelId === channelId);
+                const companion = match ? await UsersModel.findById(match.companionId).select('image').lean() : null;
 
                 const enrichedMessages = await Promise.all(messagesToSend.map(async (msg) => {
                     if (msg.reply && msg.reply[0] && msg.reply[0].msgId && !msg.reply[0].message) {
