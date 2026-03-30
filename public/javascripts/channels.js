@@ -112,17 +112,13 @@ function findLastMessage() {
 
 function scrollToBottom() {
     const messagesDiv = document.getElementById('messages');
-    const lastMessage = messagesDiv.lastElementChild;
 
-    // if (lastMessage) {
-    //     lastMessage.scrollIntoView({ behavior: 'auto', block: 'end' });
-    // } else {
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    // }
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
     history.pushState(null, null, location.href.split('#')[0]);
     checkPageHeight();
 }
+
 let isScrollingUpdate = false;
 window.addEventListener('load', () => {
     socket.emit('loadMessages', { sendId, channelId });
@@ -253,6 +249,10 @@ socket.on('showMessages', async (showMessagesData) => {
 function showTools(msgData) {
     const message = document.getElementById('message-'+msgData.msgId);
     const toolsId = document.getElementById('tools-'+msgData.msgId);
+    const dropdownMenu = toolsId.querySelector('.dropdown-menu');
+
+    if (dropdownMenu.style.display === 'flex') return;
+
     if (document.body.offsetWidth > 700) {
         if (message.querySelector('textarea') === null) {
             toolsId.style.display = 'inline-block';
@@ -960,7 +960,6 @@ function createMessageElement(msg, myData, companion, allMessages) {
                 </svg>
             </div>
         ` : `
-<!--        <div class="menu-trigger" onclick="openToolsMenu('${msg._id}')">⋯</div>-->
         `}
         <div onclick="msgReplyMenu('${msg._id}', '${msg.name}')">
             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
@@ -973,7 +972,7 @@ function createMessageElement(msg, myData, companion, allMessages) {
             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
         </button>
         ${isMe ? `
-        <button onclick="msgReplyMenu('${msg._id}', '${msg.name}')">
+        <button onclick="msgRedactionMenu('${msg._id}', '${msg.name}')">
             ${localeType === 'en' ? 'Edit' : 'Редактировать'}
             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path>
