@@ -741,7 +741,8 @@ function scrollToTop(channelId, msgId, msg_id, sendId) {
 socket.on('findReply_msg', async (data) => {
     const { msgId, msg_id } = data;
     console.log('find', msgId, msg_id);
-    setTimeout(() => findReplyMsg(msgId, msg_id, 'find'), 500);
+    // setTimeout(() => findReplyMsg(msgId, msg_id, 'find'), 500);
+    findReplyMsg(msgId, msg_id, 'find');
 });
 
 
