@@ -1107,7 +1107,8 @@ class PostController {
             const bData = req.basicData;
 
             const { user_name } = req.body;
-            const userInfo = await UsersModel.findOne({ name: user_name }).select('id');
+
+            const userInfo = await UsersModel.findOne({ friendName: user_name.trim() }).select('id');
 
             if (!userInfo) {
                 const errorMsg = bData.locale === 'en' ? 'User not found.' : 'Пользователь не найден.';
