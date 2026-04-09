@@ -957,8 +957,8 @@ function createMessageElement(msg, myData, companion) {
     tools.id = `tools-${msg._id}`;
 
     const menuTrigger = tools.querySelector('.menu-trigger');
-    const toolsSvg = tools.querySelector('.tools-svg')
-    const dropdownMenu = tools.querySelector('.dropdown-menu')
+    const toolsSvg = tools.querySelector('.tools-svg');
+    const dropdownMenu = tools.querySelector('.dropdown-menu-tools');
 
     menuTrigger.onclick = () => openToolsMenu(`${msg._id}`);
 
