@@ -533,6 +533,7 @@ class ViewController {
                 myData: {
                     _id: myData._id,
                     id: myData._id.toString(),
+                    name: myData.name,
                     image: myData.image,
                     myFriends: myData.myFriends
                 },

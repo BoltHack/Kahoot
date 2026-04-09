@@ -1292,6 +1292,7 @@ io.on('connection', async (socket) => {
                 const userInfo = await UsersModel.findById(messageData.id);
 
                 console.log('newMessage._id', newMessage._id);
+                console.log('name._id', newMessage.name);
 
                 io.to(messageData.channelId).emit('showMessages', {
                     _id: newMessage._id,
