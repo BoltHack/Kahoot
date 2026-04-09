@@ -937,7 +937,7 @@ function createMessageElement(msg, myData, companion) {
         // }
     }
 
-    clone.querySelector('.username').textContent = companionId ? msg.name : 'Deleted User';
+    clone.querySelector('.username').textContent = msg.id === sendId ? msg.name : msg.id === companionId ? msg.name : 'Deleted User';
     clone.querySelector('.timestamp').textContent = formatChatDate(msg.date);
 
     const textEl = clone.querySelector('.text');
