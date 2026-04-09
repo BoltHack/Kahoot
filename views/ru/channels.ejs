@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title> <%= companion.role === 'TechSupport' ? 'Тех поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : 'Чат с ' + companion.name %> </title>
+    <title> <%= companion.id ? companion.role === 'TechSupport' ? 'Тех поддержка - ' + companion.name : companion.role === 'Admin' ? 'Админ - ' + companion.name : 'Чат с ' + companion.name : 'Deleted User' %> </title>
     <link rel="stylesheet" href="/stylesheets/channels.css">
     <link rel="stylesheet" href="/stylesheets/alert.css">
     <link rel="icon" type="image/png" href="/images/icon.png">
@@ -66,9 +66,9 @@
     <div class="chat-container" id="chat-container">
         <div class="chat-header">
             <div class="chat-position">
-                <div class="avatar-position" onclick="window.location.href = '/user-profile/<%= companion.id %>'">
-                    <img class="avatar header-avatar" src="<%= companion.image %>">
-                    <span class="chat-name <%= companion.role === 'TechSupport' ? `tech-chat` : '' %>"><%= companion.name %></span>
+                <div class="avatar-position" onclick="checkPlayerProfile('<%= companion.id %>')">
+                    <img class="avatar header-avatar" src="<%= companion.image || '/images/defaultUser.png' %>">
+                    <span class="chat-name <%= companion.role === 'TechSupport' ? `tech-chat` : '' %>"><%= companion.name || 'Deleted User' %></span>
                 </div>
                 <div class="chat-name-role">
                     <% if (companion.role === 'Admin') { %>
@@ -128,12 +128,12 @@
 
         <div class="chat-messages" id="messages">
             <div class="companion-info">
-                <img src="<%= companion.image %>">
-                <h2><%= companion.name %></h2>
-                <p>Это начало истории ваших личных сообщений с <strong><%= companion.name %></strong>.</p>
-                <% if ( myData.myFriends.some(friend => friend.id.toString() === companion.id.toString()) ) { %>
+                <img src="<%= companion.image || '/images/defaultUser.png' %>">
+                <h2><%= companion.name || 'Deleted User' %></h2>
+                <p>Это начало истории ваших личных сообщений с <strong><%= companion.name || 'Deleted User' %></strong>.</p>
+                <% if ( companion.id && myData.myFriends.some(friend => friend.id.toString() === companion.id.toString()) ) { %>
                     <button class="btn" id="deleteFriend" onclick="deleteFriend('<%= companion.id %>', '<%= companion.name %>')">➖ Удалить из друзей</button>
-                <% } else { %>
+                <% } else if ( companion.id && myData.myFriends.some(friend => friend.id.toString() !== companion.id.toString()) ) { %>
                     <button class="btn" id="addFriend" onclick="addFriend('<%= companion.name %>')">➕ Добавить в друзья</button>
                 <% } %>
                 <div class="chat-line">

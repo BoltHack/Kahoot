@@ -502,27 +502,48 @@ class ViewController {
             const companionId = match ? match.companionId : null;
             const companion = await UsersModel.findById(companionId);
 
-            if (match && !companion) {
-                await ChannelsModel.findByIdAndDelete(channel_id);
-                await UsersModel.findOneAndUpdate(
-                    { _id: user.id },
-                    {
-                        $pull: {
-                            'myChannels': {channelId: channel_id}
-                        },
-                    },
-                    { new: true }
-                )
-                const errorMsg = appData.locale === 'en' ? 'this channel has been deleted.' : 'Этот канал был удалён.';
-                return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
-            }
+            // if (match && !companion) {
+                // await ChannelsModel.findByIdAndDelete(channel_id);
+                // await UsersModel.findOneAndUpdate(
+                //     { _id: user.id },
+                //     {
+                //         $pull: {
+                //             'myChannels': {channelId: channel_id}
+                //         },
+                //     },
+                //     { new: true }
+                // )
+                // const errorMsg = appData.locale === 'en' ? 'this channel has been deleted.' : 'Этот канал был удалён.';
+                // return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
+            // }
 
-            if (!match || !companion) {
+            // console.log('match', match);
+
+            const findChannel = await ChannelsModel.findById(match.channelId).select('id').lean();
+
+            console.log('test', findChannel._id.toString(), 'match', match.channelId.toString());
+
+            if (findChannel._id.toString() !== match.channelId.toString() && !match && !companion) {
                 const errorMsg = appData.locale === 'en' ? 'Channel not found.' : 'Канал не найден.';
                 return res.redirect(`/error?message=${encodeURIComponent(errorMsg)}`);
             }
 
-            return res.render(appData.locale === 'en' ? 'en/channels' : 'ru/channels', { myData, channel, messages: channel.messages, companion, myChannels, ...appData });
+
+            return res.render(appData.locale === 'en' ? 'en/channels' : 'ru/channels', {
+                myData: {
+                    _id: myData._id,
+                    id: myData._id.toString(),
+                    image: myData.image,
+                    myFriends: myData.myFriends
+                },
+                companion: {
+                    _id: companion?._id || null,
+                    id: companion?._id.toString() || null,
+                    role: companion?.role || null,
+                    name: companion?.name || null,
+                    image: companion?.image || null
+                },
+                channel, messages: channel.messages, myChannels, ...appData });
         } catch (err) {
             console.error('Ошибка:', err);
             return res.status(500).json({ error: err.message });

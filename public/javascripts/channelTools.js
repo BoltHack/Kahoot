@@ -104,3 +104,10 @@ socket.on('sendMissedMessage', async (msgData) => {
         });
     });
 });
+
+
+function checkPlayerProfile(playerId, type) {
+    if (!playerId) return;
+
+    window.open(`/user-profile/${playerId}`, type === 'b' ? '_blank' : '_self');
+}

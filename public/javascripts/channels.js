@@ -366,8 +366,14 @@ function checkOnline() {
 }
 
 socket.on('onlineMod', async (data) => {
-    console.log('userOnline', data.userOnline);
-    document.getElementById('onlineMod').innerText =
+    const onlineMod = document.getElementById('onlineMod');
+
+    if (data.userOnline === null) {
+        onlineMod.innerText = '';
+        return;
+    }
+
+    onlineMod.innerText =
         data.userOnline === 'Online' ? localeType === 'en' ? 'Online' :
             'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети';
 });
@@ -772,7 +778,7 @@ socket.on('loadMessages-front', async (data) => {
         messages.forEach(msg => {
             if (msg.isDeleted === true) return;
 
-            const node = createMessageElement(msg, myData, companion, messages);
+            const node = createMessageElement(msg, myData, companion || '/images/defaultUser.png', messages);
             fragment.appendChild(node);
         });
 
@@ -798,7 +804,7 @@ socket.on('loadMessages-front', async (data) => {
     }
 });
 
-function createMessageElement(msg, myData, companion, allMessages) {
+function createMessageElement(msg, myData, companion) {
     const template = document.getElementById('message-template');
 
     if (!template) {
@@ -931,7 +937,7 @@ function createMessageElement(msg, myData, companion, allMessages) {
         // }
     }
 
-    clone.querySelector('.username').textContent = msg.name;
+    clone.querySelector('.username').textContent = companionId ? msg.name : 'Deleted User';
     clone.querySelector('.timestamp').textContent = formatChatDate(msg.date);
 
     const textEl = clone.querySelector('.text');

@@ -56,7 +56,7 @@ socket.on('updateMyFriendsCount', async (updateMyFriendsCount) => {
 <span class="user-section">
 <div class="friend-container" id="friend-container">
     <div class="friend-info-row">
-        <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}" onclick="window.open('/user-profile/${friends.id}', '_blank')">
+        <div class="avatar-wrapper" title="${friends.onlineMod === 'Online' ? localeType === 'en' ? 'Online' : 'В сети' : localeType === 'en' ? 'Offline' : 'Не в сети'}" onclick="checkPlayerProfile('${friends.id}', 'b')">
             <img src="${friends.image}" alt="Avatar" class="friend-avatar">
             <div class="status ${friends.onlineMod === 'Online' ? 'online' : 'offline'}"></div>
         </div>

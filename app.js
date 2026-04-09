@@ -1452,6 +1452,11 @@ io.on('connection', async (socket) => {
 
             if (channel.channelUsers[0].id !== userData.sendId) {
                 const user = await UsersModel.findById(channel.channelUsers[0].id);
+                if (!user) {
+                    socket.emit('onlineMod', { userOnline: null });
+                    return;
+                }
+
                 const userOnline = user.onlineMod;
                 socket.emit('onlineMod', {
                     userOnline
