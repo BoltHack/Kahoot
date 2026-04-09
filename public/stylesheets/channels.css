@@ -598,10 +598,8 @@ ul {
 
 .dropdown-menu {
     position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    /*right: 35px;*/
     right: 65px;
+    bottom: auto;
     background-color: #1f2228;
     border: 1px solid #2a2f37;
     border-radius: 10px;
@@ -613,6 +611,7 @@ ul {
     z-index: 10;
     gap: 10px;
     padding: 8px;
+    height: fit-content;
 }
 .dropdown-menu.active {
     display: block;

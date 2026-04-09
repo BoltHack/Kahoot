@@ -291,6 +291,9 @@ function openToolsMenu(msgId) {
     const toolsId = document.getElementById('tools-'+msgId);
     const dropdownMenu = toolsId.querySelector('.dropdown-menu');
 
+    const rect = toolsId.getBoundingClientRect();
+    dropdownMenu.style.top = `${rect.top}px`;
+
     if (dropdownMenu.style.display === 'flex') {
         dropdownMenu.style.display = 'none';
         message.style.backgroundColor = '';
