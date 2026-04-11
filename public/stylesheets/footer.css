@@ -102,6 +102,28 @@
     color: #6b7280;
 }
 
+.footer-contacts-info {
+    display: flex;
+    /*flex-direction: column;*/
+    gap: 20px;
+}
+
+.contacts-svg-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #313338;
+    border-radius: 10px;
+    padding: 6px 8px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+.contacts-svg-icon:hover {
+    background: #313338;
+}
+
+
 @media (max-width: 768px) {
     .footer-links {
         /*flex-direction: column;*/

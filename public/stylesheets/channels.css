@@ -94,8 +94,15 @@ html.scroll-bar-off {
     flex-direction: column;
     min-height: 0;
 }
-#messages {
+/*#messages {*/
+/*    overflow-anchor: auto;*/
+/*}*/
+.message-input-placeholder[contenteditable="plaintext-only"]:empty:before {
+    content: attr(data-placeholder);
     overflow-anchor: auto;
+    font-style: italic;
+    display: block;
+    pointer-events: none;
 }
 .message, .load-message {
     margin-bottom: 18px;
@@ -248,10 +255,10 @@ html.scroll-bar-off {
     right: 25px;
     cursor: pointer;
 }
-.chat-input input {
+.chat-input-message-write {
     flex: 1;
-    padding: 12px 0;
-    text-indent: 10px;
+    padding: 12px 10px;
+    /*text-indent: 10px;*/
     border-radius: 6px;
     border: none;
     font-size: 15px;
@@ -260,15 +267,32 @@ html.scroll-bar-off {
     box-shadow: inset 0 0 5px #3b464f;
     outline-offset: 2px;
     transition: background-color 0.25s ease;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+    overflow-anchor: auto;
+    word-break: break-word;
+    overflow-y: auto;
+    max-height: 250px;
+}
+.chat-input-message-write::-webkit-scrollbar {
+    width: 4px;
+}
+.chat-input-message-write::-webkit-scrollbar-track {
+    background: #181b20;
+}
+.chat-input-message-write::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 10px;
 }
 
-.chat-input input::placeholder {
-    color: #63707d;
-}
 
-.chat-input input:focus {
-    background: #3b464f;
-}
+/*.chat-input input::placeholder {*/
+/*    color: #63707d;*/
+/*}*/
+
+/*.chat-input-message-write:focus {*/
+/*    background: #3b464f;*/
+/*}*/
 
 .chat-input button {
     background: #5bbfba;
@@ -1239,15 +1263,15 @@ ul {
         left: 0;
     }
 
-    /*.chat-messages::-webkit-scrollbar {*/
-    /*    display: none;*/
-    /*}*/
-    /*.chat-messages::-webkit-scrollbar-track {*/
-    /*    display: none;*/
-    /*}*/
-    /*.chat-messages::-webkit-scrollbar-thumb {*/
-    /*    display: none;*/
-    /*}*/
+    .chat-messages::-webkit-scrollbar {
+        display: none;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+        display: none;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+        display: none;
+    }
 }
 
 
@@ -1376,6 +1400,7 @@ ul {
         margin: 10px;
         box-sizing: border-box;
         background-color: #25282e;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
     }
     .dropdown-menu-tools button {

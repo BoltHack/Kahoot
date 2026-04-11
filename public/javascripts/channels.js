@@ -16,16 +16,18 @@ function sendMessage() {
     const chatInput = document.getElementById('chatInput');
     const allReply = chatInput.querySelectorAll('.chat-reply');
 
-    if (message.value.length > 0) {
+    const messagesToSend = message.textContent.trim();
+
+    if (messagesToSend.length > 0) {
         socket.emit('sendMessage', {
             channelId: channelId,
             id: sendId,
             name: sendName,
             companionId: companionId,
-            message: message.value,
+            message: messagesToSend,
             replyId: replyId
         });
-        message.value = '';
+        message.textContent = '';
         message.focus();
         allReply.forEach(reply => {
             reply.remove();
@@ -36,11 +38,19 @@ function sendMessage() {
     }
 }
 const input = document.getElementById('message');
-
 input.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        event.preventDefault();
-        sendMessage();
+        if (!event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    }
+});
+input.addEventListener('input', () => {
+    if (input.textContent.trim() === '') {
+        if (input.innerHTML !== '') {
+            input.innerHTML = '';
+        }
     }
 });
 
