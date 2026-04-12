@@ -49,7 +49,7 @@ function storedTime(tokenType, tokenTimerType, tokenTimerDuration) {
 if (localStorage.getItem('token')) {
     console.log('Работа с токенами...');
     storedTime('accessToken', 'accessTokenEndTime', ACCESS_TIMER_DURATION);
-    storedTime('refreshToken', 'accessTokenEndTime', REFRESH_TIMER_DURATION);
+    storedTime('refreshToken', 'refreshTokenEndTime', REFRESH_TIMER_DURATION);
 }
 
 async function getToken(tokenType, tokenTimerType, tokenTimerDuration) {
