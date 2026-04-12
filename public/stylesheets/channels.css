@@ -302,10 +302,14 @@ html.scroll-bar-off {
     font-weight: 600;
     font-size: 14px;
     padding: 0 25px;
+    height: 40px;
     cursor: pointer;
     box-shadow: 0 0 12px #5bbfbaaa;
     transition: background-color 0.3s ease;
     display: none;
+    margin-top: auto;
+    justify-content: center;
+    align-items: center;
 }
 
 .chat-input button:hover {
