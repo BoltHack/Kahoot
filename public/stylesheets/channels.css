@@ -1226,22 +1226,22 @@ ul {
         user-select: none;
     }
     .dropdown-menu {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        margin-top: auto;
-        background-color: #1f2228;
-        border: 1px solid #2a2f37;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        max-height: 400px;
-        height: 100%;
-        z-index: 10;
-        gap: 10px;
-        padding: 10px 0;
+        position: fixed ;
+        bottom: 0 ;
+        left: 0 ;
+        margin-top: auto ;
+        background-color: #1f2228 ;
+        border: 1px solid #2a2f37 ;
+        border-radius: 10px ;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) ;
+        display: none ;
+        flex-direction: column ;
+        width: 100% ;
+        max-height: 400px !important;
+        height: 100% ;
+        z-index: 10 ;
+        gap: 10px ;
+        padding: 10px 0 ;
     }
     .dropdown-menu button {
         padding: 20px;
