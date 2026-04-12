@@ -627,7 +627,8 @@ ul {
 .dropdown-menu {
     position: fixed;
     right: 65px;
-    bottom: auto;
+    /*top: 0;*/
+    bottom: 0;
     background-color: #1f2228;
     border: 1px solid #2a2f37;
     border-radius: 10px;
@@ -635,7 +636,18 @@ ul {
     display: none;
     /*min-width: 130px;*/
     z-index: 10;
-    height: fit-content;
+    /*height: fit-content;*/
+    max-height: 220px;
+    overflow-y: scroll;
+}
+.dropdown-menu::-webkit-scrollbar {
+    width: 0px;
+}
+.dropdown-menu::-webkit-scrollbar-track {
+    background: none;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: none;
 }
 .dropdown-menu-tools {
     display: flex;

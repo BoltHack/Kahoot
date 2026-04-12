@@ -751,6 +751,15 @@ function msgDeleteMenu(channelId, msgId) {
     });
 }
 
+async function msgCopyFunc(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        console.log('text copy error', err);
+    }
+
+}
+
 function scrollToTop(channelId, msgId, msg_id, sendId) {
     const topMessage = chatContainer.querySelector('.message');
     if (!topMessage) return;
@@ -990,6 +999,10 @@ function createMessageElement(msg, myData, companion) {
         <button onclick="msgReplyMenu('${msg._id}', '${msg.name}')">
             ${localeType === 'en' ? 'Reply' : 'Ответить'}
             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+        </button>
+        <button onclick="msgCopyFunc('${msg.message}')">
+            ${localeType === 'en' ? 'Copy text' : 'Скопировать текст'}
+            <svg class="icon_c1e9c4" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M3 16a1 1 0 0 1-1-1v-5a8 8 0 0 1 8-8h5a1 1 0 0 1 1 1v.5a.5.5 0 0 1-.5.5H10a6 6 0 0 0-6 6v5.5a.5.5 0 0 1-.5.5H3Z" class=""></path><path fill="currentColor" d="M6 18a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4v-4h-3a5 5 0 0 1-5-5V6h-4a4 4 0 0 0-4 4v8Z" class=""></path><path fill="currentColor" d="M21.73 12a3 3 0 0 0-.6-.88l-4.25-4.24a3 3 0 0 0-.88-.61V9a3 3 0 0 0 3 3h2.73Z" class=""></path></svg>
         </button>
         ${isMe ? `
         <button onclick="msgRedactionMenu('${msg._id}', '${msg.name}')">
