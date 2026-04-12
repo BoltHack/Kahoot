@@ -301,8 +301,8 @@ function openToolsMenu(msgId) {
     const toolsId = document.getElementById('tools-'+msgId);
     const dropdownMenu = toolsId.querySelector('.dropdown-menu');
 
-    const rect = toolsId.getBoundingClientRect();
-    dropdownMenu.style.top = `${rect.top}px`;
+    // const rect = toolsId.getBoundingClientRect();
+    // dropdownMenu.style.top = `${rect.top}px`;
 
     if (dropdownMenu.style.display === 'flex') {
         dropdownMenu.style.display = 'none';
@@ -337,6 +337,14 @@ function openToolsMenu(msgId) {
                 closeToolsMenu();
             }
         })
+    } else {
+        const rect = toolsId.getBoundingClientRect();
+
+        dropdownMenu.style.top = `${rect.top}px`;
+        dropdownMenu.style.bottom = 'auto';
+
+        const availableHeight = window.innerHeight - rect.top - 20;
+        dropdownMenu.style.maxHeight = `${Math.min(availableHeight, 220)}px`;
     }
 
     function closeToolsMenu() {
@@ -1021,7 +1029,7 @@ function createMessageElement(msg, myData, companion) {
     ` : ''}
        
     `
-    // }
+
 
     return clone;
 }

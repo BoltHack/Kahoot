@@ -627,27 +627,24 @@ ul {
 .dropdown-menu {
     position: fixed;
     right: 65px;
-    /*top: 0;*/
-    bottom: 0;
     background-color: #1f2228;
     border: 1px solid #2a2f37;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: none;
-    /*min-width: 130px;*/
-    z-index: 10;
-    /*height: fit-content;*/
+    height: auto;
     max-height: 220px;
     overflow-y: scroll;
+    display: none;
+    flex-direction: column;
+    z-index: 10;
 }
 .dropdown-menu::-webkit-scrollbar {
-    width: 0px;
+    width: 5px;
 }
 .dropdown-menu::-webkit-scrollbar-track {
-    background: none;
+    background: #242632;
 }
 .dropdown-menu::-webkit-scrollbar-thumb {
-    background: none;
+    background: #313338;
 }
 .dropdown-menu-tools {
     display: flex;
