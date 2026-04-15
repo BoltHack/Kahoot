@@ -1233,7 +1233,7 @@ io.on('connection', async (socket) => {
                         id: myData._id.toString(),
                         image: myData.image,
                     },
-                    companion: companion.image || null,
+                    companion: companion?.image || null,
                     messages: enrichedMessages,
                     isMore: hasMoreStart || hasMoreEnd,
                     direction: 'top'

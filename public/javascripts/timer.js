@@ -141,7 +141,6 @@ function sessionUpdateTimer() {
         if (endTime - Date.now() <= 0) {
             clearInterval(timers.sessionEndTime);
             sessionLogout();
-            console.log('g45fd56g465df4g65df465g4d65');
         }
     }, 1000);
 }
