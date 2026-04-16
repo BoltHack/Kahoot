@@ -100,9 +100,12 @@ html.scroll-bar-off {
 .message-input-placeholder[contenteditable="plaintext-only"]:empty:before {
     content: attr(data-placeholder);
     overflow-anchor: auto;
-    font-style: italic;
+    /*font-style: italic;*/
     display: block;
     pointer-events: none;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #696a78;
 }
 .message, .load-message {
     margin-bottom: 18px;
@@ -257,7 +260,7 @@ html.scroll-bar-off {
 }
 .chat-input-message-write {
     flex: 1;
-    padding: 12px 10px;
+    padding: 15px 10px;
     /*text-indent: 10px;*/
     border-radius: 6px;
     border: none;
@@ -1194,6 +1197,9 @@ ul {
     .chat-name, #onlineMod {
         font-size: 15px;
         align-items: center;
+    }
+    .chat-input-message-write {
+        padding: 12px 10px;
     }
     /*.search-friend {*/
     /*    margin-top: 60px;*/
