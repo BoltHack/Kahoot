@@ -1304,7 +1304,7 @@ io.on('connection', async (socket) => {
                         msgId: replyId ? replyId._id : null,
                         id: replyId ? messageData.id : null,
                         name: replyId ? replyId.name : null,
-                        image: replyId ? replyInfo.image : null,
+                        image: replyId ? replyInfo?.image : null,
                         message: replyId ? replyId.message : null
                     },
                     date: new Date

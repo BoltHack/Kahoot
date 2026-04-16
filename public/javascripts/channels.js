@@ -913,7 +913,7 @@ function createMessageElement(msg, myData, companion) {
             // const isToMe = String(replyData.toWho) === String(myCurrentId);
             // console.log('test', replyData.toWho, myData.id);
             clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
-            clone.querySelector('.reply-name').textContent = replyData.name;
+            clone.querySelector('.reply-name').textContent = replyData.id === sendId ? replyData.name : replyData.id === companionId ? replyData.name : 'Deleted User'
 
             const replyTextEl = clone.querySelector('.reply-text');
 
