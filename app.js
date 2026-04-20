@@ -1028,7 +1028,7 @@ io.on('connection', async (socket) => {
 
             if (beforeId && lastBeforeId === beforeId) return;
 
-            const limit = 100;
+            const limit = 50;
 
             const [channel, myData] = await Promise.all([
                 ChannelsModel.findById(channelId).lean(),
@@ -1114,7 +1114,7 @@ io.on('connection', async (socket) => {
 
             if (afterId && lastAfterId === afterId) return;
 
-            const limit = 100;
+            const limit = 50;
 
             const [channel, myData] = await Promise.all([
                 ChannelsModel.findById(channelId).lean(),

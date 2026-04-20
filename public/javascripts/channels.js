@@ -252,7 +252,7 @@ socket.on('showMessages', async (showMessagesData) => {
             </div>
         </div>`
     messages.appendChild(newMessage);
-    scrollToBottom();
+    // scrollToBottom();
 });
 
 
@@ -778,7 +778,11 @@ socket.on('findReply_msg', async (data) => {
     const { msgId, msg_id } = data;
     console.log('find', msgId, msg_id);
     // setTimeout(() => findReplyMsg(msgId, msg_id, 'find'), 500);
+    // if (document.querySelector('.loader-bottom').style.display === 'none') return;
     findReplyMsg(msgId, msg_id, 'find');
+    setTimeout(() => {
+        document.querySelector('.loader-bottom').style.display = 'block';
+    }, 2000);
 });
 
 
@@ -816,8 +820,9 @@ socket.on('loadMessages-front', async (data) => {
             const infoBlock = chatContainer.querySelector('.companion-info');
             infoBlock.after(fragment);
             chatContainer.scrollTop = chatContainer.scrollHeight - oldHeight;
-        } else if (direction === 'bottom') {
+        } else if (direction === 'bottom' && currentObservedElement !== null) {
             chatContainer.appendChild(fragment);
+            chatContainer.scrollTop = oldHeight;
         } else {
             chatContainer.appendChild(fragment);
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -829,8 +834,12 @@ socket.on('loadMessages-front', async (data) => {
     if (isScrollingUpdate) scrollToBottom();
 
     if (!isMoreMessages) {
-        document.querySelector('.loaderMessages').style.display = 'none';
-        document.querySelector('.companion-info').style.display = 'block';
+        if (direction === 'top') {
+            document.querySelector('.loader-top').style.display = 'none';
+            document.querySelector('.companion-info').style.display = 'block';
+        } else {
+            document.querySelector('.loader-bottom').style.display = 'none';
+        }
     }
 });
 
@@ -1090,6 +1099,7 @@ let currentObservedElement = null;
 let lastScrollTop = 0;
 
 const topSentinel = document.getElementById('top-sentinel');
+const bottomSentinel = document.getElementById('bottom-sentinel');
 const chatContainer = document.getElementById('messages');
 
 const observerTop = new IntersectionObserver(([entry]) => {
@@ -1113,13 +1123,24 @@ const observerTop = new IntersectionObserver(([entry]) => {
 const observerBottom = new IntersectionObserver(([entry]) => {
     console.log('checking bottom...', isLoading);
 
+    // if (entry.isIntersecting && !isLoading && isBottomMsgLoadingPerm) {
+    //     isLoading = true;
+    //     const messages = chatContainer.querySelectorAll('.message');
+    //     const afterId =  messages[messages.length - 1].dataset.id;
+    //
+    //     console.log('Загрузка новых сообщений...');
+    //     socket.emit('loadMessages-bottom', { sendId, channelId, afterId, });
+    // }
     if (entry.isIntersecting && !isLoading && isBottomMsgLoadingPerm) {
         isLoading = true;
-        const messages = chatContainer.querySelectorAll('.message');
-        const afterId =  messages[messages.length - 1].dataset.id;
+        const bottomMessage = chatContainer.querySelector('.message');
+        if (bottomMessage) {
+            const messages = chatContainer.querySelectorAll('.message');
+            const afterId =  messages[messages.length - 1].dataset.id;
 
-        console.log('Загрузка новых сообщений...');
-        socket.emit('loadMessages-bottom', { sendId, channelId, afterId, });
+            console.log('Загрузка новых сообщений...');
+            socket.emit('loadMessages-bottom', { sendId, channelId, afterId, });
+        }
     }
 }, {
     root: chatContainer,
@@ -1142,10 +1163,11 @@ chatContainer.addEventListener('scroll', () => {
         const targetIndex = Math.max(0, messages.length - 20);
         const targetElement = messages[targetIndex];
 
-        if (targetElement && targetElement !== currentObservedElement) {
-            if (currentObservedElement) observerBottom.unobserve(currentObservedElement);
+        if (bottomSentinel && targetElement && targetElement !== currentObservedElement) {
+            // if (currentObservedElement) observerBottom.unobserve(currentObservedElement);
 
-            observerBottom.observe(targetElement);
+            // observerBottom.observe(targetElement);
+            observerBottom.observe(bottomSentinel);
             currentObservedElement = targetElement;
             // console.log('Следим за сообщением:', targetElement.id);
         }
