@@ -132,6 +132,7 @@ function scrollToBottom() {
 let isScrollingUpdate = false;
 window.addEventListener('load', () => {
     socket.emit('loadMessages', { sendId, channelId });
+    document.getElementById('messages').style.overflowY = 'hidden';
     isScrollingUpdate = true;
     checkOnline();
     setInterval(() => isChecking = true, 1000);
@@ -792,6 +793,10 @@ socket.on('loadMessages-front', async (data) => {
     isLoading = false;
     console.log('data', data);
     const { myData, messages, companion, isScrollLoad: isLoadStep, isMore, direction } = data;
+
+    if (document.getElementById('messages').style.overflowY === 'hidden') {
+        document.getElementById('messages').style.overflowY = 'auto';
+    }
 
     const chatContainer = document.getElementById('messages');
 
