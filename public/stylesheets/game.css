@@ -774,6 +774,17 @@ main {
     overflow-x: hidden;
     display: block;
 }
+.game_menu::-webkit-scrollbar {
+    width: 4px;
+}
+.game_menu::-webkit-scrollbar-track {
+    background: #181b20;
+}
+.game_menu::-webkit-scrollbar-thumb {
+    background: #313338;
+    border-radius: 10px;
+}
+
 #bannedUsersCount {
     display: flex;
     flex-wrap: wrap;
