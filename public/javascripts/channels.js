@@ -134,6 +134,7 @@ window.addEventListener('load', () => {
     socket.emit('loadMessages', { sendId, channelId });
     document.getElementById('messages').style.overflowY = 'hidden';
     isScrollingUpdate = true;
+
     checkOnline();
     setInterval(() => isChecking = true, 1000);
 });
@@ -253,7 +254,14 @@ socket.on('showMessages', async (showMessagesData) => {
             </div>
         </div>`
     messages.appendChild(newMessage);
-    // scrollToBottom();
+
+    const scrollTop = chatContainer.scrollTop;
+    const scrollBottom = chatContainer.scrollHeight - chatContainer.clientHeight;
+
+    if (Math.abs(scrollTop - scrollBottom) <= 1000) {
+        scrollToBottom();
+    }
+
 });
 
 
@@ -846,6 +854,7 @@ socket.on('loadMessages-front', async (data) => {
             document.querySelector('.loader-bottom').style.display = 'none';
         }
     }
+
 });
 
 function createMessageElement(msg, myData, companion) {

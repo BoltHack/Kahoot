@@ -738,6 +738,7 @@ ul {
 .msg-content {
     display: flex;
     gap: 5px;
+    white-space: pre-wrap;
 }
 .edited-msg {
     font-size: 10px;
