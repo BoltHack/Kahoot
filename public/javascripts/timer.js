@@ -90,7 +90,7 @@ async function getToken(tokenType, tokenTimerType, tokenTimerDuration) {
         }
 
         startTokenTimer(tokenType, tokenTimerType, tokenTimerDuration);
-        localStorage.setItem('token', token);
+        // localStorage.setItem('token', token);
         console.log(`[${tokenType}] Токен успешно обновлен.`);
     } catch (error) {
         console.error('Ошибка при запросе токена:', error.message || error);
@@ -158,9 +158,9 @@ else if (!sessionEndTime && localStorage.getItem('token') && localStorage.getIte
 function sessionLogout() {
     fetch('/auth/logout', {
         method: 'post',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
+        // headers: {
+        //     'Authorization': 'Bearer ' + localStorage.getItem('token')
+        // }
     }).then(res => res.json()).then((res) => {
         const {error} = res;
         if (error) {

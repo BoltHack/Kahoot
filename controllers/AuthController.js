@@ -132,13 +132,14 @@ class AuthController {
                 return res.status(401).json({ error: "Неверный адрес или пароль." });
             }
 
+            // user.tokenVersion = (user.tokenVersion || 0) + 1;
             const accessToken = jwt.sign({
                 id: user._id,
                 name: user.name,
                 role: user.role,
+                tokenVersion: user.tokenVersion
             }, JWTSecret, { expiresIn: '15m' });
 
-            user.tokenVersion = (user.tokenVersion || 0) + 1;
             const refreshToken = jwt.sign({
                 id: user._id,
                 tokenVersion: user.tokenVersion
@@ -207,13 +208,15 @@ class AuthController {
                 return res.status(401).json({ error: errorMsg });
             }
 
+            userInfo.tokenVersion = (userInfo.tokenVersion || 0) + 1;
+
             const accessToken = jwt.sign({
                 id: userInfo._id,
                 name: userInfo.name,
                 role: userInfo.role,
+                tokenVersion: userInfo.tokenVersion
             }, JWTSecret, { expiresIn: '15m' });
 
-            userInfo.tokenVersion = (userInfo.tokenVersion || 0) + 1;
             const refreshToken = jwt.sign({
                 id: userInfo._id,
                 tokenVersion: userInfo.tokenVersion
@@ -620,6 +623,35 @@ class AuthController {
         }
     }
 
+    static logoutAllAccounts = async (req, res, next) => {
+        try {
+            const locale = req.cookies['locale'] || 'en';
+
+            req.cookies.user = null;
+            res.clearCookie('token');
+            res.clearCookie('refreshToken');
+
+            const user = req.user;
+            const userInfo = await UsersModel.findById(user.id)
+
+            userInfo.tokenVersion = (userInfo.tokenVersion || 0) + 1;
+
+            await UsersModel.findByIdAndUpdate(
+                { _id: userInfo._id },
+                {
+                    $set: { tokenVersion: userInfo.tokenVersion },
+                },
+                { new: true }
+            );
+
+
+            const successMessage = locale === 'en' ? 'Successfully logged out of all accounts!' : 'Успешный выход со всех аккаунтов!';
+            return res.status(200).json({ message: successMessage });
+        } catch (err){
+            console.error('Ошибка:', err);
+            return res.status(500).json({ error: err.message });
+        }
+    }
 }
 
 module.exports = AuthController;

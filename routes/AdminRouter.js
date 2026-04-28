@@ -11,7 +11,7 @@ const {
 } = require('../controllers/PostController')
 const {appData} = require("../middlewares/appData");
 const router = express.Router();
-const upload = require('../middlewares/multer');
+// const upload = require('../middlewares/multer');
 
 router.get('/admin-panel', verifyPermissions('Admin'), authenticateJWT, appData, adminPanelViewAdmin);
 router.get('/user-contacts', verifyPermissions('Admin'), authenticateJWT, appData, userContactsViewAdmin);
@@ -33,8 +33,8 @@ router.get('/list-users', verifyPermissions('Admin'), authenticateJWT, appData, 
 
 router.get('/list-reviews', verifyPermissions('Admin'), authenticateJWT, appData, listReviewsViewAdmin);
 
-router.post('/post-news', verifyPermissions('Admin'), appData, postNews);
-router.post('/post-image/:postType', verifyPermissions('Admin'), appData, postImage);
+router.post('/post-news', verifyPermissions('Admin'), authenticateJWT, appData, postNews);
+router.post('/post-image/:postType', verifyPermissions('Admin'), authenticateJWT, appData, postImage);
 router.post('/delete-news/:news_id', verifyPermissions('Admin'), authenticateJWT, appData, deleteNews);
 router.post('/redaction-news', verifyPermissions('Admin'), authenticateJWT, appData, redactionNews);
 router.post('/delete-review/:review_id', verifyPermissions('Admin'), authenticateJWT, appData, deleteReview);

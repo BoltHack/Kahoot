@@ -26,9 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function logout() {
     fetch('/auth/logout', {
         method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
+        // headers: {
+        //     'Authorization': 'Bearer ' + localStorage.getItem('token')
+        // }
     }).then(res => res.json()).then((res) => {
         const {status, error} = res;
         if (error) {

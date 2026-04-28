@@ -50,7 +50,7 @@ export async function RefreshToken(req: Request, res: Response, next: NextFuncti
 
         if (pastHash !== user.refreshTokenHash || decoded.tokenVersion !== user.tokenVersion) return res.sendStatus(403);
 
-        user.tokenVersion += 1;
+        // user.tokenVersion += 1;
         const newRefreshToken = jwt.sign({
             id: user._id.toString(),
             tokenVersion: user.tokenVersion
@@ -65,7 +65,8 @@ export async function RefreshToken(req: Request, res: Response, next: NextFuncti
         const newAccessToken = jwt.sign({
             id: user._id.toString(),
             name: user.name,
-            role: user.role
+            role: user.role,
+            tokenVersion: user.tokenVersion
         }, JWTSecret, { expiresIn: '15m' });
 
         res.cookie('token', newAccessToken, { httpOnly: true, secure: false, maxAge: parseMaxAge('15m') });

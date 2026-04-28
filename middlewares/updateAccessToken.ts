@@ -9,11 +9,13 @@ interface TokenPayload {
     id: string;
     name: string;
     role: string;
+    tokenVersion: number;
 }
 
 interface UserData extends Document {
     name: string;
     role: string;
+    tokenVersion: number;
 }
 
 export async function accessToken(req: Request, res: Response, next: NextFunction) {
@@ -44,7 +46,8 @@ export async function accessToken(req: Request, res: Response, next: NextFunctio
         const newAccessToken = jwt.sign({
             id: user._id.toString(),
             name: user.name,
-            role: user.role
+            role: user.role,
+            tokenVersion: user.tokenVersion
         }, JWTSecret, { expiresIn: '15m' });
 
         res.cookie('token', newAccessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000 });

@@ -74,9 +74,9 @@ function editBackgroundImage(backgroundEditMenuId, backgroundViewId, backgroundF
         if (!listenerController) {
             fetch(path === 'avatarImage' ? '/changeAvatar/delete' : '/changeBackgroundImage/delete',{
                 method: "POST",
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                },
+                // headers: {
+                //     "Authorization": "Bearer " + localStorage.getItem("token")
+                // },
             })
                 .then(response => {
                     if(response.ok){
@@ -168,9 +168,49 @@ changePasswordBtn.addEventListener('click', () => {
     });
 });
 
+const leaveFromAllAccountsBtn = document.getElementById('leaveFromAllAccountsBtn');
+const leaveFromAllAccountsMenu = document.getElementById('leaveFromAllAccountsMenu');
+
+leaveFromAllAccountsBtn.addEventListener('click', () => {
+    leaveFromAllAccountsMenu.hidden = false;
+    barrier.hidden = false;
+    disableScroll();
+
+    leaveFromAllAccountsMenu.querySelector('.close-btn').addEventListener('click', () => {
+        leaveFromAllAccountsMenu.hidden = true;
+        barrier.hidden = true;
+        enableScroll();
+    });
+    barrier.addEventListener('click', () => {
+        leaveFromAllAccountsMenu.hidden = true;
+        barrier.hidden = true;
+        enableScroll();
+    });
+});
+document.getElementById('leaveFromAllAccounts').addEventListener('click', () => {
+    fetch('/auth/logoutAllAccounts',{
+        method: "POST",
+    }).then(res => res.json())
+        .then(data => {
+            let {error, message} = data;
+            if (error) {
+                console.log('error', error);
+                showToast('error', error);
+            } else {
+                showToast('success', message);
+                setTimeout(() => {
+                    window.location.href = '/auth/login';
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+});
+
+
 document.getElementById('changePassword').addEventListener('click', (e) => {
     e.preventDefault();
-
 
     let changePasswordInfo = {
         currentPassword: document.getElementById('currentPassword').value,

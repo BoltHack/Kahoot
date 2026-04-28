@@ -254,6 +254,22 @@ input:checked + .slider::before {
 .edit-buttons input:hover{
     background-color: #006489;
 }
+.media-menu-buttons-div {
+    display: flex;
+    gap: 10px;
+}
+.media-menu-buttons-div button {
+    padding: 12px 30px;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.media-menu-buttons-div button:hover {
+    opacity: 0.6;
+}
+
 #closeMenu {
     /*margin-top: 15px;*/
     padding: 10px 15px;

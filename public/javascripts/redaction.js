@@ -30,9 +30,9 @@ function deleteQuestionMenu(gameId, questionId, questionNumber){
     document.getElementById('deleteQuestion').addEventListener('click', () => {
         fetch(`/delete-question/${gameId}/${questionId}`,{
             method: "POST",
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+            // headers: {
+            //     'Authorization': 'Bearer ' + localStorage.getItem('token')
+            // }
         })
             .then(response => {
                 document.getElementById('deleteQuestion').hidden = true;

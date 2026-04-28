@@ -1,7 +1,7 @@
 const express = require('express');
 const {registerView, registerNewUser, loginView, loginUser, sessionExpiredView, forgetPasswordView,
     sendEmail, accountRecoveryView, accountRecovery, logout, changePassword, accountDelete,
-    accountDeletionProcess, accountRestore, accountRecover
+    accountDeletionProcess, accountRestore, accountRecover, logoutAllAccounts
 } = require('../controllers/AuthController')
 const {validateRegister, validateLogin} = require('../middlewares/validate')
 const {authenticateJWT} = require('../middlewares/jwtAuth');
@@ -22,6 +22,7 @@ router.post('/send-code', accountRecovery);
 router.get('/sessionExpired', sessionExpiredView);
 
 router.post('/logout', authenticateJWT, logout);
+router.post('/logoutAllAccounts', authenticateJWT, logoutAllAccounts);
 
 router.get('/account-deletion-process', authenticateJWT, accountDeletionProcess);
 router.post('/account-delete', authenticateJWT, accountDelete);

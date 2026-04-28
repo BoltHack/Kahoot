@@ -8,6 +8,7 @@ interface JwtPayload {
     id: string;
     name: string;
     role: string;
+    tokenVersion: number;
 }
 
 interface RefreshPayload {
@@ -40,6 +41,11 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             return res.redirect('/auth/login');
         }
 
+        const authHeader = req.headers.authorization;
+        if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
+            token = authHeader.split(" ")[1];
+        }
+
         let decodedRefresh: RefreshPayload | null = null;
         try {
             if (refreshToken) {
@@ -52,18 +58,23 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             return res.redirect('/auth/login');
         }
 
-        const authHeader = req.headers.authorization;
-        if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
-            token = authHeader.split(" ")[1];
-        }
+        // const authHeader = req.headers.authorization;
+        // if (!token && authHeader && authHeader?.startsWith("Bearer ")) {
+        //     token = authHeader.split(" ")[1];
+        // }
+
+        let userInfo;
 
         if (token && decodedRefresh) {
             try {
                 const user = await verifyToken<JwtPayload>(token, JWTSecret);
 
-                const userInfo = await UsersModel.findById(user.id).select('tokenVersion');
+                userInfo = await UsersModel.findById(user.id);
 
-                if (!userInfo || userInfo.tokenVersion !== decodedRefresh.tokenVersion) {
+                console.log('user', user);
+                console.log('decodedRefresh', decodedRefresh.tokenVersion);
+
+                if (!userInfo || userInfo.tokenVersion !== decodedRefresh.tokenVersion || user.tokenVersion !== decodedRefresh.tokenVersion ){
                     res.clearCookie('token');
                     res.clearCookie('refreshToken');
                     return res.status(403).json({ message: 'Session compromised' });
@@ -81,7 +92,7 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             return res.redirect('/auth/login');
         }
 
-        const userInfo = await UsersModel.findById(decodedRefresh.id);
+        userInfo = await UsersModel.findById(decodedRefresh.id);
 
         const currentHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
 
@@ -91,9 +102,12 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
             return res.status(403).json({ message: 'Session compromised' });
         }
 
-        const payload = jwt.sign({ id: userInfo._id.toString(), name: userInfo.name, role: userInfo.role }, JWTSecret, {
-            expiresIn: "15m"
-        });
+        const payload = jwt.sign({
+            id: userInfo._id.toString(),
+            name: userInfo.name,
+            role: userInfo.role,
+            tokenVersion: userInfo.tokenVersion
+        }, JWTSecret, { expiresIn: "15m" });
 
         res.cookie("token", payload, {
             httpOnly: true,
@@ -104,7 +118,8 @@ export const authenticateJWT = async (req: CustomRequest, res: Response, next: N
         req.user = {
             id: userInfo._id.toString(),
             name: userInfo.name,
-            role: userInfo.role
+            role: userInfo.role,
+            tokenVersion: userInfo.tokenVersion
         };
         return next();
     } catch (error) {

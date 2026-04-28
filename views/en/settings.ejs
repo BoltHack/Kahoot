@@ -106,10 +106,14 @@
                     <h3>Change password</h3>
                     <p>If you doubt the strength of your current password, you can change it to a new one.</p>
                 </div>
-                <div class="extra-setting" id="deleteAccountBtn">
-                    <h3>Delete account</h3>
-                    <p>Deleting your account will result in the permanent loss of all your data.</p>
+                <div class="extra-setting" id="leaveFromAllAccountsBtn">
+                    <h3>Log out of all accounts</h3>
+                    <p>Log out of all active sessions on devices other than the current one. You'll need to re-enter your password to log in.</p>
                 </div>
+            </div>
+            <div class="extra-setting" id="deleteAccountBtn">
+                <h3>Delete account</h3>
+                <p>Deleting your account will result in the permanent loss of all your data.</p>
             </div>
         </section>
 
@@ -195,6 +199,21 @@
                 <label for="password">Password</label>
                 <input placeholder="Enter password" name="deleteInput" id="deleteInput" type="password" class="input_field" required>
                 <button id="deleteAccount">Delete account</button>
+            </div>
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="leaveFromAllAccountsMenu" class="media-menu-border" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Log out of all accounts</h2>
+            <span>Click to <strong>sign out</strong> of accounts from all devices.</span>
+            <br/>
+            <br/>
+            <div class="media-menu-buttons-div">
+                <button style="background: #c1121f;" id="leaveFromAllAccounts">
+                    <span>Log out of all devices</span>
+                </button>
             </div>
         </div>
         <button class="close-btn">X</button>

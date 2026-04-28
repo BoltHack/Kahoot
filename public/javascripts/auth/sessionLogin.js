@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function (){
                             pwd.style.border = '3px solid #0d2818';
                             loginButton.hidden = false;
                             loaderButton.hidden = true;
-                            localStorage.setItem('token', token);
+                            localStorage.setItem('token', 'true');
                             localStorage.setItem('userInfo', JSON.stringify({ 'id': user._id, 'name': user.name, 'profileImage': 'data:image/png;base64,' + user.image }));
                             const checkbox = document.getElementById('rememberMeCheckbox');
                             if (checkbox.checked){

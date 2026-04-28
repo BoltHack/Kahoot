@@ -111,19 +111,26 @@
 <!--            </div>-->
 <!--        </section>-->
 
-        <section class="section" id="change-password">
+        <section class="section" id="account-settings">
             <h2>Аккаунт</h2>
             <div class="extra-settings">
                 <div class="extra-setting" id="changePasswordBtn">
                     <h3>Сменить пароль</h3>
                     <p>Если вы сомневаетесь в надёжности текущего пароля, вы можете сменить его на новый.</p>
                 </div>
+                <div class="extra-setting" id="leaveFromAllAccountsBtn">
+                    <h3>Выйти со всех аккаунтов</h3>
+                    <p>Завершить все активные сеансы на других устройствах, кроме текущего. Для входа потребуется заново ввести пароль.</p>
+                </div>
+            </div>
+            <div class="extra-settings">
                 <div class="extra-setting" id="deleteAccountBtn">
                     <h3>Удалить аккаунт</h3>
                     <p>Удаление аккаунта приведёт к безвозвратной потере всех ваших данных.</p>
                 </div>
             </div>
         </section>
+
     </div>
 </main>
 
@@ -206,6 +213,21 @@
                 <label for="password">Пароль</label>
                 <input placeholder="Введите пароль" name="deleteInput" id="deleteInput" type="password" class="input_field" required>
                 <button id="deleteAccount">Удалить аккаунт</button>
+            </div>
+        </div>
+        <button class="close-btn">X</button>
+    </section>
+
+    <section id="leaveFromAllAccountsMenu" class="media-menu-border" hidden>
+        <div style="display: block; margin-top: -15px;">
+            <h2>Выход из всех аккаунтов</h2>
+            <span>Нажмите, чтобы <strong>выйти</strong> из аккаунтов со всех устройств.</span>
+            <br/>
+            <br/>
+            <div class="media-menu-buttons-div">
+                <button style="background: #c1121f;" id="leaveFromAllAccounts">
+                    <span>Выйти со всех устройств</span>
+                </button>
             </div>
         </div>
         <button class="close-btn">X</button>
