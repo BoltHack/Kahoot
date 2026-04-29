@@ -199,7 +199,7 @@ document.getElementById('leaveFromAllAccounts').addEventListener('click', () => 
             } else {
                 showToast('success', message);
                 setTimeout(() => {
-                    window.location.href = '/auth/login';
+                    logout();
                 }, 2000);
             }
         })

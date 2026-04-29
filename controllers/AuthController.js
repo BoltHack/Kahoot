@@ -627,10 +627,6 @@ class AuthController {
         try {
             const locale = req.cookies['locale'] || 'en';
 
-            req.cookies.user = null;
-            res.clearCookie('token');
-            res.clearCookie('refreshToken');
-
             const user = req.user;
             const userInfo = await UsersModel.findById(user.id)
 

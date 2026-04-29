@@ -21,7 +21,7 @@ router.post('/send-code', accountRecovery);
 
 router.get('/sessionExpired', sessionExpiredView);
 
-router.post('/logout', authenticateJWT, logout);
+router.post('/logout', logout);
 router.post('/logoutAllAccounts', authenticateJWT, logoutAllAccounts);
 
 router.get('/account-deletion-process', authenticateJWT, accountDeletionProcess);
