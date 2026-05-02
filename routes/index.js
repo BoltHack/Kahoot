@@ -12,9 +12,9 @@ const {
 const {
     createGame, redaction, deleteGame, deleteAllGames, getData,
     getUserData, changeAvatar, changeLocale, changeSettings, sendContacts,
-    checkToken, changeBackgroundImage, languageConfirmation, changeStatus, changeAboutMe,
-    checkChannel, deleteMyChannel, createQuestion, editQuestion, deleteQuestion,
-    requestTechSupport, sendReview, findPlayer
+    changeBackgroundImage, languageConfirmation, changeStatus, changeAboutMe, checkChannel,
+    deleteMyChannel, createQuestion, editQuestion, deleteQuestion, requestTechSupport,
+    sendReview, findPlayer
 } = require('../controllers/PostController');
 const {authenticateJWT} = require('../middlewares/jwtAuth');
 const {accessToken} = require('../middlewares/updateAccessToken');
@@ -84,7 +84,7 @@ router.post('/find-player', appData, findPlayer);
 
 router.post('/accessToken', accessToken);
 router.post('/refreshToken', RefreshToken);
-router.post('/checkToken', checkToken);
+// router.post('/checkToken', checkToken);
 
 router.use('/auth', AuthRouter);
 router.use('/admin', AdminRouter);

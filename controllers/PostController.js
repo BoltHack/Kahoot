@@ -880,16 +880,16 @@ class PostController {
         }
     };
 
-    static checkToken = async (req, res, next) => {
-        try {
-            const token = req.cookies['token'];
-
-            res.json({token});
-        } catch (err) {
-            console.error('Ошибка:', err);
-            return res.status(500).json({ error: err.message });
-        }
-    };
+    // static checkToken = async (req, res, next) => {
+    //     try {
+    //         const token = req.cookies['token'];
+    //
+    //         res.json({token});
+    //     } catch (err) {
+    //         console.error('Ошибка:', err);
+    //         return res.status(500).json({ error: err.message });
+    //     }
+    // };
 
     static languageConfirmation = async (req, res, next) => {
         try {
