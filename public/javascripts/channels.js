@@ -97,6 +97,12 @@ function findLastMessage() {
 
         if (!message) {
             socket.emit('loadMessages', { sendId, channelId });
+            isLoading = false;
+            isMoreMessages = true;
+            document.querySelector('.loader-top').style.display = 'block';
+            document.querySelector('.companion-info').style.display = 'none';
+            isScrollingUpdate = true;
+            setInterval(() => isChecking = true, 1000);
             return;
         }
 
