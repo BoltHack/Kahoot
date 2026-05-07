@@ -270,7 +270,7 @@ socket.on('showMessages', async (showMessagesData) => {
 
 });
 
-
+let isActionRunning = false;
 function showTools(msgData) {
     const message = document.getElementById('message-'+msgData.msgId);
     const toolsId = document.getElementById('tools-'+msgData.msgId);
@@ -301,13 +301,27 @@ function showTools(msgData) {
             msg.querySelector('.tools-settings').style.display = 'none';
             // document.querySelector('.chat-messages').style.paddingBottom = '135px';
 
-            if (!msg.dataset.holdListenerAdded) {
-                msg.dataset.holdListenerAdded = "true";
+            message.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
 
-                addHoldListener(msg, 600, () => {
-                    setTimeout(() => openToolsMenu(msgId), 100);
-                });
-            }
+                if (isActionRunning) return;
+
+                isActionRunning = true;
+
+                openToolsMenu(msgId);
+                setTimeout(() => {
+                    isActionRunning = false;
+                }, 1000);
+
+            }, { once: true });
+
+            // if (!msg.dataset.holdListenerAdded) {
+            //     msg.dataset.holdListenerAdded = "true";
+            //
+            //     addHoldListener(msg, 600, () => {
+            //         setTimeout(() => openToolsMenu(msgId), 100);
+            //     });
+            // }
         });
     }
 }
@@ -372,23 +386,23 @@ function openToolsMenu(msgId) {
     }
 }
 
-function addHoldListener(element, delay, callback) {
-    let holdTimer;
-
-    const startHold = (e) => {
-        // e.preventDefault();
-        holdTimer = setTimeout(() => callback(e), delay);
-    };
-
-    const cancelHold = () => clearTimeout(holdTimer);
-
-    element.addEventListener('mousedown', startHold);
-    element.addEventListener('touchstart', startHold);
-    element.addEventListener('mouseup', cancelHold);
-    element.addEventListener('mouseleave', cancelHold);
-    element.addEventListener('touchend', cancelHold);
-    element.addEventListener('touchcancel', cancelHold);
-}
+// function addHoldListener(element, delay, callback) {
+//     let holdTimer;
+//
+//     const startHold = (e) => {
+//         // e.preventDefault();
+//         holdTimer = setTimeout(() => callback(e), delay);
+//     };
+//
+//     const cancelHold = () => clearTimeout(holdTimer);
+//
+//     element.addEventListener('mousedown', startHold);
+//     element.addEventListener('touchstart', startHold);
+//     element.addEventListener('mouseup', cancelHold);
+//     element.addEventListener('mouseleave', cancelHold);
+//     element.addEventListener('touchend', cancelHold);
+//     element.addEventListener('touchcancel', cancelHold);
+// }
 
 setInterval(function () {
     checkOnline();
@@ -679,6 +693,10 @@ function msgReplyMenu(msgId, msgName) {
     chatInput.appendChild(chatReply);
 
     document.getElementById('closeReplyMenu').addEventListener('click', () => {
+        chatReply.remove();
+        message.classList.remove('reply-message');
+    });
+    chatReply.addEventListener('click', () => {
         chatReply.remove();
         message.classList.remove('reply-message');
     });
