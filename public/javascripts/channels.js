@@ -11,6 +11,8 @@ function sendMessage() {
     const message = document.getElementById('message');
     const messages = document.querySelectorAll('.message');
 
+    if (!message) return;
+
     const replyId = chatReply ? chatReply.getAttribute('data-id') : null;
 
     const chatInput = document.getElementById('chatInput');
@@ -146,120 +148,145 @@ window.addEventListener('load', () => {
 });
 
 socket.on('showMessages', async (showMessagesData) => {
+    // console.log('showMessagesData', showMessagesData);
+
+    const { _id, id, name, image, message, reply, date } = showMessagesData;
     const messages = document.getElementById('messages');
-    const newMessage = document.createElement('div');
+    // const newMessage = document.createElement('div');
 
-    function linkify(text) {
-        const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
-        return text.replace(urlPattern, function(url) {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
-        });
-    }
+    // console.log('showMessagesData', _id, id, name, image, message, reply, date);
 
-    newMessage.innerHTML = `
-        <div class="message ${showMessagesData.reply.id ? 'reply' : ''}" data-id="${showMessagesData._id}" id="message-${showMessagesData._id}" onmouseover="showTools({msgId: '${showMessagesData._id}', myId: '${showMessagesData.id}'});">
-            <div class="message-container">
-                <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}" src="${showMessagesData.image}">
-                <div class="message-content">
-                ${showMessagesData.reply.id ? `
-                <a class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}', '${showMessagesData._id}', 'find')">
-                    <div class="reply-line-wrapper">
-                        <div class="reply-line"></div>
-                        <img class="reply-avatar" src="${showMessagesData.reply.image}">
-                    </div>
-                    <div class="reply-text-container">
-                        <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
-                        <div class="reply-text">${showMessagesData.reply.message.length > 100 ? showMessagesData.reply.message.slice(0, 100) + '...' : showMessagesData.reply.message}</div>
-                    </div>
-                </a>
-                ` : ''}
-                    <div class="message-header">
-                        <span class="username">${showMessagesData.name}</span>
-                        <span class="timestamp">${ (() => {
-            const d = new Date(showMessagesData.date);
-            const now = new Date();
-    
-            const isSameDay = (d1, d2) =>
-                d1.getDate() === d2.getDate() &&
-                d1.getMonth() === d2.getMonth() &&
-                d1.getFullYear() === d2.getFullYear();
-    
-            const yesterday = new Date(now);
-            yesterday.setDate(now.getDate() - 1);
-    
-            if (isSameDay(d, now)) {
-                return localeType === 'en' ?
-                    'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
-                    :
-                    'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
-            } else if (isSameDay(d, yesterday)) {
-                return localeType === 'en' ?
-                    'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
-                    :
-                    'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
-            } else {
-                return localeType === 'en' ?
-                    d.toLocaleString('en-US', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                    })
-                    :
-                    d.toLocaleString('ru-RU', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                    });
-            }
-        })() }</span>
-                    </div>
-                    <div class="msg-content">
-                        <div class="text" id="msg-${showMessagesData._id}">${linkify(showMessagesData.message)}</div>
-                        <span class="edited-msg" id="edited-${showMessagesData._id}"></span>
-                    </div>
-                </div>
-                
-                <div class="tools" id="tools-${showMessagesData._id}">
-                    <div class="tools-settings">
-                        <div class="tools-svg">
-                        ${showMessagesData.id === sendId ? `
-                            <div onclick="msgRedactionMenu('${showMessagesData._id}')">
-                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
-                            </div>` : ``}
-                            <div onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
-                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
-                            </div>
-                            <div class="menu-trigger" onclick="openToolsMenu('${showMessagesData._id}')">⋯</div>
-                        </div>
-                    </div>
-                    
-                        <div class="dropdown-menu">
-                        <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
-                            ${localeType === 'en' ? 'Reply' : 'Ответить'}
-                            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
-                        </button>
-                        ${showMessagesData.id === sendId ? `
-                            <button onclick="msgRedactionMenu('${showMessagesData._id}')">
-                                ${localeType === 'en' ? 'Edit' : 'Редактировать'}
-                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
-                            </button>
-                            <div class="tools-line"></div>
-                            <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${showMessagesData._id}')">
-                                ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
-                                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path></svg>
-                            </button>` : ``}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`
-    messages.appendChild(newMessage);
+    // function linkify(text) {
+    //     const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
+    //     return text.replace(urlPattern, function(url) {
+    //         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="a-link">${url}</a>`;
+    //     });
+    // }
+
+
+    const node = createMessageFormat(_id, id, name, image, message, reply, date);
+    messages.appendChild(node);
+
+
+    // newMessage.innerHTML = `
+    //     <div class="message ${showMessagesData.reply.id ? 'reply' : ''}" data-id="${showMessagesData._id}" id="message-${showMessagesData._id}" onmouseover="showTools({msgId: '${showMessagesData._id}', myId: '${showMessagesData.id}'});">
+    //         <div class="message-container">
+    //             <img class="avatar ${showMessagesData.reply.id ? 'reply-avatarTop' : ''}" src="${showMessagesData.image}">
+    //             <div class="message-content">
+    //             ${showMessagesData.reply.id ? `
+    //             <a class="reply-container" data-msgId="${showMessagesData.reply.msgId}" id="replyContainer-${showMessagesData.reply.msgId}" onclick="findReplyMsg('${showMessagesData.reply.msgId}', '${showMessagesData._id}', 'find')">
+    //                 <div class="reply-line-wrapper">
+    //                     <div class="reply-line"></div>
+    //                     <img class="reply-avatar" src="${showMessagesData.reply.image}">
+    //                 </div>
+    //                 <div class="reply-text-container">
+    //                     <div class="reply-header"><strong>${showMessagesData.reply.name}</strong></div>
+    //                     <div class="reply-text">${showMessagesData.reply.message.length > 100 ? showMessagesData.reply.message.slice(0, 100) + '...' : showMessagesData.reply.message}</div>
+    //                 </div>
+    //             </a>
+    //             ` : ''}
+    //                 <div class="message-header">
+    //                     <span class="username">${showMessagesData.name}</span>
+    //                     <span class="timestamp">${ (() => {
+    //         const d = new Date(showMessagesData.date);
+    //         const now = new Date();
+    //
+    //         const isSameDay = (d1, d2) =>
+    //             d1.getDate() === d2.getDate() &&
+    //             d1.getMonth() === d2.getMonth() &&
+    //             d1.getFullYear() === d2.getFullYear();
+    //
+    //         const yesterday = new Date(now);
+    //         yesterday.setDate(now.getDate() - 1);
+    //
+    //         if (isSameDay(d, now)) {
+    //             return localeType === 'en' ?
+    //                 'Today, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
+    //                 :
+    //                 'Сегодня, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+    //         } else if (isSameDay(d, yesterday)) {
+    //             return localeType === 'en' ?
+    //                 'Yesterday, ' + d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false})
+    //                 :
+    //                 'Вчера, ' + d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit', hour12: false});
+    //         } else {
+    //             return localeType === 'en' ?
+    //                 d.toLocaleString('en-US', {
+    //                     day: '2-digit',
+    //                     month: 'long',
+    //                     year: 'numeric',
+    //                     hour: '2-digit',
+    //                     minute: '2-digit',
+    //                     hour12: false
+    //                 })
+    //                 :
+    //                 d.toLocaleString('ru-RU', {
+    //                     day: '2-digit',
+    //                     month: 'long',
+    //                     year: 'numeric',
+    //                     hour: '2-digit',
+    //                     minute: '2-digit',
+    //                     hour12: false
+    //                 });
+    //         }
+    //     })() }</span>
+    //                 </div>
+    //                 <div class="msg-content">
+    //                     <div class="text" id="msg-${showMessagesData._id}">${linkify(showMessagesData.message)}</div>
+    //                     <span class="edited-msg" id="edited-${showMessagesData._id}"></span>
+    //                 </div>
+    //             </div>
+    //
+    //             <div class="tools" id="tools-${showMessagesData._id}">
+    //                 <div class="tools-settings">
+    //                     <div class="tools-svg">
+    //                         ${showMessagesData.id === sendId ? `
+    //                         <div onclick="msgRedactionMenu('${showMessagesData._id}')">
+    //                             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z" class=""></path></svg>
+    //                         </div>` : ``}
+    //                         <div onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+    //                             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+    //                         </div>
+    //                         <div class="menu-trigger" onclick="openToolsMenu('${showMessagesData._id}')">⋯</div>
+    //                     </div>
+    //                 </div>
+    //
+    //                     <div class="dropdown-menu">
+    //
+    //                         <div class="dropdown-menu-tools">
+    //                             <button onclick="msgReplyMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+    //                             ${localeType === 'en' ? 'Reply' : 'Ответить'}
+    //                             <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+    //                         </button>
+    //                         <button onclick="msgCopyFunc('${showMessagesData.message}')">
+    //                             ${localeType === 'en' ? 'Copy text' : 'Скопировать текст'}
+    //                             <svg class="icon_c1e9c4" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+    //                                 <path fill="currentColor" d="M3 16a1 1 0 0 1-1-1v-5a8 8 0 0 1 8-8h5a1 1 0 0 1 1 1v.5a.5.5 0 0 1-.5.5H10a6 6 0 0 0-6 6v5.5a.5.5 0 0 1-.5.5H3Z" class=""></path><path fill="currentColor" d="M6 18a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4v-4h-3a5 5 0 0 1-5-5V6h-4a4 4 0 0 0-4 4v8Z" class=""></path><path fill="currentColor" d="M21.73 12a3 3 0 0 0-.6-.88l-4.25-4.24a3 3 0 0 0-.88-.61V9a3 3 0 0 0 3 3h2.73Z" class=""></path>
+    //                             </svg>
+    //                         </button>
+    //
+    //                         ${showMessagesData.id === sendId ? `
+    //                             <button onclick="msgRedactionMenu('${showMessagesData._id}', '${showMessagesData.name}')">
+    //                                 ${localeType === 'en' ? 'Edit' : 'Редактировать'}
+    //                                 <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+    //                                     <path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z"></path>
+    //                                 </svg>
+    //                             </button>
+    //                             <div class="tools-line"></div>
+    //                             <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${showMessagesData._id}')">
+    //                                 ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
+    //                                 <svg class="icon_c1e9c4" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+    //                                     <path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path>
+    //                                 </svg>
+    //                             </button>` : ``}
+    //                         </div>
+    //
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </div>`
+    // messages.appendChild(newMessage);
 
     const scrollTop = chatContainer.scrollTop;
     const scrollBottom = chatContainer.scrollHeight - chatContainer.clientHeight;
@@ -297,7 +324,7 @@ function showTools(msgData) {
         });
     } else {
         document.querySelectorAll('.message').forEach(msg => {
-            const msgId = msg.dataset.id;
+            // const msgId = msg.dataset.id;
             msg.querySelector('.tools-settings').style.display = 'none';
             // document.querySelector('.chat-messages').style.paddingBottom = '135px';
 
@@ -308,7 +335,7 @@ function showTools(msgData) {
 
                 isActionRunning = true;
 
-                openToolsMenu(msgId);
+                openToolsMenu(msgData.msgId);
                 setTimeout(() => {
                     isActionRunning = false;
                 }, 1000);
@@ -475,6 +502,21 @@ socket.on('broadcastDeleteMsg', async () => {
     showToast('success', localeType === 'en' ? 'message deleted!' : 'Сообщение удалено!');
 });
 
+function placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+        && typeof document.createRange != "undefined") {
+
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+}
+
 
 function checkPageHeight() {
     const messagesDiv = document.getElementById('messages');
@@ -579,38 +621,43 @@ function msgRedactionMenu(msgId) {
         </div>
 `;
         chatInput.appendChild(chatMsgEdit);
+        console.log('editMessage', editMessage);
+        editMessage.textContent = message.textContent;
+        placeCaretAtEnd(editMessage);
 
         chatMsgEdit.addEventListener('click', () => {
             messageInput.value = '';
             messageInput.id = 'message';
             messageId.style.backgroundColor = '';
+            messageInput.textContent = '';
             chatMsgEdit.remove();
-            return;
         });
 
         messageInput.value = message.textContent;
         messageInput.focus();
         editMessage.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
-                const newText = editMessage.value.trim();
+                const newText = editMessage.textContent.trim();
                 if (newText !== '' && newText !== message.textContent) {
                     const value = editMessage.value;
                     socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
                     messageInput.value = '';
                     messageInput.id = 'message';
                     messageId.style.backgroundColor = '';
+                    editMessage.textContent = '';
                     chatMsgEdit.remove();
                 }
             }
         });
         messageButton.addEventListener('click', () => {
-            const newText = editMessage.value.trim();
+            const newText = editMessage.textContent.trim();
             if (newText !== '' && newText !== message.textContent) {
                 const value = editMessage.value;
-                socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
+                socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: newText});
                 messageInput.value = '';
                 messageInput.id = 'message';
                 messageId.style.backgroundColor = '';
+                editMessage.textContent = '';
                 chatMsgEdit.remove();
             }
         })
@@ -621,8 +668,10 @@ function msgRedactionMenu(msgId) {
 }
 
 socket.on('editedMsg', async (editMsg) => {
-    const message = document.getElementById('msg-'+editMsg.msgId);
-    const edited = document.getElementById('edited-'+editMsg.msgId);
+    const message = document.getElementById('msg-' + editMsg.msgId);
+    const msgId = document.getElementById('message-' + editMsg.msgId)
+    const edited = msgId.querySelector('.msg-content').querySelector('.edited-msg');
+    console.log('edited', edited);
 
     function linkify(text) {
         const urlPattern = /(\bhttps?:\/\/[^\s<>]+[^\s<>,.?!])/gi;
@@ -632,7 +681,7 @@ socket.on('editedMsg', async (editMsg) => {
     }
 
     message.innerHTML = linkify(editMsg.editMessage);
-    edited.textContent = localeType === 'en' ? '(Edited)' : '(Изменено)';
+    edited.style.display = 'inline';
 
     const replyContainers = document.querySelectorAll('.reply-container');
     replyContainers.forEach(rc => {
@@ -671,6 +720,8 @@ function msgReplyMenu(msgId, msgName) {
     const message = document.getElementById('message-'+msgId);
     const toolsId = document.getElementById('tools-'+msgId);
     const messages = document.querySelectorAll('.message');
+
+    console.log('msgId tests', msgId);
 
     messages.forEach(msg => {
         msg.classList.remove('reply-message');
@@ -929,26 +980,6 @@ function createMessageElement(msg, myData, companion) {
         deletedReply.style.display = 'none';
         notLoadedReply.style.display = 'none';
 
-        // const replyMsgId  = replyData.msgId.toString();
-        // let msgEdited = allMessages.find(m => m && m._id && m._id.toString() === replyMsgId);
-
-        // console.log('replyData.msgId', replyData.msgId.toString());
-        // console.log('msg.reply[0].msgId', msg.reply[0].msgId.toString());
-
-        // if (!msgEdited) {
-        //     const existingMsgEl = document.getElementById(`message-${replyMsgId}`);
-        //     if (existingMsgEl) {
-        //         msgEdited = {
-        //             message: existingMsgEl.querySelector('.text').innerText,
-        //             name: existingMsgEl.querySelector('.username').textContent,
-        //             isDeleted: false,
-        //             edited: !!existingMsgEl.querySelector('.edited-msg')
-        //         };
-        //     }
-        // }
-
-        // console.log('replyData', replyData);
-
         if (replyData.isDeleted) {
             deletedReply.style.display = 'flex';
         } else if (replyData.message && !replyData.isDeleted) {
@@ -956,9 +987,6 @@ function createMessageElement(msg, myData, companion) {
             activeReply.setAttribute('data-msgId', replyData.msgId);
             activeReply.id = `replyContainer-${replyData.msgId}`;
 
-            // const myCurrentId = myData.id || myData._id.toString();
-            // const isToMe = String(replyData.toWho) === String(myCurrentId);
-            // console.log('test', replyData.toWho, myData.id);
             clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
             clone.querySelector('.reply-name').textContent = replyData.id === sendId ? replyData.name : replyData.id === companionId ? replyData.name : 'Deleted User'
 
@@ -968,7 +996,7 @@ function createMessageElement(msg, myData, companion) {
                 replyTextEl.textContent = replyData.message.length > 50 ? replyData.message.slice(0, 50) + '...' : replyData.message;
                 activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
             } else {
-                replyTextEl.innerHTML = `${replyData.message.length > 100 ? replyData.message.slice(0, 100) + '...' : replyData.message} <span class="edited-msg">(Изменено)</span>`;
+                replyTextEl.innerHTML = `${replyData.message.length > 100 ? replyData.message.slice(0, 100) + '...' : replyData.message} <span class="edited-msg">${localeType === 'en' ? '(Edited)' : '(Изменено)'}</span>`;
                 activeReply.onclick = () => findReplyMsg(replyData.msgId);
             }
         } else {
@@ -976,42 +1004,10 @@ function createMessageElement(msg, myData, companion) {
             notLoadedReply.setAttribute('data-msgId', replyData.msgId);
             notLoadedReply.id = `replyContainer-${replyData.msgId}`;
 
-            // const myCurrentId = myData.id || myData._id.toString();
-            // const isToMe = String(replyData.toWho) === String(myCurrentId);
             clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
-            // clone.querySelector('.reply-name').textContent = replyData.name;
 
             notLoadedReply.onclick = () => scrollToTop(channelId, replyData.msgId, msg._id, sendId);
         }
-
-        // if (msgEdited) {
-        //     if (msgEdited.isDeleted) {
-        //         deletedReply.style.display = 'flex';
-        //     } else {
-        //         activeReply.style.display = 'flex';
-        //         activeReply.setAttribute('data-msgId', replyData.msgId);
-        //         activeReply.id = `replyContainer-${replyData.msgId}`;
-        //
-        //         clone.querySelector('.reply-avatar').src = (replyData.toWho === myData.id) ? myData.image : companion;
-        //         clone.querySelector('.reply-name').textContent = replyData.name;
-        //
-        //         const replyTextEl = clone.querySelector('.reply-text');
-        //
-        //         if (!msgEdited.edited) {
-        //             replyTextEl.textContent = msgEdited.message.length > 50 ? msgEdited.message.slice(0, 50) + '...' : msgEdited.message;
-        //             activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
-        //         } else {
-        //             replyTextEl.innerHTML = `${msgEdited.message.length > 100 ? msgEdited.message.slice(0, 100) + '...' : msgEdited.message} <span class="edited-msg">(Изменено)</span>`;
-        //             activeReply.onclick = () => findReplyMsg(replyData.msgId);
-        //         }
-        //     }
-        // } else {
-        //     notLoadedReply.style.display = 'flex';
-        //     notLoadedReply.setAttribute('data-msgId', replyData.msgId);
-        //     notLoadedReply.id = `replyContainer-${replyData.msgId}`;
-        //
-        //     notLoadedReply.onclick = () => scrollToTop(channelId, replyData.msgId, msg._id, sendId);
-        // }
     }
 
     clone.querySelector('.username').textContent = msg.id === sendId ? msg.name : msg.id === companionId ? msg.name : 'Deleted User';
@@ -1088,8 +1084,144 @@ function createMessageElement(msg, myData, companion) {
        
     `
 
+    return clone;
+}
+
+function createMessageFormat(_id, id, name, image, message, reply, date) {
+    const template = document.getElementById('message-template');
+
+    if (!template) {
+        console.error("Ошибка: Шаблон 'message-template' не найден на странице!");
+        return document.createElement('div');
+    }
+
+    const clone = template.content.cloneNode(true);
+
+    const avatar = clone.querySelector('.avatar');
+    avatar.src = image;
+
+    const msgEl = clone.querySelector('.message');
+
+    msgEl.setAttribute('data-id', _id);
+    msgEl.id = `message-${_id}`;
+
+    msgEl.onmouseover = () => {
+        if (typeof showTools === 'function') {
+            showTools({
+                msgId: _id.toString(),
+                myId: id
+            });
+        }
+    }
+
+    clone.querySelector('.username').textContent = name;
+    clone.querySelector('.timestamp').textContent = formatChatDate(date);
+
+    const textEl = clone.querySelector('.text');
+    textEl.id = `msg-${_id}`;
+    textEl.innerHTML = linkify(message);
+
+    if (reply.id !== null) {
+        msgEl.classList.add('reply');
+        avatar.classList.add('reply-avatarTop');
+        const replyWrapper = clone.querySelector('.reply-wrapper');
+        replyWrapper.style.display = 'block';
+
+        const activeReply = clone.querySelector('.reply-active');
+
+        activeReply.style.display = 'none';
+
+        if (reply.message !== null) {
+            activeReply.style.display = 'flex';
+            activeReply.setAttribute('data-msgId', reply.msgId);
+            activeReply.id = `replyContainer-${reply.msgId}`;
+
+            clone.querySelector('.reply-avatar').src = reply.image;
+            clone.querySelector('.reply-name').textContent = reply.name;
+
+            const replyTextEl = clone.querySelector('.reply-text');
+
+            if (!reply.edited) {
+                replyTextEl.textContent = reply.message.length > 50 ? reply.message.slice(0, 50) + '...' : reply.message;
+                activeReply.onclick = () => findReplyMsg(reply.msgId, _id, 'find');
+            } else {
+                replyTextEl.innerHTML = `${reply.message.length > 100 ? reply.message.slice(0, 100) + '...' : reply.message} <span class="edited-msg">${localeType === 'en' ? '(Edited)' : '(Изменено)'}</span>`;
+                activeReply.onclick = () => findReplyMsg(reply.msgId);
+            }
+        }
+    }
+
+        // if (msg.edited) {
+        //     const ed = clone.querySelector('.edited-msg');
+        //     ed.id = `edited-${msg._id}`;
+        //     ed.style.display = 'inline';
+        // }
+
+        const tools = clone.querySelector('.tools');
+        tools.id = `tools-${_id}`;
+
+        const menuTrigger = tools.querySelector('.menu-trigger');
+        const toolsSvg = tools.querySelector('.tools-svg');
+        const dropdownMenu = tools.querySelector('.dropdown-menu-tools');
+
+        menuTrigger.onclick = () => openToolsMenu(`${_id}`);
+
+        toolsSvg.innerHTML = `
+        ${sendId === id ? `
+            <div onclick="msgRedactionMenu('${_id}')">
+                <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z"></path>
+                </svg>
+            </div>
+        ` : `
+        `}
+        <div onclick="msgReplyMenu('${_id}', '${name}')">
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path>
+            </svg>
+        </div>
+            `;
+
+        dropdownMenu.innerHTML = `
+        <button onclick="msgReplyMenu('${_id}', '${name}')">
+            ${localeType === 'en' ? 'Reply' : 'Ответить'}
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M2.3 7.3a1 1 0 0 0 0 1.4l5 5a1 1 0 0 0 1.4-1.4L5.42 9H11a7 7 0 0 1 7 7v4a1 1 0 1 0 2 0v-4a9 9 0 0 0-9-9H5.41l3.3-3.3a1 1 0 0 0-1.42-1.4l-5 5Z"></path></svg>
+        </button>
+        <button onclick="msgCopyFunc('${message}')">
+            ${localeType === 'en' ? 'Copy text' : 'Скопировать текст'}
+            <svg class="icon_c1e9c4" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M3 16a1 1 0 0 1-1-1v-5a8 8 0 0 1 8-8h5a1 1 0 0 1 1 1v.5a.5.5 0 0 1-.5.5H10a6 6 0 0 0-6 6v5.5a.5.5 0 0 1-.5.5H3Z" class=""></path><path fill="currentColor" d="M6 18a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4v-4h-3a5 5 0 0 1-5-5V6h-4a4 4 0 0 0-4 4v8Z" class=""></path><path fill="currentColor" d="M21.73 12a3 3 0 0 0-.6-.88l-4.25-4.24a3 3 0 0 0-.88-.61V9a3 3 0 0 0 3 3h2.73Z" class=""></path>
+            </svg>
+        </button>
+<!--        <div class="tools-line"></div>-->
+<!--        <button style="color: #f47171">-->
+<!--             Пожаловаться на сообщение-->
+<!--            <svg class="icon_c1e9c4" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">-->
+<!--                <path fill="currentColor" d="M3 1a1 1 0 0 1 1 1v.82l8.67-1.45A2 2 0 0 1 15 3.35v1.47l5.67-.95A2 2 0 0 1 23 5.85v7.3a2 2 0 0 1-1.67 1.98l-9 1.5a2 2 0 0 1-1.78-.6c-.2-.21-.08-.54.18-.68a5.01 5.01 0 0 0 1.94-1.94c.18-.32-.1-.66-.46-.6L4 14.18V21a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1Z" class=""></path>-->
+<!--            </svg>-->
+<!--        </button>-->
+        ${sendId === id ? `
+        <button onclick="msgRedactionMenu('${_id}', '${name}')">
+            ${localeType === 'en' ? 'Edit' : 'Редактировать'}
+            <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path fill="currentColor" d="m13.96 5.46 4.58 4.58a1 1 0 0 0 1.42 0l1.38-1.38a2 2 0 0 0 0-2.82l-3.18-3.18a2 2 0 0 0-2.82 0l-1.38 1.38a1 1 0 0 0 0 1.42ZM2.11 20.16l.73-4.22a3 3 0 0 1 .83-1.61l7.87-7.87a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-7.87 7.87a3 3 0 0 1-1.6.83l-4.23.73a1.5 1.5 0 0 1-1.73-1.73Z"></path>
+            </svg>
+        </button>
+        <div class="tools-line"></div>
+        <button style="color: #f47171" onclick="msgDeleteMenu('${channelId}', '${_id}')">
+            ${localeType === 'en' ? 'Delete message' : 'Удалить сообщение'}
+            <svg class="icon_c1e9c4" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M14.25 1c.41 0 .75.34.75.75V3h5.25c.41 0 .75.34.75.75v.5c0 .41-.34.75-.75.75H3.75A.75.75 0 0 1 3 4.25v-.5c0-.41.34-.75.75-.75H9V1.75c0-.41.34-.75.75-.75h4.5Z" class=""></path><path fill="currentColor" fill-rule="evenodd" d="M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3 3 0 0 0 3 2.81h8.36a3 3 0 0 0 3-2.81l.75-12.13a1 1 0 0 0-1-1.06H5.07ZM11 12a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0v-6Zm3-1a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Z" clip-rule="evenodd" class=""></path>
+            </svg>
+        </button>
+    ` : ''}
+       
+    `
 
     return clone;
+        // console.log('clone', clone);
+
+    // newMessage.textContent = clone;
 }
 
 function linkify(text) {

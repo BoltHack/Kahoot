@@ -1293,6 +1293,7 @@ io.on('connection', async (socket) => {
 
                 console.log('newMessage._id', newMessage._id);
                 console.log('newMessage.name', newMessage.name);
+                console.log('messageData', messageData);
 
                 io.to(messageData.channelId).emit('showMessages', {
                     _id: newMessage._id,
@@ -1305,8 +1306,10 @@ io.on('connection', async (socket) => {
                         id: replyId ? messageData.id : null,
                         name: replyId ? replyId.name : null,
                         image: replyId ? replyInfo?.image : null,
-                        message: replyId ? replyId.message : null
+                        message: replyId ? replyId.message : null,
+                        edited: replyId ? replyId.edited : null
                     },
+                    // edited: replyId.edited,
                     date: new Date
                 });
                 // io.to(companionSocketId).emit('sendMissedMessage', {
