@@ -41,7 +41,7 @@ function sendMessage() {
 }
 const input = document.getElementById('message');
 input.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && document.body.offsetWidth > 700) {
         if (!event.shiftKey) {
             event.preventDefault();
             sendMessage();
@@ -545,7 +545,10 @@ function checkPageHeight() {
         }
     }, {passive: true});
 }
+
+let sendMsgId = null;
 function msgRedactionMenu(msgId) {
+    sendMsgId = msgId;
     const message = document.getElementById('msg-'+msgId);
     const messageId = document.getElementById('message-'+msgId);
     const toolsId = document.getElementById('tools-'+msgId);
@@ -607,58 +610,52 @@ function msgRedactionMenu(msgId) {
         return editInput;
     } else {
         const messageInput = document.getElementById('message');
-        const messageButton = document.querySelector('.chat-input').querySelector('button');
-
-        messageInput.id = 'editMessage';
-        const editMessage = document.getElementById('editMessage');
-
         const chatInput = document.getElementById('chatInput');
         const chatMsgEdit = document.createElement('div');
+
+        const messageButton = document.querySelector('.chat-input').querySelector('button');
+
+        if (document.getElementById('editMessage')) {
+            chatInput.querySelector('.chat-reply').remove();
+        } else {
+            messageInput.id = 'editMessage';
+        }
+
+        const editMessage = document.getElementById('editMessage');
+
         chatMsgEdit.innerHTML = `
         <div class="chat-reply" data-id="${msgId}">
             <a href="#message-${msgId}">${localeType === 'en' ? 'Edit message' : 'Редактор сообщения'}</a>
             <b id="closeEditMenu">X</b>
         </div>
 `;
+
         chatInput.appendChild(chatMsgEdit);
-        console.log('editMessage', editMessage);
+        editMessage.value = message.textContent;
+
         editMessage.textContent = message.textContent;
+        editMessage.focus();
+
         placeCaretAtEnd(editMessage);
 
         chatMsgEdit.addEventListener('click', () => {
-            messageInput.value = '';
-            messageInput.id = 'message';
+            messageInput.textContent = '';
+            editMessage.id = 'message';
             messageId.style.backgroundColor = '';
             messageInput.textContent = '';
             chatMsgEdit.remove();
         });
 
-        messageInput.value = message.textContent;
-        messageInput.focus();
-        editMessage.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                const newText = editMessage.textContent.trim();
-                if (newText !== '' && newText !== message.textContent) {
-                    const value = editMessage.value;
-                    socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: value});
-                    messageInput.value = '';
-                    messageInput.id = 'message';
-                    messageId.style.backgroundColor = '';
-                    editMessage.textContent = '';
-                    chatMsgEdit.remove();
-                }
-            }
-        });
         messageButton.addEventListener('click', () => {
             const newText = editMessage.textContent.trim();
             if (newText !== '' && newText !== message.textContent) {
-                const value = editMessage.value;
-                socket.emit('editMsg', {channelId: channelId, msgId: msgId, newMsg: newText});
-                messageInput.value = '';
-                messageInput.id = 'message';
+                const value = editMessage.textContent;
+                socket.emit('editMsg', {channelId: channelId, msgId: sendMsgId, newMsg: value});
+                messageInput.textContent = '';
+                editMessage.id = 'message';
                 messageId.style.backgroundColor = '';
                 editMessage.textContent = '';
-                chatMsgEdit.remove();
+                chatInput.querySelector('.chat-reply').remove();
             }
         })
         setTimeout(() => toolsId.style.display = 'none', 100);
@@ -720,8 +717,6 @@ function msgReplyMenu(msgId, msgName) {
     const message = document.getElementById('message-'+msgId);
     const toolsId = document.getElementById('tools-'+msgId);
     const messages = document.querySelectorAll('.message');
-
-    console.log('msgId tests', msgId);
 
     messages.forEach(msg => {
         msg.classList.remove('reply-message');
