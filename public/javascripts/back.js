@@ -48,7 +48,7 @@ function pages(){
     else if (page.startsWith('/privacyPolicy')) {
         pageName.innerHTML = `
             <a class="between"> ❯ </a>
-            <a class="other-color">${localeType === 'en' ? 'Privacy policy' : 'Политики конфиденциальности'}</a>`
+            <a class="other-color">${localeType === 'en' ? 'Privacy policy' : 'Политика конфиденциальности'}</a>`
     }
     else if (page.startsWith('/rules')) {
         pageName.innerHTML = `
