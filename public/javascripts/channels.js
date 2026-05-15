@@ -94,17 +94,24 @@ function findLastMessage() {
 
     if (hash) {
         const msgId = window.location.hash.slice(46);
+        // const msg_id = window.location.hash.slice(46);
         const message = document.getElementById('message-' + msgId);
         // const replyMsgId = window.location.hash.slice(9, 33);
 
         if (!message) {
+            // socket.emit('find-notLoaded-message', { channelId, msgId, msg_id: '', sendId });
             socket.emit('loadMessages', { sendId, channelId });
             isLoading = false;
             isMoreMessages = true;
             document.querySelector('.loader-top').style.display = 'block';
             document.querySelector('.companion-info').style.display = 'none';
             isScrollingUpdate = true;
-            setInterval(() => isChecking = true, 1000);
+
+            setInterval(() => isChecking = true);
+            setTimeout(() => {
+                findReplyMsg(msgId);
+                history.pushState(null, null, location.href.split('#')[0]);
+            }, 1000);
             return;
         }
 
@@ -124,6 +131,8 @@ function findLastMessage() {
             // }, 100);
         }
     } else {
+        socket.emit('resetMessagesNumber');
+        messagesNumber = 50;
         scrollToBottom();
     }
 }
@@ -523,12 +532,11 @@ function checkPageHeight() {
     const positionWarning = document.getElementById('positionWarning');
     const positionWarningMessageBtn = document.getElementById('positionWarningMessageBtn');
 
-    // const messageDivScroll = messagesDiv.scrollTop;
     messagesDiv.addEventListener('scroll', function() {
         const scrollFromBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
 
         // if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
-        if (scrollFromBottom > 30000) {
+        if (scrollFromBottom > 30000 || messagesNumber >= 300) {
             positionWarning.style.display = 'flex';
             positionWarning.classList.add('show');
             if (window.location.hash) {
@@ -538,8 +546,7 @@ function checkPageHeight() {
                 positionWarning.querySelector('span').textContent = localeType === 'en' ? 'You are viewing old messages.' : 'Вы просматриваете старые сообщения.';
                 positionWarningMessageBtn.textContent = localeType === 'en' ? 'Go to latest posts' : 'Перейди к последним сообщениям';
             }
-        }
-        else {
+        } else {
             positionWarning.style.display = 'none';
             positionWarning.classList.remove('show');
         }
@@ -866,11 +873,12 @@ socket.on('findReply_msg', async (data) => {
 
 
 let isMoreMessages = true;
+let messagesNumber = 0;
 
 socket.on('loadMessages-front', async (data) => {
     isLoading = false;
-    console.log('data', data);
-    const { myData, messages, companion, isScrollLoad: isLoadStep, isMore, direction } = data;
+    // console.log('data', data);
+    const { myData, messages, companion, isScrollLoad: isLoadStep, isMore, direction, messagesCountNumber } = data;
 
     if (document.getElementById('messages').style.overflowY === 'hidden') {
         document.getElementById('messages').style.overflowY = 'auto';
@@ -913,6 +921,10 @@ socket.on('loadMessages-front', async (data) => {
     }
 
     isMoreMessages = isMore;
+    messagesNumber = messagesCountNumber;
+
+    console.log('messagesNumber', messagesNumber);
+    console.log('isMoreMessages', isMoreMessages);
 
     if (isScrollingUpdate) scrollToBottom();
 
@@ -992,7 +1004,8 @@ function createMessageElement(msg, myData, companion) {
                 activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
             } else {
                 replyTextEl.innerHTML = `${replyData.message.length > 100 ? replyData.message.slice(0, 100) + '...' : replyData.message} <span class="edited-msg">${localeType === 'en' ? '(Edited)' : '(Изменено)'}</span>`;
-                activeReply.onclick = () => findReplyMsg(replyData.msgId);
+                // activeReply.onclick = () => findReplyMsg(replyData.msgId);
+                activeReply.onclick = () => findReplyMsg(replyData.msgId, msg._id, 'find');
             }
         } else {
             notLoadedReply.style.display = 'flex';

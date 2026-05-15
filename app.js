@@ -1018,6 +1018,11 @@ io.on('connection', async (socket) => {
     let isProcessing = false;
     let lastBeforeId  = null;
     let lastAfterId  = null;
+    let messagesCountNumber = 0;
+
+    socket.on('resetMessagesNumber', async () => {
+        messagesCountNumber = 50;
+    });
 
     socket.on('loadMessages', async (data) => {
         try {
@@ -1084,6 +1089,8 @@ io.on('connection', async (socket) => {
                 return msg;
             }));
 
+            messagesCountNumber += enrichedMessages.length;
+
             socket.emit('loadMessages-front', {
                 myData: {
                     _id: myData._id,
@@ -1094,7 +1101,8 @@ io.on('connection', async (socket) => {
                 messages: enrichedMessages,
                 isMore,
                 direction: 'top',
-                isScrollLoad: !!beforeId
+                isScrollLoad: !!beforeId,
+                messagesCountNumber
             });
 
             lastBeforeId  = beforeId;
@@ -1158,6 +1166,8 @@ io.on('connection', async (socket) => {
                 return msg;
             }));
 
+            messagesCountNumber < 50 ? messagesCountNumber = 50 : messagesCountNumber -= 50;
+
             socket.emit('loadMessages-front', {
                 myData: {
                     _id: myData._id,
@@ -1168,7 +1178,8 @@ io.on('connection', async (socket) => {
                 messages: enrichedMessages,
                 isMore: hasMore,
                 direction: 'bottom',
-                isScrollLoad: !!afterId
+                isScrollLoad: !!afterId,
+                messagesCountNumber
             });
 
             lastAfterId  = afterId;
@@ -1193,12 +1204,16 @@ io.on('connection', async (socket) => {
             if (!channel || !myData || findMsgId.isDeleted) return;
 
             let index = channel.messages.findIndex(m => m._id.toString() === msgId.toString());
+            let checkMsgIdIndex = channel.messages.findIndex(m => m._id.toString() === msg_id.toString());
 
             if (index !== -1) {
                 const range = 50;
 
                 const start = Math.max(0, index - range);
                 const end = Math.min(channel.messages.length, index + range + 1);
+
+                // const msgIdToNumber = Math.min(channel.messages.length, checkMsgIdIndex - range);
+                const msgIdToNumber = Math.abs(checkMsgIdIndex - index);
 
                 const messagesToSend = channel.messages.slice(start, end);
 
@@ -1227,6 +1242,8 @@ io.on('connection', async (socket) => {
                     return msg;
                 }));
 
+                messagesCountNumber = msgIdToNumber;
+
                 socket.emit('loadMessages-front', {
                     myData: {
                         _id: myData._id,
@@ -1236,7 +1253,8 @@ io.on('connection', async (socket) => {
                     companion: companion?.image || null,
                     messages: enrichedMessages,
                     isMore: hasMoreStart || hasMoreEnd,
-                    direction: 'top'
+                    direction: 'top',
+                    messagesCountNumber
                 });
                 socket.emit('findReply_msg', { msgId, msg_id });
             }
@@ -1659,33 +1677,33 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(3000, async () => {
-    const findAllGames = await GamesModel.find({});
-    const getAllGameId = findAllGames.map(get => get.id);
-    await GamesModel.updateMany(
-        { _id: { $in: getAllGameId } },
-        {
-            $set: {
-                'game_online.online': 0,
-                'game_online.users': [],
-                'game_users': [],
-                'game_leaders': [],
-                'game_type': 'Open',
-                expiresInMinutes: 60,
-                expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-                // createdAt: Date.now(),
-            }
-        },
-    );
-    const findAllUsers = await UsersModel.find({});
-    const getAllUserId = findAllUsers.map(get => get.id);
-    await UsersModel.updateMany(
-        { _id: { $in: getAllUserId } },
-        {
-            $set: {
-                'onlineMod': 'Offline',
-            }
-        },
-    );
+    // const findAllGames = await GamesModel.find({});
+    // const getAllGameId = findAllGames.map(get => get.id);
+    // await GamesModel.updateMany(
+    //     { _id: { $in: getAllGameId } },
+    //     {
+    //         $set: {
+    //             'game_online.online': 0,
+    //             'game_online.users': [],
+    //             'game_users': [],
+    //             'game_leaders': [],
+    //             'game_type': 'Open',
+    //             expiresInMinutes: 60,
+    //             expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+    //             // createdAt: Date.now(),
+    //         }
+    //     },
+    // );
+    // const findAllUsers = await UsersModel.find({});
+    // const getAllUserId = findAllUsers.map(get => get.id);
+    // await UsersModel.updateMany(
+    //     { _id: { $in: getAllUserId } },
+    //     {
+    //         $set: {
+    //             'onlineMod': 'Offline',
+    //         }
+    //     },
+    // );
     io.emit('reloadPage');
     console.log('Сервер запущен на порту localhost: http://localhost:3000');
 
