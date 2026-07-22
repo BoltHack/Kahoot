@@ -536,7 +536,7 @@ function checkPageHeight() {
         const scrollFromBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
 
         // if (Math.floor(messagesDiv.scrollTop) + 10000 < Math.floor(messageDivScroll)) {
-        if (scrollFromBottom > 30000 || messagesNumber >= 300) {
+        if (scrollFromBottom > 30000 || messagesNumber >= 200) {
             positionWarning.style.display = 'flex';
             positionWarning.classList.add('show');
             if (window.location.hash) {
